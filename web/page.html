@@ -1,0 +1,683 @@
+<title>Fourway Hero</title>
+<meta name="description" content="A 32x32 pixel hero with four-direction walk and idle animations, generated from a parametric rig.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;450;600&family=Silkscreen:wght@400;700&display=swap">
+<style>
+  :root {
+    --ground: #e9e6ee;
+    --surface: #f8f6fb;
+    --sunken: #ddd7e7;
+    --ink: #241a2e;
+    --muted: #6b6278;
+    --line: #cdc6da;
+    --accent: #3c7f41;
+    --accent-bright: #4fa555;
+    --blue: #3d5d94;
+    --shadow: 0 1px 2px #241a2e14;
+  }
+  :root:not([data-theme="light"]) {
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ground: #15111c;
+      --surface: #241a2e;
+      --sunken: #1c1526;
+      --ink: #ece8f3;
+      --muted: #9b92ab;
+      --line: #3b3049;
+      --accent: #74c46b;
+      --accent-bright: #74c46b;
+      --blue: #7d9bd3;
+      --shadow: 0 1px 2px #0000003d;
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --ground: #15111c;
+    --surface: #241a2e;
+    --sunken: #1c1526;
+    --ink: #ece8f3;
+    --muted: #9b92ab;
+    --line: #3b3049;
+    --accent: #74c46b;
+    --accent-bright: #74c46b;
+    --blue: #7d9bd3;
+    --shadow: 0 1px 2px #0000003d;
+    color-scheme: dark;
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--ground);
+    color: var(--ink);
+    font: 450 15px/1.55 "IBM Plex Sans", system-ui, sans-serif;
+  }
+  .page {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 30px 20px 44px;
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+  }
+
+  header { display: flex; flex-direction: column; gap: 7px; }
+  .eyebrow {
+    font-family: Silkscreen, "IBM Plex Mono", monospace;
+    font-size: 10px;
+    letter-spacing: .14em;
+    color: var(--accent);
+  }
+  h1 {
+    font-family: Silkscreen, "IBM Plex Mono", monospace;
+    font-size: clamp(23px, 3.6vw, 33px);
+    font-weight: 400;
+    line-height: 1.15;
+    margin: 0;
+    text-wrap: balance;
+  }
+  .dek { max-width: 60ch; color: var(--muted); margin: 0; }
+
+  .main {
+    display: grid;
+    grid-template-columns: minmax(0, 1.6fr) minmax(250px, 1fr);
+    gap: 18px;
+    align-items: start;
+  }
+  .stage-wrap { display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+  .stage {
+    position: relative;
+    border: 1px solid var(--line);
+    border-radius: 5px;
+    overflow: hidden;
+    background: #3f6330;
+    box-shadow: var(--shadow);
+  }
+  #game { width: 100%; aspect-ratio: 4 / 3; }
+  #game canvas { display: block; }
+
+  .overlay {
+    position: absolute;
+    inset: 0;
+    display: none;
+    place-items: center;
+    background: #150f1cb8;
+    cursor: pointer;
+  }
+  .overlay.show { display: grid; }
+  .overlay span {
+    font-family: Silkscreen, monospace;
+    font-size: 13px;
+    color: #f2eff6;
+    border: 1px solid #f2eff64d;
+    border-radius: 4px;
+    padding: 9px 15px;
+    background: #241a2ecc;
+  }
+
+  .bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px 14px;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .keys { color: var(--muted); font-size: 13px; }
+  kbd {
+    font: 500 12px/1 "IBM Plex Mono", monospace;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-bottom-width: 2px;
+    border-radius: 3px;
+    padding: 3px 5px;
+    color: var(--ink);
+  }
+  .chips { display: flex; gap: 6px; flex-wrap: wrap; }
+  .chip {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+    border: 1px solid var(--line);
+    background: var(--surface);
+    border-radius: 4px;
+    padding: 4px 8px;
+    font-size: 10px;
+    letter-spacing: .09em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .chip b {
+    font: 400 12px/1 Silkscreen, monospace;
+    letter-spacing: 0;
+    text-transform: none;
+    color: var(--accent);
+  }
+
+  .dpad { display: none; grid-template-columns: repeat(3, 42px); gap: 4px; }
+  @media (pointer: coarse) { .dpad { display: grid; } }
+  .dpad button {
+    height: 42px;
+    font-size: 15px;
+    color: var(--ink);
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    cursor: pointer;
+    touch-action: none;
+  }
+  .dpad button.on { background: var(--accent-bright); color: #fff; }
+  .dpad .sp { visibility: hidden; }
+
+  .panel {
+    border: 1px solid var(--line);
+    background: var(--surface);
+    border-radius: 5px;
+    padding: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 11px;
+    box-shadow: var(--shadow);
+    min-width: 0;
+  }
+  .panel h2 {
+    margin: 0;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .panel p { margin: 0; font-size: 13px; color: var(--muted); }
+
+  .sheet {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 192 / 128;
+    background: var(--sunken);
+    border-radius: 3px;
+  }
+  .sheet img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    image-rendering: pixelated;
+  }
+  #cursor {
+    position: absolute;
+    border: 2px solid var(--accent-bright);
+    border-radius: 2px;
+    box-shadow: 0 0 0 1px #241a2e66;
+    transition: left .07s linear, top .07s linear;
+  }
+  @media (prefers-reduced-motion: reduce) { #cursor { transition: none; } }
+
+  .details { display: grid; grid-template-columns: 1.15fr 1fr; gap: 18px; }
+  @media (max-width: 880px) {
+    .main, .details { grid-template-columns: 1fr; }
+  }
+
+  .scroll { overflow-x: auto; }
+  table { border-collapse: collapse; width: 100%; font-size: 13px; }
+  th {
+    text-align: left;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding: 0 12px 6px 0;
+    border-bottom: 1px solid var(--line);
+  }
+  td { padding: 5px 12px 5px 0; border-bottom: 1px solid var(--line); }
+  tr:last-child td { border-bottom: 0; }
+  .mono { font-family: "IBM Plex Mono", monospace; font-size: 12px; }
+  .num { font-variant-numeric: tabular-nums; color: var(--muted); }
+  td.tag { color: var(--accent); }
+
+  .pal { display: grid; grid-template-columns: repeat(auto-fill, minmax(112px, 1fr)); gap: 7px 10px; }
+  .sw { display: flex; align-items: center; gap: 7px; min-width: 0; }
+  .sw i {
+    flex: none;
+    width: 15px;
+    height: 15px;
+    border-radius: 2px;
+    /* neutral ring, so the near-black outline colour still reads as a chip
+       on the dark panel and the pale skin tones read on the light one */
+    box-shadow: 0 0 0 1px #8a829680;
+  }
+  .sw span { display: flex; flex-direction: column; min-width: 0; }
+  .sw b { font-weight: 450; font-size: 11.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .sw em {
+    font: 400 10px/1.3 "IBM Plex Mono", monospace;
+    font-style: normal;
+    color: var(--muted);
+  }
+
+  footer { color: var(--muted); font-size: 13px; border-top: 1px solid var(--line); padding-top: 14px; }
+  footer code { font-family: "IBM Plex Mono", monospace; font-size: 12px; color: var(--ink); }
+  a { color: var(--accent); }
+  button:focus-visible, .overlay:focus-visible { outline: 2px solid var(--accent-bright); outline-offset: 2px; }
+</style>
+
+<div class="page">
+  <header>
+    <div class="eyebrow">32&times;32 &middot; 24 frames &middot; 8 tags &middot; 20 colours</div>
+    <h1>Fourway Hero</h1>
+    <p class="dek">A pixel hero with four-direction walk and idle cycles. Every
+    frame is drawn by the same parametric rig, exported to a layered
+    <code>.aseprite</code> file and a spritesheet, and played here by Phaser 3
+    straight from that export.</p>
+  </header>
+
+  <div class="main">
+    <div class="stage-wrap">
+      <div class="stage">
+        <div id="game"></div>
+        <div class="overlay" id="overlay"><span>Click to play</span></div>
+      </div>
+      <div class="bar">
+        <div class="keys">
+          <kbd>&larr;</kbd> <kbd>&uarr;</kbd> <kbd>&darr;</kbd> <kbd>&rarr;</kbd>
+          or <kbd>W</kbd> <kbd>A</kbd> <kbd>S</kbd> <kbd>D</kbd> to move
+        </div>
+        <div class="chips">
+          <div class="chip">facing <b id="st-facing">down</b></div>
+          <div class="chip">clip <b id="st-anim">idle-down</b></div>
+          <div class="chip">frame <b id="st-frame">04</b></div>
+        </div>
+      </div>
+      <div class="dpad">
+        <button class="sp" tabindex="-1"></button>
+        <button data-dir="up" aria-label="Move up">&uarr;</button>
+        <button class="sp" tabindex="-1"></button>
+        <button data-dir="left" aria-label="Move left">&larr;</button>
+        <button data-dir="down" aria-label="Move down">&darr;</button>
+        <button data-dir="right" aria-label="Move right">&rarr;</button>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h2>Sheet cursor</h2>
+      <div class="sheet">
+        <img id="sheet-img" alt="Hero spritesheet: one row per direction, walk then idle">
+        <div id="cursor"></div>
+      </div>
+      <p>The box tracks the frame being drawn right now. One row per direction
+      &mdash; down, left, right, up &mdash; four walk frames then two idle.</p>
+    </div>
+  </div>
+
+  <div class="details">
+    <div class="panel">
+      <h2>Frame tags</h2>
+      <div class="scroll">
+        <table>
+          <thead>
+            <tr><th>Tag</th><th>Frames</th><th>Hold</th><th>Cycle</th></tr>
+          </thead>
+          <tbody id="tags"></tbody>
+        </table>
+      </div>
+    </div>
+    <div class="panel">
+      <h2>Palette</h2>
+      <div class="pal" id="palette"></div>
+    </div>
+  </div>
+
+  <footer>
+    Generated by a parametric rig: <code>draw_hero(direction, bob, leg, swing)</code>
+    composes the same body-part functions for all 24 frames, so the character
+    cannot drift between directions. Silhouette outlines are computed, not drawn.
+  </footer>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/phaser@3.90.0/dist/phaser.min.js"></script>
+<script>window.META = {"cols": 6, "rows": 4, "tags": [{"name": "walk-down", "from": 0, "to": 3}, {"name": "idle-down", "from": 4, "to": 5}, {"name": "walk-left", "from": 6, "to": 9}, {"name": "idle-left", "from": 10, "to": 11}, {"name": "walk-right", "from": 12, "to": 15}, {"name": "idle-right", "from": 16, "to": 17}, {"name": "walk-up", "from": 18, "to": 21}, {"name": "idle-up", "from": 22, "to": 23}], "palette": [{"name": "outline", "hex": "#241a2e", "alpha": 1.0}, {"name": "skin", "hex": "#f2c292", "alpha": 1.0}, {"name": "skin shade", "hex": "#cc9464", "alpha": 1.0}, {"name": "hair", "hex": "#5c3a24", "alpha": 1.0}, {"name": "hair light", "hex": "#825535", "alpha": 1.0}, {"name": "tunic", "hex": "#4fa555", "alpha": 1.0}, {"name": "tunic shade", "hex": "#2f713c", "alpha": 1.0}, {"name": "tunic light", "hex": "#74c46b", "alpha": 1.0}, {"name": "pants", "hex": "#3d5d94", "alpha": 1.0}, {"name": "pants shade", "hex": "#28416d", "alpha": 1.0}, {"name": "boots", "hex": "#7d512f", "alpha": 1.0}, {"name": "boots shade", "hex": "#55341d", "alpha": 1.0}, {"name": "eye", "hex": "#241a2e", "alpha": 1.0}, {"name": "ground shadow", "hex": "#241a2e", "alpha": 0.35}, {"name": "grass", "hex": "#4e7a3a", "alpha": 1.0}, {"name": "grass dark", "hex": "#467033", "alpha": 1.0}, {"name": "grass light", "hex": "#5e8c45", "alpha": 1.0}, {"name": "bush", "hex": "#35723a", "alpha": 1.0}, {"name": "bush dark", "hex": "#234f2b", "alpha": 1.0}, {"name": "bush light", "hex": "#45894a", "alpha": 1.0}]};</script>
+<script>// Generated by tools/build.py - do not edit.
+window.ART = {
+  "hero": {
+    "image": "data:image/png;base64,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",
+    "frameWidth": 32,
+    "frameHeight": 32,
+    "anims": [
+      {
+        "key": "walk-down",
+        "frameRate": 8.333,
+        "repeat": -1,
+        "frames": [
+          {
+            "frame": 0,
+            "duration": 0
+          },
+          {
+            "frame": 1,
+            "duration": 0
+          },
+          {
+            "frame": 2,
+            "duration": 0
+          },
+          {
+            "frame": 3,
+            "duration": 0
+          }
+        ]
+      },
+      {
+        "key": "idle-down",
+        "frameRate": 2.0,
+        "repeat": -1,
+        "frames": [
+          {
+            "frame": 4,
+            "duration": 0
+          },
+          {
+            "frame": 5,
+            "duration": 0
+          }
+        ]
+      },
+      {
+        "key": "walk-left",
+        "frameRate": 8.333,
+        "repeat": -1,
+        "frames": [
+          {
+            "frame": 6,
+            "duration": 0
+          },
+          {
+            "frame": 7,
+            "duration": 0
+          },
+          {
+            "frame": 8,
+            "duration": 0
+          },
+          {
+            "frame": 9,
+            "duration": 0
+          }
+        ]
+      },
+      {
+        "key": "idle-left",
+        "frameRate": 2.0,
+        "repeat": -1,
+        "frames": [
+          {
+            "frame": 10,
+            "duration": 0
+          },
+          {
+            "frame": 11,
+            "duration": 0
+          }
+        ]
+      },
+      {
+        "key": "walk-right",
+        "frameRate": 8.333,
+        "repeat": -1,
+        "frames": [
+          {
+            "frame": 12,
+            "duration": 0
+          },
+          {
+            "frame": 13,
+            "duration": 0
+          },
+          {
+            "frame": 14,
+            "duration": 0
+          },
+          {
+            "frame": 15,
+            "duration": 0
+          }
+        ]
+      },
+      {
+        "key": "idle-right",
+        "frameRate": 2.0,
+        "repeat": -1,
+        "frames": [
+          {
+            "frame": 16,
+            "duration": 0
+          },
+          {
+            "frame": 17,
+            "duration": 0
+          }
+        ]
+      },
+      {
+        "key": "walk-up",
+        "frameRate": 8.333,
+        "repeat": -1,
+        "frames": [
+          {
+            "frame": 18,
+            "duration": 0
+          },
+          {
+            "frame": 19,
+            "duration": 0
+          },
+          {
+            "frame": 20,
+            "duration": 0
+          },
+          {
+            "frame": 21,
+            "duration": 0
+          }
+        ]
+      },
+      {
+        "key": "idle-up",
+        "frameRate": 2.0,
+        "repeat": -1,
+        "frames": [
+          {
+            "frame": 22,
+            "duration": 0
+          },
+          {
+            "frame": 23,
+            "duration": 0
+          }
+        ]
+      }
+    ]
+  },
+  "props": {
+    "ground": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAxklEQVR42u2XTQ6DIBCFkbxEUzfG43gID+ShTTclumq31YjO0PlJTNkDH7z3hqEap+EdHEcMzuMeAEtaw5LWormQAGgedfFc7E8isWgxgNWmLA90fesHoL35pQmf8ytIpSQnMyx0PvOWWiGiyqdaCSkQ4GjIiSnVP9CudGQJLCJ36QEPCFhmXu015Pil69vNYaNWvqlrRM0ik4vn9w2Am3kpr2QBrHuC+3TFFF8cNa+wfPmO5BUB+MWYsKh24gCSSfn/Dd0BPj05OXc4WE7rAAAAAElFTkSuQmCC",
+    "bush": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAA7ElEQVR42u2Vuw6CMBSG/1MYSQQXE1ed3XwXHpF3YWOGlYQFSsJqcKqpWKCnNmHpNzW9/efWHiAQCAQCgcDBEGfz/fqYAaBuK1JjhT5XtxV5NUBdnOUJAGAops9Yoc8NxQRbQ8hGXBdLL+nXuuzk6tmhmHaNIFvxpbAvI4RP8b4Zf9azPMGyXnYjYCO+5TUnEoL7bGQnITtp9NaF2EZQRUH3+nw7bZ5bGkiI3AxwCTcnOsL3z8ZNjfB1ed+MTnURczab8v5vMca+QumKMQV1WxGVkb+OV0arvyHZNKH5+XIW3mtKrG7IhdOWD+MNrop5sgJii6EAAAAASUVORK5CYII="
+  }
+};
+</script>
+<script>
+(function () {
+  const $ = (sel) => document.querySelector(sel);
+
+  $('#sheet-img').src = ART.hero.image;
+  const cursor = $('#cursor');
+  cursor.style.width = (100 / META.cols) + '%';
+  cursor.style.height = (100 / META.rows) + '%';
+
+  const hold = {};
+  ART.hero.anims.forEach((a) => { hold[a.key] = Math.round(1000 / a.frameRate); });
+  $('#tags').innerHTML = META.tags.map((t) => {
+    const n = t.to - t.from + 1;
+    const kind = t.name.startsWith('walk')
+      ? n + '-frame contact/passing' : n + '-frame breath';
+    return '<tr><td class="mono tag">' + t.name + '</td>'
+      + '<td class="mono num">' + t.from + '–' + t.to + '</td>'
+      + '<td class="mono num">' + hold[t.name] + ' ms</td>'
+      + '<td>' + kind + '</td></tr>';
+  }).join('');
+
+  $('#palette').innerHTML = META.palette.map((c) =>
+    '<div class="sw"><i style="background:' + c.hex + ';opacity:' + c.alpha + '"></i>'
+    + '<span><b>' + c.name + '</b><em>' + c.hex
+    + (c.alpha < 1 ? ' · ' + Math.round(c.alpha * 100) + '%' : '')
+    + '</em></span></div>').join('');
+
+  // Live readout, called by the scene every frame.
+  const facingEl = $('#st-facing'), animEl = $('#st-anim'), frameEl = $('#st-frame');
+  window.__hud = ({ anim, facing, frame }) => {
+    if (facingEl.textContent !== facing) facingEl.textContent = facing;
+    if (animEl.textContent !== anim) animEl.textContent = anim;
+    const n = String(frame).padStart(2, '0');
+    if (frameEl.textContent !== n) {
+      frameEl.textContent = n;
+      cursor.style.left = ((frame % META.cols) * 100 / META.cols) + '%';
+      cursor.style.top = (Math.floor(frame / META.cols) * 100 / META.rows) + '%';
+    }
+  };
+
+  // On-screen pad, so the page is playable without a keyboard.
+  window.__pad = {};
+  document.querySelectorAll('.dpad button[data-dir]').forEach((b) => {
+    const dir = b.dataset.dir;
+    const set = (v) => (e) => {
+      e.preventDefault();
+      window.__pad[dir] = v;
+      b.classList.toggle('on', v);
+    };
+    b.addEventListener('pointerdown', set(true));
+    ['pointerup', 'pointerleave', 'pointercancel'].forEach((ev) =>
+      b.addEventListener(ev, set(false)));
+  });
+
+  // Keyboard only reaches the game once this frame has focus.
+  const overlay = $('#overlay');
+  const hide = () => overlay.classList.remove('show');
+  if (!document.hasFocus()) overlay.classList.add('show');
+  document.addEventListener('pointerdown', hide);
+  window.addEventListener('focus', hide);
+  window.addEventListener('blur', () => overlay.classList.add('show'));
+})();
+</script>
+<script>/* Phaser 3 demo for the generated art.
+ *
+ * Everything the sprite needs - frame size, animation ranges and frame rates -
+ * comes from window.ART in art-embed.js, which tools/build.py emits alongside
+ * the .aseprite files. Re-running the build updates this scene; no frame index
+ * is hand-copied into the game code.
+ */
+
+const WORLD_W = 320;
+const WORLD_H = 240;
+const SPEED = 70;              // world px per second
+
+class DemoScene extends Phaser.Scene {
+  preload() {
+    // Data URIs, so the page also runs straight from file:// with no server.
+    this.load.spritesheet('hero', ART.hero.image, {
+      frameWidth: ART.hero.frameWidth,
+      frameHeight: ART.hero.frameHeight,
+    });
+    Object.entries(ART.props).forEach(([name, uri]) => this.load.image(name, uri));
+  }
+
+  create() {
+    this.add.tileSprite(0, 0, WORLD_W, WORLD_H, 'ground').setOrigin(0);
+
+    ART.hero.anims.forEach((a) => {
+      this.anims.create({
+        key: a.key,
+        // Per-frame `duration` is extra hold time on top of frameRate, which is
+        // how a frame held longer in Aseprite survives into the game.
+        frames: a.frames.map((f) => ({ key: 'hero', frame: f.frame, duration: f.duration })),
+        frameRate: a.frameRate,
+        repeat: a.repeat,
+      });
+    });
+
+    this.bushes = this.physics.add.staticGroup();
+    [[54, 70], [250, 62], [96, 186], [214, 170], [160, 110]].forEach(([x, y]) => {
+      const b = this.bushes.create(x, y, 'bush');
+      b.body.setSize(18, 7).setOffset(7, 23);   // only the base blocks movement
+      b.setDepth(y);
+    });
+
+    this.hero = this.physics.add.sprite(160, 160, 'hero');
+    this.hero.body.setSize(12, 8).setOffset(10, 21);   // feet box, not the head
+    this.hero.setCollideWorldBounds(true);
+    this.physics.add.collider(this.hero, this.bushes);
+
+    this.facing = 'down';
+    this.lastAxis = 'y';
+    this.hero.anims.play('idle-down');
+
+    this.keys = this.input.keyboard.addKeys({
+      up: 'UP', down: 'DOWN', left: 'LEFT', right: 'RIGHT',
+      w: 'W', a: 'A', s: 'S', d: 'D',
+    });
+    // Remember which axis was pressed last so diagonals keep a sensible facing.
+    const axisOf = { up: 'y', down: 'y', w: 'y', s: 'y',
+                     left: 'x', right: 'x', a: 'x', d: 'x' };
+    Object.entries(this.keys).forEach(([name, key]) => {
+      key.on('down', () => { this.lastAxis = axisOf[name]; });
+    });
+  }
+
+  update() {
+    const k = this.keys;
+    const pad = window.__pad || {};        // on-screen d-pad, for touch
+    const left = k.left.isDown || k.a.isDown || !!pad.left;
+    const right = k.right.isDown || k.d.isDown || !!pad.right;
+    const up = k.up.isDown || k.w.isDown || !!pad.up;
+    const down = k.down.isDown || k.s.isDown || !!pad.down;
+
+    let vx = (right ? 1 : 0) - (left ? 1 : 0);
+    let vy = (down ? 1 : 0) - (up ? 1 : 0);
+    if (vx && vy) {                       // keep diagonal speed equal to axial
+      vx *= Math.SQRT1_2;
+      vy *= Math.SQRT1_2;
+    }
+    this.hero.setVelocity(vx * SPEED, vy * SPEED);
+
+    const moving = vx !== 0 || vy !== 0;
+    if (moving) {
+      const horizontal = vx !== 0 && (vy === 0 || this.lastAxis === 'x');
+      this.facing = horizontal ? (vx < 0 ? 'left' : 'right')
+                               : (vy < 0 ? 'up' : 'down');
+    }
+    const want = `${moving ? 'walk' : 'idle'}-${this.facing}`;
+    const current = this.hero.anims.currentAnim && this.hero.anims.currentAnim.key;
+    if (current !== want) this.hero.anims.play(want, true);
+
+    this.hero.setDepth(this.hero.y);      // walk in front of / behind bushes
+    if (window.__hud) {
+      window.__hud({ anim: want, facing: this.facing, moving,
+                     frame: Number(this.hero.frame.name) });
+    }
+  }
+}
+
+window.game = new Phaser.Game({
+  type: Phaser.AUTO,
+  parent: 'game',
+  width: WORLD_W,
+  height: WORLD_H,
+  pixelArt: true,
+  roundPixels: true,
+  backgroundColor: '#4e7a3a',
+  physics: { default: 'arcade', arcade: { debug: false } },
+  scale: {
+    mode: Phaser.Scale.FIT,        // the parent div caps the size; FIT keeps 4:3
+    autoCenter: Phaser.Scale.CENTER_BOTH,
+  },
+  scene: DemoScene,
+});
+</script>

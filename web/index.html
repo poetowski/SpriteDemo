@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>4-direction hero - Phaser 3 demo</title>
+<style>
+  :root {
+    --bg: #171a21;
+    --panel: #1f2430;
+    --ink: #e7e3da;
+    --muted: #8b93a7;
+    --accent: #74c46b;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    padding: 20px;
+    background: var(--bg);
+    color: var(--ink);
+    font: 14px/1.5 ui-monospace, "Cascadia Code", Consolas, monospace;
+  }
+  h1 { margin: 0; font-size: 15px; font-weight: 600; letter-spacing: .04em; }
+  h1 span { color: var(--muted); font-weight: 400; }
+  #game {
+    width: min(94vw, 960px);
+    aspect-ratio: 4 / 3;
+    background: #000;
+    border: 2px solid #2c3242;
+    border-radius: 4px;
+    overflow: hidden;
+    box-shadow: 0 10px 40px #0008;
+  }
+  #game canvas { display: block; }
+  .bar {
+    width: min(94vw, 960px);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 22px;
+    align-items: center;
+    justify-content: space-between;
+    color: var(--muted);
+  }
+  kbd {
+    background: var(--panel);
+    border: 1px solid #39405240;
+    border-bottom-width: 2px;
+    border-radius: 3px;
+    padding: 1px 6px;
+    color: var(--ink);
+  }
+  #hud { color: var(--accent); }
+  #err {
+    display: none;
+    max-width: min(94vw, 960px);
+    padding: 10px 14px;
+    background: #3a1f24;
+    border: 1px solid #7a3b44;
+    border-radius: 4px;
+    color: #ffb4bc;
+  }
+</style>
+</head>
+<body>
+
+<h1>4-direction pixel hero <span>&middot; Phaser 3 &middot; 32&times;32 &middot; 24 frames</span></h1>
+
+<div id="game"></div>
+
+<div class="bar">
+  <div><kbd>&larr;</kbd><kbd>&uarr;</kbd><kbd>&darr;</kbd><kbd>&rarr;</kbd> or <kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> to move</div>
+  <div id="hud">idle-down</div>
+</div>
+
+<div id="err"></div>
+
+<script>
+  // HUD hook that main.js calls each frame.
+  const hudEl = document.getElementById('hud');
+  window.__hud = ({ anim, frame }) => {
+    hudEl.textContent = `${anim}  frame ${frame}`;
+  };
+  window.addEventListener('error', (e) => {
+    const box = document.getElementById('err');
+    box.style.display = 'block';
+    box.textContent = 'Error: ' + (e.message || e);
+  });
+</script>
+
+<!-- Vendored so the page works offline; falls back to the CDN if absent. -->
+<script src="vendor/phaser.min.js"></script>
+<script>
+  if (!window.Phaser) {
+    document.write('<script src="https://cdn.jsdelivr.net/npm/phaser@3.90.0/dist/phaser.min.js"><\/script>');
+  }
+</script>
+<script src="art-embed.js"></script>
+<script src="main.js"></script>
+
+</body>
+</html>

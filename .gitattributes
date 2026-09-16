@@ -1,0 +1,8 @@
+# Normalise text in the repo, keep binaries byte-exact. Aseprite files have no
+# well-known extension mapping, so declare them explicitly - a CRLF conversion
+# would silently corrupt the sprite.
+* text=auto eol=lf
+
+*.aseprite binary
+*.png binary
+*.svg text eol=lf
