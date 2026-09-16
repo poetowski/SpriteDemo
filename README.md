@@ -6,16 +6,24 @@ plus `.aseprite` sources, and played in Phaser 3 — with the map, the props, th
 NPCs and their dialogue all loaded from engine-neutral JSON. Sheep and goats
 wander and graze on their own.
 
-![sprite sheet](build/preview.png)
+Riverside is 96×72 tiles — a forest, a lake and the river out of it, a village
+at the crossroads, a quarry, a walled graveyard and a farm — with 33 kinds of
+prop, every one of them solid.
+
+![the world](build/map.png)
 
 ## Quick start
 
 ```sh
 python tools/build.py          # regenerate all art + data  (needs Pillow)
+node tools/shot.cjs            # boot the game headless, check it, photograph it
 ```
 
 Then open `game/index.html` — double-click is enough, no server needed.
-**Arrows / WASD** to move, **E** to talk.
+**Arrows / WASD** to move, **E** to talk. On a phone there is a d-pad.
+
+`game/page.html` is the same game as a single self-contained file, which is what
+gets published when a link is wanted.
 
 ## Layout
 
@@ -23,9 +31,11 @@ Then open `game/index.html` — double-click is enough, no server needed.
 tools/gen/        the generators: palette, character rig, tiles, props
 tools/pipeline/   aseprite I/O, atlas packing, manifest, validation gates
 tools/build.py    entry point
+tools/shot.cjs    headless-Chromium smoke test that leaves a screenshot behind
 content/          AUTHORED data - engine-neutral JSON, human-diffable
 build/            GENERATED - safe to delete at any time, never hand-edit
 game/             the Phaser 3 game
+CLAUDE.md         the change loop: build, screenshot, publish
 ```
 
 The rule: `tools/` and `content/` are truth. Everything in `build/` and
@@ -37,8 +47,8 @@ The rule: `tools/` and `content/` are truth. Everything in `build/` and
 content/*.json  +  tools/gen/*.py
         │  generate
 build/atlas/*.png  ·  build/manifest.json  ·  build/aseprite/*.aseprite
-        │  validate   ← 14 gates, all must pass
-game/art-embed.js  →  game/index.html + main.js
+        │  validate   ← 16 gates, all must pass
+game/art-embed.js  →  game/index.html + main.js  →  game/page.html
 ```
 
 It also runs backwards for hand-drawn work: `build/aseprite/*.aseprite` are real
@@ -60,7 +70,10 @@ failure points at an authored file, never at generated output:
 | `anchor-bounds` | an anchor outside its own frame |
 | `tile-seam` | a tile that would show a seam when repeated |
 | `map-shape`, `map-legend` | a ragged map grid or an undefined legend character |
-| `map-entity`, `map-spawn` | an entity standing in water, a spawn inside a wall |
+| `map-entity` | a placement pointing at nothing, or off the edge of the map |
+| `map-footprint` | a cottage with one corner in the river |
+| `map-overlap` | two solid things claiming the same tile |
+| `map-spawn` | a spawn in water, or inside a wall |
 | `dialogue-exists` | an NPC pointing at dialogue that does not exist |
 | `deterministic` | the build drifting between runs |
 
@@ -84,7 +97,15 @@ a beard, a smooth back and a tan palette — which species an actor uses is a
 
 **Anchors, not offsets.** Every sprite exports the pixel that sits on a map tile
 (`[16, 29]` — between the feet). The game sets sprite origin from it, so art of
-any size lines up and sorting by `sprite.y` is correct depth sorting.
+any size lines up and sorting by `sprite.y` is correct depth sorting. That is
+what lets structures use a bigger frame: cottages, the barn, the tower and the
+windmill are drawn 48×48 on their own atlas with anchor `[24, 45]`, and the
+scene needs no special case for them — it reads the frame size off the atlas.
+
+**Light comes from the silhouette too.** `_shade()` in `tools/gen/props.py`
+lights the pixels of a mass that face up-left and shades the ones that face
+down-right, so a prop is drawn as a shape and lit as a consequence. Thirty
+props fit in one file because none of them spells out its own shading.
 
 ## How the game works
 
@@ -113,17 +134,24 @@ any engine:
 "ground": ["..............p.................", "..."]
 ```
 
+**Collision is authored, not drawn.** A definition's `footprint` lists the tiles
+it stands on as offsets from its anchor tile — `[[0, 0]]` for a barrel, six
+offsets for a three-by-two cottage. The scene puts one static body on each, so a
+tree's canopy can overhang ground you can still walk on, and a building is solid
+across its whole base without being cut into three sprites.
+
 ## Verification
 
 - Every `.aseprite` is parsed back at build time and checked against its source.
 - The manifest is assembled twice per build and compared, so the build is proven
   deterministic rather than assumed to be.
-- The game is driven in headless Chrome over the DevTools protocol: 16 checks
-  covering boot, animations, the tilemap, entity spawning, collision against
-  water, depth sorting, the interaction prompt, dialogue advance/close, and
-  movement being locked while talking. A second suite covers the flock: that
-  animals move, graze, stay inside their wander radius and never step onto
-  water, stone or a prop.
+- `node tools/shot.cjs` runs the real game in headless Chromium and asserts that
+  it came up: no console errors, the physics world matching the map the manifest
+  declares, one sprite per placed entity, one static body per blocked tile, and
+  livestock actually wandering. It exits non-zero when a check fails — the
+  screenshot it writes to `build/shot.png` is the by-product, not the point.
+  `--talk` also presses **E** and checks the dialogue box opens; `--map` renders
+  the whole 96×72 world as one frame.
 
 ## Engine note
 

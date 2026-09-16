@@ -106,26 +106,45 @@ def run(content, man, tile_canvases):
         for ch, tid in m["legend"].items():
             if tid not in man["tiles"]:
                 _fail("map-legend", f"{mid}: legend {ch!r} -> unknown tile {tid!r}")
+        # A definition's footprint is the tiles it actually stands on, as
+        # offsets from its anchor tile. Every one of them has to be real ground,
+        # and no two solid things may claim the same tile - otherwise a cottage
+        # ends up half in the river, or two props fight over one collision box.
+        claimed = {}
         for e in m["entities"]:
-            if e["def"] not in man["props"] and e["def"] not in man["actors"]:
+            defn = man["props"].get(e["def"]) or man["actors"].get(e["def"])
+            if defn is None:
                 _fail("map-entity", f"{mid}: unknown definition {e['def']!r}")
             ex, ey = e["tile"]
             if not (0 <= ex < w and 0 <= ey < h):
                 _fail("map-entity", f"{mid}: {e['def']} at {e['tile']} is off the map")
-            tid = m["legend"][m["ground"][ey][ex]]
-            if not man["tiles"][tid]["walkable"]:
-                _fail("map-entity",
-                      f"{mid}: {e['def']} at {e['tile']} stands on {tid}")
+            for dx, dy in defn.get("footprint") or [[0, 0]]:
+                fx, fy = ex + dx, ey + dy
+                where = f"{e['def']} at {e['tile']}"
+                if not (0 <= fx < w and 0 <= fy < h):
+                    _fail("map-footprint",
+                          f"{mid}: {where} covers [{fx}, {fy}], off the map")
+                tid = m["legend"][m["ground"][fy][fx]]
+                if not man["tiles"][tid]["walkable"]:
+                    _fail("map-footprint",
+                          f"{mid}: {where} covers [{fx}, {fy}], which is {tid}")
+                if not defn.get("blocks"):
+                    continue
+                if (fx, fy) in claimed:
+                    _fail("map-overlap", f"{mid}: {where} and {claimed[(fx, fy)]} "
+                                         f"both claim tile [{fx}, {fy}]")
+                claimed[(fx, fy)] = where
         sx, sy = m["spawn"]["tile"]
         if not man["tiles"][m["legend"][m["ground"][sy][sx]]]["walkable"]:
             _fail("map-spawn", f"{mid}: spawn {m['spawn']['tile']} is not walkable")
-        blocked = {tuple(e["tile"]) for e in m["entities"]
-                   if (man["props"].get(e["def"]) or man["actors"][e["def"]]).get("blocks")}
-        if (sx, sy) in blocked:
-            _fail("map-spawn", f"{mid}: spawn {m['spawn']['tile']} is inside a solid entity")
+        if (sx, sy) in claimed:
+            _fail("map-spawn", f"{mid}: spawn {m['spawn']['tile']} is inside "
+                               f"{claimed[(sx, sy)]}")
     passed.append("map-shape")
     passed.append("map-legend")
     passed.append("map-entity")
+    passed.append("map-footprint")
+    passed.append("map-overlap")
     passed.append("map-spawn")
 
     # 7 - every dialogue referenced by an entity exists

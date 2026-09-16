@@ -1,0 +1,11 @@
+{
+  "id": "prop.cairn",
+  "sprite": "prop.cairn",
+  "footprint": [
+    [
+      0,
+      0
+    ]
+  ],
+  "blocks": true
+}

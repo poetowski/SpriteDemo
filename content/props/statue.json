@@ -1,0 +1,12 @@
+{
+  "id": "prop.statue",
+  "sprite": "prop.statue",
+  "footprint": [
+    [
+      0,
+      0
+    ]
+  ],
+  "blocks": true,
+  "interact": "dlg.statue"
+}

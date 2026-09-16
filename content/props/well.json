@@ -1,0 +1,12 @@
+{
+  "id": "prop.well",
+  "sprite": "prop.well",
+  "footprint": [
+    [
+      0,
+      0
+    ]
+  ],
+  "blocks": true,
+  "interact": "dlg.well"
+}

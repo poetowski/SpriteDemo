@@ -1,0 +1,11 @@
+{
+  "id": "prop.lamp_post",
+  "sprite": "prop.lamp_post",
+  "footprint": [
+    [
+      0,
+      0
+    ]
+  ],
+  "blocks": true
+}

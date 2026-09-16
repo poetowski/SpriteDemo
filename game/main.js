@@ -24,6 +24,13 @@ function defOf(id) {
   return M.props[id] || M.actors[id] || null;
 }
 
+/** Tiles a definition stands on, as offsets from its anchor tile. Art and
+ *  collision are authored separately: a tree's canopy is wider than its trunk,
+ *  and a cottage is three tiles across without needing three sprites. */
+function footprintOf(def) {
+  return def.footprint && def.footprint.length ? def.footprint : [[0, 0]];
+}
+
 class World extends Phaser.Scene {
   preload() {
     // Data URIs, so the game also runs straight from file:// with no server.
@@ -128,10 +135,13 @@ class World extends Phaser.Scene {
     if (isActor) sprite.play(`${def.sprite}/idle/${def.facing || 'down'}`);
 
     if (def.blocks) {
-      const body = this.add.zone(p.x, p.y, this.ts, this.ts);
-      this.physics.add.existing(body, true);
-      this.solid.add(body);
-      this.blocked.add(`${tx},${ty}`);
+      for (const [dx, dy] of footprintOf(def)) {
+        const q = this.tileCentre(tx + dx, ty + dy);
+        const body = this.add.zone(q.x, q.y, this.ts, this.ts);
+        this.physics.add.existing(body, true);
+        this.solid.add(body);
+        this.blocked.add(`${tx + dx},${ty + dy}`);
+      }
     }
     if (def.interact) {
       // position is read from the sprite, so a wandering animal stays talkable

@@ -1,0 +1,11 @@
+{
+  "id": "prop.beehive",
+  "sprite": "prop.beehive",
+  "footprint": [
+    [
+      0,
+      0
+    ]
+  ],
+  "blocks": true
+}

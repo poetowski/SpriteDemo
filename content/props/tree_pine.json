@@ -1,0 +1,11 @@
+{
+  "id": "prop.tree_pine",
+  "sprite": "prop.tree_pine",
+  "footprint": [
+    [
+      0,
+      0
+    ]
+  ],
+  "blocks": true
+}

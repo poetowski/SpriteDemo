@@ -1,0 +1,11 @@
+{
+  "id": "prop.sack",
+  "sprite": "prop.sack",
+  "footprint": [
+    [
+      0,
+      0
+    ]
+  ],
+  "blocks": true
+}

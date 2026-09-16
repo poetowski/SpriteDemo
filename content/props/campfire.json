@@ -1,0 +1,11 @@
+{
+  "id": "prop.campfire",
+  "sprite": "prop.campfire",
+  "footprint": [
+    [
+      0,
+      0
+    ]
+  ],
+  "blocks": true
+}

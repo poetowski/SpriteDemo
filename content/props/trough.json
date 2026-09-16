@@ -1,0 +1,11 @@
+{
+  "id": "prop.trough",
+  "sprite": "prop.trough",
+  "footprint": [
+    [
+      0,
+      0
+    ]
+  ],
+  "blocks": true
+}

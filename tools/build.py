@@ -71,11 +71,21 @@ def build_atlases(sprite_rigs):
         props.add(pid, [canvas], actor.ANCHOR)
         prop_canvases[pid] = canvas
 
-    sheets = [actors, tiles, props]
+    # Structures need more than the actor's frame, so they get their own sheet.
+    # Nothing downstream cares: a sprite record carries its atlas and its
+    # anchor, and the engine reads the frame size off the atlas.
+    big = Atlas("props_big", props_gen.BIG_FRAME, props_gen.BIG_FRAME, 4)
+    big_canvases = {}
+    for pid, canvas in props_gen.build_big_props():
+        big.add(pid, [canvas], props_gen.BIG_ANCHOR)
+        big_canvases[pid] = canvas
+
+    sheets = [actors, tiles, props, big]
     sprites = {}
     for a in sheets:
         sprites.update(a.sprites())
-    return sheets, sprites, anims, tile_canvases, prop_canvases, by_sprite
+    return (sheets, sprites, anims, tile_canvases,
+            {"props": prop_canvases, "props_big": big_canvases}, by_sprite)
 
 
 # ---------------------------------------------------------------- exports ---
@@ -105,8 +115,10 @@ def write_aseprite(by_sprite, tile_canvases, prop_canvases):
         _verify_ase(path, len(frames), ["shadow", "actor"], len(tags))
         written.append(path)
 
-    for name, canvases, size in (("tiles", tile_canvases, tiles_gen.SIZE),
-                                 ("props", prop_canvases, actor.FRAME)):
+    for name, canvases, size in (
+            ("tiles", tile_canvases, tiles_gen.SIZE),
+            ("props", prop_canvases["props"], actor.FRAME),
+            ("props_big", prop_canvases["props_big"], props_gen.BIG_FRAME)):
         path = os.path.join(out, f"{name}.aseprite")
         items = list(canvases.items())
         aseprite.write(

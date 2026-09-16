@@ -1,0 +1,11 @@
+{
+  "id": "prop.mushroom",
+  "sprite": "prop.mushroom",
+  "footprint": [
+    [
+      0,
+      0
+    ]
+  ],
+  "blocks": true
+}

@@ -1,0 +1,12 @@
+{
+  "id": "prop.chest",
+  "sprite": "prop.chest",
+  "footprint": [
+    [
+      0,
+      0
+    ]
+  ],
+  "blocks": true,
+  "interact": "dlg.chest"
+}

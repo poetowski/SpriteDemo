@@ -1,0 +1,11 @@
+{
+  "id": "prop.flower_pot",
+  "sprite": "prop.flower_pot",
+  "footprint": [
+    [
+      0,
+      0
+    ]
+  ],
+  "blocks": true
+}

@@ -1,0 +1,11 @@
+{
+  "id": "prop.woodpile",
+  "sprite": "prop.woodpile",
+  "footprint": [
+    [
+      0,
+      0
+    ]
+  ],
+  "blocks": true
+}

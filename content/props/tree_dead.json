@@ -1,0 +1,11 @@
+{
+  "id": "prop.tree_dead",
+  "sprite": "prop.tree_dead",
+  "footprint": [
+    [
+      0,
+      0
+    ]
+  ],
+  "blocks": true
+}

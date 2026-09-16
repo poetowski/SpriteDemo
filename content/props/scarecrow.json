@@ -1,0 +1,11 @@
+{
+  "id": "prop.scarecrow",
+  "sprite": "prop.scarecrow",
+  "footprint": [
+    [
+      0,
+      0
+    ]
+  ],
+  "blocks": true
+}

@@ -1,0 +1,12 @@
+{
+  "id": "prop.signpost",
+  "sprite": "prop.signpost",
+  "footprint": [
+    [
+      0,
+      0
+    ]
+  ],
+  "blocks": true,
+  "interact": "dlg.crossroads"
+}

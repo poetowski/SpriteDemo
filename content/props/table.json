@@ -1,0 +1,11 @@
+{
+  "id": "prop.table",
+  "sprite": "prop.table",
+  "footprint": [
+    [
+      0,
+      0
+    ]
+  ],
+  "blocks": true
+}

@@ -1,0 +1,11 @@
+{
+  "id": "prop.anvil",
+  "sprite": "prop.anvil",
+  "footprint": [
+    [
+      0,
+      0
+    ]
+  ],
+  "blocks": true
+}
