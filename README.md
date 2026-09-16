@@ -37,7 +37,7 @@ The rule: `tools/` and `content/` are truth. Everything in `build/` and
 content/*.json  +  tools/gen/*.py
         │  generate
 build/atlas/*.png  ·  build/manifest.json  ·  build/aseprite/*.aseprite
-        │  validate   ← 13 gates, all must pass
+        │  validate   ← 14 gates, all must pass
 game/art-embed.js  →  game/index.html + main.js
 ```
 
@@ -54,7 +54,8 @@ failure points at an authored file, never at generated output:
 |---|---|
 | `id-format`, `sprite-format` | typo'd or malformed IDs |
 | `sprite-exists` | a definition pointing at art that was never generated |
-| `actor-complete` | an actor missing a facing or a state |
+| `actor-states` | an actor that declares no states |
+| `actor-complete` | an actor declaring a state its rig cannot generate |
 | `actor-anchor` | frames of one actor disagreeing on the anchor (jitter) |
 | `anchor-bounds` | an anchor outside its own frame |
 | `tile-seam` | a tile that would show a seam when repeated |
