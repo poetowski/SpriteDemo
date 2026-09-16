@@ -1,0 +1,125 @@
+"""Shared palette and pixel canvas for every generator.
+
+One palette for the whole project. Sprites store palette *keys*, not colours,
+which is what makes a variant (a second NPC, a recoloured tileset) a remap
+rather than a redraw.
+"""
+
+# Key -> (RGBA, human name).
+PALETTE = {
+    "OL":  ((0x24, 0x1a, 0x2e, 255), "outline"),
+    "SK":  ((0xf2, 0xc2, 0x92, 255), "skin"),
+    "SKS": ((0xcc, 0x94, 0x64, 255), "skin shade"),
+    "HR":  ((0x5c, 0x3a, 0x24, 255), "hair"),
+    "HRL": ((0x82, 0x55, 0x35, 255), "hair light"),
+    "TU":  ((0x4f, 0xa5, 0x55, 255), "tunic"),
+    "TUS": ((0x2f, 0x71, 0x3c, 255), "tunic shade"),
+    "TUL": ((0x74, 0xc4, 0x6b, 255), "tunic light"),
+    "PN":  ((0x3d, 0x5d, 0x94, 255), "pants"),
+    "PNS": ((0x28, 0x41, 0x6d, 255), "pants shade"),
+    "BT":  ((0x7d, 0x51, 0x2f, 255), "boots"),
+    "BTS": ((0x55, 0x34, 0x1d, 255), "boots shade"),
+    "EY":  ((0x24, 0x1a, 0x2e, 255), "eye"),
+    "SH":  ((0x24, 0x1a, 0x2e, 90),  "ground shadow"),
+    # scenery
+    "GR":  ((0x4e, 0x7a, 0x3a, 255), "grass"),
+    "GRD": ((0x42, 0x6b, 0x31, 255), "grass dark"),
+    "GRL": ((0x5e, 0x8c, 0x45, 255), "grass light"),
+    "FL":  ((0xd8, 0xc0, 0x5c, 255), "flower"),
+    "PT":  ((0xa8, 0x8a, 0x5e, 255), "path"),
+    "PTD": ((0x8c, 0x71, 0x49, 255), "path dark"),
+    "PTL": ((0xc0, 0xa3, 0x76, 255), "path light"),
+    "WA":  ((0x36, 0x6d, 0xa8, 255), "water"),
+    "WAD": ((0x27, 0x53, 0x84, 255), "water dark"),
+    "WAL": ((0x52, 0x92, 0xc4, 255), "water light"),
+    "ST":  ((0x82, 0x84, 0x8e, 255), "stone"),
+    "STD": ((0x5e, 0x60, 0x6c, 255), "stone dark"),
+    "STL": ((0xa2, 0xa4, 0xae, 255), "stone light"),
+    "BU":  ((0x35, 0x72, 0x3a, 255), "bush"),
+    "BUD": ((0x23, 0x4f, 0x2b, 255), "bush dark"),
+    "BUL": ((0x45, 0x89, 0x4a, 255), "bush light"),
+    "WD":  ((0x7a, 0x5a, 0x38, 255), "wood"),
+    "WDD": ((0x55, 0x3d, 0x25, 255), "wood dark"),
+}
+
+# Palette swaps. The frames are identical pixels; only the lookup changes, so a
+# second character costs nothing to draw and stays in perfect sync with the rig.
+VARIANTS = {
+    "hero": {},
+    "smith": {
+        "TU":  (0x9c, 0x4f, 0x3a, 255),   # rust apron
+        "TUS": (0x6e, 0x33, 0x25, 255),
+        "TUL": (0xc0, 0x6e, 0x50, 255),
+        "HR":  (0x54, 0x51, 0x4d, 255),   # grey hair
+        "HRL": (0x77, 0x74, 0x6f, 255),
+        "PN":  (0x4a, 0x44, 0x3c, 255),
+        "PNS": (0x33, 0x2e, 0x29, 255),
+    },
+}
+
+
+def resolve(variant="hero"):
+    """Return a key -> RGBA map with the variant's overrides applied."""
+    out = {k: rgba for k, (rgba, _n) in PALETTE.items()}
+    out.update(VARIANTS[variant])
+    return out
+
+
+class Canvas:
+    """Indexed pixel buffer. Stores palette keys; None = transparent."""
+
+    def __init__(self, w, h):
+        self.w, self.h = w, h
+        self.px = [[None] * w for _ in range(h)]
+
+    def set(self, x, y, key):
+        if 0 <= x < self.w and 0 <= y < self.h:
+            self.px[y][x] = key
+
+    def rect(self, x0, y0, x1, y1, key):
+        """Inclusive rectangle."""
+        for y in range(y0, y1 + 1):
+            for x in range(x0, x1 + 1):
+                self.set(x, y, key)
+
+    def row(self, x0, x1, y, key):
+        self.rect(x0, y, x1, y, key)
+
+    def col(self, x, y0, y1, key):
+        self.rect(x, y0, x, y1, key)
+
+    def get(self, x, y):
+        if 0 <= x < self.w and 0 <= y < self.h:
+            return self.px[y][x]
+        return None
+
+    def mirrored(self):
+        out = Canvas(self.w, self.h)
+        for y in range(self.h):
+            for x in range(self.w):
+                out.px[y][x] = self.px[y][self.w - 1 - x]
+        return out
+
+    def outline(self, key="OL"):
+        """Wrap the silhouette in a 1px outline (4-neighbourhood)."""
+        add = []
+        for y in range(self.h):
+            for x in range(self.w):
+                if self.px[y][x] is not None:
+                    continue
+                for dx, dy in ((1, 0), (-1, 0), (0, 1), (0, -1)):
+                    if self.get(x + dx, y + dy) is not None:
+                        add.append((x, y))
+                        break
+        for x, y in add:
+            self.set(x, y, key)
+        return self
+
+    def rgba_bytes(self, pal=None):
+        pal = pal or resolve()
+        out = bytearray()
+        for y in range(self.h):
+            for x in range(self.w):
+                k = self.px[y][x]
+                out += bytes(pal[k]) if k else b"\x00\x00\x00\x00"
+        return bytes(out)

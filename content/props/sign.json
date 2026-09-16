@@ -1,0 +1,12 @@
+{
+  "id": "prop.sign",
+  "sprite": "prop.sign",
+  "footprint": [
+    [
+      0,
+      0
+    ]
+  ],
+  "blocks": true,
+  "interact": "dlg.sign_riverside"
+}

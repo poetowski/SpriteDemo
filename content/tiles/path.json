@@ -1,0 +1,6 @@
+{
+  "id": "tile.path",
+  "sprite": "tile.path",
+  "walkable": true,
+  "material": "dirt"
+}

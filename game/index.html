@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Riverside - top-down RPG sandbox</title>
+<style>
+  :root { --bg:#141821; --panel:#1e2531; --ink:#e8e4da; --muted:#8b93a7; --accent:#74c46b; }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; min-height: 100vh; background: var(--bg); color: var(--ink);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 12px; padding: 20px;
+    font: 14px/1.5 ui-monospace, "Cascadia Code", Consolas, monospace;
+  }
+  h1 { margin: 0; font-size: 14px; font-weight: 600; letter-spacing: .04em; }
+  h1 span { color: var(--muted); font-weight: 400; }
+  .stage {
+    position: relative; width: min(94vw, 960px); aspect-ratio: 4 / 3;
+    background: #000; border: 2px solid #2c3242; border-radius: 4px;
+    overflow: hidden; box-shadow: 0 10px 40px #0008;
+  }
+  #game, #game canvas { width: 100%; height: 100%; display: block; }
+
+  #dialogue {
+    position: absolute; left: 4%; right: 4%; bottom: 4%;
+    display: none; flex-direction: column; gap: 6px;
+    padding: 12px 14px; background: #10141ce8; border: 2px solid #4b5568;
+    border-radius: 4px;
+  }
+  #dialogue.show { display: flex; }
+  #speaker { color: var(--accent); font-size: 13px; }
+  #line { font-size: 15px; line-height: 1.45; }
+  #more { color: var(--muted); font-size: 12px; text-align: right; }
+
+  #focus {
+    position: absolute; inset: 0; display: none; place-items: center;
+    background: #0b0e14b0; cursor: pointer;
+  }
+  #focus.show { display: grid; }
+  #focus span { border: 1px solid #ffffff40; border-radius: 4px; padding: 9px 14px; background: #1e2531cc; }
+
+  .bar { width: min(94vw, 960px); display: flex; flex-wrap: wrap; gap: 8px 20px;
+         align-items: center; justify-content: space-between; color: var(--muted); }
+  kbd { background: var(--panel); border: 1px solid #39405240; border-bottom-width: 2px;
+        border-radius: 3px; padding: 1px 6px; color: var(--ink); }
+  #hud { color: var(--accent); }
+  #prompt { color: var(--ink); }
+
+  .dpad { display: none; grid-template-columns: repeat(3, 44px); gap: 5px; }
+  @media (pointer: coarse) { .dpad { display: grid; } }
+  .dpad button { height: 44px; font-size: 15px; color: var(--ink); background: var(--panel);
+                 border: 1px solid #39405260; border-radius: 4px; touch-action: none; }
+  .dpad button.on { background: var(--accent); color: #10141c; }
+  .dpad .sp { visibility: hidden; }
+</style>
+</head>
+<body>
+
+<h1>Riverside <span>&middot; top-down sandbox &middot; map, props, NPC from content/</span></h1>
+
+<div class="stage">
+  <div id="game"></div>
+  <div id="dialogue">
+    <div id="speaker"></div>
+    <div id="line"></div>
+    <div id="more"></div>
+  </div>
+  <div id="focus"><span>Click to play</span></div>
+</div>
+
+<div class="bar">
+  <div>
+    <kbd>&larr;</kbd><kbd>&uarr;</kbd><kbd>&darr;</kbd><kbd>&rarr;</kbd> or <kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> move
+    &nbsp; <kbd>E</kbd> talk &nbsp; <span id="prompt"></span>
+  </div>
+  <div id="hud">idle-down</div>
+</div>
+
+<div class="dpad">
+  <button class="sp" tabindex="-1"></button>
+  <button data-dir="up" aria-label="Move up">&uarr;</button>
+  <button class="sp" tabindex="-1"></button>
+  <button data-dir="left" aria-label="Move left">&larr;</button>
+  <button data-dir="down" aria-label="Move down">&darr;</button>
+  <button data-dir="right" aria-label="Move right">&rarr;</button>
+</div>
+
+<script>
+  const $ = (s) => document.getElementById(s);
+
+  window.__hud = ({ anim, tile, prompt, talking }) => {
+    $('hud').textContent = `${anim}  tile ${tile[0]},${tile[1]}`;
+    $('prompt').textContent = talking ? '' : (prompt ? `press E: ${prompt}` : '');
+  };
+
+  window.__dialogue = (d) => {
+    const box = $('dialogue');
+    if (!d) { box.classList.remove('show'); return; }
+    $('speaker').textContent = d.speaker || '';
+    $('line').textContent = d.text;
+    $('more').textContent = d.more ? 'E / space →' : 'E / space to close';
+    box.classList.add('show');
+  };
+
+  window.__pad = {};
+  document.querySelectorAll('.dpad button[data-dir]').forEach((b) => {
+    const dir = b.dataset.dir;
+    const set = (v) => (e) => { e.preventDefault(); window.__pad[dir] = v; b.classList.toggle('on', v); };
+    b.addEventListener('pointerdown', set(true));
+    ['pointerup', 'pointerleave', 'pointercancel'].forEach((ev) => b.addEventListener(ev, set(false)));
+  });
+
+  const focusEl = $('focus');
+  if (!document.hasFocus()) focusEl.classList.add('show');
+  document.addEventListener('pointerdown', () => focusEl.classList.remove('show'));
+  window.addEventListener('focus', () => focusEl.classList.remove('show'));
+  window.addEventListener('blur', () => focusEl.classList.add('show'));
+</script>
+
+<script src="vendor/phaser.min.js"></script>
+<script>
+  if (!window.Phaser) {
+    document.write('<script src="https://cdn.jsdelivr.net/npm/phaser@3.90.0/dist/phaser.min.js"><\/script>');
+  }
+</script>
+<script src="art-embed.js"></script>
+<script src="main.js"></script>
+
+</body>
+</html>

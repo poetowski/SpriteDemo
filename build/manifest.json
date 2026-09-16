@@ -1,0 +1,858 @@
+{
+  "manifest_version": 1,
+  "atlases": {
+    "actors": {
+      "image": "atlas/actors.png",
+      "frame": [
+        32,
+        32
+      ],
+      "cols": 6,
+      "rows": 8,
+      "count": 48
+    },
+    "tiles": {
+      "image": "atlas/tiles.png",
+      "frame": [
+        16,
+        16
+      ],
+      "cols": 8,
+      "rows": 1,
+      "count": 5
+    },
+    "props": {
+      "image": "atlas/props.png",
+      "frame": [
+        32,
+        32
+      ],
+      "cols": 8,
+      "rows": 1,
+      "count": 3
+    }
+  },
+  "sprites": {
+    "actor.hero/walk/down/0": {
+      "atlas": "actors",
+      "index": 0,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero/walk/down/1": {
+      "atlas": "actors",
+      "index": 1,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero/walk/down/2": {
+      "atlas": "actors",
+      "index": 2,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero/walk/down/3": {
+      "atlas": "actors",
+      "index": 3,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero/idle/down/0": {
+      "atlas": "actors",
+      "index": 4,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero/idle/down/1": {
+      "atlas": "actors",
+      "index": 5,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero/walk/left/0": {
+      "atlas": "actors",
+      "index": 6,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero/walk/left/1": {
+      "atlas": "actors",
+      "index": 7,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero/walk/left/2": {
+      "atlas": "actors",
+      "index": 8,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero/walk/left/3": {
+      "atlas": "actors",
+      "index": 9,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero/idle/left/0": {
+      "atlas": "actors",
+      "index": 10,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero/idle/left/1": {
+      "atlas": "actors",
+      "index": 11,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero/walk/right/0": {
+      "atlas": "actors",
+      "index": 12,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero/walk/right/1": {
+      "atlas": "actors",
+      "index": 13,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero/walk/right/2": {
+      "atlas": "actors",
+      "index": 14,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero/walk/right/3": {
+      "atlas": "actors",
+      "index": 15,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero/idle/right/0": {
+      "atlas": "actors",
+      "index": 16,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero/idle/right/1": {
+      "atlas": "actors",
+      "index": 17,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero/walk/up/0": {
+      "atlas": "actors",
+      "index": 18,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero/walk/up/1": {
+      "atlas": "actors",
+      "index": 19,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero/walk/up/2": {
+      "atlas": "actors",
+      "index": 20,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero/walk/up/3": {
+      "atlas": "actors",
+      "index": 21,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero/idle/up/0": {
+      "atlas": "actors",
+      "index": 22,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero/idle/up/1": {
+      "atlas": "actors",
+      "index": 23,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.smith/walk/down/0": {
+      "atlas": "actors",
+      "index": 24,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.smith/walk/down/1": {
+      "atlas": "actors",
+      "index": 25,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.smith/walk/down/2": {
+      "atlas": "actors",
+      "index": 26,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.smith/walk/down/3": {
+      "atlas": "actors",
+      "index": 27,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.smith/idle/down/0": {
+      "atlas": "actors",
+      "index": 28,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.smith/idle/down/1": {
+      "atlas": "actors",
+      "index": 29,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.smith/walk/left/0": {
+      "atlas": "actors",
+      "index": 30,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.smith/walk/left/1": {
+      "atlas": "actors",
+      "index": 31,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.smith/walk/left/2": {
+      "atlas": "actors",
+      "index": 32,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.smith/walk/left/3": {
+      "atlas": "actors",
+      "index": 33,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.smith/idle/left/0": {
+      "atlas": "actors",
+      "index": 34,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.smith/idle/left/1": {
+      "atlas": "actors",
+      "index": 35,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.smith/walk/right/0": {
+      "atlas": "actors",
+      "index": 36,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.smith/walk/right/1": {
+      "atlas": "actors",
+      "index": 37,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.smith/walk/right/2": {
+      "atlas": "actors",
+      "index": 38,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.smith/walk/right/3": {
+      "atlas": "actors",
+      "index": 39,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.smith/idle/right/0": {
+      "atlas": "actors",
+      "index": 40,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.smith/idle/right/1": {
+      "atlas": "actors",
+      "index": 41,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.smith/walk/up/0": {
+      "atlas": "actors",
+      "index": 42,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.smith/walk/up/1": {
+      "atlas": "actors",
+      "index": 43,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.smith/walk/up/2": {
+      "atlas": "actors",
+      "index": 44,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.smith/walk/up/3": {
+      "atlas": "actors",
+      "index": 45,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.smith/idle/up/0": {
+      "atlas": "actors",
+      "index": 46,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.smith/idle/up/1": {
+      "atlas": "actors",
+      "index": 47,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "tile.grass": {
+      "atlas": "tiles",
+      "index": 0,
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    "tile.grass_flower": {
+      "atlas": "tiles",
+      "index": 1,
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    "tile.path": {
+      "atlas": "tiles",
+      "index": 2,
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    "tile.water": {
+      "atlas": "tiles",
+      "index": 3,
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    "tile.stone": {
+      "atlas": "tiles",
+      "index": 4,
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    "prop.bush": {
+      "atlas": "props",
+      "index": 0,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "prop.rock": {
+      "atlas": "props",
+      "index": 1,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "prop.sign": {
+      "atlas": "props",
+      "index": 2,
+      "anchor": [
+        16,
+        29
+      ]
+    }
+  },
+  "anims": {
+    "actor.hero/walk/down": {
+      "atlas": "actors",
+      "frames": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "ms": 120
+    },
+    "actor.hero/idle/down": {
+      "atlas": "actors",
+      "frames": [
+        4,
+        5
+      ],
+      "ms": 500
+    },
+    "actor.hero/walk/left": {
+      "atlas": "actors",
+      "frames": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "ms": 120
+    },
+    "actor.hero/idle/left": {
+      "atlas": "actors",
+      "frames": [
+        10,
+        11
+      ],
+      "ms": 500
+    },
+    "actor.hero/walk/right": {
+      "atlas": "actors",
+      "frames": [
+        12,
+        13,
+        14,
+        15
+      ],
+      "ms": 120
+    },
+    "actor.hero/idle/right": {
+      "atlas": "actors",
+      "frames": [
+        16,
+        17
+      ],
+      "ms": 500
+    },
+    "actor.hero/walk/up": {
+      "atlas": "actors",
+      "frames": [
+        18,
+        19,
+        20,
+        21
+      ],
+      "ms": 120
+    },
+    "actor.hero/idle/up": {
+      "atlas": "actors",
+      "frames": [
+        22,
+        23
+      ],
+      "ms": 500
+    },
+    "actor.smith/walk/down": {
+      "atlas": "actors",
+      "frames": [
+        24,
+        25,
+        26,
+        27
+      ],
+      "ms": 120
+    },
+    "actor.smith/idle/down": {
+      "atlas": "actors",
+      "frames": [
+        28,
+        29
+      ],
+      "ms": 500
+    },
+    "actor.smith/walk/left": {
+      "atlas": "actors",
+      "frames": [
+        30,
+        31,
+        32,
+        33
+      ],
+      "ms": 120
+    },
+    "actor.smith/idle/left": {
+      "atlas": "actors",
+      "frames": [
+        34,
+        35
+      ],
+      "ms": 500
+    },
+    "actor.smith/walk/right": {
+      "atlas": "actors",
+      "frames": [
+        36,
+        37,
+        38,
+        39
+      ],
+      "ms": 120
+    },
+    "actor.smith/idle/right": {
+      "atlas": "actors",
+      "frames": [
+        40,
+        41
+      ],
+      "ms": 500
+    },
+    "actor.smith/walk/up": {
+      "atlas": "actors",
+      "frames": [
+        42,
+        43,
+        44,
+        45
+      ],
+      "ms": 120
+    },
+    "actor.smith/idle/up": {
+      "atlas": "actors",
+      "frames": [
+        46,
+        47
+      ],
+      "ms": 500
+    }
+  },
+  "tiles": {
+    "tile.grass": {
+      "index": 0,
+      "walkable": true,
+      "material": "grass"
+    },
+    "tile.grass_flower": {
+      "index": 1,
+      "walkable": true,
+      "material": "grass"
+    },
+    "tile.path": {
+      "index": 2,
+      "walkable": true,
+      "material": "dirt"
+    },
+    "tile.stone": {
+      "index": 4,
+      "walkable": false,
+      "material": "stone"
+    },
+    "tile.water": {
+      "index": 3,
+      "walkable": false,
+      "material": "water"
+    }
+  },
+  "props": {
+    "prop.bush": {
+      "id": "prop.bush",
+      "sprite": "prop.bush",
+      "footprint": [
+        [
+          0,
+          0
+        ]
+      ],
+      "blocks": true
+    },
+    "prop.rock": {
+      "id": "prop.rock",
+      "sprite": "prop.rock",
+      "footprint": [
+        [
+          0,
+          0
+        ]
+      ],
+      "blocks": true
+    },
+    "prop.sign": {
+      "id": "prop.sign",
+      "sprite": "prop.sign",
+      "footprint": [
+        [
+          0,
+          0
+        ]
+      ],
+      "blocks": true,
+      "interact": "dlg.sign_riverside"
+    }
+  },
+  "actors": {
+    "npc.arne": {
+      "id": "npc.arne",
+      "sprite": "actor.smith",
+      "name": "Arne",
+      "speed": 0,
+      "blocks": true,
+      "facing": "down",
+      "interact": "dlg.arne_intro"
+    },
+    "actor.hero": {
+      "id": "actor.hero",
+      "sprite": "actor.hero",
+      "speed": 56,
+      "blocks": false
+    }
+  },
+  "dialogue": {
+    "dlg.arne_intro": {
+      "id": "dlg.arne_intro",
+      "speaker": "Arne",
+      "lines": [
+        "Mind the water, the bank gives way.",
+        "Anything you need hammered, I am here till dusk."
+      ]
+    },
+    "dlg.sign_riverside": {
+      "id": "dlg.sign_riverside",
+      "speaker": null,
+      "lines": [
+        "RIVERSIDE - north to the ford, south to the old wall."
+      ]
+    }
+  },
+  "maps": {
+    "map.riverside": {
+      "id": "map.riverside",
+      "name": "Riverside",
+      "tile_size": 16,
+      "size": [
+        32,
+        24
+      ],
+      "spawn": {
+        "tile": [
+          14,
+          11
+        ],
+        "facing": "down"
+      },
+      "legend": {
+        ".": "tile.grass",
+        ",": "tile.grass_flower",
+        "p": "tile.path",
+        "~": "tile.water",
+        "#": "tile.stone"
+      },
+      "ground": [
+        "................................",
+        ".....,,.........................",
+        ".....,,,........~~~~~~~.........",
+        "......,.......~~~~~~~~~~~.......",
+        "..............~~~~~~~~~~~.......",
+        "..............~~~~~~~~~~~.......",
+        "................~~~~~~~.........",
+        "................................",
+        "pppppppppppppppppppppppppppppppp",
+        "..............p.................",
+        "..............p.................",
+        "..............p.................",
+        "..............p.................",
+        "..............p.................",
+        "..............p.................",
+        "..............p.................",
+        "....#####.....p.................",
+        "....#...#.....p.................",
+        "....#...#.....p.................",
+        "....##.##.....p.................",
+        "..............p.................",
+        "......,,......p.................",
+        "......,,,.....p.................",
+        ".......,......p................."
+      ],
+      "entities": [
+        {
+          "def": "npc.arne",
+          "tile": [
+            17,
+            10
+          ]
+        },
+        {
+          "def": "prop.sign",
+          "tile": [
+            15,
+            7
+          ]
+        },
+        {
+          "def": "prop.bush",
+          "tile": [
+            3,
+            6
+          ]
+        },
+        {
+          "def": "prop.bush",
+          "tile": [
+            19,
+            10
+          ]
+        },
+        {
+          "def": "prop.bush",
+          "tile": [
+            9,
+            18
+          ]
+        },
+        {
+          "def": "prop.bush",
+          "tile": [
+            26,
+            19
+          ]
+        },
+        {
+          "def": "prop.bush",
+          "tile": [
+            2,
+            13
+          ]
+        },
+        {
+          "def": "prop.bush",
+          "tile": [
+            22,
+            12
+          ]
+        },
+        {
+          "def": "prop.rock",
+          "tile": [
+            11,
+            5
+          ]
+        },
+        {
+          "def": "prop.rock",
+          "tile": [
+            25,
+            8
+          ]
+        },
+        {
+          "def": "prop.rock",
+          "tile": [
+            6,
+            17
+          ]
+        }
+      ]
+    }
+  }
+}

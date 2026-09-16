@@ -1,0 +1,9 @@
+{
+  "id": "npc.arne",
+  "sprite": "actor.smith",
+  "name": "Arne",
+  "speed": 0,
+  "blocks": true,
+  "facing": "down",
+  "interact": "dlg.arne_intro"
+}

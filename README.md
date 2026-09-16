@@ -1,146 +1,119 @@
 # demo_sprites_4move
 
-A pixel-art hero with 4-direction walk + idle animations, generated from code,
-exported to a real `.aseprite` file and a spritesheet, and driven in a Phaser 3
-demo you can play with the arrow keys or WASD.
+A top-down RPG sandbox with code-generated pixel art. Characters, tiles and
+props are drawn by a parametric Python rig, exported to spritesheets plus a
+`.aseprite` source, and played in Phaser 3 — with the map, the props, the NPC and
+its dialogue all loaded from engine-neutral JSON.
 
-![sprite sheet](art/preview.png)
+![sprite sheet](build/preview.png)
 
 ## Quick start
 
 ```sh
-python tools/build.py          # regenerate all art  (needs Pillow)
+python tools/build.py          # regenerate all art + data  (needs Pillow)
 ```
 
-Then open `web/index.html` — double-click is enough, no server needed. Move with
-the **arrow keys** or **WASD**.
-
-## The pipeline
-
-```
-tools/hero.py          parametric pixel rig  ← the single source of truth
-      │                palette + body parts + pose table
-      ▼
-tools/build.py ──┬──► art/hero.aseprite    layered + tagged, open it in Aseprite
-                 ├──► art/props.aseprite   ground tile + bush
-                 ├──► art/hero.png         192×128 sheet, 6×4 frames of 32×32
-                 ├──► art/props.png
-                 ├──► art/hero.json        Aseprite-format atlas + frameTags
-                 ├──► art/hero_sheet.svg   scalable reference
-                 ├──► art/preview.png      6× contact sheet (the image above)
-                 └──► web/art-embed.js     sheets as data URIs + anim config
-                            │
-                            ▼
-                 web/index.html + main.js  Phaser 3 scene
-```
-
-It runs both ways:
-
-```sh
-python tools/build.py                  # rig → .aseprite + every export
-python tools/build.py --from-aseprite  # .aseprite → every export, file untouched
-```
-
-So the rig writes the first draft, you refine frames by hand in Aseprite, and
-the build re-exports the PNG, JSON, SVG and the game's embed from *your* edited
-file. `tools/aseprite.py` is a from-scratch ASE reader/writer (stdlib only), so
-neither direction needs Aseprite installed.
-
-## Why it is built this way
-
-**The character is a rig, not 24 drawings.** `draw_hero(direction, bob, leg,
-swing)` composes the same `head_front`, `torso_side`, `legs_front` … functions
-for every frame. Consistency is structural: the head cannot drift between
-`walk-down` and `idle-down` because it is literally the same code path. Changing
-the tunic colour, the walk stride or the head shape is one edit that propagates
-to all 24 frames instead of 24 edits that have to agree.
-
-**Outlines are computed, not drawn.** Each cel is drawn in flat colour and then
-`Canvas.outline()` wraps the silhouette in 1px of outline colour. Every frame and
-prop gets an identical, gap-free outline for free.
-
-**Left is a mirror of right, baked into real frames.** The rig draws `right` and
-flips it, but the flipped frames are written to the sheet as their own frames.
-The game never needs `flipX`, and an artist opening the file sees all four
-directions.
-
-**Feet stay planted.** The body bob moves the hips and shoulders; the ground line
-(`FOOT_Y`) never moves, so the legs stretch a pixel instead of the whole sprite
-hopping. Props are grounded on the same line, which is why sorting sprites by `y`
-is all the depth sorting the scene needs.
-
-**The game reads the build's output, not hardcoded numbers.** Frame size and the
-eight animations (ranges, frame rates, per-frame hold times) come from
-`window.ART` in `web/art-embed.js`. Add frames in Aseprite, re-run the build, and
-the scene picks them up with no JS change.
-
-### Why not just draw it in Aseprite by hand?
-
-For a *final* character, hand-drawing wins — subtle weight and squash are hard to
-express as parameters. This pipeline targets the part before that: getting a
-consistent, animating, in-engine character in minutes, with a real `.aseprite` to
-take over by hand when you want to. The `--from-aseprite` direction exists so
-that handover is not a dead end.
-
-## Sheet layout
-
-One row per direction, 6 frames each: 4 walk + 2 idle.
-
-| row | direction | walk frames | idle frames |
-|-----|-----------|-------------|-------------|
-| 0   | down      | 0–3         | 4–5         |
-| 1   | left      | 6–9         | 10–11       |
-| 2   | right     | 12–15       | 16–17       |
-| 3   | up        | 18–21       | 22–23       |
-
-Walk is a classic 4-frame cycle (contact, passing, contact, passing) at 120 ms;
-idle is a 2-frame breath at 500 ms. `art/hero.aseprite` carries the same 24
-frames in the same order, tagged `walk-down`, `idle-down`, … on two layers:
-`hero` and a soft `shadow` underneath.
-
-## Editing
-
-- **Colours / proportions / timing** → `tools/hero.py`: `PALETTE`, the anatomy
-  constants (`HEAD_TOP`, `TORSO_TOP`, `FOOT_Y`, …), the `WALK` / `IDLE` pose
-  tables. Re-run `python tools/build.py`.
-- **Individual frames** → open `art/hero.aseprite`, edit, save, then
-  `python tools/build.py --from-aseprite`. Adding frames is fine: the sheet grid
-  and the Phaser animations follow the file's frames and tags.
-- **Scene** → `web/main.js` (speed, bush positions, world size).
-
-## Using the art elsewhere
-
-`art/hero.png` + `art/hero.json` are a standard Aseprite spritesheet export, so
-they load directly:
-
-```js
-this.load.atlas('hero', 'art/hero.png', 'art/hero.json');   // needs a server
-// or, with no server and no JSON:
-this.load.spritesheet('hero', 'art/hero.png', { frameWidth: 32, frameHeight: 32 });
-```
-
-`web/art-embed.js` inlines the same PNG as a data URI, which is what lets
-`index.html` run from `file://`.
-
-## Verification
-
-- `tools/build.py` parses every `.aseprite` it writes back in and asserts the
-  layers, tags, durations and every cel's pixels match what went in.
-- Both build modes produce byte-identical `hero.png`, `hero.json`, `hero.svg` and
-  `art-embed.js`, which proves the ASE file is a lossless carrier of the sprite.
-- The demo was driven in headless Chrome over the DevTools protocol: 15 checks
-  covering boot, all four directions on both key sets, idle-on-release,
-  diagonal speed normalisation, diagonal facing and bush collision.
+Then open `game/index.html` — double-click is enough, no server needed.
+**Arrows / WASD** to move, **E** to talk.
 
 ## Layout
 
 ```
-tools/hero.py       pixel rig: palette, body parts, poses, props
-tools/aseprite.py   .aseprite reader/writer (stdlib only)
-tools/build.py      exporters + self-verification
-art/                generated art (do not hand-edit anything but the .aseprite)
-web/                Phaser 3 demo; vendor/phaser.min.js is pinned at 3.90.0
+tools/gen/        the generators: palette, character rig, tiles, props
+tools/pipeline/   aseprite I/O, atlas packing, manifest, validation gates
+tools/build.py    entry point
+content/          AUTHORED data - engine-neutral JSON, human-diffable
+build/            GENERATED - safe to delete at any time, never hand-edit
+game/             the Phaser 3 game
 ```
 
-Requires Python 3.9+ with Pillow (`pip install pillow`). Phaser is vendored, so
-the demo works offline; it falls back to the CDN if `web/vendor/` is missing.
+The rule: `tools/` and `content/` are truth. Everything in `build/` and
+`game/art-embed.js` is derived and reproducible.
+
+## The pipeline
+
+```
+content/*.json  +  tools/gen/*.py
+        │  generate
+build/atlas/*.png  ·  build/manifest.json  ·  build/aseprite/*.aseprite
+        │  validate   ← 13 gates, all must pass
+game/art-embed.js  →  game/index.html + main.js
+```
+
+It also runs backwards for hand-drawn work: `build/aseprite/*.aseprite` are real
+layered, tagged Aseprite files. `tools/pipeline/aseprite.py` is a from-scratch
+ASE reader/writer (stdlib only), so neither direction needs Aseprite installed.
+
+### The gates
+
+`tools/pipeline/validate.py` is what keeps a generated asset set honest. Every
+failure points at an authored file, never at generated output:
+
+| Gate | Catches |
+|---|---|
+| `id-format`, `sprite-format` | typo'd or malformed IDs |
+| `sprite-exists` | a definition pointing at art that was never generated |
+| `actor-complete` | an actor missing a facing or a state |
+| `actor-anchor` | frames of one actor disagreeing on the anchor (jitter) |
+| `anchor-bounds` | an anchor outside its own frame |
+| `tile-seam` | a tile that would show a seam when repeated |
+| `map-shape`, `map-legend` | a ragged map grid or an undefined legend character |
+| `map-entity`, `map-spawn` | an entity standing in water, a spawn inside a wall |
+| `dialogue-exists` | an NPC pointing at dialogue that does not exist |
+| `deterministic` | the build drifting between runs |
+
+## How the art works
+
+**The character is a rig, not a pile of drawings.** `draw_actor(direction, bob,
+leg, swing)` composes the same body-part functions for every frame, so the
+character cannot drift between facings or states. Outlines are computed from the
+silhouette, not drawn.
+
+**A second character costs a palette, not art.** Sprites store palette *keys*,
+so `VARIANTS` in `tools/gen/palette.py` turns one rig into many characters —
+Arne the smith is the hero's frames with a rust apron and grey hair.
+
+**Anchors, not offsets.** Every sprite exports the pixel that sits on a map tile
+(`[16, 29]` — between the feet). The game sets sprite origin from it, so art of
+any size lines up and sorting by `sprite.y` is correct depth sorting.
+
+## How the game works
+
+`game/main.js` contains no art and no content. Frame sizes, animations, tiles,
+props, actors, dialogue and the map all come from `window.ART.manifest`. Adding
+an NPC means adding a JSON file and a line in the map — no JS change:
+
+```json
+{
+  "id": "npc.arne", "sprite": "actor.smith", "name": "Arne",
+  "blocks": true, "facing": "down", "interact": "dlg.arne_intro"
+}
+```
+
+Maps are human-editable ASCII with a legend, which diffs cleanly and ports to
+any engine:
+
+```json
+"legend": { ".": "tile.grass", "p": "tile.path", "~": "tile.water" },
+"ground": ["..............p.................", "..."]
+```
+
+## Verification
+
+- Every `.aseprite` is parsed back at build time and checked against its source.
+- The manifest is assembled twice per build and compared, so the build is proven
+  deterministic rather than assumed to be.
+- The game is driven in headless Chrome over the DevTools protocol: 16 checks
+  covering boot, animations, the tilemap, entity spawning, collision against
+  water, depth sorting, the interaction prompt, dialogue advance/close, and
+  movement being locked while talking.
+
+## Engine note
+
+The Godot-or-Phaser decision is deliberately still open. `content/` and
+`build/manifest.json` are engine-neutral; only `game/` is Phaser-specific. Moving
+to Godot means writing an importer for the same manifest, not redoing the art or
+the content.
+
+Requires Python 3.9+ with Pillow (`pip install pillow`). Phaser is vendored in
+`game/vendor/`, so the game works offline; it falls back to the CDN if absent.

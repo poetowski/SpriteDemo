@@ -1,0 +1,6 @@
+{
+  "id": "tile.grass_flower",
+  "sprite": "tile.grass_flower",
+  "walkable": true,
+  "material": "grass"
+}
