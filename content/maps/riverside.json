@@ -173,6 +173,13 @@
       ]
     },
     {
+      "def": "item.apple",
+      "tile": [
+        12,
+        4
+      ]
+    },
+    {
       "def": "prop.mushroom",
       "tile": [
         17,
@@ -225,6 +232,13 @@
       "def": "prop.bush",
       "tile": [
         67,
+        4
+      ]
+    },
+    {
+      "def": "item.fish",
+      "tile": [
+        76,
         4
       ]
     },
@@ -614,6 +628,20 @@
       ]
     },
     {
+      "def": "item.spear",
+      "tile": [
+        32,
+        12
+      ]
+    },
+    {
+      "def": "item.coin",
+      "tile": [
+        33,
+        12
+      ]
+    },
+    {
       "def": "prop.tree_pine",
       "tile": [
         48,
@@ -652,6 +680,13 @@
       "def": "prop.bush",
       "tile": [
         6,
+        13
+      ]
+    },
+    {
+      "def": "item.berries",
+      "tile": [
+        11,
         13
       ]
     },
@@ -866,6 +901,13 @@
       ]
     },
     {
+      "def": "item.berries",
+      "tile": [
+        4,
+        18
+      ]
+    },
+    {
       "def": "prop.tree_pine",
       "tile": [
         10,
@@ -1034,6 +1076,13 @@
       ]
     },
     {
+      "def": "item.fish",
+      "tile": [
+        59,
+        20
+      ]
+    },
+    {
       "def": "prop.bush",
       "tile": [
         73,
@@ -1121,6 +1170,13 @@
       "def": "prop.mushroom",
       "tile": [
         17,
+        21
+      ]
+    },
+    {
+      "def": "item.flower",
+      "tile": [
+        52,
         21
       ]
     },
@@ -1240,6 +1296,13 @@
       "def": "prop.tree_oak",
       "tile": [
         12,
+        23
+      ]
+    },
+    {
+      "def": "item.apple",
+      "tile": [
+        17,
         23
       ]
     },
@@ -1468,6 +1531,13 @@
       ]
     },
     {
+      "def": "item.apple",
+      "tile": [
+        92,
+        26
+      ]
+    },
+    {
       "def": "prop.bush",
       "tile": [
         3,
@@ -1545,6 +1615,13 @@
       ]
     },
     {
+      "def": "item.berries",
+      "tile": [
+        3,
+        28
+      ]
+    },
+    {
       "def": "prop.tree_oak",
       "tile": [
         4,
@@ -1555,6 +1632,20 @@
       "def": "prop.tree_oak",
       "tile": [
         17,
+        28
+      ]
+    },
+    {
+      "def": "item.berries",
+      "tile": [
+        18,
+        28
+      ]
+    },
+    {
+      "def": "item.axe",
+      "tile": [
+        25,
         28
       ]
     },
@@ -1664,6 +1755,13 @@
       ]
     },
     {
+      "def": "item.firewood",
+      "tile": [
+        25,
+        29
+      ]
+    },
+    {
       "def": "prop.tree_oak",
       "tile": [
         41,
@@ -1699,6 +1797,13 @@
       ]
     },
     {
+      "def": "item.firewood",
+      "tile": [
+        23,
+        30
+      ]
+    },
+    {
       "def": "prop.campfire",
       "tile": [
         26,
@@ -1716,6 +1821,13 @@
       "def": "prop.bush",
       "tile": [
         85,
+        30
+      ]
+    },
+    {
+      "def": "item.flower",
+      "tile": [
+        87,
         30
       ]
     },
@@ -1986,9 +2098,23 @@
       ]
     },
     {
+      "def": "item.sword",
+      "tile": [
+        34,
+        36
+      ]
+    },
+    {
       "def": "prop.trough",
       "tile": [
         35,
+        36
+      ]
+    },
+    {
+      "def": "item.coin",
+      "tile": [
+        47,
         36
       ]
     },
@@ -2011,6 +2137,20 @@
       "tile": [
         32,
         37
+      ]
+    },
+    {
+      "def": "item.coin",
+      "tile": [
+        65,
+        39
+      ]
+    },
+    {
+      "def": "item.fish",
+      "tile": [
+        64,
+        40
       ]
     },
     {
@@ -2063,6 +2203,13 @@
       ]
     },
     {
+      "def": "item.wool",
+      "tile": [
+        12,
+        43
+      ]
+    },
+    {
       "def": "prop.beehive",
       "tile": [
         13,
@@ -2102,6 +2249,20 @@
       "tile": [
         63,
         43
+      ]
+    },
+    {
+      "def": "item.honey",
+      "tile": [
+        14,
+        44
+      ]
+    },
+    {
+      "def": "item.honey",
+      "tile": [
+        18,
+        44
       ]
     },
     {
@@ -2182,6 +2343,13 @@
       ]
     },
     {
+      "def": "item.flower",
+      "tile": [
+        12,
+        46
+      ]
+    },
+    {
       "def": "prop.bush",
       "tile": [
         55,
@@ -2213,6 +2381,20 @@
       "def": "npc.sheep",
       "tile": [
         74,
+        46
+      ]
+    },
+    {
+      "def": "item.wheat",
+      "tile": [
+        76,
+        46
+      ]
+    },
+    {
+      "def": "item.wheat",
+      "tile": [
+        81,
         46
       ]
     },
@@ -2350,6 +2532,13 @@
       ]
     },
     {
+      "def": "item.wool",
+      "tile": [
+        70,
+        48
+      ]
+    },
+    {
       "def": "npc.sheep",
       "tile": [
         73,
@@ -2371,9 +2560,23 @@
       ]
     },
     {
+      "def": "item.ore",
+      "tile": [
+        27,
+        49
+      ]
+    },
+    {
       "def": "npc.sheep",
       "tile": [
         72,
+        49
+      ]
+    },
+    {
+      "def": "item.wool",
+      "tile": [
+        76,
         49
       ]
     },
@@ -2388,6 +2591,20 @@
       "def": "prop.boulder",
       "tile": [
         18,
+        51
+      ]
+    },
+    {
+      "def": "item.ore",
+      "tile": [
+        19,
+        51
+      ]
+    },
+    {
+      "def": "item.ore",
+      "tile": [
+        72,
         51
       ]
     },
@@ -2525,6 +2742,13 @@
       ]
     },
     {
+      "def": "item.apple",
+      "tile": [
+        86,
+        55
+      ]
+    },
+    {
       "def": "prop.bush",
       "tile": [
         44,
@@ -2556,6 +2780,13 @@
       "def": "prop.tombstone",
       "tile": [
         77,
+        56
+      ]
+    },
+    {
+      "def": "item.coin",
+      "tile": [
+        78,
         56
       ]
     },
@@ -2651,6 +2882,13 @@
       ]
     },
     {
+      "def": "item.ore",
+      "tile": [
+        67,
+        59
+      ]
+    },
+    {
       "def": "prop.tombstone",
       "tile": [
         69,
@@ -2675,6 +2913,27 @@
       "def": "prop.tree_oak",
       "tile": [
         38,
+        60
+      ]
+    },
+    {
+      "def": "item.wheat",
+      "tile": [
+        39,
+        60
+      ]
+    },
+    {
+      "def": "item.apple",
+      "tile": [
+        40,
+        60
+      ]
+    },
+    {
+      "def": "item.coin",
+      "tile": [
+        73,
         60
       ]
     },
@@ -2728,6 +2987,13 @@
       ]
     },
     {
+      "def": "item.wheat",
+      "tile": [
+        41,
+        62
+      ]
+    },
+    {
       "def": "prop.rock",
       "tile": [
         64,
@@ -2739,6 +3005,13 @@
       "tile": [
         69,
         62
+      ]
+    },
+    {
+      "def": "item.flower",
+      "tile": [
+        37,
+        63
       ]
     },
     {
@@ -2913,6 +3186,13 @@
       "def": "prop.tree_oak",
       "tile": [
         43,
+        66
+      ]
+    },
+    {
+      "def": "item.apple",
+      "tile": [
+        47,
         66
       ]
     },

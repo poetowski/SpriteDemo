@@ -1,0 +1,10 @@
+{
+  "id": "item.axe",
+  "name": "Axe",
+  "sprite": "item.axe",
+  "kind": "weapon",
+  "slot": "weapon",
+  "held": "axe",
+  "stack": false,
+  "description": "A felling axe from the camp. Heavy at the head."
+}

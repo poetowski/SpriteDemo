@@ -1,0 +1,8 @@
+{
+  "id": "item.honey",
+  "name": "Honey",
+  "sprite": "item.honey",
+  "kind": "material",
+  "stack": true,
+  "description": "A jar from the hives in the flower meadow."
+}

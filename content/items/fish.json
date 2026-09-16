@@ -1,0 +1,8 @@
+{
+  "id": "item.fish",
+  "name": "Fish",
+  "sprite": "item.fish",
+  "kind": "material",
+  "stack": true,
+  "description": "Fresh from the shallows. Cold to hold."
+}

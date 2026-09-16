@@ -1,0 +1,8 @@
+{
+  "id": "item.firewood",
+  "name": "Firewood",
+  "sprite": "item.firewood",
+  "kind": "material",
+  "stack": true,
+  "description": "Split and tied at the woodcutters' camp."
+}

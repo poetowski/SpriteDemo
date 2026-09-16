@@ -8,8 +8,8 @@
         32
       ],
       "cols": 6,
-      "rows": 19,
-      "count": 112
+      "rows": 47,
+      "count": 280
     },
     "tiles": {
       "image": "atlas/tiles.png",
@@ -40,6 +40,16 @@
       "cols": 4,
       "rows": 1,
       "count": 4
+    },
+    "items": {
+      "image": "atlas/items.png",
+      "frame": [
+        16,
+        16
+      ],
+      "cols": 8,
+      "rows": 2,
+      "count": 13
     }
   },
   "sprites": {
@@ -347,7 +357,7 @@
         29
       ]
     },
-    "actor.hero/walk/left/0": {
+    "actor.hero/gather/down/0": {
       "atlas": "actors",
       "index": 38,
       "anchor": [
@@ -355,7 +365,7 @@
         29
       ]
     },
-    "actor.hero/walk/left/1": {
+    "actor.hero/gather/down/1": {
       "atlas": "actors",
       "index": 39,
       "anchor": [
@@ -363,7 +373,7 @@
         29
       ]
     },
-    "actor.hero/walk/left/2": {
+    "actor.hero/gather/down/2": {
       "atlas": "actors",
       "index": 40,
       "anchor": [
@@ -371,7 +381,7 @@
         29
       ]
     },
-    "actor.hero/walk/left/3": {
+    "actor.hero/walk/left/0": {
       "atlas": "actors",
       "index": 41,
       "anchor": [
@@ -379,7 +389,7 @@
         29
       ]
     },
-    "actor.hero/idle/left/0": {
+    "actor.hero/walk/left/1": {
       "atlas": "actors",
       "index": 42,
       "anchor": [
@@ -387,7 +397,7 @@
         29
       ]
     },
-    "actor.hero/idle/left/1": {
+    "actor.hero/walk/left/2": {
       "atlas": "actors",
       "index": 43,
       "anchor": [
@@ -395,7 +405,7 @@
         29
       ]
     },
-    "actor.hero/walk/right/0": {
+    "actor.hero/walk/left/3": {
       "atlas": "actors",
       "index": 44,
       "anchor": [
@@ -403,7 +413,7 @@
         29
       ]
     },
-    "actor.hero/walk/right/1": {
+    "actor.hero/idle/left/0": {
       "atlas": "actors",
       "index": 45,
       "anchor": [
@@ -411,7 +421,7 @@
         29
       ]
     },
-    "actor.hero/walk/right/2": {
+    "actor.hero/idle/left/1": {
       "atlas": "actors",
       "index": 46,
       "anchor": [
@@ -419,7 +429,7 @@
         29
       ]
     },
-    "actor.hero/walk/right/3": {
+    "actor.hero/gather/left/0": {
       "atlas": "actors",
       "index": 47,
       "anchor": [
@@ -427,7 +437,7 @@
         29
       ]
     },
-    "actor.hero/idle/right/0": {
+    "actor.hero/gather/left/1": {
       "atlas": "actors",
       "index": 48,
       "anchor": [
@@ -435,7 +445,7 @@
         29
       ]
     },
-    "actor.hero/idle/right/1": {
+    "actor.hero/gather/left/2": {
       "atlas": "actors",
       "index": 49,
       "anchor": [
@@ -443,7 +453,7 @@
         29
       ]
     },
-    "actor.hero/walk/up/0": {
+    "actor.hero/walk/right/0": {
       "atlas": "actors",
       "index": 50,
       "anchor": [
@@ -451,7 +461,7 @@
         29
       ]
     },
-    "actor.hero/walk/up/1": {
+    "actor.hero/walk/right/1": {
       "atlas": "actors",
       "index": 51,
       "anchor": [
@@ -459,7 +469,7 @@
         29
       ]
     },
-    "actor.hero/walk/up/2": {
+    "actor.hero/walk/right/2": {
       "atlas": "actors",
       "index": 52,
       "anchor": [
@@ -467,7 +477,7 @@
         29
       ]
     },
-    "actor.hero/walk/up/3": {
+    "actor.hero/walk/right/3": {
       "atlas": "actors",
       "index": 53,
       "anchor": [
@@ -475,7 +485,7 @@
         29
       ]
     },
-    "actor.hero/idle/up/0": {
+    "actor.hero/idle/right/0": {
       "atlas": "actors",
       "index": 54,
       "anchor": [
@@ -483,7 +493,7 @@
         29
       ]
     },
-    "actor.hero/idle/up/1": {
+    "actor.hero/idle/right/1": {
       "atlas": "actors",
       "index": 55,
       "anchor": [
@@ -491,7 +501,7 @@
         29
       ]
     },
-    "actor.sheep/walk/down/0": {
+    "actor.hero/gather/right/0": {
       "atlas": "actors",
       "index": 56,
       "anchor": [
@@ -499,7 +509,7 @@
         29
       ]
     },
-    "actor.sheep/walk/down/1": {
+    "actor.hero/gather/right/1": {
       "atlas": "actors",
       "index": 57,
       "anchor": [
@@ -507,7 +517,7 @@
         29
       ]
     },
-    "actor.sheep/walk/down/2": {
+    "actor.hero/gather/right/2": {
       "atlas": "actors",
       "index": 58,
       "anchor": [
@@ -515,7 +525,7 @@
         29
       ]
     },
-    "actor.sheep/walk/down/3": {
+    "actor.hero/walk/up/0": {
       "atlas": "actors",
       "index": 59,
       "anchor": [
@@ -523,7 +533,7 @@
         29
       ]
     },
-    "actor.sheep/idle/down/0": {
+    "actor.hero/walk/up/1": {
       "atlas": "actors",
       "index": 60,
       "anchor": [
@@ -531,7 +541,7 @@
         29
       ]
     },
-    "actor.sheep/idle/down/1": {
+    "actor.hero/walk/up/2": {
       "atlas": "actors",
       "index": 61,
       "anchor": [
@@ -539,7 +549,7 @@
         29
       ]
     },
-    "actor.sheep/graze/down/0": {
+    "actor.hero/walk/up/3": {
       "atlas": "actors",
       "index": 62,
       "anchor": [
@@ -547,7 +557,7 @@
         29
       ]
     },
-    "actor.sheep/graze/down/1": {
+    "actor.hero/idle/up/0": {
       "atlas": "actors",
       "index": 63,
       "anchor": [
@@ -555,7 +565,7 @@
         29
       ]
     },
-    "actor.sheep/walk/left/0": {
+    "actor.hero/idle/up/1": {
       "atlas": "actors",
       "index": 64,
       "anchor": [
@@ -563,7 +573,7 @@
         29
       ]
     },
-    "actor.sheep/walk/left/1": {
+    "actor.hero/gather/up/0": {
       "atlas": "actors",
       "index": 65,
       "anchor": [
@@ -571,7 +581,7 @@
         29
       ]
     },
-    "actor.sheep/walk/left/2": {
+    "actor.hero/gather/up/1": {
       "atlas": "actors",
       "index": 66,
       "anchor": [
@@ -579,7 +589,7 @@
         29
       ]
     },
-    "actor.sheep/walk/left/3": {
+    "actor.hero/gather/up/2": {
       "atlas": "actors",
       "index": 67,
       "anchor": [
@@ -587,7 +597,7 @@
         29
       ]
     },
-    "actor.sheep/idle/left/0": {
+    "actor.hero_axe/walk/down/0": {
       "atlas": "actors",
       "index": 68,
       "anchor": [
@@ -595,7 +605,7 @@
         29
       ]
     },
-    "actor.sheep/idle/left/1": {
+    "actor.hero_axe/walk/down/1": {
       "atlas": "actors",
       "index": 69,
       "anchor": [
@@ -603,7 +613,7 @@
         29
       ]
     },
-    "actor.sheep/graze/left/0": {
+    "actor.hero_axe/walk/down/2": {
       "atlas": "actors",
       "index": 70,
       "anchor": [
@@ -611,7 +621,7 @@
         29
       ]
     },
-    "actor.sheep/graze/left/1": {
+    "actor.hero_axe/walk/down/3": {
       "atlas": "actors",
       "index": 71,
       "anchor": [
@@ -619,7 +629,7 @@
         29
       ]
     },
-    "actor.sheep/walk/right/0": {
+    "actor.hero_axe/idle/down/0": {
       "atlas": "actors",
       "index": 72,
       "anchor": [
@@ -627,7 +637,7 @@
         29
       ]
     },
-    "actor.sheep/walk/right/1": {
+    "actor.hero_axe/idle/down/1": {
       "atlas": "actors",
       "index": 73,
       "anchor": [
@@ -635,7 +645,7 @@
         29
       ]
     },
-    "actor.sheep/walk/right/2": {
+    "actor.hero_axe/gather/down/0": {
       "atlas": "actors",
       "index": 74,
       "anchor": [
@@ -643,7 +653,7 @@
         29
       ]
     },
-    "actor.sheep/walk/right/3": {
+    "actor.hero_axe/gather/down/1": {
       "atlas": "actors",
       "index": 75,
       "anchor": [
@@ -651,7 +661,7 @@
         29
       ]
     },
-    "actor.sheep/idle/right/0": {
+    "actor.hero_axe/gather/down/2": {
       "atlas": "actors",
       "index": 76,
       "anchor": [
@@ -659,7 +669,7 @@
         29
       ]
     },
-    "actor.sheep/idle/right/1": {
+    "actor.hero_axe/slash/down/0": {
       "atlas": "actors",
       "index": 77,
       "anchor": [
@@ -667,7 +677,7 @@
         29
       ]
     },
-    "actor.sheep/graze/right/0": {
+    "actor.hero_axe/slash/down/1": {
       "atlas": "actors",
       "index": 78,
       "anchor": [
@@ -675,7 +685,7 @@
         29
       ]
     },
-    "actor.sheep/graze/right/1": {
+    "actor.hero_axe/slash/down/2": {
       "atlas": "actors",
       "index": 79,
       "anchor": [
@@ -683,7 +693,7 @@
         29
       ]
     },
-    "actor.sheep/walk/up/0": {
+    "actor.hero_axe/slash/down/3": {
       "atlas": "actors",
       "index": 80,
       "anchor": [
@@ -691,7 +701,7 @@
         29
       ]
     },
-    "actor.sheep/walk/up/1": {
+    "actor.hero_axe/walk/left/0": {
       "atlas": "actors",
       "index": 81,
       "anchor": [
@@ -699,7 +709,7 @@
         29
       ]
     },
-    "actor.sheep/walk/up/2": {
+    "actor.hero_axe/walk/left/1": {
       "atlas": "actors",
       "index": 82,
       "anchor": [
@@ -707,7 +717,7 @@
         29
       ]
     },
-    "actor.sheep/walk/up/3": {
+    "actor.hero_axe/walk/left/2": {
       "atlas": "actors",
       "index": 83,
       "anchor": [
@@ -715,7 +725,7 @@
         29
       ]
     },
-    "actor.sheep/idle/up/0": {
+    "actor.hero_axe/walk/left/3": {
       "atlas": "actors",
       "index": 84,
       "anchor": [
@@ -723,7 +733,7 @@
         29
       ]
     },
-    "actor.sheep/idle/up/1": {
+    "actor.hero_axe/idle/left/0": {
       "atlas": "actors",
       "index": 85,
       "anchor": [
@@ -731,7 +741,7 @@
         29
       ]
     },
-    "actor.sheep/graze/up/0": {
+    "actor.hero_axe/idle/left/1": {
       "atlas": "actors",
       "index": 86,
       "anchor": [
@@ -739,7 +749,7 @@
         29
       ]
     },
-    "actor.sheep/graze/up/1": {
+    "actor.hero_axe/gather/left/0": {
       "atlas": "actors",
       "index": 87,
       "anchor": [
@@ -747,7 +757,7 @@
         29
       ]
     },
-    "actor.smith/walk/down/0": {
+    "actor.hero_axe/gather/left/1": {
       "atlas": "actors",
       "index": 88,
       "anchor": [
@@ -755,7 +765,7 @@
         29
       ]
     },
-    "actor.smith/walk/down/1": {
+    "actor.hero_axe/gather/left/2": {
       "atlas": "actors",
       "index": 89,
       "anchor": [
@@ -763,7 +773,7 @@
         29
       ]
     },
-    "actor.smith/walk/down/2": {
+    "actor.hero_axe/slash/left/0": {
       "atlas": "actors",
       "index": 90,
       "anchor": [
@@ -771,7 +781,7 @@
         29
       ]
     },
-    "actor.smith/walk/down/3": {
+    "actor.hero_axe/slash/left/1": {
       "atlas": "actors",
       "index": 91,
       "anchor": [
@@ -779,7 +789,7 @@
         29
       ]
     },
-    "actor.smith/idle/down/0": {
+    "actor.hero_axe/slash/left/2": {
       "atlas": "actors",
       "index": 92,
       "anchor": [
@@ -787,7 +797,7 @@
         29
       ]
     },
-    "actor.smith/idle/down/1": {
+    "actor.hero_axe/slash/left/3": {
       "atlas": "actors",
       "index": 93,
       "anchor": [
@@ -795,7 +805,7 @@
         29
       ]
     },
-    "actor.smith/walk/left/0": {
+    "actor.hero_axe/walk/right/0": {
       "atlas": "actors",
       "index": 94,
       "anchor": [
@@ -803,7 +813,7 @@
         29
       ]
     },
-    "actor.smith/walk/left/1": {
+    "actor.hero_axe/walk/right/1": {
       "atlas": "actors",
       "index": 95,
       "anchor": [
@@ -811,7 +821,7 @@
         29
       ]
     },
-    "actor.smith/walk/left/2": {
+    "actor.hero_axe/walk/right/2": {
       "atlas": "actors",
       "index": 96,
       "anchor": [
@@ -819,7 +829,7 @@
         29
       ]
     },
-    "actor.smith/walk/left/3": {
+    "actor.hero_axe/walk/right/3": {
       "atlas": "actors",
       "index": 97,
       "anchor": [
@@ -827,7 +837,7 @@
         29
       ]
     },
-    "actor.smith/idle/left/0": {
+    "actor.hero_axe/idle/right/0": {
       "atlas": "actors",
       "index": 98,
       "anchor": [
@@ -835,7 +845,7 @@
         29
       ]
     },
-    "actor.smith/idle/left/1": {
+    "actor.hero_axe/idle/right/1": {
       "atlas": "actors",
       "index": 99,
       "anchor": [
@@ -843,7 +853,7 @@
         29
       ]
     },
-    "actor.smith/walk/right/0": {
+    "actor.hero_axe/gather/right/0": {
       "atlas": "actors",
       "index": 100,
       "anchor": [
@@ -851,7 +861,7 @@
         29
       ]
     },
-    "actor.smith/walk/right/1": {
+    "actor.hero_axe/gather/right/1": {
       "atlas": "actors",
       "index": 101,
       "anchor": [
@@ -859,7 +869,7 @@
         29
       ]
     },
-    "actor.smith/walk/right/2": {
+    "actor.hero_axe/gather/right/2": {
       "atlas": "actors",
       "index": 102,
       "anchor": [
@@ -867,7 +877,7 @@
         29
       ]
     },
-    "actor.smith/walk/right/3": {
+    "actor.hero_axe/slash/right/0": {
       "atlas": "actors",
       "index": 103,
       "anchor": [
@@ -875,7 +885,7 @@
         29
       ]
     },
-    "actor.smith/idle/right/0": {
+    "actor.hero_axe/slash/right/1": {
       "atlas": "actors",
       "index": 104,
       "anchor": [
@@ -883,7 +893,7 @@
         29
       ]
     },
-    "actor.smith/idle/right/1": {
+    "actor.hero_axe/slash/right/2": {
       "atlas": "actors",
       "index": 105,
       "anchor": [
@@ -891,7 +901,7 @@
         29
       ]
     },
-    "actor.smith/walk/up/0": {
+    "actor.hero_axe/slash/right/3": {
       "atlas": "actors",
       "index": 106,
       "anchor": [
@@ -899,7 +909,7 @@
         29
       ]
     },
-    "actor.smith/walk/up/1": {
+    "actor.hero_axe/walk/up/0": {
       "atlas": "actors",
       "index": 107,
       "anchor": [
@@ -907,7 +917,7 @@
         29
       ]
     },
-    "actor.smith/walk/up/2": {
+    "actor.hero_axe/walk/up/1": {
       "atlas": "actors",
       "index": 108,
       "anchor": [
@@ -915,7 +925,7 @@
         29
       ]
     },
-    "actor.smith/walk/up/3": {
+    "actor.hero_axe/walk/up/2": {
       "atlas": "actors",
       "index": 109,
       "anchor": [
@@ -923,7 +933,7 @@
         29
       ]
     },
-    "actor.smith/idle/up/0": {
+    "actor.hero_axe/walk/up/3": {
       "atlas": "actors",
       "index": 110,
       "anchor": [
@@ -931,9 +941,1353 @@
         29
       ]
     },
-    "actor.smith/idle/up/1": {
+    "actor.hero_axe/idle/up/0": {
       "atlas": "actors",
       "index": 111,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_axe/idle/up/1": {
+      "atlas": "actors",
+      "index": 112,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_axe/gather/up/0": {
+      "atlas": "actors",
+      "index": 113,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_axe/gather/up/1": {
+      "atlas": "actors",
+      "index": 114,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_axe/gather/up/2": {
+      "atlas": "actors",
+      "index": 115,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_axe/slash/up/0": {
+      "atlas": "actors",
+      "index": 116,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_axe/slash/up/1": {
+      "atlas": "actors",
+      "index": 117,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_axe/slash/up/2": {
+      "atlas": "actors",
+      "index": 118,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_axe/slash/up/3": {
+      "atlas": "actors",
+      "index": 119,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_spear/walk/down/0": {
+      "atlas": "actors",
+      "index": 120,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_spear/walk/down/1": {
+      "atlas": "actors",
+      "index": 121,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_spear/walk/down/2": {
+      "atlas": "actors",
+      "index": 122,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_spear/walk/down/3": {
+      "atlas": "actors",
+      "index": 123,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_spear/idle/down/0": {
+      "atlas": "actors",
+      "index": 124,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_spear/idle/down/1": {
+      "atlas": "actors",
+      "index": 125,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_spear/gather/down/0": {
+      "atlas": "actors",
+      "index": 126,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_spear/gather/down/1": {
+      "atlas": "actors",
+      "index": 127,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_spear/gather/down/2": {
+      "atlas": "actors",
+      "index": 128,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_spear/slash/down/0": {
+      "atlas": "actors",
+      "index": 129,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_spear/slash/down/1": {
+      "atlas": "actors",
+      "index": 130,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_spear/slash/down/2": {
+      "atlas": "actors",
+      "index": 131,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_spear/slash/down/3": {
+      "atlas": "actors",
+      "index": 132,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_spear/walk/left/0": {
+      "atlas": "actors",
+      "index": 133,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_spear/walk/left/1": {
+      "atlas": "actors",
+      "index": 134,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_spear/walk/left/2": {
+      "atlas": "actors",
+      "index": 135,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_spear/walk/left/3": {
+      "atlas": "actors",
+      "index": 136,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_spear/idle/left/0": {
+      "atlas": "actors",
+      "index": 137,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_spear/idle/left/1": {
+      "atlas": "actors",
+      "index": 138,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_spear/gather/left/0": {
+      "atlas": "actors",
+      "index": 139,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_spear/gather/left/1": {
+      "atlas": "actors",
+      "index": 140,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_spear/gather/left/2": {
+      "atlas": "actors",
+      "index": 141,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_spear/slash/left/0": {
+      "atlas": "actors",
+      "index": 142,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_spear/slash/left/1": {
+      "atlas": "actors",
+      "index": 143,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_spear/slash/left/2": {
+      "atlas": "actors",
+      "index": 144,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_spear/slash/left/3": {
+      "atlas": "actors",
+      "index": 145,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_spear/walk/right/0": {
+      "atlas": "actors",
+      "index": 146,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_spear/walk/right/1": {
+      "atlas": "actors",
+      "index": 147,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_spear/walk/right/2": {
+      "atlas": "actors",
+      "index": 148,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_spear/walk/right/3": {
+      "atlas": "actors",
+      "index": 149,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_spear/idle/right/0": {
+      "atlas": "actors",
+      "index": 150,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_spear/idle/right/1": {
+      "atlas": "actors",
+      "index": 151,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_spear/gather/right/0": {
+      "atlas": "actors",
+      "index": 152,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_spear/gather/right/1": {
+      "atlas": "actors",
+      "index": 153,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_spear/gather/right/2": {
+      "atlas": "actors",
+      "index": 154,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_spear/slash/right/0": {
+      "atlas": "actors",
+      "index": 155,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_spear/slash/right/1": {
+      "atlas": "actors",
+      "index": 156,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_spear/slash/right/2": {
+      "atlas": "actors",
+      "index": 157,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_spear/slash/right/3": {
+      "atlas": "actors",
+      "index": 158,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_spear/walk/up/0": {
+      "atlas": "actors",
+      "index": 159,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_spear/walk/up/1": {
+      "atlas": "actors",
+      "index": 160,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_spear/walk/up/2": {
+      "atlas": "actors",
+      "index": 161,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_spear/walk/up/3": {
+      "atlas": "actors",
+      "index": 162,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_spear/idle/up/0": {
+      "atlas": "actors",
+      "index": 163,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_spear/idle/up/1": {
+      "atlas": "actors",
+      "index": 164,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_spear/gather/up/0": {
+      "atlas": "actors",
+      "index": 165,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_spear/gather/up/1": {
+      "atlas": "actors",
+      "index": 166,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_spear/gather/up/2": {
+      "atlas": "actors",
+      "index": 167,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_spear/slash/up/0": {
+      "atlas": "actors",
+      "index": 168,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_spear/slash/up/1": {
+      "atlas": "actors",
+      "index": 169,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_spear/slash/up/2": {
+      "atlas": "actors",
+      "index": 170,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_spear/slash/up/3": {
+      "atlas": "actors",
+      "index": 171,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_sword/walk/down/0": {
+      "atlas": "actors",
+      "index": 172,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_sword/walk/down/1": {
+      "atlas": "actors",
+      "index": 173,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_sword/walk/down/2": {
+      "atlas": "actors",
+      "index": 174,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_sword/walk/down/3": {
+      "atlas": "actors",
+      "index": 175,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_sword/idle/down/0": {
+      "atlas": "actors",
+      "index": 176,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_sword/idle/down/1": {
+      "atlas": "actors",
+      "index": 177,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_sword/gather/down/0": {
+      "atlas": "actors",
+      "index": 178,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_sword/gather/down/1": {
+      "atlas": "actors",
+      "index": 179,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_sword/gather/down/2": {
+      "atlas": "actors",
+      "index": 180,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_sword/slash/down/0": {
+      "atlas": "actors",
+      "index": 181,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_sword/slash/down/1": {
+      "atlas": "actors",
+      "index": 182,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_sword/slash/down/2": {
+      "atlas": "actors",
+      "index": 183,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_sword/slash/down/3": {
+      "atlas": "actors",
+      "index": 184,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_sword/walk/left/0": {
+      "atlas": "actors",
+      "index": 185,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_sword/walk/left/1": {
+      "atlas": "actors",
+      "index": 186,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_sword/walk/left/2": {
+      "atlas": "actors",
+      "index": 187,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_sword/walk/left/3": {
+      "atlas": "actors",
+      "index": 188,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_sword/idle/left/0": {
+      "atlas": "actors",
+      "index": 189,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_sword/idle/left/1": {
+      "atlas": "actors",
+      "index": 190,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_sword/gather/left/0": {
+      "atlas": "actors",
+      "index": 191,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_sword/gather/left/1": {
+      "atlas": "actors",
+      "index": 192,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_sword/gather/left/2": {
+      "atlas": "actors",
+      "index": 193,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_sword/slash/left/0": {
+      "atlas": "actors",
+      "index": 194,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_sword/slash/left/1": {
+      "atlas": "actors",
+      "index": 195,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_sword/slash/left/2": {
+      "atlas": "actors",
+      "index": 196,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_sword/slash/left/3": {
+      "atlas": "actors",
+      "index": 197,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_sword/walk/right/0": {
+      "atlas": "actors",
+      "index": 198,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_sword/walk/right/1": {
+      "atlas": "actors",
+      "index": 199,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_sword/walk/right/2": {
+      "atlas": "actors",
+      "index": 200,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_sword/walk/right/3": {
+      "atlas": "actors",
+      "index": 201,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_sword/idle/right/0": {
+      "atlas": "actors",
+      "index": 202,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_sword/idle/right/1": {
+      "atlas": "actors",
+      "index": 203,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_sword/gather/right/0": {
+      "atlas": "actors",
+      "index": 204,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_sword/gather/right/1": {
+      "atlas": "actors",
+      "index": 205,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_sword/gather/right/2": {
+      "atlas": "actors",
+      "index": 206,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_sword/slash/right/0": {
+      "atlas": "actors",
+      "index": 207,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_sword/slash/right/1": {
+      "atlas": "actors",
+      "index": 208,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_sword/slash/right/2": {
+      "atlas": "actors",
+      "index": 209,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_sword/slash/right/3": {
+      "atlas": "actors",
+      "index": 210,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_sword/walk/up/0": {
+      "atlas": "actors",
+      "index": 211,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_sword/walk/up/1": {
+      "atlas": "actors",
+      "index": 212,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_sword/walk/up/2": {
+      "atlas": "actors",
+      "index": 213,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_sword/walk/up/3": {
+      "atlas": "actors",
+      "index": 214,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_sword/idle/up/0": {
+      "atlas": "actors",
+      "index": 215,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_sword/idle/up/1": {
+      "atlas": "actors",
+      "index": 216,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_sword/gather/up/0": {
+      "atlas": "actors",
+      "index": 217,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_sword/gather/up/1": {
+      "atlas": "actors",
+      "index": 218,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_sword/gather/up/2": {
+      "atlas": "actors",
+      "index": 219,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_sword/slash/up/0": {
+      "atlas": "actors",
+      "index": 220,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_sword/slash/up/1": {
+      "atlas": "actors",
+      "index": 221,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_sword/slash/up/2": {
+      "atlas": "actors",
+      "index": 222,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_sword/slash/up/3": {
+      "atlas": "actors",
+      "index": 223,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.sheep/walk/down/0": {
+      "atlas": "actors",
+      "index": 224,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.sheep/walk/down/1": {
+      "atlas": "actors",
+      "index": 225,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.sheep/walk/down/2": {
+      "atlas": "actors",
+      "index": 226,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.sheep/walk/down/3": {
+      "atlas": "actors",
+      "index": 227,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.sheep/idle/down/0": {
+      "atlas": "actors",
+      "index": 228,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.sheep/idle/down/1": {
+      "atlas": "actors",
+      "index": 229,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.sheep/graze/down/0": {
+      "atlas": "actors",
+      "index": 230,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.sheep/graze/down/1": {
+      "atlas": "actors",
+      "index": 231,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.sheep/walk/left/0": {
+      "atlas": "actors",
+      "index": 232,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.sheep/walk/left/1": {
+      "atlas": "actors",
+      "index": 233,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.sheep/walk/left/2": {
+      "atlas": "actors",
+      "index": 234,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.sheep/walk/left/3": {
+      "atlas": "actors",
+      "index": 235,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.sheep/idle/left/0": {
+      "atlas": "actors",
+      "index": 236,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.sheep/idle/left/1": {
+      "atlas": "actors",
+      "index": 237,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.sheep/graze/left/0": {
+      "atlas": "actors",
+      "index": 238,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.sheep/graze/left/1": {
+      "atlas": "actors",
+      "index": 239,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.sheep/walk/right/0": {
+      "atlas": "actors",
+      "index": 240,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.sheep/walk/right/1": {
+      "atlas": "actors",
+      "index": 241,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.sheep/walk/right/2": {
+      "atlas": "actors",
+      "index": 242,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.sheep/walk/right/3": {
+      "atlas": "actors",
+      "index": 243,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.sheep/idle/right/0": {
+      "atlas": "actors",
+      "index": 244,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.sheep/idle/right/1": {
+      "atlas": "actors",
+      "index": 245,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.sheep/graze/right/0": {
+      "atlas": "actors",
+      "index": 246,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.sheep/graze/right/1": {
+      "atlas": "actors",
+      "index": 247,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.sheep/walk/up/0": {
+      "atlas": "actors",
+      "index": 248,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.sheep/walk/up/1": {
+      "atlas": "actors",
+      "index": 249,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.sheep/walk/up/2": {
+      "atlas": "actors",
+      "index": 250,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.sheep/walk/up/3": {
+      "atlas": "actors",
+      "index": 251,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.sheep/idle/up/0": {
+      "atlas": "actors",
+      "index": 252,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.sheep/idle/up/1": {
+      "atlas": "actors",
+      "index": 253,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.sheep/graze/up/0": {
+      "atlas": "actors",
+      "index": 254,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.sheep/graze/up/1": {
+      "atlas": "actors",
+      "index": 255,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.smith/walk/down/0": {
+      "atlas": "actors",
+      "index": 256,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.smith/walk/down/1": {
+      "atlas": "actors",
+      "index": 257,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.smith/walk/down/2": {
+      "atlas": "actors",
+      "index": 258,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.smith/walk/down/3": {
+      "atlas": "actors",
+      "index": 259,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.smith/idle/down/0": {
+      "atlas": "actors",
+      "index": 260,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.smith/idle/down/1": {
+      "atlas": "actors",
+      "index": 261,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.smith/walk/left/0": {
+      "atlas": "actors",
+      "index": 262,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.smith/walk/left/1": {
+      "atlas": "actors",
+      "index": 263,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.smith/walk/left/2": {
+      "atlas": "actors",
+      "index": 264,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.smith/walk/left/3": {
+      "atlas": "actors",
+      "index": 265,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.smith/idle/left/0": {
+      "atlas": "actors",
+      "index": 266,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.smith/idle/left/1": {
+      "atlas": "actors",
+      "index": 267,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.smith/walk/right/0": {
+      "atlas": "actors",
+      "index": 268,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.smith/walk/right/1": {
+      "atlas": "actors",
+      "index": 269,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.smith/walk/right/2": {
+      "atlas": "actors",
+      "index": 270,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.smith/walk/right/3": {
+      "atlas": "actors",
+      "index": 271,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.smith/idle/right/0": {
+      "atlas": "actors",
+      "index": 272,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.smith/idle/right/1": {
+      "atlas": "actors",
+      "index": 273,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.smith/walk/up/0": {
+      "atlas": "actors",
+      "index": 274,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.smith/walk/up/1": {
+      "atlas": "actors",
+      "index": 275,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.smith/walk/up/2": {
+      "atlas": "actors",
+      "index": 276,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.smith/walk/up/3": {
+      "atlas": "actors",
+      "index": 277,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.smith/idle/up/0": {
+      "atlas": "actors",
+      "index": 278,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.smith/idle/up/1": {
+      "atlas": "actors",
+      "index": 279,
       "anchor": [
         16,
         29
@@ -1242,6 +2596,110 @@
         24,
         45
       ]
+    },
+    "item.apple": {
+      "atlas": "items",
+      "index": 0,
+      "anchor": [
+        8,
+        14
+      ]
+    },
+    "item.berries": {
+      "atlas": "items",
+      "index": 1,
+      "anchor": [
+        8,
+        14
+      ]
+    },
+    "item.wheat": {
+      "atlas": "items",
+      "index": 2,
+      "anchor": [
+        8,
+        14
+      ]
+    },
+    "item.honey": {
+      "atlas": "items",
+      "index": 3,
+      "anchor": [
+        8,
+        14
+      ]
+    },
+    "item.wool": {
+      "atlas": "items",
+      "index": 4,
+      "anchor": [
+        8,
+        14
+      ]
+    },
+    "item.ore": {
+      "atlas": "items",
+      "index": 5,
+      "anchor": [
+        8,
+        14
+      ]
+    },
+    "item.firewood": {
+      "atlas": "items",
+      "index": 6,
+      "anchor": [
+        8,
+        14
+      ]
+    },
+    "item.fish": {
+      "atlas": "items",
+      "index": 7,
+      "anchor": [
+        8,
+        14
+      ]
+    },
+    "item.coin": {
+      "atlas": "items",
+      "index": 8,
+      "anchor": [
+        8,
+        14
+      ]
+    },
+    "item.flower": {
+      "atlas": "items",
+      "index": 9,
+      "anchor": [
+        8,
+        14
+      ]
+    },
+    "item.sword": {
+      "atlas": "items",
+      "index": 10,
+      "anchor": [
+        8,
+        14
+      ]
+    },
+    "item.axe": {
+      "atlas": "items",
+      "index": 11,
+      "anchor": [
+        8,
+        14
+      ]
+    },
+    "item.spear": {
+      "atlas": "items",
+      "index": 12,
+      "anchor": [
+        8,
+        14
+      ]
     }
   },
   "anims": {
@@ -1253,7 +2711,8 @@
         2,
         3
       ],
-      "ms": 150
+      "ms": 150,
+      "loop": true
     },
     "actor.goat/idle/down": {
       "atlas": "actors",
@@ -1261,7 +2720,8 @@
         4,
         5
       ],
-      "ms": 600
+      "ms": 600,
+      "loop": true
     },
     "actor.goat/graze/down": {
       "atlas": "actors",
@@ -1269,7 +2729,8 @@
         6,
         7
       ],
-      "ms": 380
+      "ms": 380,
+      "loop": true
     },
     "actor.goat/walk/left": {
       "atlas": "actors",
@@ -1279,7 +2740,8 @@
         10,
         11
       ],
-      "ms": 150
+      "ms": 150,
+      "loop": true
     },
     "actor.goat/idle/left": {
       "atlas": "actors",
@@ -1287,7 +2749,8 @@
         12,
         13
       ],
-      "ms": 600
+      "ms": 600,
+      "loop": true
     },
     "actor.goat/graze/left": {
       "atlas": "actors",
@@ -1295,7 +2758,8 @@
         14,
         15
       ],
-      "ms": 380
+      "ms": 380,
+      "loop": true
     },
     "actor.goat/walk/right": {
       "atlas": "actors",
@@ -1305,7 +2769,8 @@
         18,
         19
       ],
-      "ms": 150
+      "ms": 150,
+      "loop": true
     },
     "actor.goat/idle/right": {
       "atlas": "actors",
@@ -1313,7 +2778,8 @@
         20,
         21
       ],
-      "ms": 600
+      "ms": 600,
+      "loop": true
     },
     "actor.goat/graze/right": {
       "atlas": "actors",
@@ -1321,7 +2787,8 @@
         22,
         23
       ],
-      "ms": 380
+      "ms": 380,
+      "loop": true
     },
     "actor.goat/walk/up": {
       "atlas": "actors",
@@ -1331,7 +2798,8 @@
         26,
         27
       ],
-      "ms": 150
+      "ms": 150,
+      "loop": true
     },
     "actor.goat/idle/up": {
       "atlas": "actors",
@@ -1339,7 +2807,8 @@
         28,
         29
       ],
-      "ms": 600
+      "ms": 600,
+      "loop": true
     },
     "actor.goat/graze/up": {
       "atlas": "actors",
@@ -1347,7 +2816,8 @@
         30,
         31
       ],
-      "ms": 380
+      "ms": 380,
+      "loop": true
     },
     "actor.hero/walk/down": {
       "atlas": "actors",
@@ -1357,7 +2827,8 @@
         34,
         35
       ],
-      "ms": 120
+      "ms": 120,
+      "loop": true
     },
     "actor.hero/idle/down": {
       "atlas": "actors",
@@ -1365,45 +2836,50 @@
         36,
         37
       ],
-      "ms": 500
+      "ms": 500,
+      "loop": true
     },
-    "actor.hero/walk/left": {
+    "actor.hero/gather/down": {
       "atlas": "actors",
       "frames": [
         38,
         39,
-        40,
-        41
+        40
       ],
-      "ms": 120
+      "ms": 140,
+      "loop": false
+    },
+    "actor.hero/walk/left": {
+      "atlas": "actors",
+      "frames": [
+        41,
+        42,
+        43,
+        44
+      ],
+      "ms": 120,
+      "loop": true
     },
     "actor.hero/idle/left": {
       "atlas": "actors",
       "frames": [
-        42,
-        43
-      ],
-      "ms": 500
-    },
-    "actor.hero/walk/right": {
-      "atlas": "actors",
-      "frames": [
-        44,
         45,
-        46,
-        47
+        46
       ],
-      "ms": 120
+      "ms": 500,
+      "loop": true
     },
-    "actor.hero/idle/right": {
+    "actor.hero/gather/left": {
       "atlas": "actors",
       "frames": [
+        47,
         48,
         49
       ],
-      "ms": 500
+      "ms": 140,
+      "loop": false
     },
-    "actor.hero/walk/up": {
+    "actor.hero/walk/right": {
       "atlas": "actors",
       "frames": [
         50,
@@ -1411,139 +2887,141 @@
         52,
         53
       ],
-      "ms": 120
+      "ms": 120,
+      "loop": true
     },
-    "actor.hero/idle/up": {
+    "actor.hero/idle/right": {
       "atlas": "actors",
       "frames": [
         54,
         55
       ],
-      "ms": 500
+      "ms": 500,
+      "loop": true
     },
-    "actor.sheep/walk/down": {
+    "actor.hero/gather/right": {
       "atlas": "actors",
       "frames": [
         56,
         57,
-        58,
-        59
+        58
       ],
-      "ms": 150
+      "ms": 140,
+      "loop": false
     },
-    "actor.sheep/idle/down": {
+    "actor.hero/walk/up": {
       "atlas": "actors",
       "frames": [
+        59,
         60,
-        61
+        61,
+        62
       ],
-      "ms": 600
+      "ms": 120,
+      "loop": true
     },
-    "actor.sheep/graze/down": {
+    "actor.hero/idle/up": {
       "atlas": "actors",
       "frames": [
-        62,
-        63
+        63,
+        64
       ],
-      "ms": 380
+      "ms": 500,
+      "loop": true
     },
-    "actor.sheep/walk/left": {
+    "actor.hero/gather/up": {
       "atlas": "actors",
       "frames": [
-        64,
         65,
         66,
         67
       ],
-      "ms": 150
+      "ms": 140,
+      "loop": false
     },
-    "actor.sheep/idle/left": {
+    "actor.hero_axe/walk/down": {
       "atlas": "actors",
       "frames": [
         68,
-        69
-      ],
-      "ms": 600
-    },
-    "actor.sheep/graze/left": {
-      "atlas": "actors",
-      "frames": [
+        69,
         70,
         71
       ],
-      "ms": 380
+      "ms": 120,
+      "loop": true
     },
-    "actor.sheep/walk/right": {
+    "actor.hero_axe/idle/down": {
       "atlas": "actors",
       "frames": [
         72,
-        73,
+        73
+      ],
+      "ms": 500,
+      "loop": true
+    },
+    "actor.hero_axe/gather/down": {
+      "atlas": "actors",
+      "frames": [
         74,
-        75
+        75,
+        76
       ],
-      "ms": 150
+      "ms": 140,
+      "loop": false
     },
-    "actor.sheep/idle/right": {
+    "actor.hero_axe/slash/down": {
       "atlas": "actors",
       "frames": [
-        76,
-        77
-      ],
-      "ms": 600
-    },
-    "actor.sheep/graze/right": {
-      "atlas": "actors",
-      "frames": [
+        77,
         78,
-        79
+        79,
+        80
       ],
-      "ms": 380
+      "ms": 90,
+      "loop": false
     },
-    "actor.sheep/walk/up": {
+    "actor.hero_axe/walk/left": {
       "atlas": "actors",
       "frames": [
-        80,
         81,
         82,
-        83
+        83,
+        84
       ],
-      "ms": 150
+      "ms": 120,
+      "loop": true
     },
-    "actor.sheep/idle/up": {
+    "actor.hero_axe/idle/left": {
       "atlas": "actors",
       "frames": [
-        84,
-        85
+        85,
+        86
       ],
-      "ms": 600
+      "ms": 500,
+      "loop": true
     },
-    "actor.sheep/graze/up": {
+    "actor.hero_axe/gather/left": {
       "atlas": "actors",
       "frames": [
-        86,
-        87
-      ],
-      "ms": 380
-    },
-    "actor.smith/walk/down": {
-      "atlas": "actors",
-      "frames": [
+        87,
         88,
-        89,
-        90,
-        91
+        89
       ],
-      "ms": 120
+      "ms": 140,
+      "loop": false
     },
-    "actor.smith/idle/down": {
+    "actor.hero_axe/slash/left": {
       "atlas": "actors",
       "frames": [
+        90,
+        91,
         92,
         93
       ],
-      "ms": 500
+      "ms": 90,
+      "loop": false
     },
-    "actor.smith/walk/left": {
+    "actor.hero_axe/walk/right": {
       "atlas": "actors",
       "frames": [
         94,
@@ -1551,51 +3029,603 @@
         96,
         97
       ],
-      "ms": 120
+      "ms": 120,
+      "loop": true
     },
-    "actor.smith/idle/left": {
+    "actor.hero_axe/idle/right": {
       "atlas": "actors",
       "frames": [
         98,
         99
       ],
-      "ms": 500
+      "ms": 500,
+      "loop": true
     },
-    "actor.smith/walk/right": {
+    "actor.hero_axe/gather/right": {
       "atlas": "actors",
       "frames": [
         100,
         101,
-        102,
-        103
+        102
       ],
-      "ms": 120
+      "ms": 140,
+      "loop": false
+    },
+    "actor.hero_axe/slash/right": {
+      "atlas": "actors",
+      "frames": [
+        103,
+        104,
+        105,
+        106
+      ],
+      "ms": 90,
+      "loop": false
+    },
+    "actor.hero_axe/walk/up": {
+      "atlas": "actors",
+      "frames": [
+        107,
+        108,
+        109,
+        110
+      ],
+      "ms": 120,
+      "loop": true
+    },
+    "actor.hero_axe/idle/up": {
+      "atlas": "actors",
+      "frames": [
+        111,
+        112
+      ],
+      "ms": 500,
+      "loop": true
+    },
+    "actor.hero_axe/gather/up": {
+      "atlas": "actors",
+      "frames": [
+        113,
+        114,
+        115
+      ],
+      "ms": 140,
+      "loop": false
+    },
+    "actor.hero_axe/slash/up": {
+      "atlas": "actors",
+      "frames": [
+        116,
+        117,
+        118,
+        119
+      ],
+      "ms": 90,
+      "loop": false
+    },
+    "actor.hero_spear/walk/down": {
+      "atlas": "actors",
+      "frames": [
+        120,
+        121,
+        122,
+        123
+      ],
+      "ms": 120,
+      "loop": true
+    },
+    "actor.hero_spear/idle/down": {
+      "atlas": "actors",
+      "frames": [
+        124,
+        125
+      ],
+      "ms": 500,
+      "loop": true
+    },
+    "actor.hero_spear/gather/down": {
+      "atlas": "actors",
+      "frames": [
+        126,
+        127,
+        128
+      ],
+      "ms": 140,
+      "loop": false
+    },
+    "actor.hero_spear/slash/down": {
+      "atlas": "actors",
+      "frames": [
+        129,
+        130,
+        131,
+        132
+      ],
+      "ms": 90,
+      "loop": false
+    },
+    "actor.hero_spear/walk/left": {
+      "atlas": "actors",
+      "frames": [
+        133,
+        134,
+        135,
+        136
+      ],
+      "ms": 120,
+      "loop": true
+    },
+    "actor.hero_spear/idle/left": {
+      "atlas": "actors",
+      "frames": [
+        137,
+        138
+      ],
+      "ms": 500,
+      "loop": true
+    },
+    "actor.hero_spear/gather/left": {
+      "atlas": "actors",
+      "frames": [
+        139,
+        140,
+        141
+      ],
+      "ms": 140,
+      "loop": false
+    },
+    "actor.hero_spear/slash/left": {
+      "atlas": "actors",
+      "frames": [
+        142,
+        143,
+        144,
+        145
+      ],
+      "ms": 90,
+      "loop": false
+    },
+    "actor.hero_spear/walk/right": {
+      "atlas": "actors",
+      "frames": [
+        146,
+        147,
+        148,
+        149
+      ],
+      "ms": 120,
+      "loop": true
+    },
+    "actor.hero_spear/idle/right": {
+      "atlas": "actors",
+      "frames": [
+        150,
+        151
+      ],
+      "ms": 500,
+      "loop": true
+    },
+    "actor.hero_spear/gather/right": {
+      "atlas": "actors",
+      "frames": [
+        152,
+        153,
+        154
+      ],
+      "ms": 140,
+      "loop": false
+    },
+    "actor.hero_spear/slash/right": {
+      "atlas": "actors",
+      "frames": [
+        155,
+        156,
+        157,
+        158
+      ],
+      "ms": 90,
+      "loop": false
+    },
+    "actor.hero_spear/walk/up": {
+      "atlas": "actors",
+      "frames": [
+        159,
+        160,
+        161,
+        162
+      ],
+      "ms": 120,
+      "loop": true
+    },
+    "actor.hero_spear/idle/up": {
+      "atlas": "actors",
+      "frames": [
+        163,
+        164
+      ],
+      "ms": 500,
+      "loop": true
+    },
+    "actor.hero_spear/gather/up": {
+      "atlas": "actors",
+      "frames": [
+        165,
+        166,
+        167
+      ],
+      "ms": 140,
+      "loop": false
+    },
+    "actor.hero_spear/slash/up": {
+      "atlas": "actors",
+      "frames": [
+        168,
+        169,
+        170,
+        171
+      ],
+      "ms": 90,
+      "loop": false
+    },
+    "actor.hero_sword/walk/down": {
+      "atlas": "actors",
+      "frames": [
+        172,
+        173,
+        174,
+        175
+      ],
+      "ms": 120,
+      "loop": true
+    },
+    "actor.hero_sword/idle/down": {
+      "atlas": "actors",
+      "frames": [
+        176,
+        177
+      ],
+      "ms": 500,
+      "loop": true
+    },
+    "actor.hero_sword/gather/down": {
+      "atlas": "actors",
+      "frames": [
+        178,
+        179,
+        180
+      ],
+      "ms": 140,
+      "loop": false
+    },
+    "actor.hero_sword/slash/down": {
+      "atlas": "actors",
+      "frames": [
+        181,
+        182,
+        183,
+        184
+      ],
+      "ms": 90,
+      "loop": false
+    },
+    "actor.hero_sword/walk/left": {
+      "atlas": "actors",
+      "frames": [
+        185,
+        186,
+        187,
+        188
+      ],
+      "ms": 120,
+      "loop": true
+    },
+    "actor.hero_sword/idle/left": {
+      "atlas": "actors",
+      "frames": [
+        189,
+        190
+      ],
+      "ms": 500,
+      "loop": true
+    },
+    "actor.hero_sword/gather/left": {
+      "atlas": "actors",
+      "frames": [
+        191,
+        192,
+        193
+      ],
+      "ms": 140,
+      "loop": false
+    },
+    "actor.hero_sword/slash/left": {
+      "atlas": "actors",
+      "frames": [
+        194,
+        195,
+        196,
+        197
+      ],
+      "ms": 90,
+      "loop": false
+    },
+    "actor.hero_sword/walk/right": {
+      "atlas": "actors",
+      "frames": [
+        198,
+        199,
+        200,
+        201
+      ],
+      "ms": 120,
+      "loop": true
+    },
+    "actor.hero_sword/idle/right": {
+      "atlas": "actors",
+      "frames": [
+        202,
+        203
+      ],
+      "ms": 500,
+      "loop": true
+    },
+    "actor.hero_sword/gather/right": {
+      "atlas": "actors",
+      "frames": [
+        204,
+        205,
+        206
+      ],
+      "ms": 140,
+      "loop": false
+    },
+    "actor.hero_sword/slash/right": {
+      "atlas": "actors",
+      "frames": [
+        207,
+        208,
+        209,
+        210
+      ],
+      "ms": 90,
+      "loop": false
+    },
+    "actor.hero_sword/walk/up": {
+      "atlas": "actors",
+      "frames": [
+        211,
+        212,
+        213,
+        214
+      ],
+      "ms": 120,
+      "loop": true
+    },
+    "actor.hero_sword/idle/up": {
+      "atlas": "actors",
+      "frames": [
+        215,
+        216
+      ],
+      "ms": 500,
+      "loop": true
+    },
+    "actor.hero_sword/gather/up": {
+      "atlas": "actors",
+      "frames": [
+        217,
+        218,
+        219
+      ],
+      "ms": 140,
+      "loop": false
+    },
+    "actor.hero_sword/slash/up": {
+      "atlas": "actors",
+      "frames": [
+        220,
+        221,
+        222,
+        223
+      ],
+      "ms": 90,
+      "loop": false
+    },
+    "actor.sheep/walk/down": {
+      "atlas": "actors",
+      "frames": [
+        224,
+        225,
+        226,
+        227
+      ],
+      "ms": 150,
+      "loop": true
+    },
+    "actor.sheep/idle/down": {
+      "atlas": "actors",
+      "frames": [
+        228,
+        229
+      ],
+      "ms": 600,
+      "loop": true
+    },
+    "actor.sheep/graze/down": {
+      "atlas": "actors",
+      "frames": [
+        230,
+        231
+      ],
+      "ms": 380,
+      "loop": true
+    },
+    "actor.sheep/walk/left": {
+      "atlas": "actors",
+      "frames": [
+        232,
+        233,
+        234,
+        235
+      ],
+      "ms": 150,
+      "loop": true
+    },
+    "actor.sheep/idle/left": {
+      "atlas": "actors",
+      "frames": [
+        236,
+        237
+      ],
+      "ms": 600,
+      "loop": true
+    },
+    "actor.sheep/graze/left": {
+      "atlas": "actors",
+      "frames": [
+        238,
+        239
+      ],
+      "ms": 380,
+      "loop": true
+    },
+    "actor.sheep/walk/right": {
+      "atlas": "actors",
+      "frames": [
+        240,
+        241,
+        242,
+        243
+      ],
+      "ms": 150,
+      "loop": true
+    },
+    "actor.sheep/idle/right": {
+      "atlas": "actors",
+      "frames": [
+        244,
+        245
+      ],
+      "ms": 600,
+      "loop": true
+    },
+    "actor.sheep/graze/right": {
+      "atlas": "actors",
+      "frames": [
+        246,
+        247
+      ],
+      "ms": 380,
+      "loop": true
+    },
+    "actor.sheep/walk/up": {
+      "atlas": "actors",
+      "frames": [
+        248,
+        249,
+        250,
+        251
+      ],
+      "ms": 150,
+      "loop": true
+    },
+    "actor.sheep/idle/up": {
+      "atlas": "actors",
+      "frames": [
+        252,
+        253
+      ],
+      "ms": 600,
+      "loop": true
+    },
+    "actor.sheep/graze/up": {
+      "atlas": "actors",
+      "frames": [
+        254,
+        255
+      ],
+      "ms": 380,
+      "loop": true
+    },
+    "actor.smith/walk/down": {
+      "atlas": "actors",
+      "frames": [
+        256,
+        257,
+        258,
+        259
+      ],
+      "ms": 120,
+      "loop": true
+    },
+    "actor.smith/idle/down": {
+      "atlas": "actors",
+      "frames": [
+        260,
+        261
+      ],
+      "ms": 500,
+      "loop": true
+    },
+    "actor.smith/walk/left": {
+      "atlas": "actors",
+      "frames": [
+        262,
+        263,
+        264,
+        265
+      ],
+      "ms": 120,
+      "loop": true
+    },
+    "actor.smith/idle/left": {
+      "atlas": "actors",
+      "frames": [
+        266,
+        267
+      ],
+      "ms": 500,
+      "loop": true
+    },
+    "actor.smith/walk/right": {
+      "atlas": "actors",
+      "frames": [
+        268,
+        269,
+        270,
+        271
+      ],
+      "ms": 120,
+      "loop": true
     },
     "actor.smith/idle/right": {
       "atlas": "actors",
       "frames": [
-        104,
-        105
+        272,
+        273
       ],
-      "ms": 500
+      "ms": 500,
+      "loop": true
     },
     "actor.smith/walk/up": {
       "atlas": "actors",
       "frames": [
-        106,
-        107,
-        108,
-        109
+        274,
+        275,
+        276,
+        277
       ],
-      "ms": 120
+      "ms": 120,
+      "loop": true
     },
     "actor.smith/idle/up": {
       "atlas": "actors",
       "frames": [
-        110,
-        111
+        278,
+        279
       ],
-      "ms": 500
+      "ms": 500,
+      "loop": true
     }
   },
   "tiles": {
@@ -1721,7 +3751,8 @@
           0
         ]
       ],
-      "blocks": true
+      "blocks": true,
+      "hittable": true
     },
     "prop.cairn": {
       "id": "prop.cairn",
@@ -1841,7 +3872,8 @@
           0
         ]
       ],
-      "blocks": true
+      "blocks": true,
+      "hittable": true
     },
     "prop.rock": {
       "id": "prop.rock",
@@ -1874,7 +3906,8 @@
           0
         ]
       ],
-      "blocks": true
+      "blocks": true,
+      "hittable": true
     },
     "prop.sign": {
       "id": "prop.sign",
@@ -2125,8 +4158,15 @@
       "rig": "biped",
       "states": [
         "walk",
-        "idle"
-      ]
+        "idle",
+        "gather"
+      ],
+      "wields": true,
+      "wield": {
+        "item.axe": "actor.hero_axe",
+        "item.spear": "actor.hero_spear",
+        "item.sword": "actor.hero_sword"
+      }
     },
     "npc.sheep": {
       "id": "npc.sheep",
@@ -2154,6 +4194,118 @@
         ],
         "graze_chance": 0.6
       }
+    }
+  },
+  "items": {
+    "item.apple": {
+      "id": "item.apple",
+      "name": "Apple",
+      "sprite": "item.apple",
+      "kind": "material",
+      "stack": true,
+      "description": "Windfall from under an oak. Still good."
+    },
+    "item.axe": {
+      "id": "item.axe",
+      "name": "Axe",
+      "sprite": "item.axe",
+      "kind": "weapon",
+      "slot": "weapon",
+      "held": "axe",
+      "stack": false,
+      "description": "A felling axe from the camp. Heavy at the head."
+    },
+    "item.berries": {
+      "id": "item.berries",
+      "name": "Berries",
+      "sprite": "item.berries",
+      "kind": "material",
+      "stack": true,
+      "description": "Picked at the edge of the wood, where the light gets in."
+    },
+    "item.coin": {
+      "id": "item.coin",
+      "name": "Old coin",
+      "sprite": "item.coin",
+      "kind": "material",
+      "stack": true,
+      "description": "Worn smooth. Older than the village."
+    },
+    "item.firewood": {
+      "id": "item.firewood",
+      "name": "Firewood",
+      "sprite": "item.firewood",
+      "kind": "material",
+      "stack": true,
+      "description": "Split and tied at the woodcutters' camp."
+    },
+    "item.fish": {
+      "id": "item.fish",
+      "name": "Fish",
+      "sprite": "item.fish",
+      "kind": "material",
+      "stack": true,
+      "description": "Fresh from the shallows. Cold to hold."
+    },
+    "item.flower": {
+      "id": "item.flower",
+      "name": "Wildflower",
+      "sprite": "item.flower",
+      "kind": "material",
+      "stack": true,
+      "description": "From the meadow. It will not last."
+    },
+    "item.honey": {
+      "id": "item.honey",
+      "name": "Honey",
+      "sprite": "item.honey",
+      "kind": "material",
+      "stack": true,
+      "description": "A jar from the hives in the flower meadow."
+    },
+    "item.ore": {
+      "id": "item.ore",
+      "name": "Iron ore",
+      "sprite": "item.ore",
+      "kind": "material",
+      "stack": true,
+      "description": "A lump from the quarry, red where the iron shows."
+    },
+    "item.spear": {
+      "id": "item.spear",
+      "name": "Spear",
+      "sprite": "item.spear",
+      "kind": "weapon",
+      "slot": "weapon",
+      "held": "spear",
+      "stack": false,
+      "description": "Left in the old tower by whoever last kept watch."
+    },
+    "item.sword": {
+      "id": "item.sword",
+      "name": "Sword",
+      "sprite": "item.sword",
+      "kind": "weapon",
+      "slot": "weapon",
+      "held": "sword",
+      "stack": false,
+      "description": "Arne's own work. Balanced, and sharp."
+    },
+    "item.wheat": {
+      "id": "item.wheat",
+      "name": "Wheat",
+      "sprite": "item.wheat",
+      "kind": "material",
+      "stack": true,
+      "description": "A sheaf bound for the mill."
+    },
+    "item.wool": {
+      "id": "item.wool",
+      "name": "Wool",
+      "sprite": "item.wool",
+      "kind": "material",
+      "stack": true,
+      "description": "A fleece, shed where the flock grazes."
     }
   },
   "dialogue": {
@@ -2398,6 +4550,13 @@
           ]
         },
         {
+          "def": "item.apple",
+          "tile": [
+            12,
+            4
+          ]
+        },
+        {
           "def": "prop.mushroom",
           "tile": [
             17,
@@ -2450,6 +4609,13 @@
           "def": "prop.bush",
           "tile": [
             67,
+            4
+          ]
+        },
+        {
+          "def": "item.fish",
+          "tile": [
+            76,
             4
           ]
         },
@@ -2839,6 +5005,20 @@
           ]
         },
         {
+          "def": "item.spear",
+          "tile": [
+            32,
+            12
+          ]
+        },
+        {
+          "def": "item.coin",
+          "tile": [
+            33,
+            12
+          ]
+        },
+        {
           "def": "prop.tree_pine",
           "tile": [
             48,
@@ -2877,6 +5057,13 @@
           "def": "prop.bush",
           "tile": [
             6,
+            13
+          ]
+        },
+        {
+          "def": "item.berries",
+          "tile": [
+            11,
             13
           ]
         },
@@ -3091,6 +5278,13 @@
           ]
         },
         {
+          "def": "item.berries",
+          "tile": [
+            4,
+            18
+          ]
+        },
+        {
           "def": "prop.tree_pine",
           "tile": [
             10,
@@ -3259,6 +5453,13 @@
           ]
         },
         {
+          "def": "item.fish",
+          "tile": [
+            59,
+            20
+          ]
+        },
+        {
           "def": "prop.bush",
           "tile": [
             73,
@@ -3346,6 +5547,13 @@
           "def": "prop.mushroom",
           "tile": [
             17,
+            21
+          ]
+        },
+        {
+          "def": "item.flower",
+          "tile": [
+            52,
             21
           ]
         },
@@ -3465,6 +5673,13 @@
           "def": "prop.tree_oak",
           "tile": [
             12,
+            23
+          ]
+        },
+        {
+          "def": "item.apple",
+          "tile": [
+            17,
             23
           ]
         },
@@ -3693,6 +5908,13 @@
           ]
         },
         {
+          "def": "item.apple",
+          "tile": [
+            92,
+            26
+          ]
+        },
+        {
           "def": "prop.bush",
           "tile": [
             3,
@@ -3770,6 +5992,13 @@
           ]
         },
         {
+          "def": "item.berries",
+          "tile": [
+            3,
+            28
+          ]
+        },
+        {
           "def": "prop.tree_oak",
           "tile": [
             4,
@@ -3780,6 +6009,20 @@
           "def": "prop.tree_oak",
           "tile": [
             17,
+            28
+          ]
+        },
+        {
+          "def": "item.berries",
+          "tile": [
+            18,
+            28
+          ]
+        },
+        {
+          "def": "item.axe",
+          "tile": [
+            25,
             28
           ]
         },
@@ -3889,6 +6132,13 @@
           ]
         },
         {
+          "def": "item.firewood",
+          "tile": [
+            25,
+            29
+          ]
+        },
+        {
           "def": "prop.tree_oak",
           "tile": [
             41,
@@ -3924,6 +6174,13 @@
           ]
         },
         {
+          "def": "item.firewood",
+          "tile": [
+            23,
+            30
+          ]
+        },
+        {
           "def": "prop.campfire",
           "tile": [
             26,
@@ -3941,6 +6198,13 @@
           "def": "prop.bush",
           "tile": [
             85,
+            30
+          ]
+        },
+        {
+          "def": "item.flower",
+          "tile": [
+            87,
             30
           ]
         },
@@ -4211,9 +6475,23 @@
           ]
         },
         {
+          "def": "item.sword",
+          "tile": [
+            34,
+            36
+          ]
+        },
+        {
           "def": "prop.trough",
           "tile": [
             35,
+            36
+          ]
+        },
+        {
+          "def": "item.coin",
+          "tile": [
+            47,
             36
           ]
         },
@@ -4236,6 +6514,20 @@
           "tile": [
             32,
             37
+          ]
+        },
+        {
+          "def": "item.coin",
+          "tile": [
+            65,
+            39
+          ]
+        },
+        {
+          "def": "item.fish",
+          "tile": [
+            64,
+            40
           ]
         },
         {
@@ -4288,6 +6580,13 @@
           ]
         },
         {
+          "def": "item.wool",
+          "tile": [
+            12,
+            43
+          ]
+        },
+        {
           "def": "prop.beehive",
           "tile": [
             13,
@@ -4327,6 +6626,20 @@
           "tile": [
             63,
             43
+          ]
+        },
+        {
+          "def": "item.honey",
+          "tile": [
+            14,
+            44
+          ]
+        },
+        {
+          "def": "item.honey",
+          "tile": [
+            18,
+            44
           ]
         },
         {
@@ -4407,6 +6720,13 @@
           ]
         },
         {
+          "def": "item.flower",
+          "tile": [
+            12,
+            46
+          ]
+        },
+        {
           "def": "prop.bush",
           "tile": [
             55,
@@ -4438,6 +6758,20 @@
           "def": "npc.sheep",
           "tile": [
             74,
+            46
+          ]
+        },
+        {
+          "def": "item.wheat",
+          "tile": [
+            76,
+            46
+          ]
+        },
+        {
+          "def": "item.wheat",
+          "tile": [
+            81,
             46
           ]
         },
@@ -4575,6 +6909,13 @@
           ]
         },
         {
+          "def": "item.wool",
+          "tile": [
+            70,
+            48
+          ]
+        },
+        {
           "def": "npc.sheep",
           "tile": [
             73,
@@ -4596,9 +6937,23 @@
           ]
         },
         {
+          "def": "item.ore",
+          "tile": [
+            27,
+            49
+          ]
+        },
+        {
           "def": "npc.sheep",
           "tile": [
             72,
+            49
+          ]
+        },
+        {
+          "def": "item.wool",
+          "tile": [
+            76,
             49
           ]
         },
@@ -4613,6 +6968,20 @@
           "def": "prop.boulder",
           "tile": [
             18,
+            51
+          ]
+        },
+        {
+          "def": "item.ore",
+          "tile": [
+            19,
+            51
+          ]
+        },
+        {
+          "def": "item.ore",
+          "tile": [
+            72,
             51
           ]
         },
@@ -4750,6 +7119,13 @@
           ]
         },
         {
+          "def": "item.apple",
+          "tile": [
+            86,
+            55
+          ]
+        },
+        {
           "def": "prop.bush",
           "tile": [
             44,
@@ -4781,6 +7157,13 @@
           "def": "prop.tombstone",
           "tile": [
             77,
+            56
+          ]
+        },
+        {
+          "def": "item.coin",
+          "tile": [
+            78,
             56
           ]
         },
@@ -4876,6 +7259,13 @@
           ]
         },
         {
+          "def": "item.ore",
+          "tile": [
+            67,
+            59
+          ]
+        },
+        {
           "def": "prop.tombstone",
           "tile": [
             69,
@@ -4900,6 +7290,27 @@
           "def": "prop.tree_oak",
           "tile": [
             38,
+            60
+          ]
+        },
+        {
+          "def": "item.wheat",
+          "tile": [
+            39,
+            60
+          ]
+        },
+        {
+          "def": "item.apple",
+          "tile": [
+            40,
+            60
+          ]
+        },
+        {
+          "def": "item.coin",
+          "tile": [
+            73,
             60
           ]
         },
@@ -4953,6 +7364,13 @@
           ]
         },
         {
+          "def": "item.wheat",
+          "tile": [
+            41,
+            62
+          ]
+        },
+        {
           "def": "prop.rock",
           "tile": [
             64,
@@ -4964,6 +7382,13 @@
           "tile": [
             69,
             62
+          ]
+        },
+        {
+          "def": "item.flower",
+          "tile": [
+            37,
+            63
           ]
         },
         {
@@ -5138,6 +7563,13 @@
           "def": "prop.tree_oak",
           "tile": [
             43,
+            66
+          ]
+        },
+        {
+          "def": "item.apple",
+          "tile": [
+            47,
             66
           ]
         },

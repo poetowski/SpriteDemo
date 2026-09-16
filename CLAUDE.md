@@ -17,7 +17,7 @@ node tools/shot.cjs --map                # 3. and shoot the whole world
 ```
 
 1. **Build.** `tools/build.py` regenerates every atlas, the manifest, the
-   `.aseprite` sources and `game/page.html`. All 16 gates must pass. A gate
+   `.aseprite` sources and `game/page.html`. All 18 gates must pass. A gate
    failure names an authored file - fix that file, never the generated output.
    Needs Pillow: `pip install pillow` if the import fails.
 
@@ -31,6 +31,9 @@ node tools/shot.cjs --map                # 3. and shoot the whole world
    ```sh
    node tools/shot.cjs --tile 33,40         # stand at a tile and look
    node tools/shot.cjs --talk --tile 37,37  # walk up to someone and press E
+   node tools/shot.cjs --gather --tile 34,37   # stand by an item, press E, check the bag
+   node tools/shot.cjs --give item.axe --slash # arm the hero and swing
+   node tools/shot.cjs --pose slash,1 --page   # freeze the strike, shoot the whole page
    node tools/shot.cjs --map                # the whole world in one frame
    node tools/shot.cjs --out /tmp/a.png --wait 1500
    ```
@@ -80,6 +83,14 @@ body on each.
 **An NPC** is a file in `content/actors/` plus a line in the map. Its `rig`
 (`biped` / `quadruped`), `states`, `speed`, `blocks`, `interact` and `wander`
 settings are all content. No JS changes.
+
+**An item** is a 16x16 icon function in `tools/gen/items.py` (added to
+`ITEMS`), a file in `content/items/` with `kind` `material` or `weapon`, and a
+line in the map. A weapon also names what the hand holds (`"held": "sword"`),
+which must be a `WEAPONS` entry in `tools/gen/actor.py` - that is where a new
+weapon's shape is described, once, as a line from the hand with a guard or a
+head hung off it. The build then bakes a wielding frame set for every actor
+with `"wields": true` and the `item-held` gate checks it is complete.
 
 **A map** is ASCII rows plus a legend. Roads must stay clear - scenery placed on
 a path tile can wall off the only route across the world.

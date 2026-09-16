@@ -1,0 +1,8 @@
+{
+  "id": "item.wool",
+  "name": "Wool",
+  "sprite": "item.wool",
+  "kind": "material",
+  "stack": true,
+  "description": "A fleece, shed where the flock grazes."
+}

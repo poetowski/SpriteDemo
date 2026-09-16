@@ -1,0 +1,8 @@
+{
+  "id": "item.wheat",
+  "name": "Wheat",
+  "sprite": "item.wheat",
+  "kind": "material",
+  "stack": true,
+  "description": "A sheaf bound for the mill."
+}

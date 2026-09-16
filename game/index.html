@@ -50,12 +50,26 @@
   #hud { color: var(--accent); }
   #prompt { color: var(--ink); }
 
-  .dpad { display: none; grid-template-columns: repeat(3, 44px); gap: 5px; }
-  @media (pointer: coarse) { .dpad { display: grid; } }
-  .dpad button { height: 44px; font-size: 15px; color: var(--ink); background: var(--panel);
-                 border: 1px solid #39405260; border-radius: 4px; touch-action: none; }
-  .dpad button.on { background: var(--accent); color: #10141c; }
+  /* the bag: the same 16px cells the world uses, cut out of the items atlas */
+  #inv { width: min(94vw, 960px); display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+  .slot { display: flex; align-items: center; gap: 6px; min-height: 42px; padding: 4px 8px;
+          background: var(--panel); border: 1px solid #39405260; border-radius: 4px; color: var(--muted); }
+  .slot.on { border-color: var(--accent); color: var(--ink); }
+  .slot .icon { flex: none; width: 32px; height: 32px; image-rendering: pixelated; background-repeat: no-repeat; }
+  .slot .lbl { color: var(--accent); }
+  #bag { display: flex; flex-wrap: wrap; gap: 8px; }
+  #bag:empty::after { content: "nothing yet - walk up to something and press E"; color: var(--muted); }
+
+  /* touch controls: a d-pad and the three actions, only on coarse pointers */
+  .touch { display: none; gap: 16px; align-items: center; }
+  @media (pointer: coarse) { .touch { display: flex; } }
+  .dpad { display: grid; grid-template-columns: repeat(3, 44px); gap: 5px; }
+  .acts { display: grid; grid-template-columns: repeat(2, 52px); gap: 5px; }
+  .touch button { height: 44px; font-size: 15px; color: var(--ink); background: var(--panel);
+                  border: 1px solid #39405260; border-radius: 4px; touch-action: none; }
+  .touch button.on { background: var(--accent); color: #10141c; }
   .dpad .sp { visibility: hidden; }
+  .acts .slash { font-size: 19px; }
 </style>
 </head>
 <body>
@@ -75,26 +89,69 @@
 <div class="bar">
   <div>
     <kbd>&larr;</kbd><kbd>&uarr;</kbd><kbd>&darr;</kbd><kbd>&rarr;</kbd> or <kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> move
-    &nbsp; <kbd>E</kbd> talk &nbsp; <span id="prompt"></span>
+    &nbsp; <kbd>E</kbd> talk / take &nbsp; <kbd>Space</kbd> slash &nbsp; <kbd>Q</kbd> swap weapon
+    &nbsp; <span id="prompt"></span>
   </div>
   <div id="hud">idle-down</div>
 </div>
 
-<div class="dpad">
-  <button class="sp" tabindex="-1"></button>
-  <button data-dir="up" aria-label="Move up">&uarr;</button>
-  <button class="sp" tabindex="-1"></button>
-  <button data-dir="left" aria-label="Move left">&larr;</button>
-  <button data-dir="down" aria-label="Move down">&darr;</button>
-  <button data-dir="right" aria-label="Move right">&rarr;</button>
+<div id="inv">
+  <div class="slot" id="wslot"><span class="lbl">&#9876;</span><span id="wname">no weapon</span></div>
+  <div id="bag"></div>
+</div>
+
+<div class="touch">
+  <div class="dpad">
+    <button class="sp" tabindex="-1"></button>
+    <button data-dir="up" aria-label="Move up">&uarr;</button>
+    <button class="sp" tabindex="-1"></button>
+    <button data-dir="left" aria-label="Move left">&larr;</button>
+    <button data-dir="down" aria-label="Move down">&darr;</button>
+    <button data-dir="right" aria-label="Move right">&rarr;</button>
+  </div>
+  <div class="acts">
+    <button data-act="talk" aria-label="Talk or take">E</button>
+    <button data-act="slash" class="slash" aria-label="Slash">&#9876;</button>
+    <button data-act="swap" aria-label="Swap weapon">Q</button>
+  </div>
 </div>
 
 <script>
   const $ = (s) => document.getElementById(s);
 
-  window.__hud = ({ anim, tile, prompt, talking }) => {
+  window.__hud = ({ anim, tile, prompt, verb, talking }) => {
     $('hud').textContent = `${anim}  tile ${tile[0]},${tile[1]}`;
-    $('prompt').textContent = talking ? '' : (prompt ? `press E: ${prompt}` : '');
+    $('prompt').textContent = talking ? '' : (prompt ? `press E: ${verb} ${prompt}` : '');
+  };
+
+  // The bag. Icons are the world's own item cells, read straight out of the
+  // items atlas at 2x, so a thing looks the same on the ground and in hand.
+  window.__inventory = ({ items, weapon }) => {
+    const A = window.ART.manifest.atlases.items;
+    const [fw, fh] = A.frame;
+    const icon = (index) => {
+      const el = document.createElement('span');
+      el.className = 'icon';
+      el.style.backgroundImage = `url(${window.ART.images.items})`;
+      el.style.backgroundSize = `${A.cols * fw * 2}px ${A.rows * fh * 2}px`;
+      el.style.backgroundPosition =
+        `-${(index % A.cols) * fw * 2}px -${Math.floor(index / A.cols) * fh * 2}px`;
+      return el;
+    };
+    const bag = $('bag');
+    bag.replaceChildren();
+    for (const it of items) {
+      const s = document.createElement('div');
+      s.className = 'slot' + (it.equipped ? ' on' : '');
+      s.title = it.name;
+      s.append(icon(it.index));
+      const n = document.createElement('span');
+      n.textContent = it.count > 1 ? `${it.name} ×${it.count}` : it.name;
+      s.append(n);
+      bag.append(s);
+    }
+    $('wslot').classList.toggle('on', !!weapon);
+    $('wname').textContent = weapon || 'no weapon';
   };
 
   window.__dialogue = (d) => {
@@ -112,6 +169,12 @@
     const set = (v) => (e) => { e.preventDefault(); window.__pad[dir] = v; b.classList.toggle('on', v); };
     b.addEventListener('pointerdown', set(true));
     ['pointerup', 'pointerleave', 'pointercancel'].forEach((ev) => b.addEventListener(ev, set(false)));
+  });
+  document.querySelectorAll('.acts button[data-act]').forEach((b) => {
+    b.addEventListener('pointerdown', (e) => {
+      e.preventDefault();
+      if (window.__act) window.__act(b.dataset.act);
+    });
   });
 
   const focusEl = $('focus');

@@ -1,0 +1,8 @@
+{
+  "id": "item.berries",
+  "name": "Berries",
+  "sprite": "item.berries",
+  "kind": "material",
+  "stack": true,
+  "description": "Picked at the edge of the wood, where the light gets in."
+}

@@ -1,11 +1,14 @@
-/* Milestone 4: a real map, entities spawned from content definitions, and an
- * NPC you can talk to.
+/* Milestone 5: things to pick up, a bag to keep them in, a weapon in hand.
  *
  * This scene knows no art and no content. Every sprite, animation, tile, prop,
- * actor, dialogue line and map comes from window.ART.manifest, which
+ * actor, item, dialogue line and map comes from window.ART.manifest, which
  * tools/build.py assembles from content/*.json and the generators. Nothing here
  * hardcodes a frame number, a tile index or a piece of text - which is also why
  * this file would port to another engine without touching content/.
+ *
+ * Arming the hero is a sprite swap: the manifest's actor record carries a map
+ * from weapon item to a frame set with the weapon baked into every pose, so
+ * the walk, the gather and the slash all just work with a different base key.
  */
 
 const M = ART.manifest;
@@ -21,7 +24,7 @@ function originOf(spriteKey) {
 }
 
 function defOf(id) {
-  return M.props[id] || M.actors[id] || null;
+  return M.props[id] || M.actors[id] || M.items[id] || null;
 }
 
 /** Tiles a definition stands on, as offsets from its anchor tile. Art and
@@ -29,6 +32,14 @@ function defOf(id) {
  *  and a cottage is three tiles across without needing three sprites. */
 function footprintOf(def) {
   return def.footprint && def.footprint.length ? def.footprint : [[0, 0]];
+}
+
+const DIR = { up: [0, -1], down: [0, 1], left: [-1, 0], right: [1, 0] };
+
+function facingOf([dx, dy]) {
+  if (dy < 0) return 'up';
+  if (dy > 0) return 'down';
+  return dx < 0 ? 'left' : 'right';
 }
 
 class World extends Phaser.Scene {
@@ -53,7 +64,7 @@ class World extends Phaser.Scene {
         key,
         frames: a.frames.map((f) => ({ key: a.atlas, frame: f })),
         frameRate: 1000 / a.ms,
-        repeat: -1,
+        repeat: a.loop === false ? 0 : -1,   // one-shots hand control back
       });
     }
 
@@ -78,6 +89,8 @@ class World extends Phaser.Scene {
     this.solid = this.physics.add.staticGroup();
     this.interactables = [];
     this.wanderers = [];
+    this.pickups = [];
+    this.hittable = [];
     this.blocked = new Set();
     for (const e of map.entities) {
       this.spawn(e.def, e.tile[0], e.tile[1]);
@@ -90,10 +103,18 @@ class World extends Phaser.Scene {
     this.hero = this.physics.add.sprite(p.x, p.y, 'actors').setOrigin(ox, oy);
     this.hero.body.setSize(12, 8).setOffset(10, 21);   // feet, not the whole frame
     this.hero.setCollideWorldBounds(true);
-    this.heroSprite = hero.sprite;
+    this.heroDef = hero;
+    this.heroSprite = hero.sprite;        // swapped for a wielding set when armed
     this.speed = hero.speed;
     this.facing = map.spawn.facing;
     this.hero.anims.play(`${hero.sprite}/idle/${this.facing}`);
+    this.hero.on('animationcomplete', (anim) => this.onAnimDone(anim));
+    this.hero.on('animationupdate', (anim, frame) => this.onAnimFrame(anim, frame));
+
+    this.inventory = new Map();           // item id -> count
+    this.weapon = null;                   // item id in the weapon hand
+    this.busy = false;                    // a one-shot animation owns the hero
+    this.pending = null;                  // the pickup a gather will collect
 
     this.physics.add.collider(this.hero, layer);
     this.physics.add.collider(this.hero, this.solid);
@@ -102,7 +123,8 @@ class World extends Phaser.Scene {
     // --- input ------------------------------------------------------------
     this.keys = this.input.keyboard.addKeys({
       up: 'UP', down: 'DOWN', left: 'LEFT', right: 'RIGHT',
-      w: 'W', a: 'A', s: 'S', d: 'D', talk: 'E', space: 'SPACE', esc: 'ESC',
+      w: 'W', a: 'A', s: 'S', d: 'D',
+      talk: 'E', space: 'SPACE', swap: 'Q', esc: 'ESC',
     });
     const axisOf = { up: 'y', down: 'y', w: 'y', s: 'y',
                      left: 'x', right: 'x', a: 'x', d: 'x' };
@@ -110,12 +132,15 @@ class World extends Phaser.Scene {
     for (const [name, key] of Object.entries(this.keys)) {
       if (axisOf[name]) key.on('down', () => { this.lastAxis = axisOf[name]; });
     }
-    this.keys.talk.on('down', () => this.advanceDialogue());
-    this.keys.space.on('down', () => this.advanceDialogue());
+    this.keys.talk.on('down', () => this.act('talk'));
+    this.keys.space.on('down', () => this.act('slash'));
+    this.keys.swap.on('down', () => this.act('swap'));
     this.keys.esc.on('down', () => this.closeDialogue());
+    window.__act = (name) => this.act(name);   // the touch buttons come in here
 
     this.dialogue = null;
     this.nearest = null;
+    this.pushInventory();
   }
 
   tileCentre(tx, ty) {
@@ -126,6 +151,7 @@ class World extends Phaser.Scene {
   spawn(defId, tx, ty) {
     const def = defOf(defId);
     const isActor = !!M.actors[defId];
+    const isItem = !!M.items[defId];
     const key = isActor ? `${def.sprite}/idle/${def.facing || 'down'}/0` : def.sprite;
     const { ox, oy, rec } = originOf(key);
     const p = this.tileCentre(tx, ty);
@@ -134,6 +160,15 @@ class World extends Phaser.Scene {
     sprite.setDepth(p.y);
     if (isActor) sprite.play(`${def.sprite}/idle/${def.facing || 'down'}`);
 
+    if (isItem) {
+      // Lying on the ground, with a slow bob so it reads as something to take.
+      this.tweens.add({ targets: sprite, y: p.y - 2, duration: 700,
+                        yoyo: true, repeat: -1, ease: 'Sine.inOut' });
+      const pick = { id: defId, def, sprite, item: true };
+      this.pickups.push(pick);
+      this.interactables.push(pick);
+      return sprite;
+    }
     if (def.blocks) {
       for (const [dx, dy] of footprintOf(def)) {
         const q = this.tileCentre(tx + dx, ty + dy);
@@ -143,6 +178,9 @@ class World extends Phaser.Scene {
         this.blocked.add(`${tx + dx},${ty + dy}`);
       }
     }
+    if (def.hittable) {
+      this.hittable.push({ def, sprite });
+    }
     if (def.interact) {
       // position is read from the sprite, so a wandering animal stays talkable
       this.interactables.push({ id: defId, def, sprite });
@@ -151,7 +189,7 @@ class World extends Phaser.Scene {
       this.wanderers.push({
         def, sprite, home: [tx, ty], tile: [tx, ty],
         facing: def.facing || 'down', state: 'idle', timer: 0,
-        goalX: p.x, goalY: p.y,
+        goalX: p.x, goalY: p.y, bolt: 0,
       });
     }
     return sprite;
@@ -209,9 +247,10 @@ class World extends Phaser.Scene {
         const dx = w.goalX - w.sprite.x;
         const dy = w.goalY - w.sprite.y;
         const dist = Math.hypot(dx, dy);
-        const step = (w.def.speed * dt) / 1000;
+        const step = (w.def.speed * (w.bolt || 1) * dt) / 1000;
         if (dist <= step || dist === 0) {
           w.sprite.setPosition(w.goalX, w.goalY);
+          w.bolt = 0;
           this.pickWanderAction(w);
         } else {
           w.sprite.x += (dx / dist) * step;
@@ -228,6 +267,147 @@ class World extends Phaser.Scene {
     }
   }
 
+  // --- actions -------------------------------------------------------------
+  /** One entry point for keys and touch buttons alike. */
+  act(name) {
+    if (name === 'talk') {
+      if (this.dialogue) return this.advanceDialogue();
+      if (this.busy) return;
+      if (this.nearest && this.nearest.item) return this.gather(this.nearest);
+      return this.advanceDialogue();
+    }
+    if (name === 'slash') {
+      if (this.dialogue) return this.advanceDialogue();
+      return this.slash();
+    }
+    if (name === 'swap') return this.cycleWeapon();
+  }
+
+  gather(pick) {
+    this.busy = true;
+    this.pending = pick;
+    this.hero.setVelocity(0, 0);
+    this.hero.anims.play(`${this.heroSprite}/gather/${this.facing}`);
+  }
+
+  slash() {
+    if (this.busy || !this.weapon) return;
+    this.busy = true;
+    this.hero.setVelocity(0, 0);
+    this.hero.anims.play(`${this.heroSprite}/slash/${this.facing}`);
+  }
+
+  onAnimFrame(anim, frame) {
+    // the strike lands on the second frame of the swing, not at its end
+    if (anim.key.split('/')[1] === 'slash' && frame.index === 2) this.strike();
+  }
+
+  onAnimDone(anim) {
+    const state = anim.key.split('/')[1];
+    if (state === 'gather' && this.pending) {
+      const pick = this.pending;
+      this.pending = null;
+      this.collect(pick);
+    }
+    if (state === 'gather' || state === 'slash') this.busy = false;
+  }
+
+  collect(pick) {
+    this.pickups = this.pickups.filter((p) => p !== pick);
+    this.interactables = this.interactables.filter((p) => p !== pick);
+    if (this.nearest === pick) this.nearest = null;
+    this.tweens.killTweensOf(pick.sprite);
+    pick.sprite.destroy();
+    this.addItem(pick.id);
+  }
+
+  addItem(id) {
+    const def = M.items[id];
+    this.inventory.set(id, (this.inventory.get(id) || 0) + 1);
+    if (def.slot === 'weapon' && !this.weapon) this.equip(id);   // first blade: draw it
+    this.pushInventory();
+  }
+
+  weaponsHeld() {
+    return [...this.inventory.keys()].filter((id) => M.items[id].slot === 'weapon');
+  }
+
+  /** Arm the hero, or disarm with null. Just a sprite base: every pose of the
+   *  wielding frame set already has the weapon in hand. */
+  equip(id) {
+    this.weapon = id;
+    this.heroSprite = id ? this.heroDef.wield[id] : this.heroDef.sprite;
+    this.pushInventory();
+  }
+
+  cycleWeapon() {
+    const held = this.weaponsHeld();
+    if (!held.length) return;
+    const ring = [null, ...held];
+    this.equip(ring[(ring.indexOf(this.weapon) + 1) % ring.length]);
+  }
+
+  /** What the swing reaches: a tile ahead, a tile and a bit either side. */
+  strike() {
+    const dir = DIR[this.facing];
+    const cx = this.hero.x + dir[0] * this.ts;
+    const cy = this.hero.y - 6 + dir[1] * this.ts;     // the anchor is at the feet
+    const reach = this.ts * 1.25;
+    const inArc = (s) => Math.abs(s.x - cx) <= reach && Math.abs(s.y - cy) <= reach;
+    for (const w of this.wanderers) {
+      if (!inArc(w.sprite)) continue;
+      this.flinch(w.sprite);
+      this.startle(w, dir);
+    }
+    for (const h of this.hittable) {
+      if (inArc(h.sprite)) this.flinch(h.sprite, true);
+    }
+  }
+
+  flinch(sprite, shake = false) {
+    sprite.setTintFill(0xffffff);                        // a white hit flash
+    this.time.delayedCall(70, () => sprite.clearTint());
+    if (!shake) return;
+    const x0 = sprite.x;
+    this.tweens.add({ targets: sprite, x: x0 + 2, duration: 40, yoyo: true,
+                      repeat: 2, onComplete: () => { sprite.x = x0; } });
+  }
+
+  /** An animal that is hit bolts a tile or two away from the blow, at speed,
+   *  then goes back to being an animal. */
+  startle(w, dir) {
+    const cfg = w.def.wander;
+    for (const n of [2, 1]) {
+      const nx = w.tile[0] + dir[0] * n;
+      const ny = w.tile[1] + dir[1] * n;
+      if (Math.abs(nx - w.home[0]) > cfg.radius + 2) continue;
+      if (Math.abs(ny - w.home[1]) > cfg.radius + 2) continue;
+      if (!this.isWalkable(nx, ny)) continue;
+      const c = this.tileCentre(nx, ny);
+      w.tile = [nx, ny];
+      w.goalX = c.x;
+      w.goalY = c.y;
+      w.facing = facingOf(dir);
+      w.state = 'walk';
+      w.bolt = 2.5;
+      return;
+    }
+  }
+
+  pushInventory() {
+    if (!window.__inventory) return;
+    const items = [...this.inventory.entries()].map(([id, count]) => {
+      const def = M.items[id];
+      return { id, name: def.name, count, index: M.sprites[def.sprite].index,
+               weapon: def.slot === 'weapon', equipped: id === this.weapon };
+    });
+    window.__inventory({
+      items,
+      weapon: this.weapon ? M.items[this.weapon].name : null,
+      canSwap: this.weaponsHeld().length > 0,
+    });
+  }
+
   // --- dialogue ----------------------------------------------------------
   advanceDialogue() {
     if (this.dialogue) {
@@ -235,7 +415,7 @@ class World extends Phaser.Scene {
       if (this.dialogue.line >= this.dialogue.lines.length) return this.closeDialogue();
       return this.renderDialogue();
     }
-    if (!this.nearest) return;
+    if (!this.nearest || !this.nearest.def.interact) return;
     const dlg = M.dialogue[this.nearest.def.interact];
     this.dialogue = { speaker: dlg.speaker, lines: dlg.lines, line: 0 };
     this.hero.setVelocity(0, 0);
@@ -264,11 +444,12 @@ class World extends Phaser.Scene {
     const k = this.keys;
     const pad = window.__pad || {};
     const talking = !!this.dialogue;
+    const locked = talking || this.busy;   // a swing or a crouch owns the body
 
-    const left = !talking && (k.left.isDown || k.a.isDown || !!pad.left);
-    const right = !talking && (k.right.isDown || k.d.isDown || !!pad.right);
-    const up = !talking && (k.up.isDown || k.w.isDown || !!pad.up);
-    const down = !talking && (k.down.isDown || k.s.isDown || !!pad.down);
+    const left = !locked && (k.left.isDown || k.a.isDown || !!pad.left);
+    const right = !locked && (k.right.isDown || k.d.isDown || !!pad.right);
+    const up = !locked && (k.up.isDown || k.w.isDown || !!pad.up);
+    const down = !locked && (k.down.isDown || k.s.isDown || !!pad.down);
 
     let vx = (right ? 1 : 0) - (left ? 1 : 0);
     let vy = (down ? 1 : 0) - (up ? 1 : 0);
@@ -281,9 +462,10 @@ class World extends Phaser.Scene {
       this.facing = horizontal ? (vx < 0 ? 'left' : 'right')
                                : (vy < 0 ? 'up' : 'down');
     }
-    const want = `${this.heroSprite}/${moving ? 'walk' : 'idle'}/${this.facing}`;
     const cur = this.hero.anims.currentAnim && this.hero.anims.currentAnim.key;
-    if (cur !== want) this.hero.anims.play(want, true);
+    const want = `${this.heroSprite}/${moving ? 'walk' : 'idle'}/${this.facing}`;
+    if (!this.busy && cur !== want) this.hero.anims.play(want, true);
+    const shown = this.busy && cur ? cur : want;
 
     this.hero.setDepth(this.hero.y);        // anchor is at the feet, so y sorts
 
@@ -299,9 +481,10 @@ class World extends Phaser.Scene {
 
     if (window.__hud) {
       window.__hud({
-        anim: want.split('/').slice(1).join('-'),
+        anim: shown.split('/').slice(1).join('-'),
         tile: [Math.floor(this.hero.x / this.ts), Math.floor(this.hero.y / this.ts)],
         prompt: !talking && best ? (best.def.name || best.id.split('.')[1]) : null,
+        verb: best && best.item ? 'take' : 'talk',
         talking,
       });
     }

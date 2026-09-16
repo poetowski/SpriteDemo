@@ -26,7 +26,8 @@ TOOLS = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(TOOLS)
 sys.path.insert(0, TOOLS)
 
-from gen import actor, animal, props as props_gen, tiles as tiles_gen  # noqa: E402
+from gen import (actor, animal, items as items_gen, props as props_gen,  # noqa: E402
+                 tiles as tiles_gen)
 from gen.palette import PALETTE, VARIANTS, resolve                   # noqa: E402
 import make_page                                                     # noqa: E402
 from pipeline import aseprite, manifest as manifest_mod, validate    # noqa: E402
@@ -48,15 +49,16 @@ def build_atlases(sprite_rigs):
     actors = Atlas("actors", actor.FRAME, actor.FRAME, 6)
     anims = {}
     by_sprite = {}
-    for sprite_key, (rig_name, variant) in sorted(sprite_rigs.items()):
+    for sprite_key, (rig_name, variant, states, held) in sorted(sprite_rigs.items()):
         rig = RIGS[rig_name]
         pal = resolve(variant)
-        frames = rig.build_frames(variant)
+        frames = rig.build_frames(variant, states, held)
         by_sprite[sprite_key] = (rig_name, variant, frames)
-        for state, facing, i, cel, shadow, ms in frames:
+        for state, facing, i, cel, shadow, ms, loops in frames:
             base = f"{sprite_key}/{state}/{facing}"
             idx = actors.add(f"{base}/{i}", [shadow, cel], rig.ANCHOR, ms, pal)
-            anims.setdefault(base, {"atlas": "actors", "frames": [], "ms": ms})
+            anims.setdefault(base, {"atlas": "actors", "frames": [], "ms": ms,
+                                    "loop": loops})
             anims[base]["frames"].append(idx)
 
     tiles = Atlas("tiles", tiles_gen.SIZE, tiles_gen.SIZE, 8)
@@ -80,12 +82,20 @@ def build_atlases(sprite_rigs):
         big.add(pid, [canvas], props_gen.BIG_ANCHOR)
         big_canvases[pid] = canvas
 
-    sheets = [actors, tiles, props, big]
+    # Items are 16x16: the same cell lies on the ground and sits in the HUD.
+    items = Atlas("items", items_gen.SIZE, items_gen.SIZE, 8)
+    item_canvases = {}
+    for iid, canvas in items_gen.build_items():
+        items.add(iid, [canvas], items_gen.ANCHOR)
+        item_canvases[iid] = canvas
+
+    sheets = [actors, tiles, props, big, items]
     sprites = {}
     for a in sheets:
         sprites.update(a.sprites())
     return (sheets, sprites, anims, tile_canvases,
-            {"props": prop_canvases, "props_big": big_canvases}, by_sprite)
+            {"props": prop_canvases, "props_big": big_canvases,
+             "items": item_canvases}, by_sprite)
 
 
 # ---------------------------------------------------------------- exports ---
@@ -97,18 +107,19 @@ def write_aseprite(by_sprite, tile_canvases, prop_canvases):
 
     for sprite_key, (rig_name, variant, frames) in sorted(by_sprite.items()):
         rig = RIGS[rig_name]
-        tags, i = [], 0
-        for facing in rig.FACINGS:
-            for state in rig.STATE_ORDER:
-                n = len(rig.STATES[state][0])
-                tags.append((f"{state}-{facing}", i, i + n - 1, TAG_COLOR))
-                i += n
+        tags = []                          # one tag per run of state-facing,
+        for i, (state, facing, *_rest) in enumerate(frames):   # read off the
+            name = f"{state}-{facing}"     # frames, so a frame set with slash
+            if tags and tags[-1][0] == name:                   # and one without
+                tags[-1] = (name, tags[-1][1], i, TAG_COLOR)   # both tag right
+            else:
+                tags.append((name, i, i, TAG_COLOR))
         pal = resolve(variant)
         path = os.path.join(out, f"{sprite_key.replace('.', '_')}.aseprite")
         aseprite.write(
             path, rig.FRAME, rig.FRAME, ["shadow", "actor"],
             [([s.rgba_bytes(pal), c.rgba_bytes(pal)], ms)
-             for _st, _f, _i, c, s, ms in frames],
+             for _st, _f, _i, c, s, ms, _loop in frames],
             [(pal[k], name) for k, (_rgba, name) in PALETTE.items()],
             tags,
         )
@@ -118,7 +129,8 @@ def write_aseprite(by_sprite, tile_canvases, prop_canvases):
     for name, canvases, size in (
             ("tiles", tile_canvases, tiles_gen.SIZE),
             ("props", prop_canvases["props"], actor.FRAME),
-            ("props_big", prop_canvases["props_big"], props_gen.BIG_FRAME)):
+            ("props_big", prop_canvases["props_big"], props_gen.BIG_FRAME),
+            ("items", prop_canvases["items"], items_gen.SIZE)):
         path = os.path.join(out, f"{name}.aseprite")
         items = list(canvases.items())
         aseprite.write(
@@ -181,7 +193,23 @@ def assemble():
         if variant not in VARIANTS:
             sys.exit(f"[variant] {d['_file']}: sprite {d['sprite']!r} has no "
                      f"palette variant {variant!r} in tools/gen/palette.py")
-        sprite_rigs[d["sprite"]] = (rig_name, variant)
+        sprite_rigs[d["sprite"]] = (rig_name, variant, d.get("states"), None)
+        if not d.get("wields"):
+            continue
+        # One extra frame set per weapon the rig can draw. The engine arms a
+        # character by switching sprite base and nothing else, so the map from
+        # item to sprite is written into the actor's own record.
+        d["wield"] = {}
+        for iid, item in sorted(content["items"].items()):
+            held = item.get("held")
+            if not held:
+                continue
+            if held not in getattr(RIGS[rig_name], "WEAPONS", {}):
+                sys.exit(f"[item-held] {item['_file']}: the {rig_name} rig has no "
+                         f"drawing for {held!r}")
+            key = f"{d['sprite']}_{held}"
+            sprite_rigs[key] = (rig_name, variant, d.get("states"), held)
+            d["wield"][iid] = key
     sheets, sprites, anims, tile_canvases, prop_canvases, by_sprite = \
         build_atlases(sprite_rigs)
     man = manifest_mod.build(content, sheets, sprites, anims)

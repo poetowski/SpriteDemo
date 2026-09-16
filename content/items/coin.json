@@ -1,0 +1,8 @@
+{
+  "id": "item.coin",
+  "name": "Old coin",
+  "sprite": "item.coin",
+  "kind": "material",
+  "stack": true,
+  "description": "Worn smooth. Older than the village."
+}

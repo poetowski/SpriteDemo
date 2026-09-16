@@ -31,12 +31,12 @@ def run(content, man, tile_canvases):
             if not ID_RE.match(cid):
                 _fail("id-format", f"{defn['_file']}: bad id {cid!r}")
             if not cid.startswith(("tile.", "prop.", "actor.", "npc.",
-                                   "dlg.", "map.")):
+                                   "item.", "dlg.", "map.")):
                 _fail("id-format", f"{defn['_file']}: unknown id prefix {cid!r}")
     passed.append("id-format")
 
     # 2 - every sprite key referenced by a definition exists in an atlas
-    for kind in ("tiles", "props", "actors"):
+    for kind in ("tiles", "props", "actors", "items"):
         for cid, defn in content[kind].items():
             key = defn["sprite"]
             if not SPRITE_RE.match(key):
@@ -111,8 +111,10 @@ def run(content, man, tile_canvases):
         # and no two solid things may claim the same tile - otherwise a cottage
         # ends up half in the river, or two props fight over one collision box.
         claimed = {}
+        placed = []
         for e in m["entities"]:
-            defn = man["props"].get(e["def"]) or man["actors"].get(e["def"])
+            defn = (man["props"].get(e["def"]) or man["actors"].get(e["def"])
+                    or man["items"].get(e["def"]))
             if defn is None:
                 _fail("map-entity", f"{mid}: unknown definition {e['def']!r}")
             ex, ey = e["tile"]
@@ -134,6 +136,15 @@ def run(content, man, tile_canvases):
                     _fail("map-overlap", f"{mid}: {where} and {claimed[(fx, fy)]} "
                                          f"both claim tile [{fx}, {fy}]")
                 claimed[(fx, fy)] = where
+            placed.append((e, defn))
+        # Nothing that does not block may stand inside something that does: an
+        # item under a boulder cannot be picked up, a sheep inside a wall
+        # cannot leave, and neither would ever be seen.
+        for e, defn in placed:
+            ex, ey = e["tile"]
+            if not defn.get("blocks") and (ex, ey) in claimed:
+                _fail("map-overlap", f"{mid}: {e['def']} at {e['tile']} is inside "
+                                     f"{claimed[(ex, ey)]}")
         sx, sy = m["spawn"]["tile"]
         if not man["tiles"][m["legend"][m["ground"][sy][sx]]]["walkable"]:
             _fail("map-spawn", f"{mid}: spawn {m['spawn']['tile']} is not walkable")
@@ -155,5 +166,26 @@ def run(content, man, tile_canvases):
                 _fail("dialogue-exists",
                       f"{defn['_file']}: interact -> unknown dialogue {dlg!r}")
     passed.append("dialogue-exists")
+
+    # 8 - items: a kind the engine knows; a weapon names what the hand holds;
+    #     and every actor that wields has a complete frame set per weapon,
+    #     slash included, or the engine would switch to a sprite with holes.
+    for iid, defn in content["items"].items():
+        kind = defn.get("kind")
+        if kind not in ("material", "weapon"):
+            _fail("item-kind", f"{defn['_file']}: kind must be material or weapon, "
+                               f"not {kind!r}")
+        if kind == "weapon" and not defn.get("held"):
+            _fail("item-kind", f"{defn['_file']}: a weapon needs a \"held\" drawing")
+    passed.append("item-kind")
+    for cid, defn in content["actors"].items():
+        for iid, base in (defn.get("wield") or {}).items():
+            for state in list(defn["states"]) + ["slash"]:
+                for facing in FACINGS:
+                    key = f"{base}/{state}/{facing}"
+                    if key not in man["anims"]:
+                        _fail("item-held",
+                              f"{cid} wielding {iid}: no animation {key!r}")
+    passed.append("item-held")
 
     return passed

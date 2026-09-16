@@ -8,7 +8,8 @@ wander and graze on their own.
 
 Riverside is 96×72 tiles — a forest, a lake and the river out of it, a village
 at the crossroads, a quarry, a walled graveyard and a farm — with 33 kinds of
-prop, every one of them solid.
+prop, every one of them solid, and thirteen kinds of thing to pick up, three
+of which go in the weapon hand and swing.
 
 ![the world](build/map.png)
 
@@ -47,7 +48,7 @@ The rule: `tools/` and `content/` are truth. Everything in `build/` and
 content/*.json  +  tools/gen/*.py
         │  generate
 build/atlas/*.png  ·  build/manifest.json  ·  build/aseprite/*.aseprite
-        │  validate   ← 16 gates, all must pass
+        │  validate   ← 18 gates, all must pass
 game/art-embed.js  →  game/index.html + main.js  →  game/page.html
 ```
 
@@ -75,6 +76,8 @@ failure points at an authored file, never at generated output:
 | `map-overlap` | two solid things claiming the same tile |
 | `map-spawn` | a spawn in water, or inside a wall |
 | `dialogue-exists` | an NPC pointing at dialogue that does not exist |
+| `item-kind` | an item the engine has no idea what to do with, or a weapon with nothing to draw |
+| `item-held` | a weapon the hero could equip but has no frames for - a sprite with holes |
 | `deterministic` | the build drifting between runs |
 
 ## How the art works
@@ -140,6 +143,30 @@ offsets for a three-by-two cottage. The scene puts one static body on each, so a
 tree's canopy can overhang ground you can still walk on, and a building is solid
 across its whole base without being cut into three sprites.
 
+## Items, the bag, and the weapon hand
+
+An item is a 16×16 icon drawn once in `tools/gen/items.py` and used twice: it
+lies on the ground with a slow bob, and the HUD cuts the same cell out of the
+same atlas for the bag. What it *is* — `material` or `weapon`, whether it
+stacks — is `content/items/`. Walk up to one and press **E**: the hero crouches
+(`gather`, three frames of the same rig, hands to the ground) and it goes in
+the bag.
+
+**A weapon is a sprite swap, not a second sprite.** The biped rig draws a held
+weapon into every pose from the hand outward along a direction — so one
+description of a sword serves the walk, the crouch and each frame of the swing,
+and the same frame decides whether the blade is in front of the body or behind
+it. `tools/build.py` bakes one frame set per weapon (`actor.hero_sword`,
+`_axe`, `_spear`) and writes the map from item to frame set into the hero's
+manifest record; the scene arms the hero by switching sprite base and nothing
+else. **Space** swings (`slash`: wind up, strike, follow through, recover),
+**Q** cycles what is in the bag. The strike lands on the second frame: anything
+in the arc a tile ahead flashes, livestock bolts, and props marked `hittable`
+shake — the scarecrow is there to be practised on.
+
+Picking up the first weapon draws it; the sword is by Arne's anvil, the felling
+axe at the woodcutters' camp, the spear in the old tower.
+
 ## Verification
 
 - Every `.aseprite` is parsed back at build time and checked against its source.
@@ -150,8 +177,12 @@ across its whole base without being cut into three sprites.
   declares, one sprite per placed entity, one static body per blocked tile, and
   livestock actually wandering. It exits non-zero when a check fails — the
   screenshot it writes to `build/shot.png` is the by-product, not the point.
-  `--talk` also presses **E** and checks the dialogue box opens; `--map` renders
-  the whole 96×72 world as one frame.
+  `--talk` presses **E** and checks the dialogue box opens; `--gather` presses
+  it beside an item and checks the crouch played and the bag grew by one;
+  `--give item.axe --slash` arms the hero, presses **Space** and checks the
+  swing played and handed control back. `--map` renders the whole 96×72 world
+  as one frame; `--pose slash,1 --page` freezes the strike and photographs the
+  page with its bag and buttons.
 
 ## Engine note
 

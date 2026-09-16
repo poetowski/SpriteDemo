@@ -6,6 +6,8 @@
   "rig": "biped",
   "states": [
     "walk",
-    "idle"
-  ]
+    "idle",
+    "gather"
+  ],
+  "wields": true
 }

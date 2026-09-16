@@ -1,0 +1,8 @@
+{
+  "id": "item.flower",
+  "name": "Wildflower",
+  "sprite": "item.flower",
+  "kind": "material",
+  "stack": true,
+  "description": "From the meadow. It will not last."
+}

@@ -152,8 +152,16 @@ GRAZE = [                       # head down, chewing
     dict(bob=0, legs=(0, 0, 0, 0), spread=1, head_down=7),
     dict(bob=0, legs=(0, 0, 0, 0), spread=1, head_down=6),
 ]
-STATES = {"walk": (WALK, 150), "idle": (IDLE, 600), "graze": (GRAZE, 380)}
+# state -> (poses, ms per frame, loops); every animal state loops.
+STATES = {"walk": (WALK, 150, True), "idle": (IDLE, 600, True),
+          "graze": (GRAZE, 380, True)}
 STATE_ORDER = ["walk", "idle", "graze"]
+
+
+def states_for(states=None, held=None):
+    """Same contract as the biped rig. Animals hold nothing, so `held` is
+    accepted and ignored rather than being a special case downstream."""
+    return [s for s in STATE_ORDER if s in (states or STATE_ORDER)]
 
 
 def draw_shadow():
@@ -163,13 +171,13 @@ def draw_shadow():
     return c
 
 
-def build_frames(species="sheep"):
-    """[(state, facing, i, cel, shadow, ms), ...] - same shape as the biped rig."""
+def build_frames(species="sheep", states=None, held=None):
+    """[(state, facing, i, cel, shadow, ms, loops), ...] - the biped's shape."""
     shape = SPECIES[species]
     frames = []
     for facing in FACINGS:
-        for state in STATE_ORDER:
-            poses, ms = STATES[state]
+        for state in states_for(states, held):
+            poses, ms, loops = STATES[state]
             for i, pose in enumerate(poses):
                 if facing in ("left", "right"):
                     cel = draw_side(shape, pose)
@@ -179,5 +187,5 @@ def build_frames(species="sheep"):
                     cel = draw_front(shape, pose)
                 else:
                     cel = draw_back(shape, pose)
-                frames.append((state, facing, i, cel, draw_shadow(), ms))
+                frames.append((state, facing, i, cel, draw_shadow(), ms, loops))
     return frames

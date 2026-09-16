@@ -1,0 +1,8 @@
+{
+  "id": "item.ore",
+  "name": "Iron ore",
+  "sprite": "item.ore",
+  "kind": "material",
+  "stack": true,
+  "description": "A lump from the quarry, red where the iron shows."
+}

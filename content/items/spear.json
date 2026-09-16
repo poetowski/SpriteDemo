@@ -1,0 +1,10 @@
+{
+  "id": "item.spear",
+  "name": "Spear",
+  "sprite": "item.spear",
+  "kind": "weapon",
+  "slot": "weapon",
+  "held": "spear",
+  "stack": false,
+  "description": "Left in the old tower by whoever last kept watch."
+}

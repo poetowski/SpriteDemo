@@ -1,0 +1,10 @@
+{
+  "id": "item.sword",
+  "name": "Sword",
+  "sprite": "item.sword",
+  "kind": "weapon",
+  "slot": "weapon",
+  "held": "sword",
+  "stack": false,
+  "description": "Arne's own work. Balanced, and sharp."
+}

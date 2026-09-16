@@ -1,9 +1,17 @@
-"""Parametric character rig: 4 facings, walk + idle.
+"""Parametric character rig: 4 facings; walk, idle, gather, and slash.
 
 Every frame is composed by the same body-part functions; only pose parameters
-(bob, leg phase, arm swing) change, so a character cannot drift between
+(bob, leg phase, arm swing, reach) change, so a character cannot drift between
 facings or states. The hips follow the bob while the feet stay on a fixed
-ground line, so legs stretch by a pixel instead of the sprite hopping.
+ground line, so legs stretch by a pixel instead of the sprite hopping - which
+is also what makes the gather crouch free: bob the body down and the legs
+simply get shorter.
+
+A held weapon is part of the pose, not a second sprite. It is drawn from the
+hand out along a direction, so one description of a sword serves every frame
+of the swing, and the same frame decides whether it is in front of the body
+or behind it. A character wielding something is therefore a separate frame
+set (actor.hero_sword), baked here, and the engine just switches sprite base.
 
 Frame is 32x32, symmetric about the x=15/16 boundary. ANCHOR is the point that
 sits on a map tile - exported into the atlas so the engine never guesses.
@@ -106,24 +114,73 @@ def torso_side(c, dy=0):
     c.row(14, 17, NECK_Y + dy, "SKS")
 
 
-def arms_front(c, dy=0, swing=0, back=False):
+def _arm_off(side, swing, reach):
+    """Vertical offset of one arm: swing lifts one and drops the other,
+    reach drops both - that is the crouch-and-pick-up."""
+    return (-1 if swing * side > 0 else (1 if swing else 0)) + reach
+
+
+def arms_front(c, dy=0, swing=0, back=False, reach=0):
     """swing > 0: left arm up / right arm down; < 0 is the mirror."""
     t = TORSO_TOP + dy + 1
     for side, x0, inner in ((-1, 10, 11), (1, 20, 20)):
-        off = -1 if swing * side > 0 else (1 if swing else 0)
+        off = _arm_off(side, swing, reach)
         x1 = x0 + 1
         c.rect(x0, t + off, x1, t + 3 + off, "TU")
         c.col(inner, t + off, t + 3 + off, "TUS")   # seam against the torso
         c.rect(x0, t + 4 + off, x1, t + 5 + off, "SKS" if back else "SK")
 
 
-def arm_side(c, dy=0, swing=0):
+def arm_side(c, dy=0, swing=0, reach=0):
     """The near arm only; the far arm is implied, which keeps the read clean."""
-    t = TORSO_TOP + dy + 1
-    x = 17 + swing                         # hangs near the chest, swings 1px
-    c.rect(x, t + 1, x + 1, t + 4, "TU")
+    t = TORSO_TOP + dy + 1 + reach
+    x = 17 + swing + reach // 2            # hangs near the chest, swings 1px,
+    c.rect(x, t + 1, x + 1, t + 4, "TU")   # and reaches forward when crouched
     c.col(x, t + 1, t + 4, "TUS")          # one seam, not a stripe pattern
     c.rect(x, t + 5, x + 1, t + 6, "SK")   # the hand below the hem carries it
+
+
+# ---------------------------------------------------------------- weapons ---
+# A weapon is a line of pixels laid out from the hand along a unit step, with
+# a guard or a head hung off the perpendicular. Describing it that way means
+# the swing is just a different step per frame, not a redraw per orientation.
+WEAPONS = {
+    "sword": dict(length=8, grip=2, shaft="MTL", edge="MT", guard=True),
+    "axe":   dict(length=7, grip=0, shaft="WD", edge="WDD", head="axe"),
+    "spear": dict(length=9, grip=0, shaft="WD", edge="WDD", head="spear"),
+}
+
+REST_AIM = {"down": (0, -1), "up": (0, -1), "right": (1, -1)}
+
+
+def draw_weapon(c, hx, hy, aim, name):
+    spec = WEAPONS[name]
+    dx, dy = aim
+    px, py = -dy, dx                       # the perpendicular, for guards
+    straight = not (dx and dy)
+    for i in range(spec["length"] + 1):
+        x, y = hx + dx * i, hy + dy * i
+        if i < spec["grip"]:
+            c.set(x, y, "WD")
+            continue
+        c.set(x, y, spec["shaft"])
+        if straight and i >= spec["grip"] + 1:
+            c.set(x + px, y + py, spec["edge"])    # a second row gives it width
+    if spec.get("guard"):
+        g = spec["grip"]
+        for k in (-1, 0, 1, 2):
+            c.set(hx + dx * g + px * k, hy + dy * g + py * k, "WDD")
+    head = spec.get("head")
+    if head == "axe":                      # a bit hung on one side of the haft
+        for i in range(spec["length"] - 2, spec["length"] + 1):
+            for k in (1, 2):
+                c.set(hx + dx * i + px * k, hy + dy * i + py * k,
+                      "MTL" if k == 2 else "MT")
+    elif head == "spear":
+        n = spec["length"]
+        c.set(hx + dx * (n - 1), hy + dy * (n - 1), "WDD")   # the collar
+        c.set(hx + dx * n, hy + dy * n, "MTL")
+        c.set(hx + dx * (n + 1), hy + dy * (n + 1), "MTL")
 
 
 def _leg_front(c, x0, x1, top, lift, toe):
@@ -161,24 +218,46 @@ def legs_side(c, top_dy=0, phase=0):
 
 
 # ------------------------------------------------------------------ poses ---
-def draw_actor(direction, bob=0, leg=0, swing=0):
-    """One cel. direction in {down, up, right}; left is the mirror of right."""
+def weapon_hand(direction, dy=0, swing=0, reach=0):
+    """Where a held weapon starts: just outside the weapon hand, which is the
+    character's right - screen right facing us, screen left from behind, the
+    near hand in profile. Follows the arm, so the weapon rides the walk cycle."""
+    if direction == "down":
+        return 22, 20 + dy + _arm_off(1, swing, reach)
+    if direction == "up":
+        return 9, 20 + dy + _arm_off(-1, swing, reach)
+    return 19 + swing + reach // 2, 20 + dy + reach
+
+
+def draw_actor(direction, bob=0, leg=0, swing=0, reach=0, held=None, aim=None):
+    """One cel. direction in {down, up, right}; left is the mirror of right.
+    held names a WEAPONS entry; aim is the step it points along (rest if
+    None). Seen from behind the weapon hand is the far one, so the weapon
+    goes down first and the body over it."""
     c = Canvas(FRAME, FRAME)
+    aim = aim or REST_AIM[direction]
+    hx, hy = weapon_hand(direction, bob, swing, reach)
     if direction == "down":
         legs_front(c, bob, leg)
         torso_front(c, bob)
-        arms_front(c, bob, swing)
+        arms_front(c, bob, swing, reach=reach)
         head_front(c, bob)
+        if held:
+            draw_weapon(c, hx, hy, aim, held)
     elif direction == "up":
+        if held:
+            draw_weapon(c, hx, hy, aim, held)
         legs_front(c, bob, leg)
         torso_front(c, bob, back=True)
-        arms_front(c, bob, swing, back=True)
+        arms_front(c, bob, swing, back=True, reach=reach)
         head_back(c, bob)
     elif direction == "right":
         legs_side(c, bob, leg)
         torso_side(c, bob)
         head_side(c, bob)
-        arm_side(c, bob, swing)
+        arm_side(c, bob, swing, reach)
+        if held:
+            draw_weapon(c, hx, hy, aim, held)
     else:
         raise ValueError(direction)
     return c.outline()
@@ -208,27 +287,69 @@ IDLE = [                       # 2-frame breath
     dict(bob=0, leg=0, swing=0, squash=0),
     dict(bob=-1, leg=0, swing=0, squash=0),
 ]
-STATES = {"walk": (WALK, 120), "idle": (IDLE, 500)}
-STATE_ORDER = ["walk", "idle"]
+GATHER = [                     # crouch, hands to the ground, rise
+    dict(bob=1, leg=0, swing=0, squash=0, reach=2),
+    dict(bob=3, leg=0, swing=0, squash=1, reach=4),
+    dict(bob=1, leg=0, swing=0, squash=0, reach=2),
+]
+SLASH = [                      # wind up, strike, follow through, recover
+    dict(bob=-1, leg=0, swing=1, squash=0),
+    dict(bob=1, leg=1, swing=-1, squash=1),
+    dict(bob=1, leg=1, swing=-1, squash=1),
+    dict(bob=0, leg=0, swing=0, squash=0),
+]
+# Where the weapon points on each slash frame, per source facing. Facing us it
+# sweeps across our right; from behind, the far hand does the mirror; in
+# profile it is raised beside the head and chopped down and forward.
+SLASH_AIM = {
+    "down":  [(1, -1), (1, 0), (1, 1), None],
+    "up":    [(-1, 1), (-1, 0), (-1, -1), None],
+    "right": [(0, -1), (1, 0), (1, 1), None],
+}
+# state -> (poses, ms per frame, loops). One-shot states end and hand control
+# back; the engine reads the flag rather than knowing which is which.
+STATES = {
+    "walk": (WALK, 120, True),
+    "idle": (IDLE, 500, True),
+    "gather": (GATHER, 140, False),
+    "slash": (SLASH, 90, False),
+}
+STATE_ORDER = ["walk", "idle", "gather", "slash"]
+BASE_STATES = ["walk", "idle", "gather"]       # what an unarmed biped has
 
 
-def build_frames(variant=None):
-    """[(state, facing, i, actor Canvas, shadow Canvas, ms), ...]
+def states_for(states=None, held=None):
+    """The states one frame set carries: the actor's own, plus slash when it
+    is wielding something - nobody swings an empty hand."""
+    out = [s for s in STATE_ORDER if s in (states or BASE_STATES)]
+    if held and "slash" not in out:
+        out.append("slash")
+    return out
+
+
+def build_frames(variant=None, states=None, held=None):
+    """[(state, facing, i, actor Canvas, shadow Canvas, ms, loops), ...]
 
     `variant` is accepted for a uniform rig interface but unused: biped
     variants are pure palette swaps, so every variant shares these pixels.
+    `held` bakes a weapon into every frame and adds the slash state.
 
     Linear order: facing-major, then state, then frame - which is also the
     sheet's row-major order and the .aseprite frame order.
     """
+    if held and held not in WEAPONS:
+        raise ValueError(f"no such weapon drawing: {held!r}")
     frames = []
     for facing in FACINGS:
         src = "right" if facing == "left" else facing
-        for state in STATE_ORDER:
-            poses, ms = STATES[state]
+        for state in states_for(states, held):
+            poses, ms, loops = STATES[state]
             for i, p in enumerate(poses):
-                cel = draw_actor(src, bob=p["bob"], leg=p["leg"], swing=p["swing"])
+                aim = SLASH_AIM[src][i] if state == "slash" else None
+                cel = draw_actor(src, bob=p["bob"], leg=p["leg"], swing=p["swing"],
+                                 reach=p.get("reach", 0), held=held, aim=aim)
                 if facing == "left":
                     cel = cel.mirrored()
-                frames.append((state, facing, i, cel, draw_shadow(p["squash"]), ms))
+                frames.append((state, facing, i, cel, draw_shadow(p["squash"]),
+                               ms, loops))
     return frames

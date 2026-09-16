@@ -1,0 +1,8 @@
+{
+  "id": "item.apple",
+  "name": "Apple",
+  "sprite": "item.apple",
+  "kind": "material",
+  "stack": true,
+  "description": "Windfall from under an oak. Still good."
+}
