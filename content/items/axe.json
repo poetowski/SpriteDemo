@@ -6,5 +6,6 @@
   "slot": "weapon",
   "held": "axe",
   "stack": false,
-  "description": "A felling axe from the camp. Heavy at the head."
+  "description": "A felling axe from the camp. Heavy at the head.",
+  "damage": 9
 }

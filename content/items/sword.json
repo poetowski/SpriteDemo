@@ -6,5 +6,6 @@
   "slot": "weapon",
   "held": "sword",
   "stack": false,
-  "description": "Arne's own work. Balanced, and sharp."
+  "description": "Arne's own work. Balanced, and sharp.",
+  "damage": 6
 }

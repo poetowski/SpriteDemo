@@ -403,9 +403,48 @@ class World extends Phaser.Scene {
       if (!inArc(w.sprite)) continue;
       this.flinch(w.sprite);
       this.startle(w, dir);
+      this.floatDamage(w.sprite);
     }
     for (const h of this.hittable) {
-      if (inArc(h.sprite)) this.flinch(h.sprite, true);
+      if (!inArc(h.sprite)) continue;
+      this.flinch(h.sprite, true);
+      this.floatDamage(h.sprite);
+    }
+  }
+
+  /** A blow's worth: the weapon's damage, give or take a fifth. */
+  rollDamage() {
+    const base = M.items[this.weapon].damage;
+    return Math.max(1, Math.round(base * (0.8 + Math.random() * 0.4)));
+  }
+
+  /** The number drifts up off the thing that was hit and fades, with a few
+   *  sparks thrown out round it. Digits are sprites from the fx atlas, so
+   *  they are pixels of the same size as everything else, not blurred text. */
+  floatDamage(target) {
+    const n = this.rollDamage();
+    this.hits = (this.hits || 0) + 1;
+    const scale = 2;                                  // 3x5 glyphs are too shy at 1x
+    const advance = 5 * scale;                        // outlined glyph is 5 wide
+    const digits = [...String(n)];
+    const x0 = target.x - ((digits.length - 1) * advance) / 2;
+    const y0 = target.y - 22;
+    const depth = target.y + 1000;
+    const parts = digits.map((d, i) => this.add
+      .sprite(x0 + i * advance, y0, 'fx', M.sprites[`fx.${d}`].index)
+      .setScale(scale).setDepth(depth));
+    this.tweens.add({ targets: parts, y: y0 - 14, duration: 900, ease: 'Cubic.out' });
+    this.tweens.add({ targets: parts, alpha: 0, delay: 550, duration: 400,
+                      onComplete: () => parts.forEach((p) => p.destroy()) });
+    for (let i = 0; i < 5; i++) {
+      const a = (Math.PI * 2 * i) / 5 + Math.random() * 0.8;
+      const r = 7 + Math.random() * 7;
+      const s = this.add.sprite(target.x, y0 + 4, 'fx', M.sprites['fx.spark'].index)
+        .setScale(1.5).setDepth(depth);
+      this.tweens.add({ targets: s, x: target.x + Math.cos(a) * r,
+                        y: y0 + 4 + Math.sin(a) * r - 6, alpha: 0, scale: 0.5,
+                        duration: 320 + Math.random() * 200, ease: 'Quad.out',
+                        onComplete: () => s.destroy() });
     }
   }
 

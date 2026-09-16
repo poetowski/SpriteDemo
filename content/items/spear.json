@@ -6,5 +6,6 @@
   "slot": "weapon",
   "held": "spear",
   "stack": false,
-  "description": "Left in the old tower by whoever last kept watch."
+  "description": "Left in the old tower by whoever last kept watch.",
+  "damage": 5
 }

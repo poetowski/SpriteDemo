@@ -177,6 +177,10 @@ def run(content, man, tile_canvases):
                                f"not {kind!r}")
         if kind == "weapon" and not defn.get("held"):
             _fail("item-kind", f"{defn['_file']}: a weapon needs a \"held\" drawing")
+        if kind == "weapon" and not (isinstance(defn.get("damage"), int)
+                                     and defn["damage"] > 0):
+            _fail("item-kind", f"{defn['_file']}: a weapon needs a positive "
+                               f"integer \"damage\"")
     passed.append("item-kind")
     for cid, defn in content["actors"].items():
         for iid, base in (defn.get("wield") or {}).items():

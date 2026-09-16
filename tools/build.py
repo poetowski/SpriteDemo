@@ -26,8 +26,8 @@ TOOLS = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(TOOLS)
 sys.path.insert(0, TOOLS)
 
-from gen import (actor, animal, items as items_gen, props as props_gen,  # noqa: E402
-                 tiles as tiles_gen)
+from gen import (actor, animal, fx as fx_gen, items as items_gen,  # noqa: E402
+                 props as props_gen, tiles as tiles_gen)
 from gen.palette import PALETTE, VARIANTS, resolve                   # noqa: E402
 import make_page                                                     # noqa: E402
 from pipeline import aseprite, manifest as manifest_mod, validate    # noqa: E402
@@ -89,13 +89,20 @@ def build_atlases(sprite_rigs):
         items.add(iid, [canvas], items_gen.ANCHOR)
         item_canvases[iid] = canvas
 
-    sheets = [actors, tiles, props, big, items]
+    # Effect glyphs: the digits a hit floats up, and the spark round them.
+    fx = Atlas("fx", fx_gen.SIZE, fx_gen.SIZE, 11)
+    fx_canvases = {}
+    for gid, canvas in fx_gen.build_fx():
+        fx.add(gid, [canvas], fx_gen.ANCHOR)
+        fx_canvases[gid] = canvas
+
+    sheets = [actors, tiles, props, big, items, fx]
     sprites = {}
     for a in sheets:
         sprites.update(a.sprites())
     return (sheets, sprites, anims, tile_canvases,
             {"props": prop_canvases, "props_big": big_canvases,
-             "items": item_canvases}, by_sprite)
+             "items": item_canvases, "fx": fx_canvases}, by_sprite)
 
 
 # ---------------------------------------------------------------- exports ---
@@ -130,7 +137,8 @@ def write_aseprite(by_sprite, tile_canvases, prop_canvases):
             ("tiles", tile_canvases, tiles_gen.SIZE),
             ("props", prop_canvases["props"], actor.FRAME),
             ("props_big", prop_canvases["props_big"], props_gen.BIG_FRAME),
-            ("items", prop_canvases["items"], items_gen.SIZE)):
+            ("items", prop_canvases["items"], items_gen.SIZE),
+            ("fx", prop_canvases["fx"], fx_gen.SIZE)):
         path = os.path.join(out, f"{name}.aseprite")
         items = list(canvases.items())
         aseprite.write(

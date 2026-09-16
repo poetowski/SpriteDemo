@@ -165,7 +165,11 @@ manifest record; the scene arms the hero by switching sprite base and nothing
 else. **Space** swings (`slash`: wind up, strike, follow through, recover),
 **Q** cycles what is in the bag. The strike lands on the second frame: anything
 in the arc a tile ahead flashes, livestock bolts, and props marked `hittable`
-shake — the scarecrow is there to be practised on.
+shake — the scarecrow is there to be practised on. Each hit floats a number
+off the target — the weapon's `damage`, give or take a fifth — with sparks
+thrown out round it. The digits are 3×5 glyphs from `tools/gen/fx.py`, an
+atlas of their own, so they are pixels the same size as the blade that caused
+them rather than text blurred at 3×.
 
 Picking up the first weapon draws it; the sword is by Arne's anvil, the felling
 axe at the woodcutters' camp, the spear in the old tower.

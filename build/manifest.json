@@ -50,6 +50,16 @@
       "cols": 8,
       "rows": 2,
       "count": 13
+    },
+    "fx": {
+      "image": "atlas/fx.png",
+      "frame": [
+        8,
+        8
+      ],
+      "cols": 11,
+      "rows": 1,
+      "count": 11
     }
   },
   "sprites": {
@@ -2700,6 +2710,94 @@
         8,
         14
       ]
+    },
+    "fx.0": {
+      "atlas": "fx",
+      "index": 0,
+      "anchor": [
+        4,
+        4
+      ]
+    },
+    "fx.1": {
+      "atlas": "fx",
+      "index": 1,
+      "anchor": [
+        4,
+        4
+      ]
+    },
+    "fx.2": {
+      "atlas": "fx",
+      "index": 2,
+      "anchor": [
+        4,
+        4
+      ]
+    },
+    "fx.3": {
+      "atlas": "fx",
+      "index": 3,
+      "anchor": [
+        4,
+        4
+      ]
+    },
+    "fx.4": {
+      "atlas": "fx",
+      "index": 4,
+      "anchor": [
+        4,
+        4
+      ]
+    },
+    "fx.5": {
+      "atlas": "fx",
+      "index": 5,
+      "anchor": [
+        4,
+        4
+      ]
+    },
+    "fx.6": {
+      "atlas": "fx",
+      "index": 6,
+      "anchor": [
+        4,
+        4
+      ]
+    },
+    "fx.7": {
+      "atlas": "fx",
+      "index": 7,
+      "anchor": [
+        4,
+        4
+      ]
+    },
+    "fx.8": {
+      "atlas": "fx",
+      "index": 8,
+      "anchor": [
+        4,
+        4
+      ]
+    },
+    "fx.9": {
+      "atlas": "fx",
+      "index": 9,
+      "anchor": [
+        4,
+        4
+      ]
+    },
+    "fx.spark": {
+      "atlas": "fx",
+      "index": 10,
+      "anchor": [
+        4,
+        4
+      ]
     }
   },
   "anims": {
@@ -4213,7 +4311,8 @@
       "slot": "weapon",
       "held": "axe",
       "stack": false,
-      "description": "A felling axe from the camp. Heavy at the head."
+      "description": "A felling axe from the camp. Heavy at the head.",
+      "damage": 9
     },
     "item.berries": {
       "id": "item.berries",
@@ -4279,7 +4378,8 @@
       "slot": "weapon",
       "held": "spear",
       "stack": false,
-      "description": "Left in the old tower by whoever last kept watch."
+      "description": "Left in the old tower by whoever last kept watch.",
+      "damage": 5
     },
     "item.sword": {
       "id": "item.sword",
@@ -4289,7 +4389,8 @@
       "slot": "weapon",
       "held": "sword",
       "stack": false,
-      "description": "Arne's own work. Balanced, and sharp."
+      "description": "Arne's own work. Balanced, and sharp.",
+      "damage": 6
     },
     "item.wheat": {
       "id": "item.wheat",

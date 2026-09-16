@@ -37,6 +37,7 @@ const GIVE = value('--give', null);
 const POSE = value('--pose', null);       // state,frame - hold one pose for the picture
 const PAGE = flag('--page');              // the whole page, buttons included
 const BAG = flag('--bag');                // open the bag before the picture
+const MID = flag('--mid');                // with --slash: photograph the moment of impact
 const TILE = value('--tile', null);
 const WAIT = Number(value('--wait', MAP_MODE ? 1200 : 900));
 const OUT = path.resolve(ROOT, value('--out', MAP_MODE ? 'build/map.png' : 'build/shot.png'));
@@ -107,6 +108,8 @@ const BOOTED = () => !!(window.game && window.game.scene
       interactables: s.interactables.length,
       inventory: s.inventory.filter(Boolean),
       bagOpen: s.bagOpen,
+      hits: s.hits || 0,
+      fxOnScreen: s.children.list.filter((o) => o.texture && o.texture.key === 'fx').length,
       weapon: s.weapon,
       heroSprite: s.heroSprite,
       anim: cur,
@@ -174,14 +177,24 @@ const BOOTED = () => !!(window.game && window.game.scene
     const moved = await page.evaluate(() => window.game.scene.scenes[0].cursor);
     checks.push(['cursor moves in the bag', moved === 1, `cursor=${moved}`]);
   }
+  let shotTaken = false;
   if (SLASH) {
     await page.keyboard.press('Space');
     await page.waitForTimeout(120);
     const mid = await snapshot();
+    if (MID) {                                     // the number is up, the blade is out
+      fs.mkdirSync(path.dirname(OUT), { recursive: true });
+      await page.locator('.stage').screenshot({ path: OUT });
+      shotTaken = true;
+    }
     await page.waitForTimeout(500);
     const after = await snapshot();
     checks.push(['slash animation played', mid.anim.includes('/slash/'), mid.anim]);
     checks.push(['control handed back', after.busy === false, 'still busy']);
+    if (after.hits > 0) {                          // something was in the arc
+      checks.push(['damage number floated on hit', mid.fxOnScreen > 0,
+        `${after.hits} hit(s), ${mid.fxOnScreen} fx sprites mid-swing`]);
+    }
   }
 
   // --- the picture -----------------------------------------------------------
@@ -199,7 +212,9 @@ const BOOTED = () => !!(window.game && window.game.scene
     }, [state, idx]);
     await page.waitForTimeout(80);
   }
-  if (PAGE) {
+  if (shotTaken) {
+    // already photographed mid-swing
+  } else if (PAGE) {
     await page.screenshot({ path: OUT, fullPage: true });
   } else if (MAP_MODE) {
     // Resize the renderer to the whole world and snapshot its buffer, so the
