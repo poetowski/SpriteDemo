@@ -35,7 +35,8 @@ const GATHER = flag('--gather');
 const SLASH = flag('--slash');
 const GIVE = value('--give', null);
 const POSE = value('--pose', null);       // state,frame - hold one pose for the picture
-const PAGE = flag('--page');              // the whole page, bag and buttons included
+const PAGE = flag('--page');              // the whole page, buttons included
+const BAG = flag('--bag');                // open the bag before the picture
 const TILE = value('--tile', null);
 const WAIT = Number(value('--wait', MAP_MODE ? 1200 : 900));
 const OUT = path.resolve(ROOT, value('--out', MAP_MODE ? 'build/map.png' : 'build/shot.png'));
@@ -104,7 +105,8 @@ const BOOTED = () => !!(window.game && window.game.scene
       blocked: s.blocked.size,
       wanderers: s.wanderers.length,
       interactables: s.interactables.length,
-      inventory: [...s.inventory.entries()],
+      inventory: s.inventory.filter(Boolean),
+      bagOpen: s.bagOpen,
       weapon: s.weapon,
       heroSprite: s.heroSprite,
       anim: cur,
@@ -117,7 +119,7 @@ const BOOTED = () => !!(window.game && window.game.scene
     };
   });
   const report = await snapshot();
-  const count = (inv) => inv.reduce((n, [, c]) => n + c, 0);
+  const count = (inv) => inv.length;
 
   const [cols, rows] = report.size;
   const checks = [
@@ -159,6 +161,18 @@ const BOOTED = () => !!(window.game && window.game.scene
       && after.pickups === report.pickups - 1,
       `${JSON.stringify(after.inventory)}, ${after.pickups} left on the ground`]);
     checks.push(['control handed back', after.busy === false, 'still busy']);
+  }
+  if (BAG) {
+    await page.keyboard.press('KeyI');
+    await page.waitForTimeout(350);                 // let the panel slide in
+    const st = await snapshot();
+    const shown = await page.evaluate(() =>
+      document.getElementById('bag').classList.contains('open'));
+    checks.push(['bag opened on I', st.bagOpen && shown, `state=${st.bagOpen} panel=${shown}`]);
+    await page.keyboard.press('ArrowRight');
+    await page.waitForTimeout(60);
+    const moved = await page.evaluate(() => window.game.scene.scenes[0].cursor);
+    checks.push(['cursor moves in the bag', moved === 1, `cursor=${moved}`]);
   }
   if (SLASH) {
     await page.keyboard.press('Space');

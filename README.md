@@ -150,7 +150,10 @@ lies on the ground with a slow bob, and the HUD cuts the same cell out of the
 same atlas for the bag. What it *is* — `material` or `weapon`, whether it
 stacks — is `content/items/`. Walk up to one and press **E**: the hero crouches
 (`gather`, three frames of the same rig, hands to the ground) and it goes in
-the bag.
+the bag. **I** slides the bag in from the left of the stage: a wooden panel of
+4×4 slots, one thing per slot, nothing stacks — sixteen is the limit, and the
+prompt says so when it is reached. Arrows walk the cursor; **E** draws the
+weapon under it, or puts it away. The icons are the same 16×16 cells at 3×.
 
 **A weapon is a sprite swap, not a second sprite.** The biped rig draws a held
 weapon into every pose from the hand outward along a direction — so one
@@ -179,6 +182,7 @@ axe at the woodcutters' camp, the spear in the old tower.
   screenshot it writes to `build/shot.png` is the by-product, not the point.
   `--talk` presses **E** and checks the dialogue box opens; `--gather` presses
   it beside an item and checks the crouch played and the bag grew by one;
+  `--bag` presses **I** and checks the panel opened and the cursor moves;
   `--give item.axe --slash` arms the hero, presses **Space** and checks the
   swing played and handed control back. `--map` renders the whole 96×72 world
   as one frame; `--pose slash,1 --page` freezes the strike and photographs the

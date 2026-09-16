@@ -45,15 +45,35 @@
   #hud { color: var(--accent); }
   #prompt { color: var(--ink); }
 
-  /* the bag: the same 16px cells the world uses, cut out of the items atlas */
-  #inv { width: min(94vw, 960px); display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
-  .slot { display: flex; align-items: center; gap: 6px; min-height: 42px; padding: 4px 8px;
-          background: var(--panel); border: 1px solid #39405260; border-radius: 4px; color: var(--muted); }
-  .slot.on { border-color: var(--accent); color: var(--ink); }
-  .slot .icon { flex: none; width: 32px; height: 32px; image-rendering: pixelated; background-repeat: no-repeat; }
-  .slot .lbl { color: var(--accent); }
-  #bag { display: flex; flex-wrap: wrap; gap: 8px; }
-  #bag:empty::after { content: "nothing yet - walk up to something and press E"; color: var(--muted); }
+  /* The bag: a wooden panel that slides in from the left of the stage. Planks
+     are a repeating gradient in the palette's wood tones; slots are cells of a
+     dark grid, so the thin lines between them are the grid showing through. */
+  #bag {
+    position: absolute; left: 0; top: 0; bottom: 0; width: min(46%, 340px);
+    display: flex; flex-direction: column; gap: 3%; padding: 4% 3.5%;
+    background:
+      repeating-linear-gradient(180deg, #7a5a38 0 26px, #6a4c2e 26px 28px, #8a683f 28px 30px, #7a5a38 30px 34px);
+    border-right: 4px solid #3d2a17; box-shadow: 6px 0 18px #0007;
+    transform: translateX(-104%); transition: transform .22s ease-out;
+  }
+  #bag.open { transform: none; }
+  @media (prefers-reduced-motion: reduce) { #bag { transition: none; } }
+  #bag .title { color: #f1e4c8; font-weight: 600; letter-spacing: .06em; text-shadow: 0 1px 0 #3d2a17; }
+  #bag .hint { color: #d9c7a3; font-size: 11px; }
+  #slots {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 2px;
+    background: #3d2a17; border: 2px solid #3d2a17; border-radius: 3px;
+  }
+  #slots .cell {
+    aspect-ratio: 1; display: grid; place-items: center; background: #5e4229;
+    box-shadow: inset 0 2px 0 #6d4f31, inset 0 -2px 0 #4d3520;
+  }
+  #slots .cell.cur { outline: 2px solid var(--accent); outline-offset: -2px; }
+  #slots .cell.on { background: #4f5a2c; }
+  #slots .icon { width: 48px; height: 48px; max-width: 80%; max-height: 80%;
+                 image-rendering: pixelated; background-repeat: no-repeat; }
+  #bag .name { color: #f1e4c8; min-height: 1.5em; }
+  #wname { color: var(--accent); }
 
   /* touch controls: a d-pad and the three actions, only on coarse pointers */
   .touch { display: none; gap: 16px; align-items: center; }
@@ -78,21 +98,22 @@
     <div id="line"></div>
     <div id="more"></div>
   </div>
+  <div id="bag" aria-hidden="true">
+    <div class="title">BAG</div>
+    <div id="slots"></div>
+    <div class="name" id="bagname"></div>
+    <div class="hint">arrows move &middot; E draw / put away &middot; I close</div>
+  </div>
   <div id="focus"><span>Click to play</span></div>
 </div>
 
 <div class="bar">
   <div>
     <kbd>&larr;</kbd><kbd>&uarr;</kbd><kbd>&darr;</kbd><kbd>&rarr;</kbd> or <kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> move
-    &nbsp; <kbd>E</kbd> talk / take &nbsp; <kbd>Space</kbd> slash &nbsp; <kbd>Q</kbd> swap weapon
+    &nbsp; <kbd>E</kbd> talk / take &nbsp; <kbd>Space</kbd> slash &nbsp; <kbd>I</kbd> bag &nbsp; <kbd>Q</kbd> swap
     &nbsp; <span id="prompt"></span>
   </div>
-  <div id="hud">idle-down</div>
-</div>
-
-<div id="inv">
-  <div class="slot" id="wslot"><span class="lbl">&#9876;</span><span id="wname">no weapon</span></div>
-  <div id="bag"></div>
+  <div><span id="wname">&#9876; no weapon</span> &nbsp; <span id="hud">idle-down</span></div>
 </div>
 
 <div class="touch">
@@ -108,45 +129,54 @@
     <button data-act="talk" aria-label="Talk or take">E</button>
     <button data-act="slash" class="slash" aria-label="Slash">&#9876;</button>
     <button data-act="swap" aria-label="Swap weapon">Q</button>
+    <button data-act="bag" aria-label="Open the bag">I</button>
   </div>
 </div>
 
 <script>
   const $ = (s) => document.getElementById(s);
 
-  window.__hud = ({ anim, tile, prompt, verb, talking }) => {
+  window.__hud = ({ anim, tile, prompt, verb, bagFull, talking }) => {
     $('hud').textContent = `${anim}  tile ${tile[0]},${tile[1]}`;
-    $('prompt').textContent = talking ? '' : (prompt ? `press E: ${verb} ${prompt}` : '');
+    let p = '';
+    if (!talking && prompt) {
+      p = verb === 'take' && bagFull ? `bag full - ${prompt} stays` : `press E: ${verb} ${prompt}`;
+    }
+    $('prompt').textContent = p;
   };
 
   // The bag. Icons are the world's own item cells, read straight out of the
-  // items atlas at 2x, so a thing looks the same on the ground and in hand.
-  window.__inventory = ({ items, weapon }) => {
+  // items atlas at 3x, so a thing looks the same on the ground and in hand.
+  window.__inventory = ({ slots, cols, cursor, open, weapon }) => {
     const A = window.ART.manifest.atlases.items;
     const [fw, fh] = A.frame;
+    const Z = 3;
     const icon = (index) => {
       const el = document.createElement('span');
       el.className = 'icon';
       el.style.backgroundImage = `url(${window.ART.images.items})`;
-      el.style.backgroundSize = `${A.cols * fw * 2}px ${A.rows * fh * 2}px`;
+      el.style.backgroundSize = `${A.cols * fw * Z}px ${A.rows * fh * Z}px`;
       el.style.backgroundPosition =
-        `-${(index % A.cols) * fw * 2}px -${Math.floor(index / A.cols) * fh * 2}px`;
+        `-${(index % A.cols) * fw * Z}px -${Math.floor(index / A.cols) * fh * Z}px`;
       return el;
     };
+    const grid = $('slots');
+    grid.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
+    grid.replaceChildren();
+    slots.forEach((it, i) => {
+      const c = document.createElement('div');
+      c.className = 'cell' + (i === cursor ? ' cur' : '') + (it && it.equipped ? ' on' : '');
+      if (it) { c.title = it.name; c.append(icon(it.index)); }
+      grid.append(c);
+    });
+    const under = slots[cursor];
+    $('bagname').textContent = under
+      ? under.name + (under.equipped ? ' - in hand' : (under.weapon ? ' - E to draw' : ''))
+      : (slots.some(Boolean) ? '' : 'empty - walk up to something and press E');
     const bag = $('bag');
-    bag.replaceChildren();
-    for (const it of items) {
-      const s = document.createElement('div');
-      s.className = 'slot' + (it.equipped ? ' on' : '');
-      s.title = it.name;
-      s.append(icon(it.index));
-      const n = document.createElement('span');
-      n.textContent = it.count > 1 ? `${it.name} ×${it.count}` : it.name;
-      s.append(n);
-      bag.append(s);
-    }
-    $('wslot').classList.toggle('on', !!weapon);
-    $('wname').textContent = weapon || 'no weapon';
+    bag.classList.toggle('open', open);
+    bag.setAttribute('aria-hidden', open ? 'false' : 'true');
+    $('wname').textContent = `⚔ ${weapon || 'no weapon'}`;
   };
 
   window.__dialogue = (d) => {
@@ -223,6 +253,8 @@ function footprintOf(def) {
 }
 
 const DIR = { up: [0, -1], down: [0, 1], left: [-1, 0], right: [1, 0] };
+const BAG_COLS = 4;
+const BAG_SLOTS = BAG_COLS * 4;
 
 function facingOf([dx, dy]) {
   if (dy < 0) return 'up';
@@ -299,7 +331,11 @@ class World extends Phaser.Scene {
     this.hero.on('animationcomplete', (anim) => this.onAnimDone(anim));
     this.hero.on('animationupdate', (anim, frame) => this.onAnimFrame(anim, frame));
 
-    this.inventory = new Map();           // item id -> count
+    // The bag: a fixed grid of slots, one thing per slot, nothing stacks. The
+    // panel that shows it is DOM (index.html); this is the only state.
+    this.inventory = new Array(BAG_SLOTS).fill(null);
+    this.cursor = 0;                      // the slot the panel's cursor is on
+    this.bagOpen = false;
     this.weapon = null;                   // item id in the weapon hand
     this.busy = false;                    // a one-shot animation owns the hero
     this.pending = null;                  // the pickup a gather will collect
@@ -312,18 +348,30 @@ class World extends Phaser.Scene {
     this.keys = this.input.keyboard.addKeys({
       up: 'UP', down: 'DOWN', left: 'LEFT', right: 'RIGHT',
       w: 'W', a: 'A', s: 'S', d: 'D',
-      talk: 'E', space: 'SPACE', swap: 'Q', esc: 'ESC',
+      talk: 'E', space: 'SPACE', swap: 'Q', bag: 'I', esc: 'ESC',
     });
     const axisOf = { up: 'y', down: 'y', w: 'y', s: 'y',
                      left: 'x', right: 'x', a: 'x', d: 'x' };
+    const stepOf = { up: [0, -1], w: [0, -1], down: [0, 1], s: [0, 1],
+                     left: [-1, 0], a: [-1, 0], right: [1, 0], d: [1, 0] };
     this.lastAxis = 'y';
     for (const [name, key] of Object.entries(this.keys)) {
-      if (axisOf[name]) key.on('down', () => { this.lastAxis = axisOf[name]; });
+      if (!axisOf[name]) continue;
+      key.on('down', () => {
+        this.lastAxis = axisOf[name];
+        // On the event, not polled: a tap shorter than a frame must still
+        // move the cursor one slot, and JustDown loses it to the key-up.
+        if (this.bagOpen) this.moveCursor(...stepOf[name]);
+      });
     }
     this.keys.talk.on('down', () => this.act('talk'));
     this.keys.space.on('down', () => this.act('slash'));
     this.keys.swap.on('down', () => this.act('swap'));
-    this.keys.esc.on('down', () => this.closeDialogue());
+    this.keys.bag.on('down', () => this.act('bag'));
+    this.keys.esc.on('down', () => {
+      if (this.bagOpen) return this.act('bag');
+      this.closeDialogue();
+    });
     window.__act = (name) => this.act(name);   // the touch buttons come in here
 
     this.dialogue = null;
@@ -458,6 +506,17 @@ class World extends Phaser.Scene {
   // --- actions -------------------------------------------------------------
   /** One entry point for keys and touch buttons alike. */
   act(name) {
+    if (name === 'bag') {
+      if (this.dialogue || this.busy) return;
+      this.bagOpen = !this.bagOpen;
+      if (this.bagOpen) this.hero.setVelocity(0, 0);
+      return this.pushInventory();
+    }
+    if (this.bagOpen) {                    // the panel has the keys while open
+      if (name === 'talk') return this.useSlot(this.cursor);
+      if (name === 'swap') return this.cycleWeapon();
+      return;
+    }
     if (name === 'talk') {
       if (this.dialogue) return this.advanceDialogue();
       if (this.busy) return;
@@ -472,6 +531,7 @@ class World extends Phaser.Scene {
   }
 
   gather(pick) {
+    if (!this.inventory.includes(null)) return;   // bag full: the prompt says so
     this.busy = true;
     this.pending = pick;
     this.hero.setVelocity(0, 0);
@@ -509,15 +569,30 @@ class World extends Phaser.Scene {
     this.addItem(pick.id);
   }
 
+  /** Put one thing in the first empty slot. False when there is none. */
   addItem(id) {
+    const slot = this.inventory.indexOf(null);
+    if (slot < 0) return false;
+    this.inventory[slot] = id;
     const def = M.items[id];
-    this.inventory.set(id, (this.inventory.get(id) || 0) + 1);
     if (def.slot === 'weapon' && !this.weapon) this.equip(id);   // first blade: draw it
     this.pushInventory();
+    return true;
+  }
+
+  /** E on a slot in the open bag: a weapon is drawn, or put away if it was. */
+  useSlot(slot) {
+    const id = this.inventory[slot];
+    if (!id || M.items[id].slot !== 'weapon') return;
+    this.equip(id === this.weapon ? null : id);
   }
 
   weaponsHeld() {
-    return [...this.inventory.keys()].filter((id) => M.items[id].slot === 'weapon');
+    const seen = new Set();
+    for (const id of this.inventory) {
+      if (id && M.items[id].slot === 'weapon') seen.add(id);
+    }
+    return [...seen];
   }
 
   /** Arm the hero, or disarm with null. Just a sprite base: every pose of the
@@ -584,16 +659,25 @@ class World extends Phaser.Scene {
 
   pushInventory() {
     if (!window.__inventory) return;
-    const items = [...this.inventory.entries()].map(([id, count]) => {
+    const slots = this.inventory.map((id) => {
+      if (!id) return null;
       const def = M.items[id];
-      return { id, name: def.name, count, index: M.sprites[def.sprite].index,
+      return { id, name: def.name, index: M.sprites[def.sprite].index,
                weapon: def.slot === 'weapon', equipped: id === this.weapon };
     });
     window.__inventory({
-      items,
+      slots, cols: BAG_COLS, cursor: this.cursor, open: this.bagOpen,
       weapon: this.weapon ? M.items[this.weapon].name : null,
-      canSwap: this.weaponsHeld().length > 0,
     });
+  }
+
+  /** Arrow keys walk the cursor round the grid while the bag is open. */
+  moveCursor(dx, dy) {
+    const col = (this.cursor % BAG_COLS + dx + BAG_COLS) % BAG_COLS;
+    const rows = BAG_SLOTS / BAG_COLS;
+    const row = (Math.floor(this.cursor / BAG_COLS) + dy + rows) % rows;
+    this.cursor = row * BAG_COLS + col;
+    this.pushInventory();
   }
 
   // --- dialogue ----------------------------------------------------------
@@ -632,7 +716,14 @@ class World extends Phaser.Scene {
     const k = this.keys;
     const pad = window.__pad || {};
     const talking = !!this.dialogue;
-    const locked = talking || this.busy;   // a swing or a crouch owns the body
+    const locked = talking || this.busy || this.bagOpen;   // something else owns the body
+
+    if (this.bagOpen && (pad.left || pad.right || pad.up || pad.down)) {
+      // the touch d-pad drives the cursor too; one tap is one slot
+      this.moveCursor((pad.right ? 1 : 0) - (pad.left ? 1 : 0),
+                      (pad.down ? 1 : 0) - (pad.up ? 1 : 0));
+      window.__pad = {};
+    }
 
     const left = !locked && (k.left.isDown || k.a.isDown || !!pad.left);
     const right = !locked && (k.right.isDown || k.d.isDown || !!pad.right);
@@ -673,6 +764,7 @@ class World extends Phaser.Scene {
         tile: [Math.floor(this.hero.x / this.ts), Math.floor(this.hero.y / this.ts)],
         prompt: !talking && best ? (best.def.name || best.id.split('.')[1]) : null,
         verb: best && best.item ? 'take' : 'talk',
+        bagFull: !this.inventory.includes(null),
         talking,
       });
     }

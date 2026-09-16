@@ -35,6 +35,8 @@ function footprintOf(def) {
 }
 
 const DIR = { up: [0, -1], down: [0, 1], left: [-1, 0], right: [1, 0] };
+const BAG_COLS = 4;
+const BAG_SLOTS = BAG_COLS * 4;
 
 function facingOf([dx, dy]) {
   if (dy < 0) return 'up';
@@ -111,7 +113,11 @@ class World extends Phaser.Scene {
     this.hero.on('animationcomplete', (anim) => this.onAnimDone(anim));
     this.hero.on('animationupdate', (anim, frame) => this.onAnimFrame(anim, frame));
 
-    this.inventory = new Map();           // item id -> count
+    // The bag: a fixed grid of slots, one thing per slot, nothing stacks. The
+    // panel that shows it is DOM (index.html); this is the only state.
+    this.inventory = new Array(BAG_SLOTS).fill(null);
+    this.cursor = 0;                      // the slot the panel's cursor is on
+    this.bagOpen = false;
     this.weapon = null;                   // item id in the weapon hand
     this.busy = false;                    // a one-shot animation owns the hero
     this.pending = null;                  // the pickup a gather will collect
@@ -124,18 +130,30 @@ class World extends Phaser.Scene {
     this.keys = this.input.keyboard.addKeys({
       up: 'UP', down: 'DOWN', left: 'LEFT', right: 'RIGHT',
       w: 'W', a: 'A', s: 'S', d: 'D',
-      talk: 'E', space: 'SPACE', swap: 'Q', esc: 'ESC',
+      talk: 'E', space: 'SPACE', swap: 'Q', bag: 'I', esc: 'ESC',
     });
     const axisOf = { up: 'y', down: 'y', w: 'y', s: 'y',
                      left: 'x', right: 'x', a: 'x', d: 'x' };
+    const stepOf = { up: [0, -1], w: [0, -1], down: [0, 1], s: [0, 1],
+                     left: [-1, 0], a: [-1, 0], right: [1, 0], d: [1, 0] };
     this.lastAxis = 'y';
     for (const [name, key] of Object.entries(this.keys)) {
-      if (axisOf[name]) key.on('down', () => { this.lastAxis = axisOf[name]; });
+      if (!axisOf[name]) continue;
+      key.on('down', () => {
+        this.lastAxis = axisOf[name];
+        // On the event, not polled: a tap shorter than a frame must still
+        // move the cursor one slot, and JustDown loses it to the key-up.
+        if (this.bagOpen) this.moveCursor(...stepOf[name]);
+      });
     }
     this.keys.talk.on('down', () => this.act('talk'));
     this.keys.space.on('down', () => this.act('slash'));
     this.keys.swap.on('down', () => this.act('swap'));
-    this.keys.esc.on('down', () => this.closeDialogue());
+    this.keys.bag.on('down', () => this.act('bag'));
+    this.keys.esc.on('down', () => {
+      if (this.bagOpen) return this.act('bag');
+      this.closeDialogue();
+    });
     window.__act = (name) => this.act(name);   // the touch buttons come in here
 
     this.dialogue = null;
@@ -270,6 +288,17 @@ class World extends Phaser.Scene {
   // --- actions -------------------------------------------------------------
   /** One entry point for keys and touch buttons alike. */
   act(name) {
+    if (name === 'bag') {
+      if (this.dialogue || this.busy) return;
+      this.bagOpen = !this.bagOpen;
+      if (this.bagOpen) this.hero.setVelocity(0, 0);
+      return this.pushInventory();
+    }
+    if (this.bagOpen) {                    // the panel has the keys while open
+      if (name === 'talk') return this.useSlot(this.cursor);
+      if (name === 'swap') return this.cycleWeapon();
+      return;
+    }
     if (name === 'talk') {
       if (this.dialogue) return this.advanceDialogue();
       if (this.busy) return;
@@ -284,6 +313,7 @@ class World extends Phaser.Scene {
   }
 
   gather(pick) {
+    if (!this.inventory.includes(null)) return;   // bag full: the prompt says so
     this.busy = true;
     this.pending = pick;
     this.hero.setVelocity(0, 0);
@@ -321,15 +351,30 @@ class World extends Phaser.Scene {
     this.addItem(pick.id);
   }
 
+  /** Put one thing in the first empty slot. False when there is none. */
   addItem(id) {
+    const slot = this.inventory.indexOf(null);
+    if (slot < 0) return false;
+    this.inventory[slot] = id;
     const def = M.items[id];
-    this.inventory.set(id, (this.inventory.get(id) || 0) + 1);
     if (def.slot === 'weapon' && !this.weapon) this.equip(id);   // first blade: draw it
     this.pushInventory();
+    return true;
+  }
+
+  /** E on a slot in the open bag: a weapon is drawn, or put away if it was. */
+  useSlot(slot) {
+    const id = this.inventory[slot];
+    if (!id || M.items[id].slot !== 'weapon') return;
+    this.equip(id === this.weapon ? null : id);
   }
 
   weaponsHeld() {
-    return [...this.inventory.keys()].filter((id) => M.items[id].slot === 'weapon');
+    const seen = new Set();
+    for (const id of this.inventory) {
+      if (id && M.items[id].slot === 'weapon') seen.add(id);
+    }
+    return [...seen];
   }
 
   /** Arm the hero, or disarm with null. Just a sprite base: every pose of the
@@ -396,16 +441,25 @@ class World extends Phaser.Scene {
 
   pushInventory() {
     if (!window.__inventory) return;
-    const items = [...this.inventory.entries()].map(([id, count]) => {
+    const slots = this.inventory.map((id) => {
+      if (!id) return null;
       const def = M.items[id];
-      return { id, name: def.name, count, index: M.sprites[def.sprite].index,
+      return { id, name: def.name, index: M.sprites[def.sprite].index,
                weapon: def.slot === 'weapon', equipped: id === this.weapon };
     });
     window.__inventory({
-      items,
+      slots, cols: BAG_COLS, cursor: this.cursor, open: this.bagOpen,
       weapon: this.weapon ? M.items[this.weapon].name : null,
-      canSwap: this.weaponsHeld().length > 0,
     });
+  }
+
+  /** Arrow keys walk the cursor round the grid while the bag is open. */
+  moveCursor(dx, dy) {
+    const col = (this.cursor % BAG_COLS + dx + BAG_COLS) % BAG_COLS;
+    const rows = BAG_SLOTS / BAG_COLS;
+    const row = (Math.floor(this.cursor / BAG_COLS) + dy + rows) % rows;
+    this.cursor = row * BAG_COLS + col;
+    this.pushInventory();
   }
 
   // --- dialogue ----------------------------------------------------------
@@ -444,7 +498,14 @@ class World extends Phaser.Scene {
     const k = this.keys;
     const pad = window.__pad || {};
     const talking = !!this.dialogue;
-    const locked = talking || this.busy;   // a swing or a crouch owns the body
+    const locked = talking || this.busy || this.bagOpen;   // something else owns the body
+
+    if (this.bagOpen && (pad.left || pad.right || pad.up || pad.down)) {
+      // the touch d-pad drives the cursor too; one tap is one slot
+      this.moveCursor((pad.right ? 1 : 0) - (pad.left ? 1 : 0),
+                      (pad.down ? 1 : 0) - (pad.up ? 1 : 0));
+      window.__pad = {};
+    }
 
     const left = !locked && (k.left.isDown || k.a.isDown || !!pad.left);
     const right = !locked && (k.right.isDown || k.d.isDown || !!pad.right);
@@ -485,6 +546,7 @@ class World extends Phaser.Scene {
         tile: [Math.floor(this.hero.x / this.ts), Math.floor(this.hero.y / this.ts)],
         prompt: !talking && best ? (best.def.name || best.id.split('.')[1]) : null,
         verb: best && best.item ? 'take' : 'talk',
+        bagFull: !this.inventory.includes(null),
         talking,
       });
     }

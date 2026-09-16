@@ -33,6 +33,7 @@ node tools/shot.cjs --map                # 3. and shoot the whole world
    node tools/shot.cjs --talk --tile 37,37  # walk up to someone and press E
    node tools/shot.cjs --gather --tile 34,37   # stand by an item, press E, check the bag
    node tools/shot.cjs --give item.axe --slash # arm the hero and swing
+   node tools/shot.cjs --give item.axe --bag   # open the bag (I), check the cursor moves
    node tools/shot.cjs --pose slash,1 --page   # freeze the strike, shoot the whole page
    node tools/shot.cjs --map                # the whole world in one frame
    node tools/shot.cjs --out /tmp/a.png --wait 1500
