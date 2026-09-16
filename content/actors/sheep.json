@@ -1,0 +1,27 @@
+{
+  "id": "npc.sheep",
+  "sprite": "actor.sheep",
+  "rig": "quadruped",
+  "name": "Sheep",
+  "states": [
+    "walk",
+    "idle",
+    "graze"
+  ],
+  "speed": 16,
+  "blocks": false,
+  "facing": "down",
+  "interact": "dlg.sheep_baa",
+  "wander": {
+    "radius": 4,
+    "idle_ms": [
+      900,
+      2200
+    ],
+    "graze_ms": [
+      2500,
+      6000
+    ],
+    "graze_chance": 0.6
+  }
+}

@@ -40,6 +40,15 @@ PALETTE = {
     "BUL": ((0x45, 0x89, 0x4a, 255), "bush light"),
     "WD":  ((0x7a, 0x5a, 0x38, 255), "wood"),
     "WDD": ((0x55, 0x3d, 0x25, 255), "wood dark"),
+    # animals - generic keys so a species is a palette swap of one rig
+    "AB":  ((0xe4, 0xde, 0xcd, 255), "animal body"),
+    "ABS": ((0xc0, 0xb8, 0xa4, 255), "animal body shade"),
+    "ABL": ((0xf5, 0xf1, 0xe6, 255), "animal body light"),
+    "AF":  ((0x5b, 0x52, 0x4b, 255), "animal face"),
+    "AFS": ((0x3e, 0x37, 0x32, 255), "animal face shade"),
+    "AH":  ((0x4a, 0x41, 0x3a, 255), "animal hoof"),
+    "HN":  ((0xcd, 0xbb, 0x96, 255), "horn"),
+    "HNS": ((0xa3, 0x90, 0x6d, 255), "horn shade"),
 }
 
 # Palette swaps. The frames are identical pixels; only the lookup changes, so a
@@ -54,6 +63,15 @@ VARIANTS = {
         "HRL": (0x77, 0x74, 0x6f, 255),
         "PN":  (0x4a, 0x44, 0x3c, 255),
         "PNS": (0x33, 0x2e, 0x29, 255),
+    },
+    "sheep": {},                          # the base animal palette is the sheep
+    "goat": {
+        "AB":  (0xa8, 0x82, 0x52, 255),   # tan coat instead of wool
+        "ABS": (0x83, 0x62, 0x3c, 255),
+        "ABL": (0xc4, 0xa0, 0x6e, 255),
+        "AF":  (0x6d, 0x51, 0x32, 255),
+        "AFS": (0x4c, 0x38, 0x22, 255),
+        "AH":  (0x39, 0x2c, 0x22, 255),
     },
 }
 

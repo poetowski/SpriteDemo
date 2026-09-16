@@ -2,5 +2,10 @@
   "id": "actor.hero",
   "sprite": "actor.hero",
   "speed": 56,
-  "blocks": false
+  "blocks": false,
+  "rig": "biped",
+  "states": [
+    "walk",
+    "idle"
+  ]
 }

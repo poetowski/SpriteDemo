@@ -1,9 +1,10 @@
 # demo_sprites_4move
 
-A top-down RPG sandbox with code-generated pixel art. Characters, tiles and
-props are drawn by a parametric Python rig, exported to spritesheets plus a
-`.aseprite` source, and played in Phaser 3 — with the map, the props, the NPC and
-its dialogue all loaded from engine-neutral JSON.
+A top-down RPG sandbox with code-generated pixel art. Characters, livestock,
+tiles and props are drawn by parametric Python rigs, exported to spritesheets
+plus `.aseprite` sources, and played in Phaser 3 — with the map, the props, the
+NPCs and their dialogue all loaded from engine-neutral JSON. Sheep and goats
+wander and graze on their own.
 
 ![sprite sheet](build/preview.png)
 
@@ -73,6 +74,13 @@ silhouette, not drawn.
 so `VARIANTS` in `tools/gen/palette.py` turns one rig into many characters —
 Arne the smith is the hero's frames with a rust apron and grey hair.
 
+**Two rigs, one contract.** `tools/gen/actor.py` is the biped; `animal.py` is
+the quadruped (walk, idle and a head-down `graze`). Both use a 32×32 frame, the
+same ground line and the same `build_frames()` shape, so the atlas, the anchors
+and the depth sorting treat them identically. A goat is the sheep rig with horns,
+a beard, a smooth back and a tan palette — which species an actor uses is a
+`"rig"` field in `content/`, not a pipeline change.
+
 **Anchors, not offsets.** Every sprite exports the pixel that sits on a map tile
 (`[16, 29]` — between the feet). The game sets sprite origin from it, so art of
 any size lines up and sorting by `sprite.y` is correct depth sorting.
@@ -85,10 +93,16 @@ an NPC means adding a JSON file and a line in the map — no JS change:
 
 ```json
 {
-  "id": "npc.arne", "sprite": "actor.smith", "name": "Arne",
-  "blocks": true, "facing": "down", "interact": "dlg.arne_intro"
+  "id": "npc.sheep", "sprite": "actor.sheep", "rig": "quadruped",
+  "states": ["walk", "idle", "graze"], "speed": 16, "blocks": false,
+  "interact": "dlg.sheep_baa",
+  "wander": { "radius": 4, "idle_ms": [900, 2200],
+              "graze_ms": [2500, 6000], "graze_chance": 0.6 }
 }
 ```
+
+Wandering is content too: the radius, the pause lengths and how often an animal
+would rather eat than walk are all tuned in JSON, not in the scene code.
 
 Maps are human-editable ASCII with a legend, which diffs cleanly and ports to
 any engine:
@@ -106,7 +120,9 @@ any engine:
 - The game is driven in headless Chrome over the DevTools protocol: 16 checks
   covering boot, animations, the tilemap, entity spawning, collision against
   water, depth sorting, the interaction prompt, dialogue advance/close, and
-  movement being locked while talking.
+  movement being locked while talking. A second suite covers the flock: that
+  animals move, graze, stay inside their wander radius and never step onto
+  water, stone or a prop.
 
 ## Engine note
 

@@ -26,7 +26,7 @@ TOOLS = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(TOOLS)
 sys.path.insert(0, TOOLS)
 
-from gen import actor, props as props_gen, tiles as tiles_gen        # noqa: E402
+from gen import actor, animal, props as props_gen, tiles as tiles_gen  # noqa: E402
 from gen.palette import PALETTE, VARIANTS, resolve                   # noqa: E402
 import make_page                                                     # noqa: E402
 from pipeline import aseprite, manifest as manifest_mod, validate    # noqa: E402
@@ -37,17 +37,25 @@ GAME = os.path.join(ROOT, "game")
 TAG_COLOR = (0x4f, 0xa5, 0x55)
 
 
+# Rigs are interchangeable: same frame size, same anchor rule, same build_frames
+# shape. Adding a species is a content field, not a pipeline change.
+RIGS = {"biped": actor, "quadruped": animal}
+
+
 # ------------------------------------------------------------- generation ---
-def build_atlases(variants):
-    """Returns (atlases, sprites, anims, tile_canvases)."""
+def build_atlases(sprite_rigs):
+    """sprite_rigs: {sprite_key: (rig_name, variant)}."""
     actors = Atlas("actors", actor.FRAME, actor.FRAME, 6)
     anims = {}
-    frames = actor.build_frames()
-    for variant in variants:
+    by_sprite = {}
+    for sprite_key, (rig_name, variant) in sorted(sprite_rigs.items()):
+        rig = RIGS[rig_name]
         pal = resolve(variant)
+        frames = rig.build_frames(variant)
+        by_sprite[sprite_key] = (rig_name, variant, frames)
         for state, facing, i, cel, shadow, ms in frames:
-            base = f"actor.{variant}/{state}/{facing}"
-            idx = actors.add(f"{base}/{i}", [shadow, cel], actor.ANCHOR, ms, pal)
+            base = f"{sprite_key}/{state}/{facing}"
+            idx = actors.add(f"{base}/{i}", [shadow, cel], rig.ANCHOR, ms, pal)
             anims.setdefault(base, {"atlas": "actors", "frames": [], "ms": ms})
             anims[base]["frames"].append(idx)
 
@@ -67,28 +75,28 @@ def build_atlases(variants):
     sprites = {}
     for a in sheets:
         sprites.update(a.sprites())
-    return sheets, sprites, anims, tile_canvases, prop_canvases, frames
+    return sheets, sprites, anims, tile_canvases, prop_canvases, by_sprite
 
 
 # ---------------------------------------------------------------- exports ---
-def write_aseprite(variants, frames, tile_canvases, prop_canvases):
+def write_aseprite(by_sprite, tile_canvases, prop_canvases):
     """Layered, tagged sources - the hand-editing escape hatch."""
     out = os.path.join(BUILD, "aseprite")
     os.makedirs(out, exist_ok=True)
     written = []
 
-    tags, i = [], 0
-    for facing in actor.FACINGS:
-        for state in actor.STATE_ORDER:
-            n = len(actor.STATES[state][0])
-            tags.append((f"{state}-{facing}", i, i + n - 1, TAG_COLOR))
-            i += n
-
-    for variant in variants:
+    for sprite_key, (rig_name, variant, frames) in sorted(by_sprite.items()):
+        rig = RIGS[rig_name]
+        tags, i = [], 0
+        for facing in rig.FACINGS:
+            for state in rig.STATE_ORDER:
+                n = len(rig.STATES[state][0])
+                tags.append((f"{state}-{facing}", i, i + n - 1, TAG_COLOR))
+                i += n
         pal = resolve(variant)
-        path = os.path.join(out, f"actor_{variant}.aseprite")
+        path = os.path.join(out, f"{sprite_key.replace('.', '_')}.aseprite")
         aseprite.write(
-            path, actor.FRAME, actor.FRAME, ["shadow", "actor"],
+            path, rig.FRAME, rig.FRAME, ["shadow", "actor"],
             [([s.rgba_bytes(pal), c.rgba_bytes(pal)], ms)
              for _st, _f, _i, c, s, ms in frames],
             [(pal[k], name) for k, (_rgba, name) in PALETTE.items()],
@@ -152,20 +160,24 @@ def write_embed(man, sheets):
 def assemble():
     """Everything up to writing files; returned twice to prove determinism."""
     content = manifest_mod.load_content(ROOT)
-    variants = sorted({d["sprite"].split(".", 1)[1]
-                       for d in content["actors"].values()})
-    for v in variants:
-        if v not in VARIANTS:
-            sys.exit(f"[variant] actor sprite 'actor.{v}' has no palette variant "
-                     f"in tools/gen/palette.py")
-    sheets, sprites, anims, tile_canvases, prop_canvases, frames = \
-        build_atlases(variants)
+    sprite_rigs = {}
+    for d in content["actors"].values():
+        rig_name = d.get("rig", "biped")
+        variant = d["sprite"].split(".", 1)[1]
+        if rig_name not in RIGS:
+            sys.exit(f"[rig] {d['_file']}: unknown rig {rig_name!r}")
+        if variant not in VARIANTS:
+            sys.exit(f"[variant] {d['_file']}: sprite {d['sprite']!r} has no "
+                     f"palette variant {variant!r} in tools/gen/palette.py")
+        sprite_rigs[d["sprite"]] = (rig_name, variant)
+    sheets, sprites, anims, tile_canvases, prop_canvases, by_sprite = \
+        build_atlases(sprite_rigs)
     man = manifest_mod.build(content, sheets, sprites, anims)
-    return content, variants, sheets, man, tile_canvases, prop_canvases, frames
+    return content, sprite_rigs, sheets, man, tile_canvases, prop_canvases, by_sprite
 
 
 def main():
-    content, variants, sheets, man, tile_canvases, prop_canvases, frames = assemble()
+    content, sprite_rigs, sheets, man, tile_canvases, prop_canvases, by_sprite = assemble()
 
     gates = validate.run(content, man, tile_canvases)
 
@@ -181,7 +193,7 @@ def main():
         a.render().save(os.path.join(BUILD, "atlas", f"{a.name}.png"), optimize=True)
     with open(os.path.join(BUILD, "manifest.json"), "w", encoding="utf-8") as fh:
         json.dump(man, fh, indent=2)
-    ase = write_aseprite(variants, frames, tile_canvases, prop_canvases)
+    ase = write_aseprite(by_sprite, tile_canvases, prop_canvases)
     write_preview(sheets).save(os.path.join(BUILD, "preview.png"))
     embed = write_embed(man, sheets)
     with open(os.path.join(GAME, "art-embed.js"), "w", encoding="utf-8") as fh:
@@ -191,7 +203,8 @@ def main():
 
     n_defs = sum(len(v) for v in content.values())
     print(f"content   {n_defs} definitions from content/")
-    print(f"variants  {', '.join(variants)}  (palette swaps of one rig)")
+    rigs = ", ".join(f"{k.split('.')[1]}[{v[0]}]" for k, v in sorted(sprite_rigs.items()))
+    print(f"actors    {rigs}")
     for a in sheets:
         p = os.path.join(BUILD, "atlas", f"{a.name}.png")
         print(f"  atlas/{a.name + '.png':<14}{os.path.getsize(p):>8} B  "

@@ -123,6 +123,62 @@
         6,
         17
       ]
+    },
+    {
+      "def": "npc.sheep",
+      "tile": [
+        8,
+        12
+      ]
+    },
+    {
+      "def": "npc.sheep",
+      "tile": [
+        10,
+        14
+      ]
+    },
+    {
+      "def": "npc.sheep",
+      "tile": [
+        6,
+        11
+      ]
+    },
+    {
+      "def": "npc.sheep",
+      "tile": [
+        11,
+        17
+      ]
+    },
+    {
+      "def": "npc.sheep",
+      "tile": [
+        22,
+        16
+      ]
+    },
+    {
+      "def": "npc.goat",
+      "tile": [
+        24,
+        14
+      ]
+    },
+    {
+      "def": "npc.goat",
+      "tile": [
+        20,
+        20
+      ]
+    },
+    {
+      "def": "npc.goat",
+      "tile": [
+        3,
+        20
+      ]
     }
   ]
 }

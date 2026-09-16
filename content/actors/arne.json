@@ -5,5 +5,10 @@
   "speed": 0,
   "blocks": true,
   "facing": "down",
-  "interact": "dlg.arne_intro"
+  "interact": "dlg.arne_intro",
+  "rig": "biped",
+  "states": [
+    "walk",
+    "idle"
+  ]
 }

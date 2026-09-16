@@ -7,7 +7,7 @@ always points at an authored file, never at generated output.
 
 import re
 
-from gen.actor import FACINGS, STATE_ORDER
+from gen.actor import FACINGS
 
 ID_RE = re.compile(r"^[a-z]+\.[a-z0-9_]+$")
 SPRITE_RE = re.compile(r"^[a-z]+\.[a-z0-9_]+(/[a-z0-9_]+)*$")
@@ -53,20 +53,23 @@ def run(content, man, tile_canvases):
     for cid, defn in content["actors"].items():
         base = defn["sprite"]
         anchors = set()
-        for state in STATE_ORDER:
+        states = defn.get("states")
+        if not states:
+            _fail("actor-states", f"{defn['_file']}: no \"states\" declared")
+        for state in states:
             for facing in FACINGS:
                 key = f"{base}/{state}/{facing}"
                 if key not in man["anims"]:
                     _fail("actor-complete",
-                          f"{defn['_file']}: missing animation {key!r}")
-                for idx in man["anims"][key]["frames"]:
-                    pass
+                          f"{defn['_file']}: declares state {state!r} but the rig "
+                          f"generated no animation {key!r}")
         for skey, rec in man["sprites"].items():
             if skey.startswith(base + "/"):
                 anchors.add(tuple(rec["anchor"]))
         if len(anchors) != 1:
             _fail("actor-anchor",
                   f"{cid}: frames disagree on the anchor: {sorted(anchors)}")
+    passed.append("actor-states")
     passed.append("actor-complete")
     passed.append("actor-anchor")
 

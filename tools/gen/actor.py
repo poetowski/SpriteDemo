@@ -212,8 +212,11 @@ STATES = {"walk": (WALK, 120), "idle": (IDLE, 500)}
 STATE_ORDER = ["walk", "idle"]
 
 
-def build_frames():
+def build_frames(variant=None):
     """[(state, facing, i, actor Canvas, shadow Canvas, ms), ...]
+
+    `variant` is accepted for a uniform rig interface but unused: biped
+    variants are pure palette swaps, so every variant shares these pixels.
 
     Linear order: facing-major, then state, then frame - which is also the
     sheet's row-major order and the .aseprite frame order.

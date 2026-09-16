@@ -70,6 +70,8 @@ class World extends Phaser.Scene {
     // --- entities from the map's placement list --------------------------
     this.solid = this.physics.add.staticGroup();
     this.interactables = [];
+    this.wanderers = [];
+    this.blocked = new Set();
     for (const e of map.entities) {
       this.spawn(e.def, e.tile[0], e.tile[1]);
     }
@@ -129,11 +131,91 @@ class World extends Phaser.Scene {
       const body = this.add.zone(p.x, p.y, this.ts, this.ts);
       this.physics.add.existing(body, true);
       this.solid.add(body);
+      this.blocked.add(`${tx},${ty}`);
     }
     if (def.interact) {
-      this.interactables.push({ id: defId, def, sprite, tile: [tx, ty], p });
+      // position is read from the sprite, so a wandering animal stays talkable
+      this.interactables.push({ id: defId, def, sprite });
+    }
+    if (def.wander) {
+      this.wanderers.push({
+        def, sprite, home: [tx, ty], tile: [tx, ty],
+        facing: def.facing || 'down', state: 'idle', timer: 0,
+        goalX: p.x, goalY: p.y,
+      });
     }
     return sprite;
+  }
+
+  isWalkable(tx, ty) {
+    const [cols, rows] = this.map.size;
+    if (tx < 0 || ty < 0 || tx >= cols || ty >= rows) return false;
+    if (!M.tiles[this.map.legend[this.map.ground[ty][tx]]].walkable) return false;
+    return !this.blocked.has(`${tx},${ty}`);
+  }
+
+  /** Pick what an animal does next: graze, stand, or step to a neighbour tile. */
+  pickWanderAction(w) {
+    const cfg = w.def.wander;
+    const rand = ([lo, hi]) => lo + Math.random() * (hi - lo);
+    const roll = Math.random();
+
+    if (roll < cfg.graze_chance) {
+      w.state = 'graze';
+      w.timer = rand(cfg.graze_ms);
+      return;
+    }
+    if (roll < cfg.graze_chance + 0.15) {
+      w.state = 'idle';
+      w.timer = rand(cfg.idle_ms);
+      return;
+    }
+    const dirs = [[0, -1, 'up'], [0, 1, 'down'], [-1, 0, 'left'], [1, 0, 'right']];
+    for (let i = dirs.length - 1; i > 0; i--) {          // shuffle
+      const j = Math.floor(Math.random() * (i + 1));
+      [dirs[i], dirs[j]] = [dirs[j], dirs[i]];
+    }
+    for (const [dx, dy, facing] of dirs) {
+      const nx = w.tile[0] + dx;
+      const ny = w.tile[1] + dy;
+      if (Math.abs(nx - w.home[0]) > cfg.radius) continue;   // stay near home
+      if (Math.abs(ny - w.home[1]) > cfg.radius) continue;
+      if (!this.isWalkable(nx, ny)) continue;
+      const c = this.tileCentre(nx, ny);
+      w.tile = [nx, ny];
+      w.goalX = c.x;
+      w.goalY = c.y;
+      w.facing = facing;
+      w.state = 'walk';
+      return;
+    }
+    w.state = 'idle';                                    // hemmed in; wait
+    w.timer = rand(cfg.idle_ms);
+  }
+
+  stepWanderers(dt) {
+    for (const w of this.wanderers) {
+      if (w.state === 'walk') {
+        const dx = w.goalX - w.sprite.x;
+        const dy = w.goalY - w.sprite.y;
+        const dist = Math.hypot(dx, dy);
+        const step = (w.def.speed * dt) / 1000;
+        if (dist <= step || dist === 0) {
+          w.sprite.setPosition(w.goalX, w.goalY);
+          this.pickWanderAction(w);
+        } else {
+          w.sprite.x += (dx / dist) * step;
+          w.sprite.y += (dy / dist) * step;
+        }
+      } else {
+        w.timer -= dt;
+        if (w.timer <= 0) this.pickWanderAction(w);
+      }
+      const want = `${w.def.sprite}/${w.state}/${w.facing}`;
+      const cur = w.sprite.anims.currentAnim && w.sprite.anims.currentAnim.key;
+      if (cur !== want) w.sprite.play(want, true);
+      w.sprite.setDepth(w.sprite.y);
+    }
   }
 
   // --- dialogue ----------------------------------------------------------
@@ -166,7 +248,9 @@ class World extends Phaser.Scene {
     if (window.__dialogue) window.__dialogue(null);
   }
 
-  update() {
+  update(time, delta) {
+    this.stepWanderers(delta);
+
     const k = this.keys;
     const pad = window.__pad || {};
     const talking = !!this.dialogue;
@@ -197,7 +281,8 @@ class World extends Phaser.Scene {
     let best = null;
     let bestD = 26;
     for (const it of this.interactables) {
-      const d = Phaser.Math.Distance.Between(this.hero.x, this.hero.y, it.p.x, it.p.y);
+      const d = Phaser.Math.Distance.Between(
+        this.hero.x, this.hero.y, it.sprite.x, it.sprite.y);
       if (d < bestD) { bestD = d; best = it; }
     }
     this.nearest = best;

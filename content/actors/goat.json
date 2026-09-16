@@ -1,0 +1,27 @@
+{
+  "id": "npc.goat",
+  "sprite": "actor.goat",
+  "rig": "quadruped",
+  "name": "Goat",
+  "states": [
+    "walk",
+    "idle",
+    "graze"
+  ],
+  "speed": 20,
+  "blocks": false,
+  "facing": "down",
+  "interact": "dlg.goat_bleat",
+  "wander": {
+    "radius": 4,
+    "idle_ms": [
+      900,
+      2200
+    ],
+    "graze_ms": [
+      2500,
+      6000
+    ],
+    "graze_chance": 0.6
+  }
+}
