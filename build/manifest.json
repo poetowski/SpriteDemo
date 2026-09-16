@@ -2286,9 +2286,9 @@
         "....................ppppppppppppppppp.......pp....................~~~~~~~.......................",
         "pppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppp",
         "pppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppp",
-        "..........................ppppppppppp............................~~~~~~~........................",
-        "..............,,..........ppppppppppppppppppp....................~~~~~~~........................",
-        ".............,,,...,......ppppppppppppppppppp...................~~~~~~~.........................",
+        "..........................ppppppppppp............................~~~~~~~......p.................",
+        "..............,,..........ppppppppppp............................~~~~~~~......p.................",
+        ".............,,,...,......ppppppppppp...........................~~~~~~~.......p.................",
         ".........,,,.,,...,,......ppppppppppp...........................~~~~~~~.........................",
         "........,,,,.,..,...,.....ppppppppppp..........................~~~~~~~..........................",
         "..........,..,,,,,,...........pp...............................~~~~~~~..........................",
@@ -2297,23 +2297,23 @@
         "..............................pp..............................~~~~~~~...........................",
         "........................#.....pp.............................~~~~~~~............................",
         "................#....#######..pp.............................~~~~~###############...............",
-        "....................#########.pp............................~~~~~~#.............#...............",
-        "...................###########pp............................~~~~~~#.............#...............",
-        "....................########..pp...........................~~~~~~~#.............#...............",
-        "...........#################..pp...........................~~~~~~~#.............#...............",
-        ".........################.#...pp...........................~~~~~~~#.............#...............",
-        ".......############.######....pp..........................~~~~~~~.#.............#,..............",
-        "....#..##.################.#.#pp..........................~~~~~~~.#.............#,..............",
-        "......##############.######...pp......,..................~~~~~~~..#.............#.,.............",
-        "......#####################...pp..,,.,,..,,..............~~~~~~~..#.............#,..............",
-        ".....#######################..pp,...,,,..,..............~~~~~~~...#.....ppp.....#...............",
-        "......#####################..#pp..,..,.,,,,,,...........~~~~~~~...#.....ppp.....#...............",
-        "......##############.######...pp..,,,,,,,,,,............~~~~~~~...#.....ppp.....#...............",
-        ".......####.##############..#.pp...,,,,,.,..,..........~~~~~~~....#.....ppp.....#...............",
-        ".......###################....pp...,,.,,,,..,..........~~~~~~~....######ppp######...............",
-        ".........##############.......pp..,.....,..............~~~~~~~..................................",
-        "........#...##########........pp.......................~~~~~~~..................................",
-        "................#.............pp......................~~~~~~~...................................",
+        "....................#########.pp............................~~~~~~#......p......#...............",
+        "...................###########pp............................~~~~~~#......p......#...............",
+        "....................########..pp...........................~~~~~~~#......p......#...............",
+        "...........#################..pp...........................~~~~~~~#......p......#...............",
+        ".........################.#...pp...........................~~~~~~~#......p......#...............",
+        ".......############.######....pp..........................~~~~~~~.#......p......#,..............",
+        "....#..##.################.#.#pp..........................~~~~~~~.#......p......#,..............",
+        "......##############.######...pp......,..................~~~~~~~..#......p......#.,.............",
+        "......#####################...pp..,,.,,..,,..............~~~~~~~..#......p......#,..............",
+        ".....#######################..pp,...,,,..,..............~~~~~~~...#......p......#...............",
+        "......#####################..#pp..,..,.,,,,,,...........~~~~~~~...#......p......#...............",
+        "......##############.######...pp..,,,,,,,,,,............~~~~~~~...#......p......#...............",
+        ".......####.##############..#.pp...,,,,,.,..,..........~~~~~~~....#......p......#...............",
+        ".......###################....pp...,,.,,,,..,..........~~~~~~~....#######p#######...............",
+        ".........##############.......pp..,.....,..............~~~~~~~...........p......................",
+        "........#...##########........pp.......................~~~~~~~...........p......................",
+        "................#.............pp......................~~~~~~~............p......................",
         ".....................#........pp......................~~~~~~~...................................",
         ".......................#......pp.....................~~~~~~~....................................",
         "..............................pp.....................~~~~~~~....................................",
@@ -2321,154 +2321,154 @@
       ],
       "entities": [
         {
-          "def": "prop.mushroom",
+          "def": "prop.tree_oak",
           "tile": [
-            15,
+            4,
             2
           ]
         },
         {
-          "def": "prop.stump",
+          "def": "prop.bush",
           "tile": [
             18,
             2
           ]
         },
         {
-          "def": "prop.tree_pine",
+          "def": "prop.tree_oak",
           "tile": [
-            26,
+            19,
             2
           ]
         },
         {
           "def": "prop.tree_pine",
           "tile": [
-            27,
-            2
-          ]
-        },
-        {
-          "def": "prop.rock",
-          "tile": [
-            65,
-            2
-          ]
-        },
-        {
-          "def": "prop.bush",
-          "tile": [
-            69,
-            2
-          ]
-        },
-        {
-          "def": "prop.bush",
-          "tile": [
-            77,
-            2
-          ]
-        },
-        {
-          "def": "prop.boulder",
-          "tile": [
-            86,
-            2
-          ]
-        },
-        {
-          "def": "prop.boulder",
-          "tile": [
-            90,
+            20,
             2
           ]
         },
         {
           "def": "prop.tree_pine",
           "tile": [
-            7,
+            3,
+            3
+          ]
+        },
+        {
+          "def": "prop.tree_pine",
+          "tile": [
+            5,
             3
           ]
         },
         {
           "def": "prop.tree_oak",
           "tile": [
-            14,
+            11,
             3
           ]
         },
         {
           "def": "prop.tree_pine",
           "tile": [
-            17,
-            3
-          ]
-        },
-        {
-          "def": "prop.rock",
-          "tile": [
-            43,
-            3
-          ]
-        },
-        {
-          "def": "prop.bush",
-          "tile": [
-            76,
-            3
-          ]
-        },
-        {
-          "def": "prop.tree_oak",
-          "tile": [
-            93,
-            3
-          ]
-        },
-        {
-          "def": "prop.tree_pine",
-          "tile": [
-            13,
+            2,
             4
           ]
         },
         {
-          "def": "prop.bush",
+          "def": "prop.tree_pine",
           "tile": [
-            21,
+            5,
+            4
+          ]
+        },
+        {
+          "def": "prop.tree_pine",
+          "tile": [
+            10,
+            4
+          ]
+        },
+        {
+          "def": "prop.tree_pine",
+          "tile": [
+            11,
             4
           ]
         },
         {
           "def": "prop.mushroom",
           "tile": [
-            27,
+            17,
+            4
+          ]
+        },
+        {
+          "def": "prop.tree_pine",
+          "tile": [
+            19,
+            4
+          ]
+        },
+        {
+          "def": "prop.tree_pine",
+          "tile": [
+            20,
             4
           ]
         },
         {
           "def": "prop.tree_oak",
           "tile": [
-            38,
+            43,
             4
           ]
         },
         {
-          "def": "prop.rock",
+          "def": "prop.tree_oak",
           "tile": [
-            47,
+            44,
             4
           ]
         },
         {
-          "def": "prop.rock",
+          "def": "prop.tree_oak",
           "tile": [
-            57,
+            45,
             4
           ]
         },
         {
-          "def": "prop.tree_pine",
+          "def": "prop.bush",
+          "tile": [
+            66,
+            4
+          ]
+        },
+        {
+          "def": "prop.bush",
+          "tile": [
+            67,
+            4
+          ]
+        },
+        {
+          "def": "prop.tree_oak",
+          "tile": [
+            3,
+            5
+          ]
+        },
+        {
+          "def": "prop.tree_oak",
+          "tile": [
+            4,
+            5
+          ]
+        },
+        {
+          "def": "prop.tree_oak",
           "tile": [
             9,
             5
@@ -2477,119 +2477,168 @@
         {
           "def": "prop.tree_pine",
           "tile": [
+            13,
+            5
+          ]
+        },
+        {
+          "def": "prop.tree_pine",
+          "tile": [
+            18,
+            5
+          ]
+        },
+        {
+          "def": "prop.bush",
+          "tile": [
             20,
             5
           ]
         },
         {
-          "def": "prop.tree_oak",
+          "def": "prop.tree_pine",
           "tile": [
             21,
             5
           ]
         },
         {
-          "def": "prop.tree_oak",
+          "def": "prop.tree_pine",
+          "tile": [
+            22,
+            5
+          ]
+        },
+        {
+          "def": "prop.mushroom",
           "tile": [
             44,
             5
           ]
         },
         {
-          "def": "prop.tree_oak",
+          "def": "prop.tree_pine",
           "tile": [
-            46,
-            5
-          ]
-        },
-        {
-          "def": "prop.bush",
-          "tile": [
-            86,
+            45,
             5
           ]
         },
         {
           "def": "prop.tree_pine",
           "tile": [
-            94,
+            57,
             5
           ]
         },
         {
-          "def": "prop.cairn",
+          "def": "prop.tree_pine",
           "tile": [
-            33,
+            10,
             6
           ]
         },
         {
-          "def": "prop.bush",
+          "def": "prop.tree_pine",
           "tile": [
-            82,
-            6
-          ]
-        },
-        {
-          "def": "prop.bush",
-          "tile": [
-            85,
+            11,
             6
           ]
         },
         {
           "def": "prop.tree_oak",
           "tile": [
-            8,
+            19,
+            6
+          ]
+        },
+        {
+          "def": "prop.tree_pine",
+          "tile": [
+            20,
+            6
+          ]
+        },
+        {
+          "def": "prop.tree_oak",
+          "tile": [
+            21,
+            6
+          ]
+        },
+        {
+          "def": "prop.bush",
+          "tile": [
+            25,
+            6
+          ]
+        },
+        {
+          "def": "prop.tree_oak",
+          "tile": [
+            43,
+            6
+          ]
+        },
+        {
+          "def": "prop.tree_pine",
+          "tile": [
+            57,
+            6
+          ]
+        },
+        {
+          "def": "prop.tree_oak",
+          "tile": [
+            58,
+            6
+          ]
+        },
+        {
+          "def": "prop.tree_pine",
+          "tile": [
+            20,
             7
           ]
         },
         {
-          "def": "prop.stump",
+          "def": "prop.bush",
           "tile": [
-            12,
+            24,
+            7
+          ]
+        },
+        {
+          "def": "prop.bush",
+          "tile": [
+            26,
             7
           ]
         },
         {
           "def": "prop.tree_oak",
           "tile": [
-            34,
+            40,
             7
-          ]
-        },
-        {
-          "def": "prop.boulder",
-          "tile": [
-            55,
-            7
-          ]
-        },
-        {
-          "def": "prop.tree_pine",
-          "tile": [
-            83,
-            7
-          ]
-        },
-        {
-          "def": "prop.tree_pine",
-          "tile": [
-            8,
-            8
           ]
         },
         {
           "def": "prop.mushroom",
           "tile": [
-            11,
+            43,
+            7
+          ]
+        },
+        {
+          "def": "prop.bush",
+          "tile": [
+            5,
             8
           ]
         },
         {
           "def": "prop.bush",
           "tile": [
-            15,
+            23,
             8
           ]
         },
@@ -2601,72 +2650,121 @@
           ]
         },
         {
+          "def": "prop.tree_pine",
+          "tile": [
+            26,
+            8
+          ]
+        },
+        {
+          "def": "prop.cairn",
+          "tile": [
+            33,
+            8
+          ]
+        },
+        {
+          "def": "prop.tree_oak",
+          "tile": [
+            56,
+            8
+          ]
+        },
+        {
           "def": "prop.bush",
+          "tile": [
+            6,
+            9
+          ]
+        },
+        {
+          "def": "prop.tree_oak",
+          "tile": [
+            10,
+            9
+          ]
+        },
+        {
+          "def": "prop.tree_oak",
+          "tile": [
+            12,
+            9
+          ]
+        },
+        {
+          "def": "prop.tree_oak",
+          "tile": [
+            39,
+            9
+          ]
+        },
+        {
+          "def": "prop.tree_oak",
           "tile": [
             41,
-            8
-          ]
-        },
-        {
-          "def": "prop.bush",
-          "tile": [
-            86,
-            8
-          ]
-        },
-        {
-          "def": "prop.tree_dead",
-          "tile": [
-            17,
             9
           ]
         },
         {
-          "def": "prop.bush",
+          "def": "prop.tree_oak",
           "tile": [
-            35,
-            9
-          ]
-        },
-        {
-          "def": "prop.boulder",
-          "tile": [
-            48,
+            42,
             9
           ]
         },
         {
           "def": "prop.tree_pine",
           "tile": [
-            5,
+            10,
             10
           ]
         },
         {
           "def": "prop.tree_pine",
           "tile": [
-            7,
+            11,
             10
           ]
         },
         {
           "def": "prop.tree_pine",
           "tile": [
-            15,
-            10
-          ]
-        },
-        {
-          "def": "prop.boulder",
-          "tile": [
-            89,
+            12,
             10
           ]
         },
         {
           "def": "prop.tree_oak",
           "tile": [
-            7,
+            40,
+            10
+          ]
+        },
+        {
+          "def": "prop.bush",
+          "tile": [
+            85,
+            10
+          ]
+        },
+        {
+          "def": "prop.tree_pine",
+          "tile": [
+            87,
+            10
+          ]
+        },
+        {
+          "def": "prop.tree_oak",
+          "tile": [
+            88,
+            10
+          ]
+        },
+        {
+          "def": "prop.tree_pine",
+          "tile": [
+            11,
             11
           ]
         },
@@ -2674,27 +2772,6 @@
           "def": "prop.tree_oak",
           "tile": [
             12,
-            11
-          ]
-        },
-        {
-          "def": "prop.stump",
-          "tile": [
-            15,
-            11
-          ]
-        },
-        {
-          "def": "prop.tree_oak",
-          "tile": [
-            18,
-            11
-          ]
-        },
-        {
-          "def": "prop.tree_oak",
-          "tile": [
-            22,
             11
           ]
         },
@@ -2706,37 +2783,93 @@
           ]
         },
         {
+          "def": "prop.tree_oak",
+          "tile": [
+            40,
+            11
+          ]
+        },
+        {
+          "def": "prop.tree_oak",
+          "tile": [
+            51,
+            11
+          ]
+        },
+        {
           "def": "prop.tree_pine",
           "tile": [
-            5,
+            85,
+            11
+          ]
+        },
+        {
+          "def": "prop.tree_oak",
+          "tile": [
+            86,
+            11
+          ]
+        },
+        {
+          "def": "prop.tree_oak",
+          "tile": [
+            88,
+            11
+          ]
+        },
+        {
+          "def": "prop.tree_dead",
+          "tile": [
+            9,
             12
           ]
         },
         {
-          "def": "prop.mushroom",
+          "def": "prop.bush",
           "tile": [
-            6,
+            11,
             12
           ]
         },
         {
-          "def": "prop.tree_pine",
+          "def": "prop.tree_oak",
           "tile": [
             20,
             12
           ]
         },
         {
-          "def": "prop.bush",
+          "def": "prop.tree_pine",
           "tile": [
-            38,
+            48,
             12
           ]
         },
         {
           "def": "prop.tree_pine",
           "tile": [
-            4,
+            51,
+            12
+          ]
+        },
+        {
+          "def": "prop.tree_oak",
+          "tile": [
+            87,
+            12
+          ]
+        },
+        {
+          "def": "prop.tree_pine",
+          "tile": [
+            89,
+            12
+          ]
+        },
+        {
+          "def": "prop.tree_oak",
+          "tile": [
+            2,
             13
           ]
         },
@@ -2750,273 +2883,357 @@
         {
           "def": "prop.tree_pine",
           "tile": [
-            8,
-            13
-          ]
-        },
-        {
-          "def": "prop.tree_oak",
-          "tile": [
-            22,
-            13
-          ]
-        },
-        {
-          "def": "prop.bush",
-          "tile": [
-            86,
-            13
-          ]
-        },
-        {
-          "def": "prop.boulder",
-          "tile": [
-            92,
-            13
-          ]
-        },
-        {
-          "def": "prop.boulder",
-          "tile": [
-            94,
-            13
-          ]
-        },
-        {
-          "def": "prop.tree_oak",
-          "tile": [
-            7,
-            14
-          ]
-        },
-        {
-          "def": "prop.tree_pine",
-          "tile": [
             19,
-            14
+            13
           ]
         },
         {
           "def": "prop.tree_oak",
           "tile": [
-            25,
-            14
-          ]
-        },
-        {
-          "def": "prop.bush",
-          "tile": [
-            45,
-            14
+            20,
+            13
           ]
         },
         {
           "def": "prop.tree_pine",
-          "tile": [
-            86,
-            14
-          ]
-        },
-        {
-          "def": "prop.tree_pine",
-          "tile": [
-            93,
-            14
-          ]
-        },
-        {
-          "def": "prop.log",
-          "tile": [
-            24,
-            15
-          ]
-        },
-        {
-          "def": "prop.stump",
-          "tile": [
-            26,
-            15
-          ]
-        },
-        {
-          "def": "prop.bush",
-          "tile": [
-            18,
-            16
-          ]
-        },
-        {
-          "def": "prop.tree_oak",
-          "tile": [
-            25,
-            16
-          ]
-        },
-        {
-          "def": "prop.cairn",
-          "tile": [
-            29,
-            16
-          ]
-        },
-        {
-          "def": "prop.bush",
-          "tile": [
-            92,
-            16
-          ]
-        },
-        {
-          "def": "prop.tree_pine",
-          "tile": [
-            10,
-            17
-          ]
-        },
-        {
-          "def": "prop.tree_pine",
-          "tile": [
-            11,
-            17
-          ]
-        },
-        {
-          "def": "prop.boulder",
-          "tile": [
-            47,
-            17
-          ]
-        },
-        {
-          "def": "prop.tree_oak",
           "tile": [
             85,
-            17
-          ]
-        },
-        {
-          "def": "prop.boulder",
-          "tile": [
-            89,
-            17
-          ]
-        },
-        {
-          "def": "prop.tree_pine",
-          "tile": [
-            92,
-            17
+            13
           ]
         },
         {
           "def": "prop.tree_oak",
-          "tile": [
-            94,
-            17
-          ]
-        },
-        {
-          "def": "prop.tree_oak",
-          "tile": [
-            11,
-            18
-          ]
-        },
-        {
-          "def": "prop.tree_oak",
-          "tile": [
-            4,
-            19
-          ]
-        },
-        {
-          "def": "prop.tree_oak",
-          "tile": [
-            15,
-            19
-          ]
-        },
-        {
-          "def": "prop.rock",
-          "tile": [
-            43,
-            19
-          ]
-        },
-        {
-          "def": "prop.rock",
-          "tile": [
-            53,
-            19
-          ]
-        },
-        {
-          "def": "prop.tree_pine",
-          "tile": [
-            82,
-            19
-          ]
-        },
-        {
-          "def": "prop.tree_pine",
           "tile": [
             86,
-            19
+            13
           ]
         },
         {
           "def": "prop.tree_pine",
           "tile": [
             88,
+            13
+          ]
+        },
+        {
+          "def": "prop.tree_oak",
+          "tile": [
+            18,
+            14
+          ]
+        },
+        {
+          "def": "prop.bush",
+          "tile": [
+            19,
+            14
+          ]
+        },
+        {
+          "def": "prop.tree_pine",
+          "tile": [
+            21,
+            14
+          ]
+        },
+        {
+          "def": "prop.tree_pine",
+          "tile": [
+            22,
+            14
+          ]
+        },
+        {
+          "def": "prop.cairn",
+          "tile": [
+            28,
+            14
+          ]
+        },
+        {
+          "def": "prop.tree_oak",
+          "tile": [
+            50,
+            14
+          ]
+        },
+        {
+          "def": "prop.tree_oak",
+          "tile": [
+            85,
+            14
+          ]
+        },
+        {
+          "def": "prop.tree_pine",
+          "tile": [
+            88,
+            14
+          ]
+        },
+        {
+          "def": "prop.tree_oak",
+          "tile": [
+            1,
+            15
+          ]
+        },
+        {
+          "def": "prop.tree_oak",
+          "tile": [
+            2,
+            15
+          ]
+        },
+        {
+          "def": "prop.bush",
+          "tile": [
+            4,
+            15
+          ]
+        },
+        {
+          "def": "prop.tree_pine",
+          "tile": [
+            5,
+            15
+          ]
+        },
+        {
+          "def": "prop.tree_oak",
+          "tile": [
+            19,
+            15
+          ]
+        },
+        {
+          "def": "prop.bush",
+          "tile": [
+            20,
+            15
+          ]
+        },
+        {
+          "def": "prop.tree_oak",
+          "tile": [
+            21,
+            15
+          ]
+        },
+        {
+          "def": "prop.tree_pine",
+          "tile": [
+            47,
+            15
+          ]
+        },
+        {
+          "def": "prop.tree_oak",
+          "tile": [
+            86,
+            15
+          ]
+        },
+        {
+          "def": "prop.tree_pine",
+          "tile": [
+            4,
+            16
+          ]
+        },
+        {
+          "def": "prop.tree_oak",
+          "tile": [
+            5,
+            16
+          ]
+        },
+        {
+          "def": "prop.tree_pine",
+          "tile": [
+            20,
+            16
+          ]
+        },
+        {
+          "def": "prop.mushroom",
+          "tile": [
+            21,
+            16
+          ]
+        },
+        {
+          "def": "prop.bush",
+          "tile": [
+            47,
+            16
+          ]
+        },
+        {
+          "def": "prop.tree_dead",
+          "tile": [
+            89,
+            16
+          ]
+        },
+        {
+          "def": "prop.bush",
+          "tile": [
+            4,
+            17
+          ]
+        },
+        {
+          "def": "prop.tree_pine",
+          "tile": [
+            46,
+            17
+          ]
+        },
+        {
+          "def": "prop.tree_pine",
+          "tile": [
+            10,
+            18
+          ]
+        },
+        {
+          "def": "prop.tree_oak",
+          "tile": [
+            15,
+            18
+          ]
+        },
+        {
+          "def": "prop.tree_pine",
+          "tile": [
+            17,
+            18
+          ]
+        },
+        {
+          "def": "prop.bush",
+          "tile": [
+            55,
+            18
+          ]
+        },
+        {
+          "def": "prop.rock",
+          "tile": [
+            80,
+            18
+          ]
+        },
+        {
+          "def": "prop.rock",
+          "tile": [
+            81,
+            18
+          ]
+        },
+        {
+          "def": "prop.tree_pine",
+          "tile": [
+            84,
+            18
+          ]
+        },
+        {
+          "def": "prop.bush",
+          "tile": [
+            8,
+            19
+          ]
+        },
+        {
+          "def": "prop.tree_oak",
+          "tile": [
+            9,
             19
           ]
         },
         {
           "def": "prop.tree_pine",
           "tile": [
-            9,
-            20
+            11,
+            19
           ]
         },
         {
           "def": "prop.tree_pine",
           "tile": [
-            23,
-            20
+            12,
+            19
+          ]
+        },
+        {
+          "def": "prop.tree_pine",
+          "tile": [
+            14,
+            19
+          ]
+        },
+        {
+          "def": "prop.tree_pine",
+          "tile": [
+            17,
+            19
           ]
         },
         {
           "def": "prop.bush",
           "tile": [
-            38,
-            20
+            56,
+            19
+          ]
+        },
+        {
+          "def": "prop.bush",
+          "tile": [
+            78,
+            19
+          ]
+        },
+        {
+          "def": "prop.bush",
+          "tile": [
+            79,
+            19
           ]
         },
         {
           "def": "prop.boulder",
           "tile": [
-            51,
-            20
+            81,
+            19
           ]
         },
         {
-          "def": "prop.rock",
+          "def": "prop.tree_pine",
           "tile": [
-            67,
+            83,
+            19
+          ]
+        },
+        {
+          "def": "prop.tree_oak",
+          "tile": [
+            10,
             20
           ]
         },
         {
           "def": "prop.tree_pine",
           "tile": [
-            73,
+            11,
             20
           ]
         },
         {
-          "def": "prop.boulder",
+          "def": "prop.tree_pine",
           "tile": [
-            94,
+            15,
             20
           ]
         },
@@ -3024,270 +3241,620 @@
           "def": "prop.tree_pine",
           "tile": [
             16,
-            21
-          ]
-        },
-        {
-          "def": "prop.bush",
-          "tile": [
-            39,
-            21
-          ]
-        },
-        {
-          "def": "prop.boulder",
-          "tile": [
-            46,
-            21
-          ]
-        },
-        {
-          "def": "prop.rock",
-          "tile": [
-            53,
-            21
-          ]
-        },
-        {
-          "def": "prop.rock",
-          "tile": [
-            60,
-            21
-          ]
-        },
-        {
-          "def": "prop.bush",
-          "tile": [
-            90,
-            21
-          ]
-        },
-        {
-          "def": "prop.bush",
-          "tile": [
-            92,
-            21
-          ]
-        },
-        {
-          "def": "prop.bush",
-          "tile": [
-            6,
-            22
-          ]
-        },
-        {
-          "def": "prop.stump",
-          "tile": [
-            10,
-            22
-          ]
-        },
-        {
-          "def": "prop.tree_pine",
-          "tile": [
-            14,
-            22
-          ]
-        },
-        {
-          "def": "prop.rock",
-          "tile": [
-            60,
-            22
-          ]
-        },
-        {
-          "def": "prop.rock",
-          "tile": [
-            61,
-            22
-          ]
-        },
-        {
-          "def": "prop.bush",
-          "tile": [
-            62,
-            22
-          ]
-        },
-        {
-          "def": "prop.rock",
-          "tile": [
-            73,
-            22
-          ]
-        },
-        {
-          "def": "prop.tree_pine",
-          "tile": [
-            79,
-            22
-          ]
-        },
-        {
-          "def": "prop.log",
-          "tile": [
-            8,
-            23
-          ]
-        },
-        {
-          "def": "prop.tree_pine",
-          "tile": [
-            13,
-            23
-          ]
-        },
-        {
-          "def": "prop.mushroom",
-          "tile": [
-            21,
-            23
-          ]
-        },
-        {
-          "def": "prop.boulder",
-          "tile": [
-            58,
-            23
-          ]
-        },
-        {
-          "def": "prop.tree_pine",
-          "tile": [
-            84,
-            23
-          ]
-        },
-        {
-          "def": "prop.bush",
-          "tile": [
-            86,
-            23
-          ]
-        },
-        {
-          "def": "prop.tree_pine",
-          "tile": [
-            4,
-            24
+            20
           ]
         },
         {
           "def": "prop.tree_oak",
           "tile": [
-            41,
-            24
+            17,
+            20
           ]
         },
         {
-          "def": "prop.rock",
+          "def": "prop.cairn",
           "tile": [
-            60,
-            24
+            28,
+            20
           ]
         },
         {
-          "def": "prop.rock",
+          "def": "prop.bush",
           "tile": [
-            78,
-            24
+            73,
+            20
           ]
         },
         {
           "def": "prop.tree_oak",
           "tile": [
             82,
-            24
+            20
+          ]
+        },
+        {
+          "def": "prop.tree_oak",
+          "tile": [
+            85,
+            20
+          ]
+        },
+        {
+          "def": "prop.mushroom",
+          "tile": [
+            86,
+            20
           ]
         },
         {
           "def": "prop.tree_pine",
           "tile": [
-            84,
-            24
+            3,
+            21
+          ]
+        },
+        {
+          "def": "prop.tree_oak",
+          "tile": [
+            4,
+            21
           ]
         },
         {
           "def": "prop.tree_pine",
           "tile": [
             6,
-            25
-          ]
-        },
-        {
-          "def": "prop.mushroom",
-          "tile": [
-            8,
-            26
-          ]
-        },
-        {
-          "def": "prop.tree_pine",
-          "tile": [
-            24,
-            26
+            21
           ]
         },
         {
           "def": "prop.tree_oak",
           "tile": [
-            46,
-            26
+            7,
+            21
+          ]
+        },
+        {
+          "def": "prop.tree_oak",
+          "tile": [
+            9,
+            21
+          ]
+        },
+        {
+          "def": "prop.bush",
+          "tile": [
+            11,
+            21
+          ]
+        },
+        {
+          "def": "prop.tree_pine",
+          "tile": [
+            12,
+            21
+          ]
+        },
+        {
+          "def": "prop.tree_oak",
+          "tile": [
+            16,
+            21
+          ]
+        },
+        {
+          "def": "prop.mushroom",
+          "tile": [
+            17,
+            21
+          ]
+        },
+        {
+          "def": "prop.bush",
+          "tile": [
+            67,
+            21
+          ]
+        },
+        {
+          "def": "prop.bush",
+          "tile": [
+            73,
+            21
+          ]
+        },
+        {
+          "def": "prop.tree_oak",
+          "tile": [
+            83,
+            21
+          ]
+        },
+        {
+          "def": "prop.tree_pine",
+          "tile": [
+            84,
+            21
+          ]
+        },
+        {
+          "def": "prop.tree_pine",
+          "tile": [
+            85,
+            21
+          ]
+        },
+        {
+          "def": "prop.bush",
+          "tile": [
+            4,
+            22
+          ]
+        },
+        {
+          "def": "prop.tree_oak",
+          "tile": [
+            8,
+            22
+          ]
+        },
+        {
+          "def": "prop.tree_oak",
+          "tile": [
+            9,
+            22
+          ]
+        },
+        {
+          "def": "prop.tree_dead",
+          "tile": [
+            17,
+            22
+          ]
+        },
+        {
+          "def": "prop.tree_oak",
+          "tile": [
+            19,
+            22
+          ]
+        },
+        {
+          "def": "prop.tree_pine",
+          "tile": [
+            37,
+            22
+          ]
+        },
+        {
+          "def": "prop.tree_pine",
+          "tile": [
+            84,
+            22
+          ]
+        },
+        {
+          "def": "prop.bush",
+          "tile": [
+            8,
+            23
+          ]
+        },
+        {
+          "def": "prop.bush",
+          "tile": [
+            9,
+            23
+          ]
+        },
+        {
+          "def": "prop.tree_pine",
+          "tile": [
+            10,
+            23
+          ]
+        },
+        {
+          "def": "prop.tree_pine",
+          "tile": [
+            11,
+            23
+          ]
+        },
+        {
+          "def": "prop.tree_oak",
+          "tile": [
+            12,
+            23
+          ]
+        },
+        {
+          "def": "prop.tree_oak",
+          "tile": [
+            18,
+            23
+          ]
+        },
+        {
+          "def": "prop.tree_pine",
+          "tile": [
+            19,
+            23
+          ]
+        },
+        {
+          "def": "prop.tree_pine",
+          "tile": [
+            20,
+            23
+          ]
+        },
+        {
+          "def": "prop.tree_oak",
+          "tile": [
+            21,
+            23
+          ]
+        },
+        {
+          "def": "prop.tree_oak",
+          "tile": [
+            35,
+            23
+          ]
+        },
+        {
+          "def": "prop.tree_pine",
+          "tile": [
+            53,
+            23
+          ]
+        },
+        {
+          "def": "prop.boulder",
+          "tile": [
+            65,
+            23
+          ]
+        },
+        {
+          "def": "prop.tree_dead",
+          "tile": [
+            6,
+            24
+          ]
+        },
+        {
+          "def": "prop.bush",
+          "tile": [
+            17,
+            24
+          ]
+        },
+        {
+          "def": "prop.tree_oak",
+          "tile": [
+            18,
+            24
+          ]
+        },
+        {
+          "def": "prop.tree_pine",
+          "tile": [
+            19,
+            24
+          ]
+        },
+        {
+          "def": "prop.tree_oak",
+          "tile": [
+            21,
+            24
+          ]
+        },
+        {
+          "def": "prop.tree_pine",
+          "tile": [
+            36,
+            24
+          ]
+        },
+        {
+          "def": "prop.tree_pine",
+          "tile": [
+            53,
+            24
           ]
         },
         {
           "def": "prop.rock",
           "tile": [
-            62,
+            64,
+            24
+          ]
+        },
+        {
+          "def": "prop.bush",
+          "tile": [
+            16,
+            25
+          ]
+        },
+        {
+          "def": "prop.tree_pine",
+          "tile": [
+            17,
+            25
+          ]
+        },
+        {
+          "def": "prop.tree_pine",
+          "tile": [
+            18,
+            25
+          ]
+        },
+        {
+          "def": "prop.bush",
+          "tile": [
+            36,
+            25
+          ]
+        },
+        {
+          "def": "prop.tree_pine",
+          "tile": [
+            52,
+            25
+          ]
+        },
+        {
+          "def": "prop.tree_pine",
+          "tile": [
+            53,
+            25
+          ]
+        },
+        {
+          "def": "prop.bush",
+          "tile": [
+            68,
+            25
+          ]
+        },
+        {
+          "def": "prop.tree_oak",
+          "tile": [
+            91,
+            25
+          ]
+        },
+        {
+          "def": "prop.tree_pine",
+          "tile": [
+            15,
             26
           ]
         },
         {
-          "def": "prop.rock",
+          "def": "prop.bush",
           "tile": [
-            63,
+            16,
             26
           ]
         },
         {
           "def": "prop.tree_pine",
           "tile": [
-            87,
+            17,
             26
           ]
         },
         {
           "def": "prop.tree_pine",
           "tile": [
-            14,
+            19,
+            26
+          ]
+        },
+        {
+          "def": "prop.bush",
+          "tile": [
+            68,
+            26
+          ]
+        },
+        {
+          "def": "prop.tree_pine",
+          "tile": [
+            85,
+            26
+          ]
+        },
+        {
+          "def": "prop.tree_pine",
+          "tile": [
+            89,
+            26
+          ]
+        },
+        {
+          "def": "prop.tree_pine",
+          "tile": [
+            90,
+            26
+          ]
+        },
+        {
+          "def": "prop.tree_pine",
+          "tile": [
+            91,
+            26
+          ]
+        },
+        {
+          "def": "prop.bush",
+          "tile": [
+            3,
             27
           ]
         },
         {
-          "def": "prop.rock",
+          "def": "prop.bush",
           "tile": [
-            92,
+            15,
+            27
+          ]
+        },
+        {
+          "def": "prop.bush",
+          "tile": [
+            17,
             27
           ]
         },
         {
           "def": "prop.tree_pine",
           "tile": [
-            24,
+            19,
+            27
+          ]
+        },
+        {
+          "def": "prop.stump",
+          "tile": [
+            23,
+            27
+          ]
+        },
+        {
+          "def": "prop.log",
+          "tile": [
+            26,
+            27
+          ]
+        },
+        {
+          "def": "prop.bush",
+          "tile": [
+            68,
+            27
+          ]
+        },
+        {
+          "def": "prop.bush",
+          "tile": [
+            86,
+            27
+          ]
+        },
+        {
+          "def": "prop.tree_pine",
+          "tile": [
+            90,
+            27
+          ]
+        },
+        {
+          "def": "prop.tree_pine",
+          "tile": [
+            91,
+            27
+          ]
+        },
+        {
+          "def": "prop.tree_oak",
+          "tile": [
+            93,
+            27
+          ]
+        },
+        {
+          "def": "prop.tree_oak",
+          "tile": [
+            4,
+            28
+          ]
+        },
+        {
+          "def": "prop.tree_oak",
+          "tile": [
+            17,
+            28
+          ]
+        },
+        {
+          "def": "prop.sign",
+          "tile": [
+            29,
             28
           ]
         },
         {
           "def": "prop.bush",
           "tile": [
-            74,
+            68,
             28
           ]
         },
         {
           "def": "prop.tree_pine",
+          "tile": [
+            83,
+            28
+          ]
+        },
+        {
+          "def": "prop.tree_oak",
+          "tile": [
+            84,
+            28
+          ]
+        },
+        {
+          "def": "prop.bush",
+          "tile": [
+            87,
+            28
+          ]
+        },
+        {
+          "def": "prop.tree_pine",
+          "tile": [
+            88,
+            28
+          ]
+        },
+        {
+          "def": "prop.tree_oak",
+          "tile": [
+            90,
+            28
+          ]
+        },
+        {
+          "def": "prop.tree_pine",
+          "tile": [
+            92,
+            28
+          ]
+        },
+        {
+          "def": "prop.tree_oak",
+          "tile": [
+            93,
+            28
+          ]
+        },
+        {
+          "def": "prop.bush",
+          "tile": [
+            94,
+            28
+          ]
+        },
+        {
+          "def": "prop.tree_oak",
           "tile": [
             2,
             29
@@ -3296,147 +3863,133 @@
         {
           "def": "prop.bush",
           "tile": [
-            15,
-            29
-          ]
-        },
-        {
-          "def": "prop.bush",
-          "tile": [
-            79,
+            5,
             29
           ]
         },
         {
           "def": "prop.tree_oak",
           "tile": [
-            88,
+            16,
             29
-          ]
-        },
-        {
-          "def": "prop.tree_pine",
-          "tile": [
-            14,
-            30
-          ]
-        },
-        {
-          "def": "prop.bush",
-          "tile": [
-            17,
-            30
           ]
         },
         {
           "def": "prop.log",
           "tile": [
-            19,
-            30
+            22,
+            29
           ]
         },
         {
-          "def": "prop.bush",
+          "def": "prop.woodpile",
           "tile": [
-            23,
-            30
-          ]
-        },
-        {
-          "def": "prop.mushroom",
-          "tile": [
-            7,
-            31
+            24,
+            29
           ]
         },
         {
           "def": "prop.tree_oak",
           "tile": [
-            19,
-            31
-          ]
-        },
-        {
-          "def": "prop.stump",
-          "tile": [
-            23,
-            31
-          ]
-        },
-        {
-          "def": "prop.bush",
-          "tile": [
-            84,
-            31
-          ]
-        },
-        {
-          "def": "prop.bush",
-          "tile": [
-            89,
-            31
+            41,
+            29
           ]
         },
         {
           "def": "prop.tree_pine",
           "tile": [
-            12,
-            32
+            85,
+            29
           ]
         },
         {
           "def": "prop.tree_pine",
           "tile": [
-            14,
-            32
+            90,
+            29
+          ]
+        },
+        {
+          "def": "prop.tree_oak",
+          "tile": [
+            92,
+            29
           ]
         },
         {
           "def": "prop.bush",
           "tile": [
-            17,
-            32
-          ]
-        },
-        {
-          "def": "prop.tree_pine",
-          "tile": [
-            18,
-            32
-          ]
-        },
-        {
-          "def": "prop.bush",
-          "tile": [
-            27,
-            32
+            2,
+            30
           ]
         },
         {
           "def": "prop.campfire",
           "tile": [
-            39,
-            32
+            26,
+            30
           ]
         },
         {
-          "def": "prop.rock",
+          "def": "prop.bush",
           "tile": [
-            63,
-            32
+            59,
+            30
           ]
         },
         {
-          "def": "prop.rock",
+          "def": "prop.bush",
           "tile": [
-            80,
-            32
+            85,
+            30
           ]
         },
         {
           "def": "prop.tree_oak",
           "tile": [
-            88,
+            90,
+            30
+          ]
+        },
+        {
+          "def": "prop.tree_oak",
+          "tile": [
+            91,
+            30
+          ]
+        },
+        {
+          "def": "prop.tree_pine",
+          "tile": [
+            92,
+            30
+          ]
+        },
+        {
+          "def": "prop.stump",
+          "tile": [
+            25,
+            31
+          ]
+        },
+        {
+          "def": "prop.bush",
+          "tile": [
+            56,
+            31
+          ]
+        },
+        {
+          "def": "prop.tree_pine",
+          "tile": [
+            58,
+            31
+          ]
+        },
+        {
+          "def": "prop.bush",
+          "tile": [
+            57,
             32
           ]
         },
@@ -3448,16 +4001,9 @@
           ]
         },
         {
-          "def": "prop.tree_oak",
+          "def": "prop.flower_pot",
           "tile": [
-            25,
-            33
-          ]
-        },
-        {
-          "def": "prop.woodpile",
-          "tile": [
-            37,
+            23,
             33
           ]
         },
@@ -3469,226 +4015,345 @@
           ]
         },
         {
-          "def": "prop.rock",
+          "def": "prop.barn",
           "tile": [
-            77,
+            47,
             33
           ]
         },
         {
-          "def": "prop.barn",
+          "def": "prop.bush",
           "tile": [
-            50,
+            74,
+            33
+          ]
+        },
+        {
+          "def": "prop.tree_oak",
+          "tile": [
+            79,
+            33
+          ]
+        },
+        {
+          "def": "prop.tree_oak",
+          "tile": [
+            80,
+            33
+          ]
+        },
+        {
+          "def": "prop.tree_pine",
+          "tile": [
+            10,
+            34
+          ]
+        },
+        {
+          "def": "prop.lamp_post",
+          "tile": [
+            26,
+            34
+          ]
+        },
+        {
+          "def": "prop.crate",
+          "tile": [
+            27,
+            34
+          ]
+        },
+        {
+          "def": "prop.barrel",
+          "tile": [
+            29,
+            34
+          ]
+        },
+        {
+          "def": "prop.lamp_post",
+          "tile": [
+            36,
+            34
+          ]
+        },
+        {
+          "def": "prop.tree_oak",
+          "tile": [
+            66,
             34
           ]
         },
         {
           "def": "prop.bush",
           "tile": [
-            93,
+            74,
             34
           ]
         },
         {
-          "def": "prop.lamp_post",
+          "def": "prop.tree_oak",
+          "tile": [
+            7,
+            35
+          ]
+        },
+        {
+          "def": "prop.tree_oak",
+          "tile": [
+            11,
+            35
+          ]
+        },
+        {
+          "def": "prop.table",
+          "tile": [
+            26,
+            35
+          ]
+        },
+        {
+          "def": "prop.crate",
           "tile": [
             27,
+            35
+          ]
+        },
+        {
+          "def": "prop.barrel",
+          "tile": [
+            28,
+            35
+          ]
+        },
+        {
+          "def": "prop.sack",
+          "tile": [
+            29,
             35
           ]
         },
         {
           "def": "prop.anvil",
           "tile": [
-            38,
+            33,
             35
           ]
         },
         {
-          "def": "prop.flower_pot",
-          "tile": [
-            22,
-            36
-          ]
-        },
-        {
-          "def": "prop.bench",
-          "tile": [
-            29,
-            36
-          ]
-        },
-        {
-          "def": "prop.statue",
+          "def": "prop.woodpile",
           "tile": [
             34,
-            36
+            35
           ]
         },
         {
-          "def": "npc.arne",
+          "def": "prop.crate",
           "tile": [
-            37,
-            36
-          ]
-        },
-        {
-          "def": "prop.flower_pot",
-          "tile": [
-            42,
-            36
+            46,
+            35
           ]
         },
         {
           "def": "prop.chest",
           "tile": [
-            46,
-            36
+            47,
+            35
           ]
         },
         {
           "def": "prop.barrel",
           "tile": [
             48,
+            35
+          ]
+        },
+        {
+          "def": "prop.bush",
+          "tile": [
+            65,
+            35
+          ]
+        },
+        {
+          "def": "prop.bush",
+          "tile": [
+            73,
+            35
+          ]
+        },
+        {
+          "def": "prop.tree_pine",
+          "tile": [
+            78,
+            35
+          ]
+        },
+        {
+          "def": "prop.tree_oak",
+          "tile": [
+            89,
+            35
+          ]
+        },
+        {
+          "def": "prop.tree_oak",
+          "tile": [
+            9,
             36
           ]
         },
         {
-          "def": "prop.rock",
+          "def": "npc.arne",
           "tile": [
-            62,
+            33,
             36
           ]
         },
         {
-          "def": "prop.rock",
+          "def": "prop.trough",
           "tile": [
-            85,
+            35,
+            36
+          ]
+        },
+        {
+          "def": "prop.bush",
+          "tile": [
+            65,
+            36
+          ]
+        },
+        {
+          "def": "prop.tree_pine",
+          "tile": [
+            90,
             36
           ]
         },
         {
           "def": "prop.signpost",
           "tile": [
-            28,
-            37
-          ]
-        },
-        {
-          "def": "prop.crate",
-          "tile": [
-            47,
-            37
-          ]
-        },
-        {
-          "def": "prop.trough",
-          "tile": [
-            52,
+            32,
             37
           ]
         },
         {
           "def": "npc.sheep",
           "tile": [
-            16,
-            40
+            14,
+            41
           ]
         },
         {
-          "def": "prop.crate",
+          "def": "prop.bush",
           "tile": [
-            24,
-            40
-          ]
-        },
-        {
-          "def": "prop.well",
-          "tile": [
-            33,
-            40
-          ]
-        },
-        {
-          "def": "prop.tree_oak",
-          "tile": [
-            88,
-            40
-          ]
-        },
-        {
-          "def": "prop.table",
-          "tile": [
-            25,
+            62,
             41
           ]
         },
         {
           "def": "npc.sheep",
           "tile": [
-            12,
+            16,
             42
           ]
         },
         {
-          "def": "prop.barrel",
+          "def": "prop.statue",
           "tile": [
-            24,
+            28,
             42
           ]
         },
         {
-          "def": "prop.sack",
+          "def": "prop.well",
           "tile": [
-            25,
-            43
+            33,
+            42
           ]
         },
         {
-          "def": "prop.lamp_post",
-          "tile": [
-            27,
-            43
-          ]
-        },
-        {
-          "def": "prop.sign",
-          "tile": [
-            32,
-            43
-          ]
-        },
-        {
-          "def": "prop.lamp_post",
+          "def": "prop.bench",
           "tile": [
             35,
-            43
+            42
           ]
         },
         {
-          "def": "prop.tree_oak",
+          "def": "prop.bush",
           "tile": [
-            57,
-            43
+            63,
+            42
           ]
         },
         {
-          "def": "prop.tree_oak",
+          "def": "prop.beehive",
           "tile": [
-            92,
+            13,
             43
           ]
         },
         {
           "def": "prop.beehive",
           "tile": [
-            18,
-            44
+            15,
+            43
+          ]
+        },
+        {
+          "def": "prop.beehive",
+          "tile": [
+            17,
+            43
           ]
         },
         {
           "def": "prop.bench",
           "tile": [
-            34,
+            27,
+            43
+          ]
+        },
+        {
+          "def": "prop.bench",
+          "tile": [
+            29,
+            43
+          ]
+        },
+        {
+          "def": "prop.bush",
+          "tile": [
+            63,
+            43
+          ]
+        },
+        {
+          "def": "prop.tree_oak",
+          "tile": [
+            24,
+            44
+          ]
+        },
+        {
+          "def": "prop.lamp_post",
+          "tile": [
+            26,
+            44
+          ]
+        },
+        {
+          "def": "prop.lamp_post",
+          "tile": [
+            36,
+            44
+          ]
+        },
+        {
+          "def": "prop.tree_oak",
+          "tile": [
+            45,
             44
           ]
         },
@@ -3700,108 +4365,87 @@
           ]
         },
         {
-          "def": "prop.bush",
+          "def": "prop.sack",
           "tile": [
-            14,
-            45
-          ]
-        },
-        {
-          "def": "prop.flower_pot",
-          "tile": [
-            37,
-            45
-          ]
-        },
-        {
-          "def": "prop.mushroom",
-          "tile": [
-            92,
-            45
-          ]
-        },
-        {
-          "def": "prop.rock",
-          "tile": [
-            7,
-            46
+            80,
+            44
           ]
         },
         {
           "def": "npc.sheep",
           "tile": [
-            10,
-            46
+            15,
+            45
           ]
         },
         {
-          "def": "prop.beehive",
+          "def": "prop.tree_oak",
           "tile": [
-            17,
-            46
+            56,
+            45
           ]
         },
         {
-          "def": "prop.tree_pine",
+          "def": "prop.trough",
           "tile": [
-            24,
-            46
+            73,
+            45
           ]
         },
         {
-          "def": "prop.rock",
+          "def": "prop.crate",
           "tile": [
-            28,
-            46
+            77,
+            45
           ]
         },
         {
-          "def": "prop.bush",
+          "def": "prop.sack",
           "tile": [
-            35,
-            46
-          ]
-        },
-        {
-          "def": "prop.rock",
-          "tile": [
-            37,
-            46
+            80,
+            45
           ]
         },
         {
           "def": "prop.bush",
           "tile": [
-            47,
+            55,
             46
           ]
         },
         {
           "def": "prop.tree_oak",
           "tile": [
-            53,
+            56,
             46
           ]
         },
         {
-          "def": "prop.scarecrow",
+          "def": "prop.tree_oak",
           "tile": [
-            60,
+            57,
             46
           ]
         },
         {
-          "def": "npc.goat",
+          "def": "npc.sheep",
           "tile": [
-            90,
+            72,
             46
           ]
         },
         {
-          "def": "prop.tree_dead",
+          "def": "npc.sheep",
           "tile": [
-            19,
-            47
+            74,
+            46
+          ]
+        },
+        {
+          "def": "prop.tree_pine",
+          "tile": [
+            85,
+            46
           ]
         },
         {
@@ -3812,6 +4456,20 @@
           ]
         },
         {
+          "def": "npc.goat",
+          "tile": [
+            26,
+            47
+          ]
+        },
+        {
+          "def": "prop.flower_pot",
+          "tile": [
+            39,
+            47
+          ]
+        },
+        {
           "def": "prop.house",
           "tile": [
             41,
@@ -3819,91 +4477,133 @@
           ]
         },
         {
-          "def": "prop.rock",
+          "def": "prop.tree_oak",
+          "tile": [
+            54,
+            47
+          ]
+        },
+        {
+          "def": "prop.bush",
+          "tile": [
+            55,
+            47
+          ]
+        },
+        {
+          "def": "prop.bush",
           "tile": [
             56,
             47
           ]
         },
         {
-          "def": "prop.bush",
+          "def": "prop.tree_oak",
           "tile": [
-            94,
+            58,
             47
           ]
         },
         {
           "def": "prop.rock",
           "tile": [
-            46,
-            48
+            61,
+            47
           ]
         },
         {
-          "def": "prop.mushroom",
+          "def": "npc.sheep",
           "tile": [
-            88,
-            48
+            71,
+            47
           ]
         },
         {
-          "def": "prop.tree_dead",
+          "def": "npc.sheep",
           "tile": [
-            7,
-            49
+            75,
+            47
           ]
         },
         {
           "def": "prop.tree_pine",
           "tile": [
-            25,
-            49
-          ]
-        },
-        {
-          "def": "prop.bush",
-          "tile": [
-            47,
-            49
-          ]
-        },
-        {
-          "def": "prop.bush",
-          "tile": [
-            82,
-            49
-          ]
-        },
-        {
-          "def": "prop.cairn",
-          "tile": [
-            10,
-            50
-          ]
-        },
-        {
-          "def": "prop.rock",
-          "tile": [
-            38,
-            50
-          ]
-        },
-        {
-          "def": "npc.goat",
-          "tile": [
-            59,
-            50
+            84,
+            47
           ]
         },
         {
           "def": "prop.tree_oak",
           "tile": [
-            82,
-            50
+            85,
+            47
+          ]
+        },
+        {
+          "def": "npc.goat",
+          "tile": [
+            28,
+            48
+          ]
+        },
+        {
+          "def": "prop.tree_oak",
+          "tile": [
+            55,
+            48
+          ]
+        },
+        {
+          "def": "prop.tree_oak",
+          "tile": [
+            57,
+            48
+          ]
+        },
+        {
+          "def": "prop.rock",
+          "tile": [
+            58,
+            48
+          ]
+        },
+        {
+          "def": "prop.rock",
+          "tile": [
+            61,
+            48
+          ]
+        },
+        {
+          "def": "npc.sheep",
+          "tile": [
+            73,
+            48
           ]
         },
         {
           "def": "prop.tree_pine",
+          "tile": [
+            84,
+            48
+          ]
+        },
+        {
+          "def": "prop.rock",
+          "tile": [
+            15,
+            49
+          ]
+        },
+        {
+          "def": "npc.sheep",
+          "tile": [
+            72,
+            49
+          ]
+        },
+        {
+          "def": "prop.rock",
           "tile": [
             14,
             51
@@ -3912,96 +4612,33 @@
         {
           "def": "prop.boulder",
           "tile": [
-            29,
-            51
-          ]
-        },
-        {
-          "def": "prop.stump",
-          "tile": [
-            37,
-            51
-          ]
-        },
-        {
-          "def": "prop.rock",
-          "tile": [
-            44,
+            18,
             51
           ]
         },
         {
           "def": "prop.bush",
           "tile": [
-            50,
+            89,
             51
+          ]
+        },
+        {
+          "def": "prop.rock",
+          "tile": [
+            9,
+            52
+          ]
+        },
+        {
+          "def": "prop.rock",
+          "tile": [
+            11,
+            52
           ]
         },
         {
           "def": "prop.bush",
-          "tile": [
-            51,
-            51
-          ]
-        },
-        {
-          "def": "prop.rock",
-          "tile": [
-            52,
-            51
-          ]
-        },
-        {
-          "def": "prop.boulder",
-          "tile": [
-            7,
-            52
-          ]
-        },
-        {
-          "def": "prop.boulder",
-          "tile": [
-            13,
-            52
-          ]
-        },
-        {
-          "def": "prop.cairn",
-          "tile": [
-            17,
-            52
-          ]
-        },
-        {
-          "def": "prop.rock",
-          "tile": [
-            48,
-            52
-          ]
-        },
-        {
-          "def": "prop.log",
-          "tile": [
-            56,
-            52
-          ]
-        },
-        {
-          "def": "prop.log",
-          "tile": [
-            58,
-            52
-          ]
-        },
-        {
-          "def": "prop.log",
-          "tile": [
-            68,
-            52
-          ]
-        },
-        {
-          "def": "npc.sheep",
           "tile": [
             86,
             52
@@ -4010,488 +4647,558 @@
         {
           "def": "prop.tree_pine",
           "tile": [
-            4,
-            53
+            88,
+            52
           ]
         },
         {
-          "def": "prop.tree_dead",
+          "def": "prop.tree_pine",
           "tile": [
-            5,
-            53
-          ]
-        },
-        {
-          "def": "prop.stump",
-          "tile": [
-            39,
-            54
-          ]
-        },
-        {
-          "def": "prop.log",
-          "tile": [
-            56,
-            54
+            89,
+            52
           ]
         },
         {
           "def": "prop.tombstone",
           "tile": [
             69,
-            54
+            53
           ]
         },
         {
           "def": "prop.tombstone",
           "tile": [
-            72,
-            54
-          ]
-        },
-        {
-          "def": "prop.tombstone",
-          "tile": [
-            75,
-            54
-          ]
-        },
-        {
-          "def": "prop.tree_oak",
-          "tile": [
-            88,
-            54
-          ]
-        },
-        {
-          "def": "prop.stump",
-          "tile": [
-            36,
-            55
-          ]
-        },
-        {
-          "def": "prop.stump",
-          "tile": [
-            43,
-            55
-          ]
-        },
-        {
-          "def": "prop.tree_oak",
-          "tile": [
-            47,
-            55
-          ]
-        },
-        {
-          "def": "prop.tree_oak",
-          "tile": [
-            88,
-            55
-          ]
-        },
-        {
-          "def": "prop.bush",
-          "tile": [
-            34,
-            56
-          ]
-        },
-        {
-          "def": "prop.rock",
-          "tile": [
-            36,
-            56
-          ]
-        },
-        {
-          "def": "prop.mushroom",
-          "tile": [
-            48,
-            56
-          ]
-        },
-        {
-          "def": "prop.mushroom",
-          "tile": [
-            49,
-            56
-          ]
-        },
-        {
-          "def": "prop.log",
-          "tile": [
-            56,
-            56
-          ]
-        },
-        {
-          "def": "prop.tree_oak",
-          "tile": [
-            57,
-            56
-          ]
-        },
-        {
-          "def": "prop.tree_dead",
-          "tile": [
-            72,
-            57
-          ]
-        },
-        {
-          "def": "prop.mushroom",
-          "tile": [
-            85,
-            57
-          ]
-        },
-        {
-          "def": "prop.rock",
-          "tile": [
-            29,
-            58
-          ]
-        },
-        {
-          "def": "prop.mushroom",
-          "tile": [
-            43,
-            58
-          ]
-        },
-        {
-          "def": "prop.tree_oak",
-          "tile": [
-            49,
-            58
-          ]
-        },
-        {
-          "def": "prop.log",
-          "tile": [
-            56,
-            58
-          ]
-        },
-        {
-          "def": "prop.tombstone",
-          "tile": [
-            69,
-            58
-          ]
-        },
-        {
-          "def": "prop.tombstone",
-          "tile": [
-            75,
-            58
-          ]
-        },
-        {
-          "def": "prop.tree_oak",
-          "tile": [
-            82,
-            58
-          ]
-        },
-        {
-          "def": "npc.sheep",
-          "tile": [
-            88,
-            58
-          ]
-        },
-        {
-          "def": "prop.mushroom",
-          "tile": [
-            34,
-            59
-          ]
-        },
-        {
-          "def": "prop.bush",
-          "tile": [
-            44,
-            59
-          ]
-        },
-        {
-          "def": "prop.cairn",
-          "tile": [
-            29,
-            60
-          ]
-        },
-        {
-          "def": "prop.tree_oak",
-          "tile": [
-            39,
-            60
-          ]
-        },
-        {
-          "def": "prop.bush",
-          "tile": [
-            49,
-            60
-          ]
-        },
-        {
-          "def": "npc.sheep",
-          "tile": [
-            63,
-            60
-          ]
-        },
-        {
-          "def": "prop.bush",
-          "tile": [
-            93,
-            60
-          ]
-        },
-        {
-          "def": "prop.boulder",
-          "tile": [
-            5,
-            61
-          ]
-        },
-        {
-          "def": "prop.bush",
-          "tile": [
-            51,
-            61
+            71,
+            53
           ]
         },
         {
           "def": "prop.tombstone",
           "tile": [
             77,
-            61
-          ]
-        },
-        {
-          "def": "prop.mushroom",
-          "tile": [
-            94,
-            61
-          ]
-        },
-        {
-          "def": "prop.lamp_post",
-          "tile": [
-            73,
-            62
-          ]
-        },
-        {
-          "def": "npc.sheep",
-          "tile": [
-            84,
-            62
-          ]
-        },
-        {
-          "def": "prop.tree_dead",
-          "tile": [
-            3,
-            63
-          ]
-        },
-        {
-          "def": "prop.bush",
-          "tile": [
-            35,
-            63
-          ]
-        },
-        {
-          "def": "prop.bush",
-          "tile": [
-            38,
-            63
-          ]
-        },
-        {
-          "def": "prop.mushroom",
-          "tile": [
-            41,
-            63
+            53
           ]
         },
         {
           "def": "prop.tree_oak",
           "tile": [
-            52,
-            63
+            86,
+            53
           ]
         },
         {
           "def": "prop.mushroom",
           "tile": [
             87,
+            53
+          ]
+        },
+        {
+          "def": "prop.tree_oak",
+          "tile": [
+            89,
+            53
+          ]
+        },
+        {
+          "def": "prop.rock",
+          "tile": [
+            7,
+            54
+          ]
+        },
+        {
+          "def": "prop.bush",
+          "tile": [
+            58,
+            54
+          ]
+        },
+        {
+          "def": "prop.tree_oak",
+          "tile": [
+            86,
+            54
+          ]
+        },
+        {
+          "def": "prop.tree_oak",
+          "tile": [
+            87,
+            54
+          ]
+        },
+        {
+          "def": "prop.tree_pine",
+          "tile": [
+            89,
+            54
+          ]
+        },
+        {
+          "def": "prop.tree_oak",
+          "tile": [
+            90,
+            54
+          ]
+        },
+        {
+          "def": "prop.bush",
+          "tile": [
+            58,
+            55
+          ]
+        },
+        {
+          "def": "prop.bush",
+          "tile": [
+            44,
+            56
+          ]
+        },
+        {
+          "def": "prop.tombstone",
+          "tile": [
+            69,
+            56
+          ]
+        },
+        {
+          "def": "prop.tombstone",
+          "tile": [
+            71,
+            56
+          ]
+        },
+        {
+          "def": "prop.tombstone",
+          "tile": [
+            75,
+            56
+          ]
+        },
+        {
+          "def": "prop.tombstone",
+          "tile": [
+            77,
+            56
+          ]
+        },
+        {
+          "def": "prop.tree_oak",
+          "tile": [
+            88,
+            56
+          ]
+        },
+        {
+          "def": "prop.tree_oak",
+          "tile": [
+            39,
+            57
+          ]
+        },
+        {
+          "def": "prop.tree_pine",
+          "tile": [
+            43,
+            57
+          ]
+        },
+        {
+          "def": "prop.tree_oak",
+          "tile": [
+            45,
+            57
+          ]
+        },
+        {
+          "def": "prop.bush",
+          "tile": [
+            65,
+            57
+          ]
+        },
+        {
+          "def": "prop.tree_oak",
+          "tile": [
+            40,
+            58
+          ]
+        },
+        {
+          "def": "prop.bush",
+          "tile": [
+            43,
+            58
+          ]
+        },
+        {
+          "def": "prop.tree_oak",
+          "tile": [
+            44,
+            58
+          ]
+        },
+        {
+          "def": "prop.tree_pine",
+          "tile": [
+            46,
+            58
+          ]
+        },
+        {
+          "def": "prop.tree_pine",
+          "tile": [
+            37,
+            59
+          ]
+        },
+        {
+          "def": "prop.tree_oak",
+          "tile": [
+            40,
+            59
+          ]
+        },
+        {
+          "def": "prop.tree_pine",
+          "tile": [
+            41,
+            59
+          ]
+        },
+        {
+          "def": "prop.tree_oak",
+          "tile": [
+            44,
+            59
+          ]
+        },
+        {
+          "def": "prop.tombstone",
+          "tile": [
+            69,
+            59
+          ]
+        },
+        {
+          "def": "prop.tombstone",
+          "tile": [
+            75,
+            59
+          ]
+        },
+        {
+          "def": "prop.tombstone",
+          "tile": [
+            77,
+            59
+          ]
+        },
+        {
+          "def": "prop.tree_oak",
+          "tile": [
+            38,
+            60
+          ]
+        },
+        {
+          "def": "prop.bush",
+          "tile": [
+            88,
+            60
+          ]
+        },
+        {
+          "def": "prop.scarecrow",
+          "tile": [
+            40,
+            61
+          ]
+        },
+        {
+          "def": "prop.tree_dead",
+          "tile": [
+            78,
+            61
+          ]
+        },
+        {
+          "def": "prop.tree_pine",
+          "tile": [
+            85,
+            61
+          ]
+        },
+        {
+          "def": "prop.tree_oak",
+          "tile": [
+            86,
+            61
+          ]
+        },
+        {
+          "def": "prop.tree_pine",
+          "tile": [
+            87,
+            61
+          ]
+        },
+        {
+          "def": "prop.tree_oak",
+          "tile": [
+            88,
+            61
+          ]
+        },
+        {
+          "def": "prop.rock",
+          "tile": [
+            64,
+            62
+          ]
+        },
+        {
+          "def": "prop.bench",
+          "tile": [
+            69,
+            62
+          ]
+        },
+        {
+          "def": "prop.tree_dead",
+          "tile": [
+            41,
+            63
+          ]
+        },
+        {
+          "def": "prop.tree_pine",
+          "tile": [
+            42,
+            63
+          ]
+        },
+        {
+          "def": "prop.tree_oak",
+          "tile": [
+            43,
+            63
+          ]
+        },
+        {
+          "def": "prop.bush",
+          "tile": [
+            44,
             63
           ]
         },
         {
           "def": "prop.rock",
           "tile": [
-            27,
-            64
+            65,
+            63
           ]
         },
         {
           "def": "prop.bush",
           "tile": [
-            47,
-            64
-          ]
-        },
-        {
-          "def": "prop.boulder",
-          "tile": [
-            29,
-            65
-          ]
-        },
-        {
-          "def": "prop.bush",
-          "tile": [
-            38,
-            65
-          ]
-        },
-        {
-          "def": "prop.mushroom",
-          "tile": [
-            82,
-            65
-          ]
-        },
-        {
-          "def": "prop.bush",
-          "tile": [
-            85,
-            65
-          ]
-        },
-        {
-          "def": "prop.cairn",
-          "tile": [
-            4,
-            66
-          ]
-        },
-        {
-          "def": "prop.tree_dead",
-          "tile": [
-            6,
-            66
-          ]
-        },
-        {
-          "def": "prop.rock",
-          "tile": [
-            22,
-            66
-          ]
-        },
-        {
-          "def": "prop.rock",
-          "tile": [
-            29,
-            66
+            87,
+            63
           ]
         },
         {
           "def": "prop.tree_oak",
           "tile": [
-            38,
-            66
+            42,
+            64
+          ]
+        },
+        {
+          "def": "prop.bush",
+          "tile": [
+            43,
+            64
+          ]
+        },
+        {
+          "def": "prop.tree_oak",
+          "tile": [
+            44,
+            64
+          ]
+        },
+        {
+          "def": "prop.tree_pine",
+          "tile": [
+            45,
+            64
+          ]
+        },
+        {
+          "def": "prop.tree_pine",
+          "tile": [
+            53,
+            64
+          ]
+        },
+        {
+          "def": "prop.tree_pine",
+          "tile": [
+            54,
+            64
+          ]
+        },
+        {
+          "def": "prop.rock",
+          "tile": [
+            7,
+            65
+          ]
+        },
+        {
+          "def": "prop.rock",
+          "tile": [
+            8,
+            65
+          ]
+        },
+        {
+          "def": "prop.rock",
+          "tile": [
+            24,
+            65
+          ]
+        },
+        {
+          "def": "prop.bush",
+          "tile": [
+            41,
+            65
+          ]
+        },
+        {
+          "def": "prop.tree_oak",
+          "tile": [
+            42,
+            65
           ]
         },
         {
           "def": "prop.tree_oak",
           "tile": [
             46,
-            66
+            65
           ]
         },
         {
-          "def": "npc.sheep",
+          "def": "prop.tree_oak",
           "tile": [
-            62,
-            66
-          ]
-        },
-        {
-          "def": "npc.goat",
-          "tile": [
-            86,
-            66
+            47,
+            65
           ]
         },
         {
           "def": "prop.bush",
           "tile": [
-            4,
-            67
+            49,
+            65
           ]
         },
         {
-          "def": "prop.bush",
+          "def": "prop.tree_oak",
+          "tile": [
+            52,
+            65
+          ]
+        },
+        {
+          "def": "prop.tree_oak",
+          "tile": [
+            54,
+            65
+          ]
+        },
+        {
+          "def": "prop.rock",
+          "tile": [
+            63,
+            65
+          ]
+        },
+        {
+          "def": "prop.rock",
+          "tile": [
+            23,
+            66
+          ]
+        },
+        {
+          "def": "prop.tree_oak",
+          "tile": [
+            43,
+            66
+          ]
+        },
+        {
+          "def": "prop.rock",
+          "tile": [
+            64,
+            66
+          ]
+        },
+        {
+          "def": "prop.lamp_post",
+          "tile": [
+            72,
+            66
+          ]
+        },
+        {
+          "def": "prop.rock",
           "tile": [
             10,
             67
           ]
         },
         {
-          "def": "prop.boulder",
+          "def": "prop.tree_oak",
           "tile": [
-            13,
+            42,
             67
           ]
         },
         {
           "def": "prop.tree_oak",
           "tile": [
-            35,
+            43,
             67
           ]
         },
         {
-          "def": "prop.tree_dead",
+          "def": "prop.tree_oak",
+          "tile": [
+            49,
+            67
+          ]
+        },
+        {
+          "def": "prop.tree_pine",
+          "tile": [
+            53,
+            67
+          ]
+        },
+        {
+          "def": "prop.rock",
           "tile": [
             8,
             68
           ]
         },
         {
-          "def": "prop.boulder",
-          "tile": [
-            13,
-            68
-          ]
-        },
-        {
           "def": "prop.rock",
-          "tile": [
-            16,
-            68
-          ]
-        },
-        {
-          "def": "prop.tree_pine",
-          "tile": [
-            18,
-            68
-          ]
-        },
-        {
-          "def": "prop.tree_pine",
           "tile": [
             23,
             68
@@ -4505,79 +5212,37 @@
           ]
         },
         {
-          "def": "prop.scarecrow",
+          "def": "prop.bush",
           "tile": [
-            70,
+            48,
             68
           ]
         },
         {
           "def": "prop.tree_pine",
           "tile": [
-            4,
+            49,
+            68
+          ]
+        },
+        {
+          "def": "prop.tree_pine",
+          "tile": [
+            49,
             69
-          ]
-        },
-        {
-          "def": "prop.rock",
-          "tile": [
-            10,
-            69
-          ]
-        },
-        {
-          "def": "prop.tree_dead",
-          "tile": [
-            16,
-            69
-          ]
-        },
-        {
-          "def": "prop.tree_oak",
-          "tile": [
-            36,
-            69
-          ]
-        },
-        {
-          "def": "prop.tree_oak",
-          "tile": [
-            90,
-            69
-          ]
-        },
-        {
-          "def": "prop.tree_dead",
-          "tile": [
-            23,
-            70
-          ]
-        },
-        {
-          "def": "prop.cairn",
-          "tile": [
-            28,
-            70
           ]
         },
         {
           "def": "prop.bush",
           "tile": [
-            39,
-            70
-          ]
-        },
-        {
-          "def": "prop.mushroom",
-          "tile": [
-            41,
-            70
+            52,
+            69
           ]
         },
         {
           "def": "prop.bush",
           "tile": [
-            90,
+            52,
             70
           ]
         }

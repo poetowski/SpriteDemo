@@ -84,6 +84,28 @@ settings are all content. No JS changes.
 **A map** is ASCII rows plus a legend. Roads must stay clear - scenery placed on
 a path tile can wall off the only route across the world.
 
+**Placing scenery is composition, not sprinkling.** A uniform random dusting is
+the one thing that reliably looks wrong, and it is what you get by default:
+
+- Things clump. Trees come in groves that overlap into canopy and leave glades
+  between them; stone comes up in outcrops. Almost nothing stands alone, so the
+  few things that do read as landmarks.
+- Ecology decides where. Mushrooms under a canopy, stumps and cut logs only in
+  the clearing being felled, rock only where there is rock or water to explain
+  it, bushes thickening along the water - which is what gives a shoreline an
+  edge instead of a hard pixel boundary.
+- Settlements are laid out first and the wilderness fills in around them, with a
+  clear shoulder either side of every road.
+- Human places are arranged: a market row, a smithy facing it, a yard in front
+  of the barn, graves ranked along an aisle, a flock gathered at its trough.
+- Open country is allowed to be open. A wood only reads as a wood if somewhere
+  nearby is not one.
+
+Audit the result against its own meaning before shipping it: count the props
+with no tree near them that need shade, the ones nothing else is within four
+tiles of, and the ones standing somewhere their own definition contradicts.
+That check is what caught a scarecrow guarding a graveyard.
+
 ## House style
 
 Match what is already there: short module docstrings that say *why*, comments
