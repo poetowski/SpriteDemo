@@ -1,8 +1,52 @@
 {
   "id": "dlg.well",
   "speaker": "The well",
-  "lines": [
-    "The bucket is down there somewhere.",
-    "Cold air comes up off the water."
-  ]
+  "start": [
+    {
+      "when": {
+        "flag": "well.wished"
+      },
+      "goto": "wished"
+    },
+    {
+      "goto": "look"
+    }
+  ],
+  "nodes": {
+    "look": {
+      "text": [
+        "The bucket is down there somewhere.",
+        "Cold air comes up off the water."
+      ],
+      "choices": [
+        {
+          "text": "Drop a coin in.",
+          "goto": "wish",
+          "when": {
+            "has": "item.coin"
+          },
+          "take": "item.coin",
+          "set": "well.wished"
+        },
+        {
+          "text": "Look down."
+        },
+        {
+          "text": "Step back."
+        }
+      ]
+    },
+    "wish": {
+      "text": [
+        "The coin turns over twice and is gone.",
+        "You do not hear it land."
+      ]
+    },
+    "wished": {
+      "text": [
+        "The water is still.",
+        "Your coin is down there somewhere, with the bucket."
+      ]
+    }
+  }
 }

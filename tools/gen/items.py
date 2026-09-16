@@ -115,6 +115,19 @@ def fish():
     return c.outline()
 
 
+def key():
+    c = Canvas(SIZE, SIZE)
+    for y, x0, x1 in ((2, 5, 8), (3, 4, 9), (4, 4, 9), (5, 5, 8)):
+        c.row(x0, x1, y, "MTL")                 # the bow
+    c.rect(6, 3, 7, 4, None)                    # punched through
+    c.col(6, 6, 13, "MTL")                      # shaft
+    c.col(7, 6, 13, "MT")
+    c.row(8, 9, 9, "MTL")                       # two wards, off the shaft
+    c.row(8, 10, 12, "MTL")
+    c.row(8, 9, 13, "MTL")
+    return c.outline()
+
+
 def coin():
     c = Canvas(SIZE, SIZE)
     _disc(c, 8, 9, 4, "FIL")
@@ -194,6 +207,7 @@ ITEMS = {
     "item.firewood": firewood,
     "item.fish": fish,
     "item.coin": coin,
+    "item.key": key,
     "item.flower": flower,
     "item.sword": sword,
     "item.axe": axe,

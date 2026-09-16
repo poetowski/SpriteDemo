@@ -1,8 +1,58 @@
 {
   "id": "dlg.chest",
   "speaker": "A heavy chest",
-  "lines": [
-    "Locked.",
-    "Someone went to real trouble over it."
-  ]
+  "start": [
+    {
+      "when": {
+        "flag": "chest.opened"
+      },
+      "goto": "empty"
+    },
+    {
+      "goto": "shut"
+    }
+  ],
+  "nodes": {
+    "shut": {
+      "text": [
+        "Locked. Someone went to real trouble over it."
+      ],
+      "choices": [
+        {
+          "text": "Turn the key.",
+          "goto": "open",
+          "when": {
+            "has": "item.key"
+          },
+          "take": "item.key",
+          "give": "item.coin",
+          "set": "chest.opened"
+        },
+        {
+          "text": "Leave it."
+        }
+      ]
+    },
+    "open": {
+      "text": [
+        "The lock gives with a sound like a cough.",
+        "Inside: one coin, and a smell of old cloth."
+      ],
+      "choices": [
+        {
+          "text": "Take it."
+        }
+      ]
+    },
+    "empty": {
+      "text": [
+        "Open, and empty but for the smell of old cloth."
+      ],
+      "choices": [
+        {
+          "text": "Close the lid."
+        }
+      ]
+    }
+  }
 }

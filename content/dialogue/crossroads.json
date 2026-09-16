@@ -1,9 +1,71 @@
 {
   "id": "dlg.crossroads",
   "speaker": "Signpost",
-  "lines": [
-    "North: the old tower. East: the mill.",
-    "West: quarry - mind the loose stone.",
-    "South: more road than anyone needs."
-  ]
+  "start": "greet",
+  "nodes": {
+    "greet": {
+      "text": [
+        "Four arms, and the paint gone from all of them."
+      ],
+      "choices": [
+        {
+          "text": "North?",
+          "goto": "north"
+        },
+        {
+          "text": "East?",
+          "goto": "east"
+        },
+        {
+          "text": "West?",
+          "goto": "west"
+        },
+        {
+          "text": "Walk on."
+        }
+      ]
+    },
+    "north": {
+      "text": [
+        "The old tower. Nobody keeps watch in it now."
+      ],
+      "choices": [
+        {
+          "text": "Read on.",
+          "goto": "greet"
+        },
+        {
+          "text": "Walk on."
+        }
+      ]
+    },
+    "east": {
+      "text": [
+        "The mill, over the bridge. Follow the cart ruts."
+      ],
+      "choices": [
+        {
+          "text": "Read on.",
+          "goto": "greet"
+        },
+        {
+          "text": "Walk on."
+        }
+      ]
+    },
+    "west": {
+      "text": [
+        "The quarry. Mind the loose stone."
+      ],
+      "choices": [
+        {
+          "text": "Read on.",
+          "goto": "greet"
+        },
+        {
+          "text": "Walk on."
+        }
+      ]
+    }
+  }
 }

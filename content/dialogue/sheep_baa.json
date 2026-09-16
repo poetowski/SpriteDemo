@@ -1,8 +1,13 @@
 {
   "id": "dlg.sheep_baa",
   "speaker": "Sheep",
-  "lines": [
-    "Baaa.",
-    "It goes back to the grass."
-  ]
+  "start": "baa",
+  "nodes": {
+    "baa": {
+      "text": [
+        "Baaa.",
+        "It goes back to the grass."
+      ]
+    }
+  }
 }

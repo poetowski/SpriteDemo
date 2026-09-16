@@ -49,7 +49,7 @@
       ],
       "cols": 8,
       "rows": 2,
-      "count": 14
+      "count": 15
     },
     "fx": {
       "image": "atlas/fx.png",
@@ -4215,7 +4215,7 @@
         14
       ]
     },
-    "item.flower": {
+    "item.key": {
       "atlas": "items",
       "index": 9,
       "anchor": [
@@ -4223,7 +4223,7 @@
         14
       ]
     },
-    "item.sword": {
+    "item.flower": {
       "atlas": "items",
       "index": 10,
       "anchor": [
@@ -4231,7 +4231,7 @@
         14
       ]
     },
-    "item.axe": {
+    "item.sword": {
       "atlas": "items",
       "index": 11,
       "anchor": [
@@ -4239,7 +4239,7 @@
         14
       ]
     },
-    "item.spear": {
+    "item.axe": {
       "atlas": "items",
       "index": 12,
       "anchor": [
@@ -4247,9 +4247,17 @@
         14
       ]
     },
-    "item.mail": {
+    "item.spear": {
       "atlas": "items",
       "index": 13,
+      "anchor": [
+        8,
+        14
+      ]
+    },
+    "item.mail": {
+      "atlas": "items",
+      "index": 14,
       "anchor": [
         8,
         14
@@ -6523,6 +6531,14 @@
       "stack": true,
       "description": "A jar from the hives in the flower meadow."
     },
+    "item.key": {
+      "id": "item.key",
+      "name": "Iron key",
+      "sprite": "item.key",
+      "kind": "material",
+      "stack": false,
+      "description": "Arne's father's. It opens the chest in the barn yard."
+    },
     "item.mail": {
       "id": "item.mail",
       "name": "Mail shirt",
@@ -6585,66 +6601,410 @@
     "dlg.arne_intro": {
       "id": "dlg.arne_intro",
       "speaker": "Arne",
-      "lines": [
-        "Mind the water, the bank gives way.",
-        "Anything you need hammered, I am here till dusk."
-      ]
+      "start": "greet",
+      "nodes": {
+        "greet": {
+          "text": [
+            "Mind the water, the bank gives way.",
+            "Anything you need hammered, I am here till dusk."
+          ],
+          "choices": [
+            {
+              "text": "What do you make?",
+              "goto": "wares"
+            },
+            {
+              "text": "Any work going?",
+              "goto": "work",
+              "when": {
+                "noflag": "arne.wants_ore"
+              },
+              "set": "arne.wants_ore"
+            },
+            {
+              "text": "I have your ore.",
+              "goto": "deliver",
+              "when": {
+                "all": [
+                  {
+                    "flag": "arne.wants_ore"
+                  },
+                  {
+                    "noflag": "arne.gave_key"
+                  },
+                  {
+                    "has": "item.ore"
+                  }
+                ]
+              },
+              "take": "item.ore",
+              "give": "item.key",
+              "set": "arne.gave_key"
+            },
+            {
+              "text": "Still looking for that ore.",
+              "goto": "waiting",
+              "when": {
+                "all": [
+                  {
+                    "flag": "arne.wants_ore"
+                  },
+                  {
+                    "noflag": "arne.gave_key"
+                  },
+                  {
+                    "nothas": "item.ore"
+                  }
+                ]
+              }
+            },
+            {
+              "text": "About that chest.",
+              "goto": "chest_talk",
+              "when": {
+                "flag": "arne.gave_key"
+              }
+            },
+            {
+              "text": "Nothing. Good day."
+            }
+          ]
+        },
+        "wares": {
+          "text": [
+            "Nails, hinges, a blade now and then.",
+            "The one by the anvil is spoken for. Lift it if you think you can."
+          ],
+          "choices": [
+            {
+              "text": "Something else.",
+              "goto": "greet"
+            },
+            {
+              "text": "I should go."
+            }
+          ]
+        },
+        "work": {
+          "text": [
+            "As it happens. The quarry west of the crossroads has iron in it - red in the grey.",
+            "Bring me a lump and I will make it worth the walk."
+          ],
+          "choices": [
+            {
+              "text": "I'll have a look."
+            }
+          ]
+        },
+        "waiting": {
+          "text": [
+            "West of the crossroads. Red in the grey. You will not miss it."
+          ],
+          "choices": [
+            {
+              "text": "Right."
+            }
+          ]
+        },
+        "deliver": {
+          "text": [
+            "Good weight on that. It will do.",
+            "Here - the key to the chest in the barn yard.",
+            "It was my father's. I never had the stomach for what is in it."
+          ],
+          "choices": [
+            {
+              "text": "Thank you.",
+              "goto": "greet"
+            }
+          ]
+        },
+        "chest_talk": {
+          "text": [
+            "Open it. Whatever is in there has waited long enough."
+          ],
+          "choices": [
+            {
+              "text": "I will.",
+              "goto": "greet"
+            }
+          ]
+        }
+      }
     },
     "dlg.chest": {
       "id": "dlg.chest",
       "speaker": "A heavy chest",
-      "lines": [
-        "Locked.",
-        "Someone went to real trouble over it."
-      ]
+      "start": [
+        {
+          "when": {
+            "flag": "chest.opened"
+          },
+          "goto": "empty"
+        },
+        {
+          "goto": "shut"
+        }
+      ],
+      "nodes": {
+        "shut": {
+          "text": [
+            "Locked. Someone went to real trouble over it."
+          ],
+          "choices": [
+            {
+              "text": "Turn the key.",
+              "goto": "open",
+              "when": {
+                "has": "item.key"
+              },
+              "take": "item.key",
+              "give": "item.coin",
+              "set": "chest.opened"
+            },
+            {
+              "text": "Leave it."
+            }
+          ]
+        },
+        "open": {
+          "text": [
+            "The lock gives with a sound like a cough.",
+            "Inside: one coin, and a smell of old cloth."
+          ],
+          "choices": [
+            {
+              "text": "Take it."
+            }
+          ]
+        },
+        "empty": {
+          "text": [
+            "Open, and empty but for the smell of old cloth."
+          ],
+          "choices": [
+            {
+              "text": "Close the lid."
+            }
+          ]
+        }
+      }
     },
     "dlg.crossroads": {
       "id": "dlg.crossroads",
       "speaker": "Signpost",
-      "lines": [
-        "North: the old tower. East: the mill.",
-        "West: quarry - mind the loose stone.",
-        "South: more road than anyone needs."
-      ]
+      "start": "greet",
+      "nodes": {
+        "greet": {
+          "text": [
+            "Four arms, and the paint gone from all of them."
+          ],
+          "choices": [
+            {
+              "text": "North?",
+              "goto": "north"
+            },
+            {
+              "text": "East?",
+              "goto": "east"
+            },
+            {
+              "text": "West?",
+              "goto": "west"
+            },
+            {
+              "text": "Walk on."
+            }
+          ]
+        },
+        "north": {
+          "text": [
+            "The old tower. Nobody keeps watch in it now."
+          ],
+          "choices": [
+            {
+              "text": "Read on.",
+              "goto": "greet"
+            },
+            {
+              "text": "Walk on."
+            }
+          ]
+        },
+        "east": {
+          "text": [
+            "The mill, over the bridge. Follow the cart ruts."
+          ],
+          "choices": [
+            {
+              "text": "Read on.",
+              "goto": "greet"
+            },
+            {
+              "text": "Walk on."
+            }
+          ]
+        },
+        "west": {
+          "text": [
+            "The quarry. Mind the loose stone."
+          ],
+          "choices": [
+            {
+              "text": "Read on.",
+              "goto": "greet"
+            },
+            {
+              "text": "Walk on."
+            }
+          ]
+        }
+      }
     },
     "dlg.goat_bleat": {
       "id": "dlg.goat_bleat",
       "speaker": "Goat",
-      "lines": [
-        "Mehhh.",
-        "It stares at you, chewing, entirely unbothered."
-      ]
+      "start": "bleat",
+      "nodes": {
+        "bleat": {
+          "text": [
+            "Mehhh.",
+            "It stares at you, chewing, entirely unbothered."
+          ]
+        }
+      }
     },
     "dlg.sheep_baa": {
       "id": "dlg.sheep_baa",
       "speaker": "Sheep",
-      "lines": [
-        "Baaa.",
-        "It goes back to the grass."
-      ]
+      "start": "baa",
+      "nodes": {
+        "baa": {
+          "text": [
+            "Baaa.",
+            "It goes back to the grass."
+          ]
+        }
+      }
     },
     "dlg.sign_riverside": {
       "id": "dlg.sign_riverside",
       "speaker": null,
-      "lines": [
-        "RIVERSIDE - north to the ford, south to the old wall."
-      ]
+      "start": "board",
+      "nodes": {
+        "board": {
+          "text": [
+            "RIVERSIDE - north to the ford, south to the old wall."
+          ]
+        }
+      }
     },
     "dlg.statue": {
       "id": "dlg.statue",
       "speaker": "Weathered statue",
-      "lines": [
-        "A figure with its arms held out, worn smooth by rain.",
-        "Whoever it was, nobody here remembers."
-      ]
+      "start": "greet",
+      "nodes": {
+        "greet": {
+          "text": [
+            "A figure with its arms held out, worn smooth by rain."
+          ],
+          "choices": [
+            {
+              "text": "Who was it?",
+              "goto": "who"
+            },
+            {
+              "text": "Why the arms?",
+              "goto": "arms"
+            },
+            {
+              "text": "Walk on."
+            }
+          ]
+        },
+        "who": {
+          "text": [
+            "Nobody here remembers.",
+            "Arne says his father called it the Warden, and left it at that."
+          ],
+          "choices": [
+            {
+              "text": "Something else.",
+              "goto": "greet"
+            },
+            {
+              "text": "Walk on."
+            }
+          ]
+        },
+        "arms": {
+          "text": [
+            "Holding something, once.",
+            "Whatever it was, the rain took that too."
+          ],
+          "choices": [
+            {
+              "text": "Something else.",
+              "goto": "greet"
+            },
+            {
+              "text": "Walk on."
+            }
+          ]
+        }
+      }
     },
     "dlg.well": {
       "id": "dlg.well",
       "speaker": "The well",
-      "lines": [
-        "The bucket is down there somewhere.",
-        "Cold air comes up off the water."
-      ]
+      "start": [
+        {
+          "when": {
+            "flag": "well.wished"
+          },
+          "goto": "wished"
+        },
+        {
+          "goto": "look"
+        }
+      ],
+      "nodes": {
+        "look": {
+          "text": [
+            "The bucket is down there somewhere.",
+            "Cold air comes up off the water."
+          ],
+          "choices": [
+            {
+              "text": "Drop a coin in.",
+              "goto": "wish",
+              "when": {
+                "has": "item.coin"
+              },
+              "take": "item.coin",
+              "set": "well.wished"
+            },
+            {
+              "text": "Look down."
+            },
+            {
+              "text": "Step back."
+            }
+          ]
+        },
+        "wish": {
+          "text": [
+            "The coin turns over twice and is gone.",
+            "You do not hear it land."
+          ]
+        },
+        "wished": {
+          "text": [
+            "The water is still.",
+            "Your coin is down there somewhere, with the bucket."
+          ]
+        }
+      }
     }
   },
   "maps": {

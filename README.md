@@ -48,7 +48,7 @@ The rule: `tools/` and `content/` are truth. Everything in `build/` and
 content/*.json  +  tools/gen/*.py
         │  generate
 build/atlas/*.png  ·  build/manifest.json  ·  build/aseprite/*.aseprite
-        │  validate   ← 18 gates, all must pass
+        │  validate   ← 21 gates, all must pass
 game/art-embed.js  →  game/index.html + main.js  →  game/page.html
 ```
 
@@ -76,6 +76,9 @@ failure points at an authored file, never at generated output:
 | `map-overlap` | two solid things claiming the same tile |
 | `map-spawn` | a spawn in water, or inside a wall |
 | `dialogue-exists` | an NPC pointing at dialogue that does not exist |
+| `dialogue-shape` | a conversation with no start, or a node that says nothing |
+| `dialogue-links` | a reply pointing at a node that is not there, or writing nobody can reach |
+| `dialogue-effects` | a branch waiting on a flag no choice ever sets, or trading an item that does not exist |
 | `item-kind` | an item the engine has no idea what to do with, or a weapon with nothing to draw |
 | `item-held` | a weapon the hero could equip but has no frames for - a sprite with holes |
 | `deterministic` | the build drifting between runs |
@@ -142,6 +145,45 @@ it stands on as offsets from its anchor tile — `[[0, 0]]` for a barrel, six
 offsets for a three-by-two cottage. The scene puts one static body on each, so a
 tree's canopy can overhang ground you can still walk on, and a building is solid
 across its whole base without being cut into three sprites.
+
+## Talking
+
+A conversation is a graph, not a script: **nodes** of text joined by the
+**choices** the player is offered. Which choices appear is decided when the
+node is entered, so a reply can be offered only while you are carrying
+something, or only once an NPC has asked you for it.
+
+```json
+"start": [{ "when": { "flag": "chest.opened" }, "goto": "empty" },
+          { "goto": "shut" }],
+"nodes": {
+  "shut": { "text": ["Locked. Someone went to real trouble over it."],
+            "choices": [
+              { "text": "Turn the key.", "goto": "open", "when": { "has": "item.key" },
+                "take": "item.key", "give": "item.coin", "set": "chest.opened" },
+              { "text": "Leave it." }] } }
+```
+
+**Entry rules** are what make a conversation remember: `start` is either a node
+name or a list of rules, and the first whose condition holds is where you come
+in. The condition language is deliberately tiny — `flag`, `noflag`, `has`,
+`nothas`, and `all` to combine them — small enough that a gate can check every
+branch is reachable and every flag is one some choice actually sets. A choice
+with no `goto` ends the conversation.
+
+Effects run **take, then give, then set**, so trading the last thing in a full
+bag still works; anything given that will not fit drops at your feet rather
+than vanishing.
+
+That is enough for a quest without a quest system. Ask Arne for work and he
+wants iron ore from the quarry; bring him a lump and he trades it for his
+father's key; the key opens the chest in the barn yard, once, and afterwards
+the chest knows it is empty. The flags live in the scene, so the world
+remembers within a session.
+
+The panel is the bag's planks, sliding up from the bottom: a speaker plate,
+the line, and the replies numbered 1–4. Arrows or the number keys pick one,
+**E** answers, and on a phone you just tap the reply.
 
 ## Items, the bag, and the weapon hand
 

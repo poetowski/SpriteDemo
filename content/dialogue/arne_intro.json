@@ -1,8 +1,134 @@
 {
   "id": "dlg.arne_intro",
   "speaker": "Arne",
-  "lines": [
-    "Mind the water, the bank gives way.",
-    "Anything you need hammered, I am here till dusk."
-  ]
+  "start": "greet",
+  "nodes": {
+    "greet": {
+      "text": [
+        "Mind the water, the bank gives way.",
+        "Anything you need hammered, I am here till dusk."
+      ],
+      "choices": [
+        {
+          "text": "What do you make?",
+          "goto": "wares"
+        },
+        {
+          "text": "Any work going?",
+          "goto": "work",
+          "when": {
+            "noflag": "arne.wants_ore"
+          },
+          "set": "arne.wants_ore"
+        },
+        {
+          "text": "I have your ore.",
+          "goto": "deliver",
+          "when": {
+            "all": [
+              {
+                "flag": "arne.wants_ore"
+              },
+              {
+                "noflag": "arne.gave_key"
+              },
+              {
+                "has": "item.ore"
+              }
+            ]
+          },
+          "take": "item.ore",
+          "give": "item.key",
+          "set": "arne.gave_key"
+        },
+        {
+          "text": "Still looking for that ore.",
+          "goto": "waiting",
+          "when": {
+            "all": [
+              {
+                "flag": "arne.wants_ore"
+              },
+              {
+                "noflag": "arne.gave_key"
+              },
+              {
+                "nothas": "item.ore"
+              }
+            ]
+          }
+        },
+        {
+          "text": "About that chest.",
+          "goto": "chest_talk",
+          "when": {
+            "flag": "arne.gave_key"
+          }
+        },
+        {
+          "text": "Nothing. Good day."
+        }
+      ]
+    },
+    "wares": {
+      "text": [
+        "Nails, hinges, a blade now and then.",
+        "The one by the anvil is spoken for. Lift it if you think you can."
+      ],
+      "choices": [
+        {
+          "text": "Something else.",
+          "goto": "greet"
+        },
+        {
+          "text": "I should go."
+        }
+      ]
+    },
+    "work": {
+      "text": [
+        "As it happens. The quarry west of the crossroads has iron in it - red in the grey.",
+        "Bring me a lump and I will make it worth the walk."
+      ],
+      "choices": [
+        {
+          "text": "I'll have a look."
+        }
+      ]
+    },
+    "waiting": {
+      "text": [
+        "West of the crossroads. Red in the grey. You will not miss it."
+      ],
+      "choices": [
+        {
+          "text": "Right."
+        }
+      ]
+    },
+    "deliver": {
+      "text": [
+        "Good weight on that. It will do.",
+        "Here - the key to the chest in the barn yard.",
+        "It was my father's. I never had the stomach for what is in it."
+      ],
+      "choices": [
+        {
+          "text": "Thank you.",
+          "goto": "greet"
+        }
+      ]
+    },
+    "chest_talk": {
+      "text": [
+        "Open it. Whatever is in there has waited long enough."
+      ],
+      "choices": [
+        {
+          "text": "I will.",
+          "goto": "greet"
+        }
+      ]
+    }
+  }
 }

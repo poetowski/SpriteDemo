@@ -38,6 +38,8 @@ const POSE = value('--pose', null);       // state,frame - hold one pose for the
 const PAGE = flag('--page');              // the whole page, buttons included
 const BAG = flag('--bag');                // open the bag before the picture
 const MID = flag('--mid');                // with --slash: photograph the moment of impact
+const CHOOSE = args.includes('--choose')  // with --talk: take the nth reply (1-based)
+  ? Number(value('--choose', '1')) - 1 : null;
 const TILE = value('--tile', null);
 const WAIT = Number(value('--wait', MAP_MODE ? 1200 : 900));
 const OUT = path.resolve(ROOT, value('--out', MAP_MODE ? 'build/map.png' : 'build/shot.png'));
@@ -153,6 +155,40 @@ const BOOTED = () => !!(window.game && window.game.scene
     const talking = await page.evaluate(() =>
       document.getElementById('dialogue').classList.contains('show'));
     checks.push(['dialogue opened', talking, 'nothing in range to talk to?']);
+    // Run out the node's lines; the replies appear on the last one.
+    for (let i = 0; i < 6; i++) {
+      const shown = await page.evaluate(() =>
+        document.querySelectorAll('#choices button').length);
+      if (shown) break;
+      await page.keyboard.press('KeyE');
+      await page.waitForTimeout(140);
+    }
+    const state = await page.evaluate(() => {
+      const s = window.game.scene.scenes[0];
+      return { n: document.querySelectorAll('#choices button').length,
+               node: s.dialogue && s.dialogue.node.text[0] };
+    });
+    checks.push(['replies offered', state.n > 0, `after "${state.node}"`]);
+    if (CHOOSE !== null) {
+      const before = await page.evaluate(() => {
+        const s = window.game.scene.scenes[0];
+        return { node: s.dialogue && s.dialogue.node.text[0],
+                 flags: [...s.flags], inv: s.inventory.filter(Boolean) };
+      });
+      await page.keyboard.press(['Digit1', 'Digit2', 'Digit3', 'Digit4'][CHOOSE]);
+      await page.waitForTimeout(220);
+      const after = await page.evaluate(() => {
+        const s = window.game.scene.scenes[0];
+        return { open: !!s.dialogue, node: s.dialogue && s.dialogue.node.text[0],
+                 flags: [...s.flags], inv: s.inventory.filter(Boolean) };
+      });
+      const moved = !after.open || after.node !== before.node
+        || after.flags.length !== before.flags.length;
+      checks.push([`reply ${CHOOSE + 1} taken`, moved,
+        `node unchanged: "${after.node}"`]);
+      console.log(`dialogue  "${before.node}" -> ${after.open ? `"${after.node}"` : 'closed'}`
+        + `  flags [${after.flags}]  bag [${after.inv}]`);
+    }
   }
   if (GATHER) {
     const before = count(report.inventory);

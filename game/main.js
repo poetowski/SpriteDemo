@@ -120,6 +120,7 @@ class World extends Phaser.Scene {
     this.bagOpen = false;
     this.weapon = null;                   // item id in the weapon hand
     this.armor = null;                    // item id worn over the tunic
+    this.flags = new Set();               // what conversations remember
     this.busy = false;                    // a one-shot animation owns the hero
     this.pending = null;                  // the pickup a gather will collect
 
@@ -145,8 +146,15 @@ class World extends Phaser.Scene {
         // On the event, not polled: a tap shorter than a frame must still
         // move the cursor one slot, and JustDown loses it to the key-up.
         if (this.bagOpen) this.moveCursor(...stepOf[name]);
+        else if (this.dialogue) this.moveChoice(stepOf[name][1]);
       });
     }
+    // 1-4 pick a reply outright; the panel numbers them for exactly this
+    for (let i = 0; i < 4; i++) {
+      this.input.keyboard.on(`keydown-${['ONE', 'TWO', 'THREE', 'FOUR'][i]}`,
+                             () => this.dialogue && this.choose(i));
+    }
+    window.__choose = (i) => this.choose(i);    // tapping a reply comes in here
     this.keys.talk.on('down', () => this.act('talk'));
     this.keys.space.on('down', () => this.act('slash'));
     this.keys.swap.on('down', () => this.act('swap'));
@@ -519,29 +527,122 @@ class World extends Phaser.Scene {
     this.pushInventory();
   }
 
-  // --- dialogue ----------------------------------------------------------
+  // --- dialogue ------------------------------------------------------------
+  // A conversation is a graph: nodes of text joined by the choices the player
+  // is offered. What is offered depends on flags this scene remembers and on
+  // what is in the bag, so an NPC can know it has met you before and a branch
+  // can open only once you are carrying the right thing.
+
+  /** One condition from a "when" clause. `all` nests; everything else is a
+   *  single test, which keeps the little language checkable by a gate. */
+  test(cond) {
+    if (!cond) return true;
+    if (cond.all) return cond.all.every((c) => this.test(c));
+    if (cond.flag) return this.flags.has(cond.flag);
+    if (cond.noflag) return !this.flags.has(cond.noflag);
+    if (cond.has) return this.inventory.includes(cond.has);
+    if (cond.nothas) return !this.inventory.includes(cond.nothas);
+    return true;
+  }
+
+  /** Entry rules pick where a conversation starts: the first whose condition
+   *  holds. A plain string is the common case - always start here. */
+  entryNode(dlg) {
+    if (typeof dlg.start === 'string') return dlg.start;
+    const rule = (dlg.start || []).find((r) => this.test(r.when));
+    return rule ? rule.goto : null;
+  }
+
+  openDialogue(id) {
+    const dlg = M.dialogue[id];
+    const node = this.entryNode(dlg);
+    if (!node) return;
+    this.hero.setVelocity(0, 0);
+    this.dialogue = { dlg, node: null, line: 0, choices: [], pick: 0 };
+    this.gotoNode(node);
+  }
+
+  gotoNode(id) {
+    const d = this.dialogue;
+    d.node = d.dlg.nodes[id];
+    d.line = 0;
+    d.pick = 0;
+    // Only the choices whose conditions hold are offered - the rest are not
+    // greyed out, they are simply not things you could say.
+    d.choices = (d.node.choices || []).filter((c) => this.test(c.when));
+    this.renderDialogue();
+  }
+
+  /** E, or a tap: run out the node's lines, then take the chosen branch. */
   advanceDialogue() {
-    if (this.dialogue) {
-      this.dialogue.line += 1;
-      if (this.dialogue.line >= this.dialogue.lines.length) return this.closeDialogue();
+    const d = this.dialogue;
+    if (!d) {
+      if (this.nearest && this.nearest.def.interact) {
+        this.openDialogue(this.nearest.def.interact);
+      }
+      return;
+    }
+    if (d.line < d.node.text.length - 1) {       // still reading
+      d.line += 1;
       return this.renderDialogue();
     }
-    if (!this.nearest || !this.nearest.def.interact) return;
-    const dlg = M.dialogue[this.nearest.def.interact];
-    this.dialogue = { speaker: dlg.speaker, lines: dlg.lines, line: 0 };
-    this.hero.setVelocity(0, 0);
+    if (!d.choices.length) return this.closeDialogue();
+    this.choose(d.pick);
+  }
+
+  choose(i) {
+    const d = this.dialogue;
+    if (!d || !d.choices.length || d.line < d.node.text.length - 1) return;
+    const choice = d.choices[i];
+    if (!choice) return;
+    // take before give, so trading the last thing in a full bag still works
+    if (choice.take) this.dropItem(choice.take);
+    if (choice.give) this.giveItem(choice.give);
+    if (choice.set) {
+      this.flags.add(choice.set);
+      this.pushInventory();                      // a flag can change a look
+    }
+    if (!choice.goto) return this.closeDialogue();
+    this.gotoNode(choice.goto);
+  }
+
+  moveChoice(dy) {
+    const d = this.dialogue;
+    if (!d || !d.choices.length || d.line < d.node.text.length - 1) return;
+    d.pick = (d.pick + dy + d.choices.length) % d.choices.length;
     this.renderDialogue();
+  }
+
+  /** Remove one of an item from the bag, unequipping it if it was in use. */
+  dropItem(id) {
+    const slot = this.inventory.indexOf(id);
+    if (slot < 0) return;
+    this.inventory[slot] = null;
+    if (this.weapon === id) this.equip(null);
+    else if (this.armor === id) this.wear(null);
+    else this.pushInventory();
+  }
+
+  /** Hand something over. A full bag must not swallow it, so it lands at the
+   *  hero's feet instead and can be picked up in the usual way. */
+  giveItem(id) {
+    if (this.addItem(id)) return;
+    const tx = Math.floor(this.hero.x / this.ts);
+    const ty = Math.floor(this.hero.y / this.ts);
+    this.spawn(id, tx, ty);
   }
 
   renderDialogue() {
     const d = this.dialogue;
-    if (window.__dialogue) {
-      window.__dialogue({
-        speaker: d.speaker,
-        text: d.lines[d.line],
-        more: d.line < d.lines.length - 1,
-      });
-    }
+    if (!window.__dialogue) return;
+    const reading = d.line < d.node.text.length - 1;
+    window.__dialogue({
+      speaker: d.dlg.speaker,
+      text: d.node.text[d.line],
+      more: reading,
+      choices: reading ? [] : d.choices.map((c) => c.text),
+      pick: d.pick,
+    });
   }
 
   closeDialogue() {

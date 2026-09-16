@@ -25,16 +25,32 @@
   }
   #game, #game canvas { width: 100%; height: 100%; display: block; }
 
+  /* The talk panel: the same planks as the bag, sliding up from the bottom. */
   #dialogue {
-    position: absolute; left: 4%; right: 4%; bottom: 4%;
-    display: none; flex-direction: column; gap: 6px;
-    padding: 12px 14px; background: #10141ce8; border: 2px solid #4b5568;
-    border-radius: 4px;
+    position: absolute; left: 0; right: 0; bottom: 0;
+    display: flex; flex-direction: column; gap: 6px; padding: 14px 16px 16px;
+    background:
+      repeating-linear-gradient(180deg, #7a5a38 0 26px, #6a4c2e 26px 28px, #8a683f 28px 30px, #7a5a38 30px 34px);
+    border-top: 4px solid #3d2a17; box-shadow: 0 -6px 18px #0007;
+    transform: translateY(104%); transition: transform .2s ease-out;
   }
-  #dialogue.show { display: flex; }
-  #speaker { color: var(--accent); font-size: 13px; }
-  #line { font-size: 15px; line-height: 1.45; }
-  #more { color: var(--muted); font-size: 12px; text-align: right; }
+  #dialogue.show { transform: none; }
+  @media (prefers-reduced-motion: reduce) { #dialogue { transition: none; } }
+  #speaker { align-self: flex-start; font-size: 12px; letter-spacing: .08em;
+             color: #f1e4c8; background: #3d2a17; padding: 2px 8px; border-radius: 2px; }
+  #speaker:empty { display: none; }
+  #line { font-size: 15px; line-height: 1.45; color: #f7efdc; text-shadow: 0 1px 0 #3d2a1780; }
+  #more { color: #d9c7a3; font-size: 12px; text-align: right; }
+  #choices { display: flex; flex-direction: column; gap: 2px; }
+  #choices:empty { display: none; }
+  #choices button {
+    display: flex; gap: 8px; align-items: baseline; width: 100%; text-align: left;
+    font: inherit; color: #e6d5b2; background: #5e4229; border: 2px solid #4d3520;
+    border-radius: 3px; padding: 5px 9px; cursor: pointer;
+  }
+  #choices button .n { color: #a58b63; font-size: 11px; }
+  #choices button.on { background: #4f5a2c; color: #f7efdc; border-color: var(--accent); }
+  #choices button.on .n { color: #cfe3ad; }
 
   #focus {
     position: absolute; inset: 0; display: none; place-items: center;
@@ -101,6 +117,7 @@
   <div id="dialogue">
     <div id="speaker"></div>
     <div id="line"></div>
+    <div id="choices"></div>
     <div id="more"></div>
   </div>
   <div id="bag" aria-hidden="true">
@@ -190,7 +207,26 @@
     if (!d) { box.classList.remove('show'); return; }
     $('speaker').textContent = d.speaker || '';
     $('line').textContent = d.text;
-    $('more').textContent = d.more ? 'E / space →' : 'E / space to close';
+    const list = $('choices');
+    list.replaceChildren();
+    (d.choices || []).forEach((text, i) => {
+      const b = document.createElement('button');
+      b.className = i === d.pick ? 'on' : '';
+      const n = document.createElement('span');
+      n.className = 'n';
+      n.textContent = i + 1;
+      b.append(n, document.createTextNode(text));
+      // Tapping a reply is the whole interaction on a phone, where there is
+      // no number row and the d-pad is across the screen.
+      b.addEventListener('pointerdown', (e) => {
+        e.preventDefault();
+        if (window.__choose) window.__choose(i);
+      });
+      list.append(b);
+    });
+    $('more').textContent = d.more ? 'E / space →'
+      : (d.choices && d.choices.length ? 'arrows or 1-4 · E to answer'
+                                       : 'E / space to close');
     box.classList.add('show');
   };
 

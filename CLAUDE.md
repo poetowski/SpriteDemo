@@ -17,7 +17,7 @@ node tools/shot.cjs --map                # 3. and shoot the whole world
 ```
 
 1. **Build.** `tools/build.py` regenerates every atlas, the manifest, the
-   `.aseprite` sources and `game/page.html`. All 18 gates must pass. A gate
+   `.aseprite` sources and `game/page.html`. All 21 gates must pass. A gate
    failure names an authored file - fix that file, never the generated output.
    Needs Pillow: `pip install pillow` if the import fails.
 
@@ -30,7 +30,8 @@ node tools/shot.cjs --map                # 3. and shoot the whole world
 
    ```sh
    node tools/shot.cjs --tile 33,40         # stand at a tile and look
-   node tools/shot.cjs --talk --tile 37,37  # walk up to someone and press E
+   node tools/shot.cjs --talk --tile 33,37  # talk to Arne, check the replies appear
+   node tools/shot.cjs --talk --choose 2 --tile 33,37   # and take the second one
    node tools/shot.cjs --gather --tile 34,37   # stand by an item, press E, check the bag
    node tools/shot.cjs --give item.axe --slash # arm the hero and swing
    node tools/shot.cjs --give item.axe --bag   # open the bag (I), check the cursor moves
@@ -97,6 +98,15 @@ with a guard or a head hung off it. Armor names what is worn
 before the arms. The build bakes one frame set per weapon-and-armour pair for
 every actor with `"wields": true` (that table is the actor's `looks`) and the
 `item-held` gate checks every one is complete.
+
+**A conversation** is a file in `content/dialogue/` and an `interact` on the
+thing that says it. It is a graph: `nodes` of `text` joined by `choices`, and
+`start` is either a node name or a list of entry rules whose first matching
+`when` decides where you come in - that is how a conversation remembers. A
+choice may carry `when` (`flag` / `noflag` / `has` / `nothas` / `all`) and the
+effects `set`, `give` and `take`; no `goto` ends it. Effects run take, give,
+set, so a trade works with a full bag. Keep the condition language as small as
+it is - the gates can only check branches they understand.
 
 **A map** is ASCII rows plus a legend. Roads must stay clear - scenery placed on
 a path tile can wall off the only route across the world.

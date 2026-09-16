@@ -167,6 +167,98 @@ def run(content, man, tile_canvases):
                       f"{defn['_file']}: interact -> unknown dialogue {dlg!r}")
     passed.append("dialogue-exists")
 
+    # 7b - dialogue graphs. A conversation is nodes joined by choices, so the
+    # ways it can break are structural: a goto that points nowhere leaves the
+    # player stuck mid-sentence, an unreachable node is writing nobody will
+    # ever see, and a condition on a flag no choice sets is a branch that can
+    # never be taken. All three are invisible until someone plays that path.
+    def _entry_rules(d):
+        start = d.get("start")
+        if isinstance(start, str):
+            return [{"goto": start}]
+        return start or []
+
+    def _conds(c):
+        """Every condition in a when-clause, flattened."""
+        w = c.get("when")
+        if not w:
+            return []
+        return w.get("all") if "all" in w else [w]
+
+    for did, d in content["dialogue"].items():
+        where = d["_file"]
+        nodes = d.get("nodes")
+        if not isinstance(nodes, dict) or not nodes:
+            _fail("dialogue-shape", f"{where}: no \"nodes\"")
+        if not _entry_rules(d):
+            _fail("dialogue-shape", f"{where}: no \"start\"")
+        for nid, node in nodes.items():
+            if not node.get("text"):
+                _fail("dialogue-shape", f"{where}: node {nid!r} says nothing")
+            for ch in node.get("choices") or []:
+                if not ch.get("text"):
+                    _fail("dialogue-shape",
+                          f"{where}: a choice in {nid!r} has no text")
+    passed.append("dialogue-shape")
+
+    for did, d in content["dialogue"].items():
+        where, nodes = d["_file"], d["nodes"]
+        seen, queue = set(), []
+        for rule in _entry_rules(d):
+            if rule["goto"] not in nodes:
+                _fail("dialogue-links",
+                      f"{where}: start -> unknown node {rule['goto']!r}")
+            queue.append(rule["goto"])
+        while queue:                             # walk it the way a player would
+            nid = queue.pop()
+            if nid in seen:
+                continue
+            seen.add(nid)
+            for ch in nodes[nid].get("choices") or []:
+                goto = ch.get("goto")
+                if goto is None:
+                    continue                     # a choice with no goto ends it
+                if goto not in nodes:
+                    _fail("dialogue-links", f"{where}: {nid!r} -> unknown node "
+                                            f"{goto!r}")
+                queue.append(goto)
+        orphans = sorted(set(nodes) - seen)
+        if orphans:
+            _fail("dialogue-links", f"{where}: unreachable node(s) "
+                                    f"{', '.join(orphans)}")
+    passed.append("dialogue-links")
+
+    set_flags = set()
+    read_flags = {}
+    for did, d in content["dialogue"].items():
+        for nid, node in d["nodes"].items():
+            for ch in node.get("choices") or []:
+                for key in ("set",):
+                    if ch.get(key):
+                        set_flags.add(ch[key])
+                for key in ("give", "take"):
+                    if ch.get(key) and ch[key] not in man["items"]:
+                        _fail("dialogue-effects", f"{d['_file']}: {nid!r} {key}s "
+                                                  f"unknown item {ch[key]!r}")
+                for cond in _conds(ch):
+                    for key in ("has", "nothas"):
+                        if cond.get(key) and cond[key] not in man["items"]:
+                            _fail("dialogue-effects",
+                                  f"{d['_file']}: {nid!r} tests unknown item "
+                                  f"{cond[key]!r}")
+                    for key in ("flag", "noflag"):
+                        if cond.get(key):
+                            read_flags.setdefault(cond[key], f"{d['_file']}: {nid!r}")
+            for rule in _entry_rules(d):
+                for key in ("flag", "noflag"):
+                    if (rule.get("when") or {}).get(key):
+                        read_flags.setdefault(rule["when"][key], f"{d['_file']}: start")
+    for flag, where in sorted(read_flags.items()):
+        if flag not in set_flags:
+            _fail("dialogue-effects", f"{where} waits on flag {flag!r}, which no "
+                                      f"choice ever sets")
+    passed.append("dialogue-effects")
+
     # 8 - items: a kind the engine knows; a weapon names what the hand holds;
     #     and every actor that wields has a complete frame set per weapon,
     #     slash included, or the engine would switch to a sprite with holes.

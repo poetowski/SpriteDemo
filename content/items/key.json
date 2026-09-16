@@ -1,0 +1,8 @@
+{
+  "id": "item.key",
+  "name": "Iron key",
+  "sprite": "item.key",
+  "kind": "material",
+  "stack": false,
+  "description": "Arne's father's. It opens the chest in the barn yard."
+}
