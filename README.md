@@ -174,6 +174,15 @@ them rather than text blurred at 3×.
 Picking up the first weapon draws it; the sword is by Arne's anvil, the felling
 axe at the woodcutters' camp, the spear in the old tower.
 
+**Armour is worn the same way a weapon is held.** `ARMOURS` in the rig draws a
+mail shirt over the tunic after the torso and before the arms, so sleeves and
+collar stay the character's own; the build bakes one frame set per
+weapon-and-armour pair (`actor.hero_sword_mail` and the rest) and writes the
+whole table into the hero's record as `looks`, keyed `"<weapon>|<armor>"`.
+Putting the shirt on is the same one-string switch as drawing a sword. The
+mail shirt lies a few steps from where you start; the first one picked up is
+worn, and **E** on it in the bag takes it off again.
+
 ## Verification
 
 - Every `.aseprite` is parsed back at build time and checked against its source.

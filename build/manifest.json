@@ -8,8 +8,8 @@
         32
       ],
       "cols": 6,
-      "rows": 47,
-      "count": 280
+      "rows": 79,
+      "count": 472
     },
     "tiles": {
       "image": "atlas/tiles.png",
@@ -49,7 +49,7 @@
       ],
       "cols": 8,
       "rows": 2,
-      "count": 13
+      "count": 14
     },
     "fx": {
       "image": "atlas/fx.png",
@@ -1023,7 +1023,7 @@
         29
       ]
     },
-    "actor.hero_spear/walk/down/0": {
+    "actor.hero_axe_mail/walk/down/0": {
       "atlas": "actors",
       "index": 120,
       "anchor": [
@@ -1031,7 +1031,7 @@
         29
       ]
     },
-    "actor.hero_spear/walk/down/1": {
+    "actor.hero_axe_mail/walk/down/1": {
       "atlas": "actors",
       "index": 121,
       "anchor": [
@@ -1039,7 +1039,7 @@
         29
       ]
     },
-    "actor.hero_spear/walk/down/2": {
+    "actor.hero_axe_mail/walk/down/2": {
       "atlas": "actors",
       "index": 122,
       "anchor": [
@@ -1047,7 +1047,7 @@
         29
       ]
     },
-    "actor.hero_spear/walk/down/3": {
+    "actor.hero_axe_mail/walk/down/3": {
       "atlas": "actors",
       "index": 123,
       "anchor": [
@@ -1055,7 +1055,7 @@
         29
       ]
     },
-    "actor.hero_spear/idle/down/0": {
+    "actor.hero_axe_mail/idle/down/0": {
       "atlas": "actors",
       "index": 124,
       "anchor": [
@@ -1063,7 +1063,7 @@
         29
       ]
     },
-    "actor.hero_spear/idle/down/1": {
+    "actor.hero_axe_mail/idle/down/1": {
       "atlas": "actors",
       "index": 125,
       "anchor": [
@@ -1071,7 +1071,7 @@
         29
       ]
     },
-    "actor.hero_spear/gather/down/0": {
+    "actor.hero_axe_mail/gather/down/0": {
       "atlas": "actors",
       "index": 126,
       "anchor": [
@@ -1079,7 +1079,7 @@
         29
       ]
     },
-    "actor.hero_spear/gather/down/1": {
+    "actor.hero_axe_mail/gather/down/1": {
       "atlas": "actors",
       "index": 127,
       "anchor": [
@@ -1087,7 +1087,7 @@
         29
       ]
     },
-    "actor.hero_spear/gather/down/2": {
+    "actor.hero_axe_mail/gather/down/2": {
       "atlas": "actors",
       "index": 128,
       "anchor": [
@@ -1095,7 +1095,7 @@
         29
       ]
     },
-    "actor.hero_spear/slash/down/0": {
+    "actor.hero_axe_mail/slash/down/0": {
       "atlas": "actors",
       "index": 129,
       "anchor": [
@@ -1103,7 +1103,7 @@
         29
       ]
     },
-    "actor.hero_spear/slash/down/1": {
+    "actor.hero_axe_mail/slash/down/1": {
       "atlas": "actors",
       "index": 130,
       "anchor": [
@@ -1111,7 +1111,7 @@
         29
       ]
     },
-    "actor.hero_spear/slash/down/2": {
+    "actor.hero_axe_mail/slash/down/2": {
       "atlas": "actors",
       "index": 131,
       "anchor": [
@@ -1119,7 +1119,7 @@
         29
       ]
     },
-    "actor.hero_spear/slash/down/3": {
+    "actor.hero_axe_mail/slash/down/3": {
       "atlas": "actors",
       "index": 132,
       "anchor": [
@@ -1127,7 +1127,7 @@
         29
       ]
     },
-    "actor.hero_spear/walk/left/0": {
+    "actor.hero_axe_mail/walk/left/0": {
       "atlas": "actors",
       "index": 133,
       "anchor": [
@@ -1135,7 +1135,7 @@
         29
       ]
     },
-    "actor.hero_spear/walk/left/1": {
+    "actor.hero_axe_mail/walk/left/1": {
       "atlas": "actors",
       "index": 134,
       "anchor": [
@@ -1143,7 +1143,7 @@
         29
       ]
     },
-    "actor.hero_spear/walk/left/2": {
+    "actor.hero_axe_mail/walk/left/2": {
       "atlas": "actors",
       "index": 135,
       "anchor": [
@@ -1151,7 +1151,7 @@
         29
       ]
     },
-    "actor.hero_spear/walk/left/3": {
+    "actor.hero_axe_mail/walk/left/3": {
       "atlas": "actors",
       "index": 136,
       "anchor": [
@@ -1159,7 +1159,7 @@
         29
       ]
     },
-    "actor.hero_spear/idle/left/0": {
+    "actor.hero_axe_mail/idle/left/0": {
       "atlas": "actors",
       "index": 137,
       "anchor": [
@@ -1167,7 +1167,7 @@
         29
       ]
     },
-    "actor.hero_spear/idle/left/1": {
+    "actor.hero_axe_mail/idle/left/1": {
       "atlas": "actors",
       "index": 138,
       "anchor": [
@@ -1175,7 +1175,7 @@
         29
       ]
     },
-    "actor.hero_spear/gather/left/0": {
+    "actor.hero_axe_mail/gather/left/0": {
       "atlas": "actors",
       "index": 139,
       "anchor": [
@@ -1183,7 +1183,7 @@
         29
       ]
     },
-    "actor.hero_spear/gather/left/1": {
+    "actor.hero_axe_mail/gather/left/1": {
       "atlas": "actors",
       "index": 140,
       "anchor": [
@@ -1191,7 +1191,7 @@
         29
       ]
     },
-    "actor.hero_spear/gather/left/2": {
+    "actor.hero_axe_mail/gather/left/2": {
       "atlas": "actors",
       "index": 141,
       "anchor": [
@@ -1199,7 +1199,7 @@
         29
       ]
     },
-    "actor.hero_spear/slash/left/0": {
+    "actor.hero_axe_mail/slash/left/0": {
       "atlas": "actors",
       "index": 142,
       "anchor": [
@@ -1207,7 +1207,7 @@
         29
       ]
     },
-    "actor.hero_spear/slash/left/1": {
+    "actor.hero_axe_mail/slash/left/1": {
       "atlas": "actors",
       "index": 143,
       "anchor": [
@@ -1215,7 +1215,7 @@
         29
       ]
     },
-    "actor.hero_spear/slash/left/2": {
+    "actor.hero_axe_mail/slash/left/2": {
       "atlas": "actors",
       "index": 144,
       "anchor": [
@@ -1223,7 +1223,7 @@
         29
       ]
     },
-    "actor.hero_spear/slash/left/3": {
+    "actor.hero_axe_mail/slash/left/3": {
       "atlas": "actors",
       "index": 145,
       "anchor": [
@@ -1231,7 +1231,7 @@
         29
       ]
     },
-    "actor.hero_spear/walk/right/0": {
+    "actor.hero_axe_mail/walk/right/0": {
       "atlas": "actors",
       "index": 146,
       "anchor": [
@@ -1239,7 +1239,7 @@
         29
       ]
     },
-    "actor.hero_spear/walk/right/1": {
+    "actor.hero_axe_mail/walk/right/1": {
       "atlas": "actors",
       "index": 147,
       "anchor": [
@@ -1247,7 +1247,7 @@
         29
       ]
     },
-    "actor.hero_spear/walk/right/2": {
+    "actor.hero_axe_mail/walk/right/2": {
       "atlas": "actors",
       "index": 148,
       "anchor": [
@@ -1255,7 +1255,7 @@
         29
       ]
     },
-    "actor.hero_spear/walk/right/3": {
+    "actor.hero_axe_mail/walk/right/3": {
       "atlas": "actors",
       "index": 149,
       "anchor": [
@@ -1263,7 +1263,7 @@
         29
       ]
     },
-    "actor.hero_spear/idle/right/0": {
+    "actor.hero_axe_mail/idle/right/0": {
       "atlas": "actors",
       "index": 150,
       "anchor": [
@@ -1271,7 +1271,7 @@
         29
       ]
     },
-    "actor.hero_spear/idle/right/1": {
+    "actor.hero_axe_mail/idle/right/1": {
       "atlas": "actors",
       "index": 151,
       "anchor": [
@@ -1279,7 +1279,7 @@
         29
       ]
     },
-    "actor.hero_spear/gather/right/0": {
+    "actor.hero_axe_mail/gather/right/0": {
       "atlas": "actors",
       "index": 152,
       "anchor": [
@@ -1287,7 +1287,7 @@
         29
       ]
     },
-    "actor.hero_spear/gather/right/1": {
+    "actor.hero_axe_mail/gather/right/1": {
       "atlas": "actors",
       "index": 153,
       "anchor": [
@@ -1295,7 +1295,7 @@
         29
       ]
     },
-    "actor.hero_spear/gather/right/2": {
+    "actor.hero_axe_mail/gather/right/2": {
       "atlas": "actors",
       "index": 154,
       "anchor": [
@@ -1303,7 +1303,7 @@
         29
       ]
     },
-    "actor.hero_spear/slash/right/0": {
+    "actor.hero_axe_mail/slash/right/0": {
       "atlas": "actors",
       "index": 155,
       "anchor": [
@@ -1311,7 +1311,7 @@
         29
       ]
     },
-    "actor.hero_spear/slash/right/1": {
+    "actor.hero_axe_mail/slash/right/1": {
       "atlas": "actors",
       "index": 156,
       "anchor": [
@@ -1319,7 +1319,7 @@
         29
       ]
     },
-    "actor.hero_spear/slash/right/2": {
+    "actor.hero_axe_mail/slash/right/2": {
       "atlas": "actors",
       "index": 157,
       "anchor": [
@@ -1327,7 +1327,7 @@
         29
       ]
     },
-    "actor.hero_spear/slash/right/3": {
+    "actor.hero_axe_mail/slash/right/3": {
       "atlas": "actors",
       "index": 158,
       "anchor": [
@@ -1335,7 +1335,7 @@
         29
       ]
     },
-    "actor.hero_spear/walk/up/0": {
+    "actor.hero_axe_mail/walk/up/0": {
       "atlas": "actors",
       "index": 159,
       "anchor": [
@@ -1343,7 +1343,7 @@
         29
       ]
     },
-    "actor.hero_spear/walk/up/1": {
+    "actor.hero_axe_mail/walk/up/1": {
       "atlas": "actors",
       "index": 160,
       "anchor": [
@@ -1351,7 +1351,7 @@
         29
       ]
     },
-    "actor.hero_spear/walk/up/2": {
+    "actor.hero_axe_mail/walk/up/2": {
       "atlas": "actors",
       "index": 161,
       "anchor": [
@@ -1359,7 +1359,7 @@
         29
       ]
     },
-    "actor.hero_spear/walk/up/3": {
+    "actor.hero_axe_mail/walk/up/3": {
       "atlas": "actors",
       "index": 162,
       "anchor": [
@@ -1367,7 +1367,7 @@
         29
       ]
     },
-    "actor.hero_spear/idle/up/0": {
+    "actor.hero_axe_mail/idle/up/0": {
       "atlas": "actors",
       "index": 163,
       "anchor": [
@@ -1375,7 +1375,7 @@
         29
       ]
     },
-    "actor.hero_spear/idle/up/1": {
+    "actor.hero_axe_mail/idle/up/1": {
       "atlas": "actors",
       "index": 164,
       "anchor": [
@@ -1383,7 +1383,7 @@
         29
       ]
     },
-    "actor.hero_spear/gather/up/0": {
+    "actor.hero_axe_mail/gather/up/0": {
       "atlas": "actors",
       "index": 165,
       "anchor": [
@@ -1391,7 +1391,7 @@
         29
       ]
     },
-    "actor.hero_spear/gather/up/1": {
+    "actor.hero_axe_mail/gather/up/1": {
       "atlas": "actors",
       "index": 166,
       "anchor": [
@@ -1399,7 +1399,7 @@
         29
       ]
     },
-    "actor.hero_spear/gather/up/2": {
+    "actor.hero_axe_mail/gather/up/2": {
       "atlas": "actors",
       "index": 167,
       "anchor": [
@@ -1407,7 +1407,7 @@
         29
       ]
     },
-    "actor.hero_spear/slash/up/0": {
+    "actor.hero_axe_mail/slash/up/0": {
       "atlas": "actors",
       "index": 168,
       "anchor": [
@@ -1415,7 +1415,7 @@
         29
       ]
     },
-    "actor.hero_spear/slash/up/1": {
+    "actor.hero_axe_mail/slash/up/1": {
       "atlas": "actors",
       "index": 169,
       "anchor": [
@@ -1423,7 +1423,7 @@
         29
       ]
     },
-    "actor.hero_spear/slash/up/2": {
+    "actor.hero_axe_mail/slash/up/2": {
       "atlas": "actors",
       "index": 170,
       "anchor": [
@@ -1431,7 +1431,7 @@
         29
       ]
     },
-    "actor.hero_spear/slash/up/3": {
+    "actor.hero_axe_mail/slash/up/3": {
       "atlas": "actors",
       "index": 171,
       "anchor": [
@@ -1439,7 +1439,7 @@
         29
       ]
     },
-    "actor.hero_sword/walk/down/0": {
+    "actor.hero_mail/walk/down/0": {
       "atlas": "actors",
       "index": 172,
       "anchor": [
@@ -1447,7 +1447,7 @@
         29
       ]
     },
-    "actor.hero_sword/walk/down/1": {
+    "actor.hero_mail/walk/down/1": {
       "atlas": "actors",
       "index": 173,
       "anchor": [
@@ -1455,7 +1455,7 @@
         29
       ]
     },
-    "actor.hero_sword/walk/down/2": {
+    "actor.hero_mail/walk/down/2": {
       "atlas": "actors",
       "index": 174,
       "anchor": [
@@ -1463,7 +1463,7 @@
         29
       ]
     },
-    "actor.hero_sword/walk/down/3": {
+    "actor.hero_mail/walk/down/3": {
       "atlas": "actors",
       "index": 175,
       "anchor": [
@@ -1471,7 +1471,7 @@
         29
       ]
     },
-    "actor.hero_sword/idle/down/0": {
+    "actor.hero_mail/idle/down/0": {
       "atlas": "actors",
       "index": 176,
       "anchor": [
@@ -1479,7 +1479,7 @@
         29
       ]
     },
-    "actor.hero_sword/idle/down/1": {
+    "actor.hero_mail/idle/down/1": {
       "atlas": "actors",
       "index": 177,
       "anchor": [
@@ -1487,7 +1487,7 @@
         29
       ]
     },
-    "actor.hero_sword/gather/down/0": {
+    "actor.hero_mail/gather/down/0": {
       "atlas": "actors",
       "index": 178,
       "anchor": [
@@ -1495,7 +1495,7 @@
         29
       ]
     },
-    "actor.hero_sword/gather/down/1": {
+    "actor.hero_mail/gather/down/1": {
       "atlas": "actors",
       "index": 179,
       "anchor": [
@@ -1503,7 +1503,7 @@
         29
       ]
     },
-    "actor.hero_sword/gather/down/2": {
+    "actor.hero_mail/gather/down/2": {
       "atlas": "actors",
       "index": 180,
       "anchor": [
@@ -1511,7 +1511,7 @@
         29
       ]
     },
-    "actor.hero_sword/slash/down/0": {
+    "actor.hero_mail/walk/left/0": {
       "atlas": "actors",
       "index": 181,
       "anchor": [
@@ -1519,7 +1519,7 @@
         29
       ]
     },
-    "actor.hero_sword/slash/down/1": {
+    "actor.hero_mail/walk/left/1": {
       "atlas": "actors",
       "index": 182,
       "anchor": [
@@ -1527,7 +1527,7 @@
         29
       ]
     },
-    "actor.hero_sword/slash/down/2": {
+    "actor.hero_mail/walk/left/2": {
       "atlas": "actors",
       "index": 183,
       "anchor": [
@@ -1535,7 +1535,7 @@
         29
       ]
     },
-    "actor.hero_sword/slash/down/3": {
+    "actor.hero_mail/walk/left/3": {
       "atlas": "actors",
       "index": 184,
       "anchor": [
@@ -1543,7 +1543,7 @@
         29
       ]
     },
-    "actor.hero_sword/walk/left/0": {
+    "actor.hero_mail/idle/left/0": {
       "atlas": "actors",
       "index": 185,
       "anchor": [
@@ -1551,7 +1551,7 @@
         29
       ]
     },
-    "actor.hero_sword/walk/left/1": {
+    "actor.hero_mail/idle/left/1": {
       "atlas": "actors",
       "index": 186,
       "anchor": [
@@ -1559,7 +1559,7 @@
         29
       ]
     },
-    "actor.hero_sword/walk/left/2": {
+    "actor.hero_mail/gather/left/0": {
       "atlas": "actors",
       "index": 187,
       "anchor": [
@@ -1567,7 +1567,7 @@
         29
       ]
     },
-    "actor.hero_sword/walk/left/3": {
+    "actor.hero_mail/gather/left/1": {
       "atlas": "actors",
       "index": 188,
       "anchor": [
@@ -1575,7 +1575,7 @@
         29
       ]
     },
-    "actor.hero_sword/idle/left/0": {
+    "actor.hero_mail/gather/left/2": {
       "atlas": "actors",
       "index": 189,
       "anchor": [
@@ -1583,7 +1583,7 @@
         29
       ]
     },
-    "actor.hero_sword/idle/left/1": {
+    "actor.hero_mail/walk/right/0": {
       "atlas": "actors",
       "index": 190,
       "anchor": [
@@ -1591,7 +1591,7 @@
         29
       ]
     },
-    "actor.hero_sword/gather/left/0": {
+    "actor.hero_mail/walk/right/1": {
       "atlas": "actors",
       "index": 191,
       "anchor": [
@@ -1599,7 +1599,7 @@
         29
       ]
     },
-    "actor.hero_sword/gather/left/1": {
+    "actor.hero_mail/walk/right/2": {
       "atlas": "actors",
       "index": 192,
       "anchor": [
@@ -1607,7 +1607,7 @@
         29
       ]
     },
-    "actor.hero_sword/gather/left/2": {
+    "actor.hero_mail/walk/right/3": {
       "atlas": "actors",
       "index": 193,
       "anchor": [
@@ -1615,7 +1615,7 @@
         29
       ]
     },
-    "actor.hero_sword/slash/left/0": {
+    "actor.hero_mail/idle/right/0": {
       "atlas": "actors",
       "index": 194,
       "anchor": [
@@ -1623,7 +1623,7 @@
         29
       ]
     },
-    "actor.hero_sword/slash/left/1": {
+    "actor.hero_mail/idle/right/1": {
       "atlas": "actors",
       "index": 195,
       "anchor": [
@@ -1631,7 +1631,7 @@
         29
       ]
     },
-    "actor.hero_sword/slash/left/2": {
+    "actor.hero_mail/gather/right/0": {
       "atlas": "actors",
       "index": 196,
       "anchor": [
@@ -1639,7 +1639,7 @@
         29
       ]
     },
-    "actor.hero_sword/slash/left/3": {
+    "actor.hero_mail/gather/right/1": {
       "atlas": "actors",
       "index": 197,
       "anchor": [
@@ -1647,7 +1647,7 @@
         29
       ]
     },
-    "actor.hero_sword/walk/right/0": {
+    "actor.hero_mail/gather/right/2": {
       "atlas": "actors",
       "index": 198,
       "anchor": [
@@ -1655,7 +1655,7 @@
         29
       ]
     },
-    "actor.hero_sword/walk/right/1": {
+    "actor.hero_mail/walk/up/0": {
       "atlas": "actors",
       "index": 199,
       "anchor": [
@@ -1663,7 +1663,7 @@
         29
       ]
     },
-    "actor.hero_sword/walk/right/2": {
+    "actor.hero_mail/walk/up/1": {
       "atlas": "actors",
       "index": 200,
       "anchor": [
@@ -1671,7 +1671,7 @@
         29
       ]
     },
-    "actor.hero_sword/walk/right/3": {
+    "actor.hero_mail/walk/up/2": {
       "atlas": "actors",
       "index": 201,
       "anchor": [
@@ -1679,7 +1679,7 @@
         29
       ]
     },
-    "actor.hero_sword/idle/right/0": {
+    "actor.hero_mail/walk/up/3": {
       "atlas": "actors",
       "index": 202,
       "anchor": [
@@ -1687,7 +1687,7 @@
         29
       ]
     },
-    "actor.hero_sword/idle/right/1": {
+    "actor.hero_mail/idle/up/0": {
       "atlas": "actors",
       "index": 203,
       "anchor": [
@@ -1695,7 +1695,7 @@
         29
       ]
     },
-    "actor.hero_sword/gather/right/0": {
+    "actor.hero_mail/idle/up/1": {
       "atlas": "actors",
       "index": 204,
       "anchor": [
@@ -1703,7 +1703,7 @@
         29
       ]
     },
-    "actor.hero_sword/gather/right/1": {
+    "actor.hero_mail/gather/up/0": {
       "atlas": "actors",
       "index": 205,
       "anchor": [
@@ -1711,7 +1711,7 @@
         29
       ]
     },
-    "actor.hero_sword/gather/right/2": {
+    "actor.hero_mail/gather/up/1": {
       "atlas": "actors",
       "index": 206,
       "anchor": [
@@ -1719,7 +1719,7 @@
         29
       ]
     },
-    "actor.hero_sword/slash/right/0": {
+    "actor.hero_mail/gather/up/2": {
       "atlas": "actors",
       "index": 207,
       "anchor": [
@@ -1727,7 +1727,7 @@
         29
       ]
     },
-    "actor.hero_sword/slash/right/1": {
+    "actor.hero_spear/walk/down/0": {
       "atlas": "actors",
       "index": 208,
       "anchor": [
@@ -1735,7 +1735,7 @@
         29
       ]
     },
-    "actor.hero_sword/slash/right/2": {
+    "actor.hero_spear/walk/down/1": {
       "atlas": "actors",
       "index": 209,
       "anchor": [
@@ -1743,7 +1743,7 @@
         29
       ]
     },
-    "actor.hero_sword/slash/right/3": {
+    "actor.hero_spear/walk/down/2": {
       "atlas": "actors",
       "index": 210,
       "anchor": [
@@ -1751,7 +1751,7 @@
         29
       ]
     },
-    "actor.hero_sword/walk/up/0": {
+    "actor.hero_spear/walk/down/3": {
       "atlas": "actors",
       "index": 211,
       "anchor": [
@@ -1759,7 +1759,7 @@
         29
       ]
     },
-    "actor.hero_sword/walk/up/1": {
+    "actor.hero_spear/idle/down/0": {
       "atlas": "actors",
       "index": 212,
       "anchor": [
@@ -1767,7 +1767,7 @@
         29
       ]
     },
-    "actor.hero_sword/walk/up/2": {
+    "actor.hero_spear/idle/down/1": {
       "atlas": "actors",
       "index": 213,
       "anchor": [
@@ -1775,7 +1775,7 @@
         29
       ]
     },
-    "actor.hero_sword/walk/up/3": {
+    "actor.hero_spear/gather/down/0": {
       "atlas": "actors",
       "index": 214,
       "anchor": [
@@ -1783,7 +1783,7 @@
         29
       ]
     },
-    "actor.hero_sword/idle/up/0": {
+    "actor.hero_spear/gather/down/1": {
       "atlas": "actors",
       "index": 215,
       "anchor": [
@@ -1791,7 +1791,7 @@
         29
       ]
     },
-    "actor.hero_sword/idle/up/1": {
+    "actor.hero_spear/gather/down/2": {
       "atlas": "actors",
       "index": 216,
       "anchor": [
@@ -1799,7 +1799,7 @@
         29
       ]
     },
-    "actor.hero_sword/gather/up/0": {
+    "actor.hero_spear/slash/down/0": {
       "atlas": "actors",
       "index": 217,
       "anchor": [
@@ -1807,7 +1807,7 @@
         29
       ]
     },
-    "actor.hero_sword/gather/up/1": {
+    "actor.hero_spear/slash/down/1": {
       "atlas": "actors",
       "index": 218,
       "anchor": [
@@ -1815,7 +1815,7 @@
         29
       ]
     },
-    "actor.hero_sword/gather/up/2": {
+    "actor.hero_spear/slash/down/2": {
       "atlas": "actors",
       "index": 219,
       "anchor": [
@@ -1823,7 +1823,7 @@
         29
       ]
     },
-    "actor.hero_sword/slash/up/0": {
+    "actor.hero_spear/slash/down/3": {
       "atlas": "actors",
       "index": 220,
       "anchor": [
@@ -1831,7 +1831,7 @@
         29
       ]
     },
-    "actor.hero_sword/slash/up/1": {
+    "actor.hero_spear/walk/left/0": {
       "atlas": "actors",
       "index": 221,
       "anchor": [
@@ -1839,7 +1839,7 @@
         29
       ]
     },
-    "actor.hero_sword/slash/up/2": {
+    "actor.hero_spear/walk/left/1": {
       "atlas": "actors",
       "index": 222,
       "anchor": [
@@ -1847,7 +1847,7 @@
         29
       ]
     },
-    "actor.hero_sword/slash/up/3": {
+    "actor.hero_spear/walk/left/2": {
       "atlas": "actors",
       "index": 223,
       "anchor": [
@@ -1855,7 +1855,7 @@
         29
       ]
     },
-    "actor.sheep/walk/down/0": {
+    "actor.hero_spear/walk/left/3": {
       "atlas": "actors",
       "index": 224,
       "anchor": [
@@ -1863,7 +1863,7 @@
         29
       ]
     },
-    "actor.sheep/walk/down/1": {
+    "actor.hero_spear/idle/left/0": {
       "atlas": "actors",
       "index": 225,
       "anchor": [
@@ -1871,7 +1871,7 @@
         29
       ]
     },
-    "actor.sheep/walk/down/2": {
+    "actor.hero_spear/idle/left/1": {
       "atlas": "actors",
       "index": 226,
       "anchor": [
@@ -1879,7 +1879,7 @@
         29
       ]
     },
-    "actor.sheep/walk/down/3": {
+    "actor.hero_spear/gather/left/0": {
       "atlas": "actors",
       "index": 227,
       "anchor": [
@@ -1887,7 +1887,7 @@
         29
       ]
     },
-    "actor.sheep/idle/down/0": {
+    "actor.hero_spear/gather/left/1": {
       "atlas": "actors",
       "index": 228,
       "anchor": [
@@ -1895,7 +1895,7 @@
         29
       ]
     },
-    "actor.sheep/idle/down/1": {
+    "actor.hero_spear/gather/left/2": {
       "atlas": "actors",
       "index": 229,
       "anchor": [
@@ -1903,7 +1903,7 @@
         29
       ]
     },
-    "actor.sheep/graze/down/0": {
+    "actor.hero_spear/slash/left/0": {
       "atlas": "actors",
       "index": 230,
       "anchor": [
@@ -1911,7 +1911,7 @@
         29
       ]
     },
-    "actor.sheep/graze/down/1": {
+    "actor.hero_spear/slash/left/1": {
       "atlas": "actors",
       "index": 231,
       "anchor": [
@@ -1919,7 +1919,7 @@
         29
       ]
     },
-    "actor.sheep/walk/left/0": {
+    "actor.hero_spear/slash/left/2": {
       "atlas": "actors",
       "index": 232,
       "anchor": [
@@ -1927,7 +1927,7 @@
         29
       ]
     },
-    "actor.sheep/walk/left/1": {
+    "actor.hero_spear/slash/left/3": {
       "atlas": "actors",
       "index": 233,
       "anchor": [
@@ -1935,7 +1935,7 @@
         29
       ]
     },
-    "actor.sheep/walk/left/2": {
+    "actor.hero_spear/walk/right/0": {
       "atlas": "actors",
       "index": 234,
       "anchor": [
@@ -1943,7 +1943,7 @@
         29
       ]
     },
-    "actor.sheep/walk/left/3": {
+    "actor.hero_spear/walk/right/1": {
       "atlas": "actors",
       "index": 235,
       "anchor": [
@@ -1951,7 +1951,7 @@
         29
       ]
     },
-    "actor.sheep/idle/left/0": {
+    "actor.hero_spear/walk/right/2": {
       "atlas": "actors",
       "index": 236,
       "anchor": [
@@ -1959,7 +1959,7 @@
         29
       ]
     },
-    "actor.sheep/idle/left/1": {
+    "actor.hero_spear/walk/right/3": {
       "atlas": "actors",
       "index": 237,
       "anchor": [
@@ -1967,7 +1967,7 @@
         29
       ]
     },
-    "actor.sheep/graze/left/0": {
+    "actor.hero_spear/idle/right/0": {
       "atlas": "actors",
       "index": 238,
       "anchor": [
@@ -1975,7 +1975,7 @@
         29
       ]
     },
-    "actor.sheep/graze/left/1": {
+    "actor.hero_spear/idle/right/1": {
       "atlas": "actors",
       "index": 239,
       "anchor": [
@@ -1983,7 +1983,7 @@
         29
       ]
     },
-    "actor.sheep/walk/right/0": {
+    "actor.hero_spear/gather/right/0": {
       "atlas": "actors",
       "index": 240,
       "anchor": [
@@ -1991,7 +1991,7 @@
         29
       ]
     },
-    "actor.sheep/walk/right/1": {
+    "actor.hero_spear/gather/right/1": {
       "atlas": "actors",
       "index": 241,
       "anchor": [
@@ -1999,7 +1999,7 @@
         29
       ]
     },
-    "actor.sheep/walk/right/2": {
+    "actor.hero_spear/gather/right/2": {
       "atlas": "actors",
       "index": 242,
       "anchor": [
@@ -2007,7 +2007,7 @@
         29
       ]
     },
-    "actor.sheep/walk/right/3": {
+    "actor.hero_spear/slash/right/0": {
       "atlas": "actors",
       "index": 243,
       "anchor": [
@@ -2015,7 +2015,7 @@
         29
       ]
     },
-    "actor.sheep/idle/right/0": {
+    "actor.hero_spear/slash/right/1": {
       "atlas": "actors",
       "index": 244,
       "anchor": [
@@ -2023,7 +2023,7 @@
         29
       ]
     },
-    "actor.sheep/idle/right/1": {
+    "actor.hero_spear/slash/right/2": {
       "atlas": "actors",
       "index": 245,
       "anchor": [
@@ -2031,7 +2031,7 @@
         29
       ]
     },
-    "actor.sheep/graze/right/0": {
+    "actor.hero_spear/slash/right/3": {
       "atlas": "actors",
       "index": 246,
       "anchor": [
@@ -2039,7 +2039,7 @@
         29
       ]
     },
-    "actor.sheep/graze/right/1": {
+    "actor.hero_spear/walk/up/0": {
       "atlas": "actors",
       "index": 247,
       "anchor": [
@@ -2047,7 +2047,7 @@
         29
       ]
     },
-    "actor.sheep/walk/up/0": {
+    "actor.hero_spear/walk/up/1": {
       "atlas": "actors",
       "index": 248,
       "anchor": [
@@ -2055,7 +2055,7 @@
         29
       ]
     },
-    "actor.sheep/walk/up/1": {
+    "actor.hero_spear/walk/up/2": {
       "atlas": "actors",
       "index": 249,
       "anchor": [
@@ -2063,7 +2063,7 @@
         29
       ]
     },
-    "actor.sheep/walk/up/2": {
+    "actor.hero_spear/walk/up/3": {
       "atlas": "actors",
       "index": 250,
       "anchor": [
@@ -2071,7 +2071,7 @@
         29
       ]
     },
-    "actor.sheep/walk/up/3": {
+    "actor.hero_spear/idle/up/0": {
       "atlas": "actors",
       "index": 251,
       "anchor": [
@@ -2079,7 +2079,7 @@
         29
       ]
     },
-    "actor.sheep/idle/up/0": {
+    "actor.hero_spear/idle/up/1": {
       "atlas": "actors",
       "index": 252,
       "anchor": [
@@ -2087,7 +2087,7 @@
         29
       ]
     },
-    "actor.sheep/idle/up/1": {
+    "actor.hero_spear/gather/up/0": {
       "atlas": "actors",
       "index": 253,
       "anchor": [
@@ -2095,7 +2095,7 @@
         29
       ]
     },
-    "actor.sheep/graze/up/0": {
+    "actor.hero_spear/gather/up/1": {
       "atlas": "actors",
       "index": 254,
       "anchor": [
@@ -2103,7 +2103,7 @@
         29
       ]
     },
-    "actor.sheep/graze/up/1": {
+    "actor.hero_spear/gather/up/2": {
       "atlas": "actors",
       "index": 255,
       "anchor": [
@@ -2111,7 +2111,7 @@
         29
       ]
     },
-    "actor.smith/walk/down/0": {
+    "actor.hero_spear/slash/up/0": {
       "atlas": "actors",
       "index": 256,
       "anchor": [
@@ -2119,7 +2119,7 @@
         29
       ]
     },
-    "actor.smith/walk/down/1": {
+    "actor.hero_spear/slash/up/1": {
       "atlas": "actors",
       "index": 257,
       "anchor": [
@@ -2127,7 +2127,7 @@
         29
       ]
     },
-    "actor.smith/walk/down/2": {
+    "actor.hero_spear/slash/up/2": {
       "atlas": "actors",
       "index": 258,
       "anchor": [
@@ -2135,7 +2135,7 @@
         29
       ]
     },
-    "actor.smith/walk/down/3": {
+    "actor.hero_spear/slash/up/3": {
       "atlas": "actors",
       "index": 259,
       "anchor": [
@@ -2143,7 +2143,7 @@
         29
       ]
     },
-    "actor.smith/idle/down/0": {
+    "actor.hero_spear_mail/walk/down/0": {
       "atlas": "actors",
       "index": 260,
       "anchor": [
@@ -2151,7 +2151,7 @@
         29
       ]
     },
-    "actor.smith/idle/down/1": {
+    "actor.hero_spear_mail/walk/down/1": {
       "atlas": "actors",
       "index": 261,
       "anchor": [
@@ -2159,7 +2159,7 @@
         29
       ]
     },
-    "actor.smith/walk/left/0": {
+    "actor.hero_spear_mail/walk/down/2": {
       "atlas": "actors",
       "index": 262,
       "anchor": [
@@ -2167,7 +2167,7 @@
         29
       ]
     },
-    "actor.smith/walk/left/1": {
+    "actor.hero_spear_mail/walk/down/3": {
       "atlas": "actors",
       "index": 263,
       "anchor": [
@@ -2175,7 +2175,7 @@
         29
       ]
     },
-    "actor.smith/walk/left/2": {
+    "actor.hero_spear_mail/idle/down/0": {
       "atlas": "actors",
       "index": 264,
       "anchor": [
@@ -2183,7 +2183,7 @@
         29
       ]
     },
-    "actor.smith/walk/left/3": {
+    "actor.hero_spear_mail/idle/down/1": {
       "atlas": "actors",
       "index": 265,
       "anchor": [
@@ -2191,7 +2191,7 @@
         29
       ]
     },
-    "actor.smith/idle/left/0": {
+    "actor.hero_spear_mail/gather/down/0": {
       "atlas": "actors",
       "index": 266,
       "anchor": [
@@ -2199,7 +2199,7 @@
         29
       ]
     },
-    "actor.smith/idle/left/1": {
+    "actor.hero_spear_mail/gather/down/1": {
       "atlas": "actors",
       "index": 267,
       "anchor": [
@@ -2207,7 +2207,7 @@
         29
       ]
     },
-    "actor.smith/walk/right/0": {
+    "actor.hero_spear_mail/gather/down/2": {
       "atlas": "actors",
       "index": 268,
       "anchor": [
@@ -2215,7 +2215,7 @@
         29
       ]
     },
-    "actor.smith/walk/right/1": {
+    "actor.hero_spear_mail/slash/down/0": {
       "atlas": "actors",
       "index": 269,
       "anchor": [
@@ -2223,7 +2223,7 @@
         29
       ]
     },
-    "actor.smith/walk/right/2": {
+    "actor.hero_spear_mail/slash/down/1": {
       "atlas": "actors",
       "index": 270,
       "anchor": [
@@ -2231,7 +2231,7 @@
         29
       ]
     },
-    "actor.smith/walk/right/3": {
+    "actor.hero_spear_mail/slash/down/2": {
       "atlas": "actors",
       "index": 271,
       "anchor": [
@@ -2239,7 +2239,7 @@
         29
       ]
     },
-    "actor.smith/idle/right/0": {
+    "actor.hero_spear_mail/slash/down/3": {
       "atlas": "actors",
       "index": 272,
       "anchor": [
@@ -2247,7 +2247,7 @@
         29
       ]
     },
-    "actor.smith/idle/right/1": {
+    "actor.hero_spear_mail/walk/left/0": {
       "atlas": "actors",
       "index": 273,
       "anchor": [
@@ -2255,7 +2255,7 @@
         29
       ]
     },
-    "actor.smith/walk/up/0": {
+    "actor.hero_spear_mail/walk/left/1": {
       "atlas": "actors",
       "index": 274,
       "anchor": [
@@ -2263,7 +2263,7 @@
         29
       ]
     },
-    "actor.smith/walk/up/1": {
+    "actor.hero_spear_mail/walk/left/2": {
       "atlas": "actors",
       "index": 275,
       "anchor": [
@@ -2271,7 +2271,7 @@
         29
       ]
     },
-    "actor.smith/walk/up/2": {
+    "actor.hero_spear_mail/walk/left/3": {
       "atlas": "actors",
       "index": 276,
       "anchor": [
@@ -2279,7 +2279,7 @@
         29
       ]
     },
-    "actor.smith/walk/up/3": {
+    "actor.hero_spear_mail/idle/left/0": {
       "atlas": "actors",
       "index": 277,
       "anchor": [
@@ -2287,7 +2287,7 @@
         29
       ]
     },
-    "actor.smith/idle/up/0": {
+    "actor.hero_spear_mail/idle/left/1": {
       "atlas": "actors",
       "index": 278,
       "anchor": [
@@ -2295,9 +2295,1545 @@
         29
       ]
     },
-    "actor.smith/idle/up/1": {
+    "actor.hero_spear_mail/gather/left/0": {
       "atlas": "actors",
       "index": 279,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_spear_mail/gather/left/1": {
+      "atlas": "actors",
+      "index": 280,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_spear_mail/gather/left/2": {
+      "atlas": "actors",
+      "index": 281,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_spear_mail/slash/left/0": {
+      "atlas": "actors",
+      "index": 282,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_spear_mail/slash/left/1": {
+      "atlas": "actors",
+      "index": 283,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_spear_mail/slash/left/2": {
+      "atlas": "actors",
+      "index": 284,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_spear_mail/slash/left/3": {
+      "atlas": "actors",
+      "index": 285,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_spear_mail/walk/right/0": {
+      "atlas": "actors",
+      "index": 286,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_spear_mail/walk/right/1": {
+      "atlas": "actors",
+      "index": 287,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_spear_mail/walk/right/2": {
+      "atlas": "actors",
+      "index": 288,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_spear_mail/walk/right/3": {
+      "atlas": "actors",
+      "index": 289,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_spear_mail/idle/right/0": {
+      "atlas": "actors",
+      "index": 290,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_spear_mail/idle/right/1": {
+      "atlas": "actors",
+      "index": 291,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_spear_mail/gather/right/0": {
+      "atlas": "actors",
+      "index": 292,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_spear_mail/gather/right/1": {
+      "atlas": "actors",
+      "index": 293,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_spear_mail/gather/right/2": {
+      "atlas": "actors",
+      "index": 294,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_spear_mail/slash/right/0": {
+      "atlas": "actors",
+      "index": 295,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_spear_mail/slash/right/1": {
+      "atlas": "actors",
+      "index": 296,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_spear_mail/slash/right/2": {
+      "atlas": "actors",
+      "index": 297,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_spear_mail/slash/right/3": {
+      "atlas": "actors",
+      "index": 298,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_spear_mail/walk/up/0": {
+      "atlas": "actors",
+      "index": 299,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_spear_mail/walk/up/1": {
+      "atlas": "actors",
+      "index": 300,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_spear_mail/walk/up/2": {
+      "atlas": "actors",
+      "index": 301,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_spear_mail/walk/up/3": {
+      "atlas": "actors",
+      "index": 302,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_spear_mail/idle/up/0": {
+      "atlas": "actors",
+      "index": 303,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_spear_mail/idle/up/1": {
+      "atlas": "actors",
+      "index": 304,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_spear_mail/gather/up/0": {
+      "atlas": "actors",
+      "index": 305,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_spear_mail/gather/up/1": {
+      "atlas": "actors",
+      "index": 306,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_spear_mail/gather/up/2": {
+      "atlas": "actors",
+      "index": 307,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_spear_mail/slash/up/0": {
+      "atlas": "actors",
+      "index": 308,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_spear_mail/slash/up/1": {
+      "atlas": "actors",
+      "index": 309,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_spear_mail/slash/up/2": {
+      "atlas": "actors",
+      "index": 310,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_spear_mail/slash/up/3": {
+      "atlas": "actors",
+      "index": 311,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_sword/walk/down/0": {
+      "atlas": "actors",
+      "index": 312,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_sword/walk/down/1": {
+      "atlas": "actors",
+      "index": 313,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_sword/walk/down/2": {
+      "atlas": "actors",
+      "index": 314,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_sword/walk/down/3": {
+      "atlas": "actors",
+      "index": 315,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_sword/idle/down/0": {
+      "atlas": "actors",
+      "index": 316,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_sword/idle/down/1": {
+      "atlas": "actors",
+      "index": 317,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_sword/gather/down/0": {
+      "atlas": "actors",
+      "index": 318,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_sword/gather/down/1": {
+      "atlas": "actors",
+      "index": 319,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_sword/gather/down/2": {
+      "atlas": "actors",
+      "index": 320,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_sword/slash/down/0": {
+      "atlas": "actors",
+      "index": 321,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_sword/slash/down/1": {
+      "atlas": "actors",
+      "index": 322,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_sword/slash/down/2": {
+      "atlas": "actors",
+      "index": 323,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_sword/slash/down/3": {
+      "atlas": "actors",
+      "index": 324,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_sword/walk/left/0": {
+      "atlas": "actors",
+      "index": 325,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_sword/walk/left/1": {
+      "atlas": "actors",
+      "index": 326,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_sword/walk/left/2": {
+      "atlas": "actors",
+      "index": 327,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_sword/walk/left/3": {
+      "atlas": "actors",
+      "index": 328,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_sword/idle/left/0": {
+      "atlas": "actors",
+      "index": 329,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_sword/idle/left/1": {
+      "atlas": "actors",
+      "index": 330,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_sword/gather/left/0": {
+      "atlas": "actors",
+      "index": 331,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_sword/gather/left/1": {
+      "atlas": "actors",
+      "index": 332,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_sword/gather/left/2": {
+      "atlas": "actors",
+      "index": 333,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_sword/slash/left/0": {
+      "atlas": "actors",
+      "index": 334,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_sword/slash/left/1": {
+      "atlas": "actors",
+      "index": 335,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_sword/slash/left/2": {
+      "atlas": "actors",
+      "index": 336,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_sword/slash/left/3": {
+      "atlas": "actors",
+      "index": 337,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_sword/walk/right/0": {
+      "atlas": "actors",
+      "index": 338,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_sword/walk/right/1": {
+      "atlas": "actors",
+      "index": 339,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_sword/walk/right/2": {
+      "atlas": "actors",
+      "index": 340,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_sword/walk/right/3": {
+      "atlas": "actors",
+      "index": 341,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_sword/idle/right/0": {
+      "atlas": "actors",
+      "index": 342,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_sword/idle/right/1": {
+      "atlas": "actors",
+      "index": 343,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_sword/gather/right/0": {
+      "atlas": "actors",
+      "index": 344,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_sword/gather/right/1": {
+      "atlas": "actors",
+      "index": 345,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_sword/gather/right/2": {
+      "atlas": "actors",
+      "index": 346,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_sword/slash/right/0": {
+      "atlas": "actors",
+      "index": 347,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_sword/slash/right/1": {
+      "atlas": "actors",
+      "index": 348,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_sword/slash/right/2": {
+      "atlas": "actors",
+      "index": 349,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_sword/slash/right/3": {
+      "atlas": "actors",
+      "index": 350,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_sword/walk/up/0": {
+      "atlas": "actors",
+      "index": 351,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_sword/walk/up/1": {
+      "atlas": "actors",
+      "index": 352,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_sword/walk/up/2": {
+      "atlas": "actors",
+      "index": 353,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_sword/walk/up/3": {
+      "atlas": "actors",
+      "index": 354,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_sword/idle/up/0": {
+      "atlas": "actors",
+      "index": 355,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_sword/idle/up/1": {
+      "atlas": "actors",
+      "index": 356,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_sword/gather/up/0": {
+      "atlas": "actors",
+      "index": 357,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_sword/gather/up/1": {
+      "atlas": "actors",
+      "index": 358,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_sword/gather/up/2": {
+      "atlas": "actors",
+      "index": 359,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_sword/slash/up/0": {
+      "atlas": "actors",
+      "index": 360,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_sword/slash/up/1": {
+      "atlas": "actors",
+      "index": 361,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_sword/slash/up/2": {
+      "atlas": "actors",
+      "index": 362,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_sword/slash/up/3": {
+      "atlas": "actors",
+      "index": 363,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_sword_mail/walk/down/0": {
+      "atlas": "actors",
+      "index": 364,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_sword_mail/walk/down/1": {
+      "atlas": "actors",
+      "index": 365,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_sword_mail/walk/down/2": {
+      "atlas": "actors",
+      "index": 366,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_sword_mail/walk/down/3": {
+      "atlas": "actors",
+      "index": 367,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_sword_mail/idle/down/0": {
+      "atlas": "actors",
+      "index": 368,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_sword_mail/idle/down/1": {
+      "atlas": "actors",
+      "index": 369,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_sword_mail/gather/down/0": {
+      "atlas": "actors",
+      "index": 370,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_sword_mail/gather/down/1": {
+      "atlas": "actors",
+      "index": 371,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_sword_mail/gather/down/2": {
+      "atlas": "actors",
+      "index": 372,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_sword_mail/slash/down/0": {
+      "atlas": "actors",
+      "index": 373,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_sword_mail/slash/down/1": {
+      "atlas": "actors",
+      "index": 374,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_sword_mail/slash/down/2": {
+      "atlas": "actors",
+      "index": 375,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_sword_mail/slash/down/3": {
+      "atlas": "actors",
+      "index": 376,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_sword_mail/walk/left/0": {
+      "atlas": "actors",
+      "index": 377,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_sword_mail/walk/left/1": {
+      "atlas": "actors",
+      "index": 378,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_sword_mail/walk/left/2": {
+      "atlas": "actors",
+      "index": 379,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_sword_mail/walk/left/3": {
+      "atlas": "actors",
+      "index": 380,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_sword_mail/idle/left/0": {
+      "atlas": "actors",
+      "index": 381,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_sword_mail/idle/left/1": {
+      "atlas": "actors",
+      "index": 382,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_sword_mail/gather/left/0": {
+      "atlas": "actors",
+      "index": 383,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_sword_mail/gather/left/1": {
+      "atlas": "actors",
+      "index": 384,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_sword_mail/gather/left/2": {
+      "atlas": "actors",
+      "index": 385,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_sword_mail/slash/left/0": {
+      "atlas": "actors",
+      "index": 386,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_sword_mail/slash/left/1": {
+      "atlas": "actors",
+      "index": 387,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_sword_mail/slash/left/2": {
+      "atlas": "actors",
+      "index": 388,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_sword_mail/slash/left/3": {
+      "atlas": "actors",
+      "index": 389,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_sword_mail/walk/right/0": {
+      "atlas": "actors",
+      "index": 390,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_sword_mail/walk/right/1": {
+      "atlas": "actors",
+      "index": 391,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_sword_mail/walk/right/2": {
+      "atlas": "actors",
+      "index": 392,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_sword_mail/walk/right/3": {
+      "atlas": "actors",
+      "index": 393,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_sword_mail/idle/right/0": {
+      "atlas": "actors",
+      "index": 394,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_sword_mail/idle/right/1": {
+      "atlas": "actors",
+      "index": 395,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_sword_mail/gather/right/0": {
+      "atlas": "actors",
+      "index": 396,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_sword_mail/gather/right/1": {
+      "atlas": "actors",
+      "index": 397,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_sword_mail/gather/right/2": {
+      "atlas": "actors",
+      "index": 398,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_sword_mail/slash/right/0": {
+      "atlas": "actors",
+      "index": 399,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_sword_mail/slash/right/1": {
+      "atlas": "actors",
+      "index": 400,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_sword_mail/slash/right/2": {
+      "atlas": "actors",
+      "index": 401,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_sword_mail/slash/right/3": {
+      "atlas": "actors",
+      "index": 402,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_sword_mail/walk/up/0": {
+      "atlas": "actors",
+      "index": 403,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_sword_mail/walk/up/1": {
+      "atlas": "actors",
+      "index": 404,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_sword_mail/walk/up/2": {
+      "atlas": "actors",
+      "index": 405,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_sword_mail/walk/up/3": {
+      "atlas": "actors",
+      "index": 406,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_sword_mail/idle/up/0": {
+      "atlas": "actors",
+      "index": 407,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_sword_mail/idle/up/1": {
+      "atlas": "actors",
+      "index": 408,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_sword_mail/gather/up/0": {
+      "atlas": "actors",
+      "index": 409,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_sword_mail/gather/up/1": {
+      "atlas": "actors",
+      "index": 410,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_sword_mail/gather/up/2": {
+      "atlas": "actors",
+      "index": 411,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_sword_mail/slash/up/0": {
+      "atlas": "actors",
+      "index": 412,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_sword_mail/slash/up/1": {
+      "atlas": "actors",
+      "index": 413,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_sword_mail/slash/up/2": {
+      "atlas": "actors",
+      "index": 414,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.hero_sword_mail/slash/up/3": {
+      "atlas": "actors",
+      "index": 415,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.sheep/walk/down/0": {
+      "atlas": "actors",
+      "index": 416,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.sheep/walk/down/1": {
+      "atlas": "actors",
+      "index": 417,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.sheep/walk/down/2": {
+      "atlas": "actors",
+      "index": 418,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.sheep/walk/down/3": {
+      "atlas": "actors",
+      "index": 419,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.sheep/idle/down/0": {
+      "atlas": "actors",
+      "index": 420,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.sheep/idle/down/1": {
+      "atlas": "actors",
+      "index": 421,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.sheep/graze/down/0": {
+      "atlas": "actors",
+      "index": 422,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.sheep/graze/down/1": {
+      "atlas": "actors",
+      "index": 423,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.sheep/walk/left/0": {
+      "atlas": "actors",
+      "index": 424,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.sheep/walk/left/1": {
+      "atlas": "actors",
+      "index": 425,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.sheep/walk/left/2": {
+      "atlas": "actors",
+      "index": 426,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.sheep/walk/left/3": {
+      "atlas": "actors",
+      "index": 427,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.sheep/idle/left/0": {
+      "atlas": "actors",
+      "index": 428,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.sheep/idle/left/1": {
+      "atlas": "actors",
+      "index": 429,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.sheep/graze/left/0": {
+      "atlas": "actors",
+      "index": 430,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.sheep/graze/left/1": {
+      "atlas": "actors",
+      "index": 431,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.sheep/walk/right/0": {
+      "atlas": "actors",
+      "index": 432,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.sheep/walk/right/1": {
+      "atlas": "actors",
+      "index": 433,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.sheep/walk/right/2": {
+      "atlas": "actors",
+      "index": 434,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.sheep/walk/right/3": {
+      "atlas": "actors",
+      "index": 435,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.sheep/idle/right/0": {
+      "atlas": "actors",
+      "index": 436,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.sheep/idle/right/1": {
+      "atlas": "actors",
+      "index": 437,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.sheep/graze/right/0": {
+      "atlas": "actors",
+      "index": 438,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.sheep/graze/right/1": {
+      "atlas": "actors",
+      "index": 439,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.sheep/walk/up/0": {
+      "atlas": "actors",
+      "index": 440,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.sheep/walk/up/1": {
+      "atlas": "actors",
+      "index": 441,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.sheep/walk/up/2": {
+      "atlas": "actors",
+      "index": 442,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.sheep/walk/up/3": {
+      "atlas": "actors",
+      "index": 443,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.sheep/idle/up/0": {
+      "atlas": "actors",
+      "index": 444,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.sheep/idle/up/1": {
+      "atlas": "actors",
+      "index": 445,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.sheep/graze/up/0": {
+      "atlas": "actors",
+      "index": 446,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.sheep/graze/up/1": {
+      "atlas": "actors",
+      "index": 447,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.smith/walk/down/0": {
+      "atlas": "actors",
+      "index": 448,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.smith/walk/down/1": {
+      "atlas": "actors",
+      "index": 449,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.smith/walk/down/2": {
+      "atlas": "actors",
+      "index": 450,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.smith/walk/down/3": {
+      "atlas": "actors",
+      "index": 451,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.smith/idle/down/0": {
+      "atlas": "actors",
+      "index": 452,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.smith/idle/down/1": {
+      "atlas": "actors",
+      "index": 453,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.smith/walk/left/0": {
+      "atlas": "actors",
+      "index": 454,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.smith/walk/left/1": {
+      "atlas": "actors",
+      "index": 455,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.smith/walk/left/2": {
+      "atlas": "actors",
+      "index": 456,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.smith/walk/left/3": {
+      "atlas": "actors",
+      "index": 457,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.smith/idle/left/0": {
+      "atlas": "actors",
+      "index": 458,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.smith/idle/left/1": {
+      "atlas": "actors",
+      "index": 459,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.smith/walk/right/0": {
+      "atlas": "actors",
+      "index": 460,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.smith/walk/right/1": {
+      "atlas": "actors",
+      "index": 461,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.smith/walk/right/2": {
+      "atlas": "actors",
+      "index": 462,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.smith/walk/right/3": {
+      "atlas": "actors",
+      "index": 463,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.smith/idle/right/0": {
+      "atlas": "actors",
+      "index": 464,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.smith/idle/right/1": {
+      "atlas": "actors",
+      "index": 465,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.smith/walk/up/0": {
+      "atlas": "actors",
+      "index": 466,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.smith/walk/up/1": {
+      "atlas": "actors",
+      "index": 467,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.smith/walk/up/2": {
+      "atlas": "actors",
+      "index": 468,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.smith/walk/up/3": {
+      "atlas": "actors",
+      "index": 469,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.smith/idle/up/0": {
+      "atlas": "actors",
+      "index": 470,
+      "anchor": [
+        16,
+        29
+      ]
+    },
+    "actor.smith/idle/up/1": {
+      "atlas": "actors",
+      "index": 471,
       "anchor": [
         16,
         29
@@ -2706,6 +4242,14 @@
     "item.spear": {
       "atlas": "items",
       "index": 12,
+      "anchor": [
+        8,
+        14
+      ]
+    },
+    "item.mail": {
+      "atlas": "items",
+      "index": 13,
       "anchor": [
         8,
         14
@@ -3201,7 +4745,7 @@
       "ms": 90,
       "loop": false
     },
-    "actor.hero_spear/walk/down": {
+    "actor.hero_axe_mail/walk/down": {
       "atlas": "actors",
       "frames": [
         120,
@@ -3212,7 +4756,7 @@
       "ms": 120,
       "loop": true
     },
-    "actor.hero_spear/idle/down": {
+    "actor.hero_axe_mail/idle/down": {
       "atlas": "actors",
       "frames": [
         124,
@@ -3221,7 +4765,7 @@
       "ms": 500,
       "loop": true
     },
-    "actor.hero_spear/gather/down": {
+    "actor.hero_axe_mail/gather/down": {
       "atlas": "actors",
       "frames": [
         126,
@@ -3231,7 +4775,7 @@
       "ms": 140,
       "loop": false
     },
-    "actor.hero_spear/slash/down": {
+    "actor.hero_axe_mail/slash/down": {
       "atlas": "actors",
       "frames": [
         129,
@@ -3242,7 +4786,7 @@
       "ms": 90,
       "loop": false
     },
-    "actor.hero_spear/walk/left": {
+    "actor.hero_axe_mail/walk/left": {
       "atlas": "actors",
       "frames": [
         133,
@@ -3253,7 +4797,7 @@
       "ms": 120,
       "loop": true
     },
-    "actor.hero_spear/idle/left": {
+    "actor.hero_axe_mail/idle/left": {
       "atlas": "actors",
       "frames": [
         137,
@@ -3262,7 +4806,7 @@
       "ms": 500,
       "loop": true
     },
-    "actor.hero_spear/gather/left": {
+    "actor.hero_axe_mail/gather/left": {
       "atlas": "actors",
       "frames": [
         139,
@@ -3272,7 +4816,7 @@
       "ms": 140,
       "loop": false
     },
-    "actor.hero_spear/slash/left": {
+    "actor.hero_axe_mail/slash/left": {
       "atlas": "actors",
       "frames": [
         142,
@@ -3283,7 +4827,7 @@
       "ms": 90,
       "loop": false
     },
-    "actor.hero_spear/walk/right": {
+    "actor.hero_axe_mail/walk/right": {
       "atlas": "actors",
       "frames": [
         146,
@@ -3294,7 +4838,7 @@
       "ms": 120,
       "loop": true
     },
-    "actor.hero_spear/idle/right": {
+    "actor.hero_axe_mail/idle/right": {
       "atlas": "actors",
       "frames": [
         150,
@@ -3303,7 +4847,7 @@
       "ms": 500,
       "loop": true
     },
-    "actor.hero_spear/gather/right": {
+    "actor.hero_axe_mail/gather/right": {
       "atlas": "actors",
       "frames": [
         152,
@@ -3313,7 +4857,7 @@
       "ms": 140,
       "loop": false
     },
-    "actor.hero_spear/slash/right": {
+    "actor.hero_axe_mail/slash/right": {
       "atlas": "actors",
       "frames": [
         155,
@@ -3324,7 +4868,7 @@
       "ms": 90,
       "loop": false
     },
-    "actor.hero_spear/walk/up": {
+    "actor.hero_axe_mail/walk/up": {
       "atlas": "actors",
       "frames": [
         159,
@@ -3335,7 +4879,7 @@
       "ms": 120,
       "loop": true
     },
-    "actor.hero_spear/idle/up": {
+    "actor.hero_axe_mail/idle/up": {
       "atlas": "actors",
       "frames": [
         163,
@@ -3344,7 +4888,7 @@
       "ms": 500,
       "loop": true
     },
-    "actor.hero_spear/gather/up": {
+    "actor.hero_axe_mail/gather/up": {
       "atlas": "actors",
       "frames": [
         165,
@@ -3354,7 +4898,7 @@
       "ms": 140,
       "loop": false
     },
-    "actor.hero_spear/slash/up": {
+    "actor.hero_axe_mail/slash/up": {
       "atlas": "actors",
       "frames": [
         168,
@@ -3365,7 +4909,7 @@
       "ms": 90,
       "loop": false
     },
-    "actor.hero_sword/walk/down": {
+    "actor.hero_mail/walk/down": {
       "atlas": "actors",
       "frames": [
         172,
@@ -3376,7 +4920,7 @@
       "ms": 120,
       "loop": true
     },
-    "actor.hero_sword/idle/down": {
+    "actor.hero_mail/idle/down": {
       "atlas": "actors",
       "frames": [
         176,
@@ -3385,7 +4929,7 @@
       "ms": 500,
       "loop": true
     },
-    "actor.hero_sword/gather/down": {
+    "actor.hero_mail/gather/down": {
       "atlas": "actors",
       "frames": [
         178,
@@ -3395,7 +4939,7 @@
       "ms": 140,
       "loop": false
     },
-    "actor.hero_sword/slash/down": {
+    "actor.hero_mail/walk/left": {
       "atlas": "actors",
       "frames": [
         181,
@@ -3403,249 +4947,242 @@
         183,
         184
       ],
-      "ms": 90,
-      "loop": false
-    },
-    "actor.hero_sword/walk/left": {
-      "atlas": "actors",
-      "frames": [
-        185,
-        186,
-        187,
-        188
-      ],
       "ms": 120,
       "loop": true
     },
-    "actor.hero_sword/idle/left": {
+    "actor.hero_mail/idle/left": {
       "atlas": "actors",
       "frames": [
-        189,
-        190
+        185,
+        186
       ],
       "ms": 500,
       "loop": true
     },
-    "actor.hero_sword/gather/left": {
+    "actor.hero_mail/gather/left": {
       "atlas": "actors",
       "frames": [
+        187,
+        188,
+        189
+      ],
+      "ms": 140,
+      "loop": false
+    },
+    "actor.hero_mail/walk/right": {
+      "atlas": "actors",
+      "frames": [
+        190,
         191,
         192,
         193
       ],
-      "ms": 140,
-      "loop": false
+      "ms": 120,
+      "loop": true
     },
-    "actor.hero_sword/slash/left": {
+    "actor.hero_mail/idle/right": {
       "atlas": "actors",
       "frames": [
         194,
-        195,
-        196,
-        197
-      ],
-      "ms": 90,
-      "loop": false
-    },
-    "actor.hero_sword/walk/right": {
-      "atlas": "actors",
-      "frames": [
-        198,
-        199,
-        200,
-        201
-      ],
-      "ms": 120,
-      "loop": true
-    },
-    "actor.hero_sword/idle/right": {
-      "atlas": "actors",
-      "frames": [
-        202,
-        203
+        195
       ],
       "ms": 500,
       "loop": true
     },
-    "actor.hero_sword/gather/right": {
+    "actor.hero_mail/gather/right": {
       "atlas": "actors",
       "frames": [
-        204,
-        205,
-        206
+        196,
+        197,
+        198
       ],
       "ms": 140,
       "loop": false
     },
-    "actor.hero_sword/slash/right": {
+    "actor.hero_mail/walk/up": {
       "atlas": "actors",
       "frames": [
-        207,
-        208,
-        209,
-        210
-      ],
-      "ms": 90,
-      "loop": false
-    },
-    "actor.hero_sword/walk/up": {
-      "atlas": "actors",
-      "frames": [
-        211,
-        212,
-        213,
-        214
+        199,
+        200,
+        201,
+        202
       ],
       "ms": 120,
       "loop": true
     },
-    "actor.hero_sword/idle/up": {
+    "actor.hero_mail/idle/up": {
       "atlas": "actors",
       "frames": [
-        215,
-        216
+        203,
+        204
       ],
       "ms": 500,
       "loop": true
     },
-    "actor.hero_sword/gather/up": {
+    "actor.hero_mail/gather/up": {
+      "atlas": "actors",
+      "frames": [
+        205,
+        206,
+        207
+      ],
+      "ms": 140,
+      "loop": false
+    },
+    "actor.hero_spear/walk/down": {
+      "atlas": "actors",
+      "frames": [
+        208,
+        209,
+        210,
+        211
+      ],
+      "ms": 120,
+      "loop": true
+    },
+    "actor.hero_spear/idle/down": {
+      "atlas": "actors",
+      "frames": [
+        212,
+        213
+      ],
+      "ms": 500,
+      "loop": true
+    },
+    "actor.hero_spear/gather/down": {
+      "atlas": "actors",
+      "frames": [
+        214,
+        215,
+        216
+      ],
+      "ms": 140,
+      "loop": false
+    },
+    "actor.hero_spear/slash/down": {
       "atlas": "actors",
       "frames": [
         217,
         218,
-        219
-      ],
-      "ms": 140,
-      "loop": false
-    },
-    "actor.hero_sword/slash/up": {
-      "atlas": "actors",
-      "frames": [
-        220,
-        221,
-        222,
-        223
+        219,
+        220
       ],
       "ms": 90,
       "loop": false
     },
-    "actor.sheep/walk/down": {
+    "actor.hero_spear/walk/left": {
       "atlas": "actors",
       "frames": [
-        224,
-        225,
-        226,
-        227
+        221,
+        222,
+        223,
+        224
       ],
-      "ms": 150,
+      "ms": 120,
       "loop": true
     },
-    "actor.sheep/idle/down": {
+    "actor.hero_spear/idle/left": {
       "atlas": "actors",
       "frames": [
+        225,
+        226
+      ],
+      "ms": 500,
+      "loop": true
+    },
+    "actor.hero_spear/gather/left": {
+      "atlas": "actors",
+      "frames": [
+        227,
         228,
         229
       ],
-      "ms": 600,
-      "loop": true
+      "ms": 140,
+      "loop": false
     },
-    "actor.sheep/graze/down": {
+    "actor.hero_spear/slash/left": {
       "atlas": "actors",
       "frames": [
         230,
-        231
-      ],
-      "ms": 380,
-      "loop": true
-    },
-    "actor.sheep/walk/left": {
-      "atlas": "actors",
-      "frames": [
+        231,
         232,
-        233,
-        234,
-        235
+        233
       ],
-      "ms": 150,
-      "loop": true
+      "ms": 90,
+      "loop": false
     },
-    "actor.sheep/idle/left": {
+    "actor.hero_spear/walk/right": {
       "atlas": "actors",
       "frames": [
+        234,
+        235,
         236,
         237
       ],
-      "ms": 600,
+      "ms": 120,
       "loop": true
     },
-    "actor.sheep/graze/left": {
+    "actor.hero_spear/idle/right": {
       "atlas": "actors",
       "frames": [
         238,
         239
       ],
-      "ms": 380,
+      "ms": 500,
       "loop": true
     },
-    "actor.sheep/walk/right": {
+    "actor.hero_spear/gather/right": {
       "atlas": "actors",
       "frames": [
         240,
         241,
-        242,
-        243
+        242
       ],
-      "ms": 150,
-      "loop": true
+      "ms": 140,
+      "loop": false
     },
-    "actor.sheep/idle/right": {
+    "actor.hero_spear/slash/right": {
       "atlas": "actors",
       "frames": [
+        243,
         244,
-        245
+        245,
+        246
       ],
-      "ms": 600,
-      "loop": true
+      "ms": 90,
+      "loop": false
     },
-    "actor.sheep/graze/right": {
+    "actor.hero_spear/walk/up": {
       "atlas": "actors",
       "frames": [
-        246,
-        247
-      ],
-      "ms": 380,
-      "loop": true
-    },
-    "actor.sheep/walk/up": {
-      "atlas": "actors",
-      "frames": [
+        247,
         248,
         249,
-        250,
-        251
+        250
       ],
-      "ms": 150,
+      "ms": 120,
       "loop": true
     },
-    "actor.sheep/idle/up": {
+    "actor.hero_spear/idle/up": {
       "atlas": "actors",
       "frames": [
-        252,
-        253
+        251,
+        252
       ],
-      "ms": 600,
+      "ms": 500,
       "loop": true
     },
-    "actor.sheep/graze/up": {
+    "actor.hero_spear/gather/up": {
       "atlas": "actors",
       "frames": [
+        253,
         254,
         255
       ],
-      "ms": 380,
-      "loop": true
+      "ms": 140,
+      "loop": false
     },
-    "actor.smith/walk/down": {
+    "actor.hero_spear/slash/up": {
       "atlas": "actors",
       "frames": [
         256,
@@ -3653,14 +5190,633 @@
         258,
         259
       ],
+      "ms": 90,
+      "loop": false
+    },
+    "actor.hero_spear_mail/walk/down": {
+      "atlas": "actors",
+      "frames": [
+        260,
+        261,
+        262,
+        263
+      ],
+      "ms": 120,
+      "loop": true
+    },
+    "actor.hero_spear_mail/idle/down": {
+      "atlas": "actors",
+      "frames": [
+        264,
+        265
+      ],
+      "ms": 500,
+      "loop": true
+    },
+    "actor.hero_spear_mail/gather/down": {
+      "atlas": "actors",
+      "frames": [
+        266,
+        267,
+        268
+      ],
+      "ms": 140,
+      "loop": false
+    },
+    "actor.hero_spear_mail/slash/down": {
+      "atlas": "actors",
+      "frames": [
+        269,
+        270,
+        271,
+        272
+      ],
+      "ms": 90,
+      "loop": false
+    },
+    "actor.hero_spear_mail/walk/left": {
+      "atlas": "actors",
+      "frames": [
+        273,
+        274,
+        275,
+        276
+      ],
+      "ms": 120,
+      "loop": true
+    },
+    "actor.hero_spear_mail/idle/left": {
+      "atlas": "actors",
+      "frames": [
+        277,
+        278
+      ],
+      "ms": 500,
+      "loop": true
+    },
+    "actor.hero_spear_mail/gather/left": {
+      "atlas": "actors",
+      "frames": [
+        279,
+        280,
+        281
+      ],
+      "ms": 140,
+      "loop": false
+    },
+    "actor.hero_spear_mail/slash/left": {
+      "atlas": "actors",
+      "frames": [
+        282,
+        283,
+        284,
+        285
+      ],
+      "ms": 90,
+      "loop": false
+    },
+    "actor.hero_spear_mail/walk/right": {
+      "atlas": "actors",
+      "frames": [
+        286,
+        287,
+        288,
+        289
+      ],
+      "ms": 120,
+      "loop": true
+    },
+    "actor.hero_spear_mail/idle/right": {
+      "atlas": "actors",
+      "frames": [
+        290,
+        291
+      ],
+      "ms": 500,
+      "loop": true
+    },
+    "actor.hero_spear_mail/gather/right": {
+      "atlas": "actors",
+      "frames": [
+        292,
+        293,
+        294
+      ],
+      "ms": 140,
+      "loop": false
+    },
+    "actor.hero_spear_mail/slash/right": {
+      "atlas": "actors",
+      "frames": [
+        295,
+        296,
+        297,
+        298
+      ],
+      "ms": 90,
+      "loop": false
+    },
+    "actor.hero_spear_mail/walk/up": {
+      "atlas": "actors",
+      "frames": [
+        299,
+        300,
+        301,
+        302
+      ],
+      "ms": 120,
+      "loop": true
+    },
+    "actor.hero_spear_mail/idle/up": {
+      "atlas": "actors",
+      "frames": [
+        303,
+        304
+      ],
+      "ms": 500,
+      "loop": true
+    },
+    "actor.hero_spear_mail/gather/up": {
+      "atlas": "actors",
+      "frames": [
+        305,
+        306,
+        307
+      ],
+      "ms": 140,
+      "loop": false
+    },
+    "actor.hero_spear_mail/slash/up": {
+      "atlas": "actors",
+      "frames": [
+        308,
+        309,
+        310,
+        311
+      ],
+      "ms": 90,
+      "loop": false
+    },
+    "actor.hero_sword/walk/down": {
+      "atlas": "actors",
+      "frames": [
+        312,
+        313,
+        314,
+        315
+      ],
+      "ms": 120,
+      "loop": true
+    },
+    "actor.hero_sword/idle/down": {
+      "atlas": "actors",
+      "frames": [
+        316,
+        317
+      ],
+      "ms": 500,
+      "loop": true
+    },
+    "actor.hero_sword/gather/down": {
+      "atlas": "actors",
+      "frames": [
+        318,
+        319,
+        320
+      ],
+      "ms": 140,
+      "loop": false
+    },
+    "actor.hero_sword/slash/down": {
+      "atlas": "actors",
+      "frames": [
+        321,
+        322,
+        323,
+        324
+      ],
+      "ms": 90,
+      "loop": false
+    },
+    "actor.hero_sword/walk/left": {
+      "atlas": "actors",
+      "frames": [
+        325,
+        326,
+        327,
+        328
+      ],
+      "ms": 120,
+      "loop": true
+    },
+    "actor.hero_sword/idle/left": {
+      "atlas": "actors",
+      "frames": [
+        329,
+        330
+      ],
+      "ms": 500,
+      "loop": true
+    },
+    "actor.hero_sword/gather/left": {
+      "atlas": "actors",
+      "frames": [
+        331,
+        332,
+        333
+      ],
+      "ms": 140,
+      "loop": false
+    },
+    "actor.hero_sword/slash/left": {
+      "atlas": "actors",
+      "frames": [
+        334,
+        335,
+        336,
+        337
+      ],
+      "ms": 90,
+      "loop": false
+    },
+    "actor.hero_sword/walk/right": {
+      "atlas": "actors",
+      "frames": [
+        338,
+        339,
+        340,
+        341
+      ],
+      "ms": 120,
+      "loop": true
+    },
+    "actor.hero_sword/idle/right": {
+      "atlas": "actors",
+      "frames": [
+        342,
+        343
+      ],
+      "ms": 500,
+      "loop": true
+    },
+    "actor.hero_sword/gather/right": {
+      "atlas": "actors",
+      "frames": [
+        344,
+        345,
+        346
+      ],
+      "ms": 140,
+      "loop": false
+    },
+    "actor.hero_sword/slash/right": {
+      "atlas": "actors",
+      "frames": [
+        347,
+        348,
+        349,
+        350
+      ],
+      "ms": 90,
+      "loop": false
+    },
+    "actor.hero_sword/walk/up": {
+      "atlas": "actors",
+      "frames": [
+        351,
+        352,
+        353,
+        354
+      ],
+      "ms": 120,
+      "loop": true
+    },
+    "actor.hero_sword/idle/up": {
+      "atlas": "actors",
+      "frames": [
+        355,
+        356
+      ],
+      "ms": 500,
+      "loop": true
+    },
+    "actor.hero_sword/gather/up": {
+      "atlas": "actors",
+      "frames": [
+        357,
+        358,
+        359
+      ],
+      "ms": 140,
+      "loop": false
+    },
+    "actor.hero_sword/slash/up": {
+      "atlas": "actors",
+      "frames": [
+        360,
+        361,
+        362,
+        363
+      ],
+      "ms": 90,
+      "loop": false
+    },
+    "actor.hero_sword_mail/walk/down": {
+      "atlas": "actors",
+      "frames": [
+        364,
+        365,
+        366,
+        367
+      ],
+      "ms": 120,
+      "loop": true
+    },
+    "actor.hero_sword_mail/idle/down": {
+      "atlas": "actors",
+      "frames": [
+        368,
+        369
+      ],
+      "ms": 500,
+      "loop": true
+    },
+    "actor.hero_sword_mail/gather/down": {
+      "atlas": "actors",
+      "frames": [
+        370,
+        371,
+        372
+      ],
+      "ms": 140,
+      "loop": false
+    },
+    "actor.hero_sword_mail/slash/down": {
+      "atlas": "actors",
+      "frames": [
+        373,
+        374,
+        375,
+        376
+      ],
+      "ms": 90,
+      "loop": false
+    },
+    "actor.hero_sword_mail/walk/left": {
+      "atlas": "actors",
+      "frames": [
+        377,
+        378,
+        379,
+        380
+      ],
+      "ms": 120,
+      "loop": true
+    },
+    "actor.hero_sword_mail/idle/left": {
+      "atlas": "actors",
+      "frames": [
+        381,
+        382
+      ],
+      "ms": 500,
+      "loop": true
+    },
+    "actor.hero_sword_mail/gather/left": {
+      "atlas": "actors",
+      "frames": [
+        383,
+        384,
+        385
+      ],
+      "ms": 140,
+      "loop": false
+    },
+    "actor.hero_sword_mail/slash/left": {
+      "atlas": "actors",
+      "frames": [
+        386,
+        387,
+        388,
+        389
+      ],
+      "ms": 90,
+      "loop": false
+    },
+    "actor.hero_sword_mail/walk/right": {
+      "atlas": "actors",
+      "frames": [
+        390,
+        391,
+        392,
+        393
+      ],
+      "ms": 120,
+      "loop": true
+    },
+    "actor.hero_sword_mail/idle/right": {
+      "atlas": "actors",
+      "frames": [
+        394,
+        395
+      ],
+      "ms": 500,
+      "loop": true
+    },
+    "actor.hero_sword_mail/gather/right": {
+      "atlas": "actors",
+      "frames": [
+        396,
+        397,
+        398
+      ],
+      "ms": 140,
+      "loop": false
+    },
+    "actor.hero_sword_mail/slash/right": {
+      "atlas": "actors",
+      "frames": [
+        399,
+        400,
+        401,
+        402
+      ],
+      "ms": 90,
+      "loop": false
+    },
+    "actor.hero_sword_mail/walk/up": {
+      "atlas": "actors",
+      "frames": [
+        403,
+        404,
+        405,
+        406
+      ],
+      "ms": 120,
+      "loop": true
+    },
+    "actor.hero_sword_mail/idle/up": {
+      "atlas": "actors",
+      "frames": [
+        407,
+        408
+      ],
+      "ms": 500,
+      "loop": true
+    },
+    "actor.hero_sword_mail/gather/up": {
+      "atlas": "actors",
+      "frames": [
+        409,
+        410,
+        411
+      ],
+      "ms": 140,
+      "loop": false
+    },
+    "actor.hero_sword_mail/slash/up": {
+      "atlas": "actors",
+      "frames": [
+        412,
+        413,
+        414,
+        415
+      ],
+      "ms": 90,
+      "loop": false
+    },
+    "actor.sheep/walk/down": {
+      "atlas": "actors",
+      "frames": [
+        416,
+        417,
+        418,
+        419
+      ],
+      "ms": 150,
+      "loop": true
+    },
+    "actor.sheep/idle/down": {
+      "atlas": "actors",
+      "frames": [
+        420,
+        421
+      ],
+      "ms": 600,
+      "loop": true
+    },
+    "actor.sheep/graze/down": {
+      "atlas": "actors",
+      "frames": [
+        422,
+        423
+      ],
+      "ms": 380,
+      "loop": true
+    },
+    "actor.sheep/walk/left": {
+      "atlas": "actors",
+      "frames": [
+        424,
+        425,
+        426,
+        427
+      ],
+      "ms": 150,
+      "loop": true
+    },
+    "actor.sheep/idle/left": {
+      "atlas": "actors",
+      "frames": [
+        428,
+        429
+      ],
+      "ms": 600,
+      "loop": true
+    },
+    "actor.sheep/graze/left": {
+      "atlas": "actors",
+      "frames": [
+        430,
+        431
+      ],
+      "ms": 380,
+      "loop": true
+    },
+    "actor.sheep/walk/right": {
+      "atlas": "actors",
+      "frames": [
+        432,
+        433,
+        434,
+        435
+      ],
+      "ms": 150,
+      "loop": true
+    },
+    "actor.sheep/idle/right": {
+      "atlas": "actors",
+      "frames": [
+        436,
+        437
+      ],
+      "ms": 600,
+      "loop": true
+    },
+    "actor.sheep/graze/right": {
+      "atlas": "actors",
+      "frames": [
+        438,
+        439
+      ],
+      "ms": 380,
+      "loop": true
+    },
+    "actor.sheep/walk/up": {
+      "atlas": "actors",
+      "frames": [
+        440,
+        441,
+        442,
+        443
+      ],
+      "ms": 150,
+      "loop": true
+    },
+    "actor.sheep/idle/up": {
+      "atlas": "actors",
+      "frames": [
+        444,
+        445
+      ],
+      "ms": 600,
+      "loop": true
+    },
+    "actor.sheep/graze/up": {
+      "atlas": "actors",
+      "frames": [
+        446,
+        447
+      ],
+      "ms": 380,
+      "loop": true
+    },
+    "actor.smith/walk/down": {
+      "atlas": "actors",
+      "frames": [
+        448,
+        449,
+        450,
+        451
+      ],
       "ms": 120,
       "loop": true
     },
     "actor.smith/idle/down": {
       "atlas": "actors",
       "frames": [
-        260,
-        261
+        452,
+        453
       ],
       "ms": 500,
       "loop": true
@@ -3668,10 +5824,10 @@
     "actor.smith/walk/left": {
       "atlas": "actors",
       "frames": [
-        262,
-        263,
-        264,
-        265
+        454,
+        455,
+        456,
+        457
       ],
       "ms": 120,
       "loop": true
@@ -3679,8 +5835,8 @@
     "actor.smith/idle/left": {
       "atlas": "actors",
       "frames": [
-        266,
-        267
+        458,
+        459
       ],
       "ms": 500,
       "loop": true
@@ -3688,10 +5844,10 @@
     "actor.smith/walk/right": {
       "atlas": "actors",
       "frames": [
-        268,
-        269,
-        270,
-        271
+        460,
+        461,
+        462,
+        463
       ],
       "ms": 120,
       "loop": true
@@ -3699,8 +5855,8 @@
     "actor.smith/idle/right": {
       "atlas": "actors",
       "frames": [
-        272,
-        273
+        464,
+        465
       ],
       "ms": 500,
       "loop": true
@@ -3708,10 +5864,10 @@
     "actor.smith/walk/up": {
       "atlas": "actors",
       "frames": [
-        274,
-        275,
-        276,
-        277
+        466,
+        467,
+        468,
+        469
       ],
       "ms": 120,
       "loop": true
@@ -3719,8 +5875,8 @@
     "actor.smith/idle/up": {
       "atlas": "actors",
       "frames": [
-        278,
-        279
+        470,
+        471
       ],
       "ms": 500,
       "loop": true
@@ -4260,10 +6416,15 @@
         "gather"
       ],
       "wields": true,
-      "wield": {
-        "item.axe": "actor.hero_axe",
-        "item.spear": "actor.hero_spear",
-        "item.sword": "actor.hero_sword"
+      "looks": {
+        "|": "actor.hero",
+        "|item.mail": "actor.hero_mail",
+        "item.axe|": "actor.hero_axe",
+        "item.axe|item.mail": "actor.hero_axe_mail",
+        "item.spear|": "actor.hero_spear",
+        "item.spear|item.mail": "actor.hero_spear_mail",
+        "item.sword|": "actor.hero_sword",
+        "item.sword|item.mail": "actor.hero_sword_mail"
       }
     },
     "npc.sheep": {
@@ -4361,6 +6522,17 @@
       "kind": "material",
       "stack": true,
       "description": "A jar from the hives in the flower meadow."
+    },
+    "item.mail": {
+      "id": "item.mail",
+      "name": "Mail shirt",
+      "sprite": "item.mail",
+      "kind": "armor",
+      "slot": "armor",
+      "worn": "mail",
+      "defense": 3,
+      "stack": false,
+      "description": "Rings over a padded shirt. Heavier than it looks, and it looks heavy."
     },
     "item.ore": {
       "id": "item.ore",
@@ -6754,6 +8926,13 @@
           "def": "prop.lamp_post",
           "tile": [
             26,
+            44
+          ]
+        },
+        {
+          "def": "item.mail",
+          "tile": [
+            30,
             44
           ]
         },

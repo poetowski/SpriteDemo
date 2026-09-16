@@ -49,10 +49,10 @@ def build_atlases(sprite_rigs):
     actors = Atlas("actors", actor.FRAME, actor.FRAME, 6)
     anims = {}
     by_sprite = {}
-    for sprite_key, (rig_name, variant, states, held) in sorted(sprite_rigs.items()):
+    for sprite_key, (rig_name, variant, states, held, worn) in sorted(sprite_rigs.items()):
         rig = RIGS[rig_name]
         pal = resolve(variant)
-        frames = rig.build_frames(variant, states, held)
+        frames = rig.build_frames(variant, states, held, worn)
         by_sprite[sprite_key] = (rig_name, variant, frames)
         for state, facing, i, cel, shadow, ms, loops in frames:
             base = f"{sprite_key}/{state}/{facing}"
@@ -201,23 +201,32 @@ def assemble():
         if variant not in VARIANTS:
             sys.exit(f"[variant] {d['_file']}: sprite {d['sprite']!r} has no "
                      f"palette variant {variant!r} in tools/gen/palette.py")
-        sprite_rigs[d["sprite"]] = (rig_name, variant, d.get("states"), None)
+        sprite_rigs[d["sprite"]] = (rig_name, variant, d.get("states"), None, None)
         if not d.get("wields"):
             continue
-        # One extra frame set per weapon the rig can draw. The engine arms a
+        # One frame set per look: every weapon the rig can draw crossed with
+        # every armour, plus none of each. The engine dresses and arms a
         # character by switching sprite base and nothing else, so the map from
-        # item to sprite is written into the actor's own record.
-        d["wield"] = {}
+        # "<weapon>|<armor>" to sprite is written into the actor's own record.
+        rig = RIGS[rig_name]
+        weapons, armours = [(None, "")], [(None, "")]
         for iid, item in sorted(content["items"].items()):
-            held = item.get("held")
-            if not held:
-                continue
-            if held not in getattr(RIGS[rig_name], "WEAPONS", {}):
-                sys.exit(f"[item-held] {item['_file']}: the {rig_name} rig has no "
-                         f"drawing for {held!r}")
-            key = f"{d['sprite']}_{held}"
-            sprite_rigs[key] = (rig_name, variant, d.get("states"), held)
-            d["wield"][iid] = key
+            if item.get("held"):
+                if item["held"] not in getattr(rig, "WEAPONS", {}):
+                    sys.exit(f"[item-held] {item['_file']}: the {rig_name} rig has "
+                             f"no drawing for {item['held']!r}")
+                weapons.append((item["held"], iid))
+            if item.get("worn"):
+                if item["worn"] not in getattr(rig, "ARMOURS", {}):
+                    sys.exit(f"[item-held] {item['_file']}: the {rig_name} rig has "
+                             f"no drawing for {item['worn']!r}")
+                armours.append((item["worn"], iid))
+        d["looks"] = {}
+        for held, wid in weapons:
+            for worn, aid in armours:
+                key = d["sprite"] + (f"_{held}" if held else "") + (f"_{worn}" if worn else "")
+                sprite_rigs[key] = (rig_name, variant, d.get("states"), held, worn)
+                d["looks"][f"{wid}|{aid}"] = key
     sheets, sprites, anims, tile_canvases, prop_canvases, by_sprite = \
         build_atlases(sprite_rigs)
     man = manifest_mod.build(content, sheets, sprites, anims)

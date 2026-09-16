@@ -153,6 +153,29 @@ WEAPONS = {
 REST_AIM = {"down": (0, -1), "up": (0, -1), "right": (1, -1)}
 
 
+# ------------------------------------------------------------------ armour ---
+# Worn over the tunic after the torso is drawn, before the arms and the head,
+# so sleeves and collar stay the character's own. Like a weapon, armour is
+# baked into a frame set of its own rather than layered at runtime.
+def mail(c, direction, dy=0):
+    t = TORSO_TOP + dy
+    b = BELT_Y + dy
+    x0, x1 = (13, 19) if direction == "right" else (12, 19)
+    c.rect(x0, t, x1, b - 1, "MT")
+    for y in range(t + 1, b - 1):                  # the rings, as a checker
+        for x in range(x0, x1 + 1):
+            if (x + y) % 2:
+                c.set(x, y, "MTD")
+    c.row(x0, x1, t, "MTL")                        # a lit collar
+    c.rect(x0 - 1, t, x0, t + 1, "MTL")            # and pauldrons over the
+    c.rect(x1, t, x1 + 1, t + 1, "MTL")            # shoulder seams
+    c.set(x0 - 1, t + 2, "MTD")
+    c.set(x1 + 1, t + 2, "MTD")
+
+
+ARMOURS = {"mail": mail}
+
+
 def draw_weapon(c, hx, hy, aim, name):
     spec = WEAPONS[name]
     dx, dy = aim
@@ -229,17 +252,24 @@ def weapon_hand(direction, dy=0, swing=0, reach=0):
     return 19 + swing + reach // 2, 20 + dy + reach
 
 
-def draw_actor(direction, bob=0, leg=0, swing=0, reach=0, held=None, aim=None):
+def draw_actor(direction, bob=0, leg=0, swing=0, reach=0, held=None, aim=None,
+               worn=None):
     """One cel. direction in {down, up, right}; left is the mirror of right.
     held names a WEAPONS entry; aim is the step it points along (rest if
-    None). Seen from behind the weapon hand is the far one, so the weapon
-    goes down first and the body over it."""
+    None); worn names an ARMOURS entry. Seen from behind the weapon hand is
+    the far one, so the weapon goes down first and the body over it."""
     c = Canvas(FRAME, FRAME)
     aim = aim or REST_AIM[direction]
     hx, hy = weapon_hand(direction, bob, swing, reach)
+
+    def armour():
+        if worn:
+            ARMOURS[worn](c, direction, bob)
+
     if direction == "down":
         legs_front(c, bob, leg)
         torso_front(c, bob)
+        armour()
         arms_front(c, bob, swing, reach=reach)
         head_front(c, bob)
         if held:
@@ -249,11 +279,13 @@ def draw_actor(direction, bob=0, leg=0, swing=0, reach=0, held=None, aim=None):
             draw_weapon(c, hx, hy, aim, held)
         legs_front(c, bob, leg)
         torso_front(c, bob, back=True)
+        armour()
         arms_front(c, bob, swing, back=True, reach=reach)
         head_back(c, bob)
     elif direction == "right":
         legs_side(c, bob, leg)
         torso_side(c, bob)
+        armour()
         head_side(c, bob)
         arm_side(c, bob, swing, reach)
         if held:
@@ -327,18 +359,21 @@ def states_for(states=None, held=None):
     return out
 
 
-def build_frames(variant=None, states=None, held=None):
+def build_frames(variant=None, states=None, held=None, worn=None):
     """[(state, facing, i, actor Canvas, shadow Canvas, ms, loops), ...]
 
     `variant` is accepted for a uniform rig interface but unused: biped
     variants are pure palette swaps, so every variant shares these pixels.
-    `held` bakes a weapon into every frame and adds the slash state.
+    `held` bakes a weapon into every frame and adds the slash state; `worn`
+    bakes armour over the tunic.
 
     Linear order: facing-major, then state, then frame - which is also the
     sheet's row-major order and the .aseprite frame order.
     """
     if held and held not in WEAPONS:
         raise ValueError(f"no such weapon drawing: {held!r}")
+    if worn and worn not in ARMOURS:
+        raise ValueError(f"no such armour drawing: {worn!r}")
     frames = []
     for facing in FACINGS:
         src = "right" if facing == "left" else facing
@@ -347,7 +382,8 @@ def build_frames(variant=None, states=None, held=None):
             for i, p in enumerate(poses):
                 aim = SLASH_AIM[src][i] if state == "slash" else None
                 cel = draw_actor(src, bob=p["bob"], leg=p["leg"], swing=p["swing"],
-                                 reach=p.get("reach", 0), held=held, aim=aim)
+                                 reach=p.get("reach", 0), held=held, aim=aim,
+                                 worn=worn)
                 if facing == "left":
                     cel = cel.mirrored()
                 frames.append((state, facing, i, cel, draw_shadow(p["squash"]),

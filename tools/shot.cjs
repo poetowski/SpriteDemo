@@ -111,6 +111,7 @@ const BOOTED = () => !!(window.game && window.game.scene
       hits: s.hits || 0,
       fxOnScreen: s.children.list.filter((o) => o.texture && o.texture.key === 'fx').length,
       weapon: s.weapon,
+      armor: s.armor,
       heroSprite: s.heroSprite,
       anim: cur,
       busy: s.busy,
@@ -140,9 +141,10 @@ const BOOTED = () => !!(window.game && window.game.scene
     ['livestock is wandering', report.wanderers > 0, `${report.wanderers}`],
   ];
   if (GIVE) {
-    const armed = report.weapon === GIVE && report.heroSprite !== 'actor.hero';
-    checks.push(['weapon equipped and drawn', armed,
-      `weapon=${report.weapon} sprite=${report.heroSprite}`]);
+    const on = (report.weapon === GIVE || report.armor === GIVE)
+      && report.heroSprite !== 'actor.hero';
+    checks.push(['gear equipped and drawn on the hero', on,
+      `weapon=${report.weapon} armor=${report.armor} sprite=${report.heroSprite}`]);
   }
 
   if (TALK) {

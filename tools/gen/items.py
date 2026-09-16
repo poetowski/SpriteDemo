@@ -168,6 +168,22 @@ def spear():
     return c.outline()
 
 
+# ------------------------------------------------------------------ armour --
+def mail():
+    c = Canvas(SIZE, SIZE)
+    c.rect(4, 4, 11, 13, "MT")                  # the shirt
+    c.rect(2, 4, 4, 7, "MT")                    # short sleeves
+    c.rect(11, 4, 13, 7, "MT")
+    for y in range(5, 13):                      # rings, as a checker
+        for x in range(4, 12):
+            if (x + y) % 2:
+                c.set(x, y, "MTD")
+    c.row(6, 9, 4, "MTL")                       # collar
+    c.set(5, 3, "MTL")
+    c.set(10, 3, "MTL")
+    return c.outline()
+
+
 ITEMS = {
     "item.apple": apple,
     "item.berries": berries,
@@ -182,6 +198,7 @@ ITEMS = {
     "item.sword": sword,
     "item.axe": axe,
     "item.spear": spear,
+    "item.mail": mail,
 }
 ITEM_ORDER = list(ITEMS)
 

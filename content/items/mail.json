@@ -1,0 +1,11 @@
+{
+  "id": "item.mail",
+  "name": "Mail shirt",
+  "sprite": "item.mail",
+  "kind": "armor",
+  "slot": "armor",
+  "worn": "mail",
+  "defense": 3,
+  "stack": false,
+  "description": "Rings over a padded shirt. Heavier than it looks, and it looks heavy."
+}

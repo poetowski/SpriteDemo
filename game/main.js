@@ -119,6 +119,7 @@ class World extends Phaser.Scene {
     this.cursor = 0;                      // the slot the panel's cursor is on
     this.bagOpen = false;
     this.weapon = null;                   // item id in the weapon hand
+    this.armor = null;                    // item id worn over the tunic
     this.busy = false;                    // a one-shot animation owns the hero
     this.pending = null;                  // the pickup a gather will collect
 
@@ -281,7 +282,7 @@ class World extends Phaser.Scene {
       const want = `${w.def.sprite}/${w.state}/${w.facing}`;
       const cur = w.sprite.anims.currentAnim && w.sprite.anims.currentAnim.key;
       if (cur !== want) w.sprite.play(want, true);
-      w.sprite.setDepth(w.sprite.y);
+      w.sprite.setDepth(w.sprite.y + 0.5);   // same tie-break as the hero
     }
   }
 
@@ -358,15 +359,31 @@ class World extends Phaser.Scene {
     this.inventory[slot] = id;
     const def = M.items[id];
     if (def.slot === 'weapon' && !this.weapon) this.equip(id);   // first blade: draw it
+    if (def.slot === 'armor' && !this.armor) this.wear(id);      // first armour: put it on
     this.pushInventory();
     return true;
   }
 
-  /** E on a slot in the open bag: a weapon is drawn, or put away if it was. */
+  /** E on a slot in the open bag: a weapon is drawn or put away, armour is
+   *  put on or taken off. */
   useSlot(slot) {
     const id = this.inventory[slot];
-    if (!id || M.items[id].slot !== 'weapon') return;
-    this.equip(id === this.weapon ? null : id);
+    if (!id) return;
+    const kind = M.items[id].slot;
+    if (kind === 'weapon') this.equip(id === this.weapon ? null : id);
+    if (kind === 'armor') this.wear(id === this.armor ? null : id);
+  }
+
+  /** The hero's look is one baked frame set per weapon-and-armour pair; the
+   *  actor's record maps "<weapon>|<armor>" to it. */
+  refreshLook() {
+    this.heroSprite = this.heroDef.looks[`${this.weapon || ''}|${this.armor || ''}`];
+    this.pushInventory();
+  }
+
+  wear(id) {
+    this.armor = id;
+    this.refreshLook();
   }
 
   weaponsHeld() {
@@ -381,8 +398,7 @@ class World extends Phaser.Scene {
    *  wielding frame set already has the weapon in hand. */
   equip(id) {
     this.weapon = id;
-    this.heroSprite = id ? this.heroDef.wield[id] : this.heroDef.sprite;
-    this.pushInventory();
+    this.refreshLook();
   }
 
   cycleWeapon() {
@@ -484,11 +500,13 @@ class World extends Phaser.Scene {
       if (!id) return null;
       const def = M.items[id];
       return { id, name: def.name, index: M.sprites[def.sprite].index,
-               weapon: def.slot === 'weapon', equipped: id === this.weapon };
+               gear: def.slot || null,
+               equipped: id === this.weapon || id === this.armor };
     });
     window.__inventory({
       slots, cols: BAG_COLS, cursor: this.cursor, open: this.bagOpen,
       weapon: this.weapon ? M.items[this.weapon].name : null,
+      armor: this.armor ? M.items[this.armor].name : null,
     });
   }
 
@@ -567,7 +585,10 @@ class World extends Phaser.Scene {
     if (!this.busy && cur !== want) this.hero.anims.play(want, true);
     const shown = this.busy && cur ? cur : want;
 
-    this.hero.setDepth(this.hero.y);        // anchor is at the feet, so y sorts
+    // Anchor is at the feet, so y sorts. The half is for props on the same tile
+    // row: they share the hero's y exactly, and a tie let a bench draw over
+    // the sword. A moving thing wins a tie with a thing that stands still.
+    this.hero.setDepth(this.hero.y + 0.5);
 
     // nearest thing worth pressing E at
     let best = null;

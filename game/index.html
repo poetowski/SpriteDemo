@@ -107,7 +107,7 @@
     <div class="title">BAG</div>
     <div id="slots"></div>
     <div class="name" id="bagname"></div>
-    <div class="hint">arrows move &middot; E draw / put away &middot; I close</div>
+    <div class="hint">arrows move &middot; E equip / remove &middot; I close</div>
   </div>
   <div id="focus"><span>Click to play</span></div>
 </div>
@@ -152,7 +152,7 @@
 
   // The bag. Icons are the world's own item cells, read straight out of the
   // items atlas at 3x, so a thing looks the same on the ground and in hand.
-  window.__inventory = ({ slots, cols, cursor, open, weapon }) => {
+  window.__inventory = ({ slots, cols, cursor, open, weapon, armor }) => {
     const A = window.ART.manifest.atlases.items;
     const [fw, fh] = A.frame;
     const Z = 3;
@@ -175,13 +175,14 @@
       grid.append(c);
     });
     const under = slots[cursor];
+    const verb = { weapon: ['in hand', 'E to draw'], armor: ['worn', 'E to put on'] };
     $('bagname').textContent = under
-      ? under.name + (under.equipped ? ' - in hand' : (under.weapon ? ' - E to draw' : ''))
+      ? under.name + (under.gear ? ` - ${verb[under.gear][under.equipped ? 0 : 1]}` : '')
       : (slots.some(Boolean) ? '' : 'empty - walk up to something and press E');
     const bag = $('bag');
     bag.classList.toggle('open', open);
     bag.setAttribute('aria-hidden', open ? 'false' : 'true');
-    $('wname').textContent = `⚔ ${weapon || 'no weapon'}`;
+    $('wname').textContent = `⚔ ${weapon || 'no weapon'} · ⛨ ${armor || 'no armour'}`;
   };
 
   window.__dialogue = (d) => {

@@ -2280,6 +2280,13 @@
       ]
     },
     {
+      "def": "item.mail",
+      "tile": [
+        30,
+        44
+      ]
+    },
+    {
       "def": "prop.lamp_post",
       "tile": [
         36,

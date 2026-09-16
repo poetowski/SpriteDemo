@@ -87,13 +87,16 @@ body on each.
 settings are all content. No JS changes.
 
 **An item** is a 16x16 icon function in `tools/gen/items.py` (added to
-`ITEMS`), a file in `content/items/` with `kind` `material` or `weapon`, and a
-line in the map. A weapon also carries a positive integer `damage` (the number
-a hit floats up) and names what the hand holds (`"held": "sword"`),
-which must be a `WEAPONS` entry in `tools/gen/actor.py` - that is where a new
-weapon's shape is described, once, as a line from the hand with a guard or a
-head hung off it. The build then bakes a wielding frame set for every actor
-with `"wields": true` and the `item-held` gate checks it is complete.
+`ITEMS`), a file in `content/items/` with `kind` `material`, `weapon` or
+`armor`, and a line in the map. A weapon also carries a positive integer
+`damage` (the number a hit floats up) and names what the hand holds
+(`"held": "sword"`), which must be a `WEAPONS` entry in `tools/gen/actor.py` -
+that is where a new weapon's shape is described, once, as a line from the hand
+with a guard or a head hung off it. Armor names what is worn
+(`"worn": "mail"`), an `ARMOURS` entry in the same file, drawn over the torso
+before the arms. The build bakes one frame set per weapon-and-armour pair for
+every actor with `"wields": true` (that table is the actor's `looks`) and the
+`item-held` gate checks every one is complete.
 
 **A map** is ASCII rows plus a legend. Roads must stay clear - scenery placed on
 a path tile can wall off the only route across the world.

@@ -171,7 +171,7 @@ def draw_shadow():
     return c
 
 
-def build_frames(species="sheep", states=None, held=None):
+def build_frames(species="sheep", states=None, held=None, worn=None):
     """[(state, facing, i, cel, shadow, ms, loops), ...] - the biped's shape."""
     shape = SPECIES[species]
     frames = []

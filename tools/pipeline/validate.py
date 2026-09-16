@@ -172,24 +172,30 @@ def run(content, man, tile_canvases):
     #     slash included, or the engine would switch to a sprite with holes.
     for iid, defn in content["items"].items():
         kind = defn.get("kind")
-        if kind not in ("material", "weapon"):
-            _fail("item-kind", f"{defn['_file']}: kind must be material or weapon, "
-                               f"not {kind!r}")
+        if kind not in ("material", "weapon", "armor"):
+            _fail("item-kind", f"{defn['_file']}: kind must be material, weapon or "
+                               f"armor, not {kind!r}")
         if kind == "weapon" and not defn.get("held"):
             _fail("item-kind", f"{defn['_file']}: a weapon needs a \"held\" drawing")
+        if kind == "armor" and not defn.get("worn"):
+            _fail("item-kind", f"{defn['_file']}: armor needs a \"worn\" drawing")
         if kind == "weapon" and not (isinstance(defn.get("damage"), int)
                                      and defn["damage"] > 0):
             _fail("item-kind", f"{defn['_file']}: a weapon needs a positive "
                                f"integer \"damage\"")
     passed.append("item-kind")
+    # looks: "<weapon item>|<armor item>" -> sprite base, every combination the
+    # actor can be seen in. Armed looks must also carry the slash.
     for cid, defn in content["actors"].items():
-        for iid, base in (defn.get("wield") or {}).items():
-            for state in list(defn["states"]) + ["slash"]:
+        for combo, base in (defn.get("looks") or {}).items():
+            weapon, _armor = combo.split("|")
+            states = list(defn["states"]) + (["slash"] if weapon else [])
+            for state in states:
                 for facing in FACINGS:
                     key = f"{base}/{state}/{facing}"
                     if key not in man["anims"]:
                         _fail("item-held",
-                              f"{cid} wielding {iid}: no animation {key!r}")
+                              f"{cid} as {combo!r}: no animation {key!r}")
     passed.append("item-held")
 
     return passed
