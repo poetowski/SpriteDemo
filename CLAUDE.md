@@ -39,10 +39,12 @@ node tools/shot.cjs --map                # 3. and shoot the whole world
    pinned CDN, art inlined as data URIs). Publish it with the `Artifact` tool -
    that URL is the thing the person opens on their phone and plays.
 
-   **Reuse the existing artifact.** `Artifact` with `action: "list"` finds it;
-   `action: "read"` it, then publish with the same `url` so the link they
-   already have keeps working. Publishing without `url` makes a *second*
-   artifact with a different link, which is almost never what is wanted.
+   **Reuse the existing artifact** — it is
+   <https://claude.ai/artifact/Ex6wAvYHUJqhpC5KYqAwQm>. `action: "read"` it
+   first, then publish with that `url`, so the link already on someone's phone
+   keeps working. Publishing without `url` makes a *second* artifact with a
+   different link, which is almost never what is wanted. (`action: "list"` finds
+   it again if this line ever goes stale.)
 
 4. **Reply** with the artifact link, and send `build/shot.png` (and
    `build/map.png` when the map changed) with `SendUserFile` so the result is

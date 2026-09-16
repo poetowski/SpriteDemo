@@ -7,10 +7,13 @@
 <style>
   :root { --bg:#141821; --panel:#1e2531; --ink:#e8e4da; --muted:#8b93a7; --accent:#74c46b; }
   * { box-sizing: border-box; }
+  /* 100% rather than 100vh: when this page is embedded in a host that already
+     pads for the phone's safe area, 100vh would overflow it by exactly that. */
+  html { height: 100%; }
   body {
-    margin: 0; min-height: 100vh; background: var(--bg); color: var(--ink);
+    margin: 0; min-height: 100%; background: var(--bg); color: var(--ink);
     display: flex; flex-direction: column; align-items: center; justify-content: center;
-    gap: 12px; padding: 20px;
+    gap: 12px; padding-block: 20px; padding-inline: 20px;
     font: 14px/1.5 ui-monospace, "Cascadia Code", Consolas, monospace;
   }
   h1 { margin: 0; font-size: 14px; font-weight: 600; letter-spacing: .04em; }
