@@ -4167,7 +4167,7 @@
         28
       ]
     },
-    "item.honey": {
+    "item.wool": {
       "atlas": "items",
       "index": 3,
       "anchor": [
@@ -4175,7 +4175,7 @@
         28
       ]
     },
-    "item.wool": {
+    "item.fish": {
       "atlas": "items",
       "index": 4,
       "anchor": [
@@ -4183,7 +4183,7 @@
         28
       ]
     },
-    "item.ore": {
+    "item.honey": {
       "atlas": "items",
       "index": 5,
       "anchor": [
@@ -4191,7 +4191,7 @@
         28
       ]
     },
-    "item.firewood": {
+    "item.ore": {
       "atlas": "items",
       "index": 6,
       "anchor": [
@@ -4199,7 +4199,7 @@
         28
       ]
     },
-    "item.fish": {
+    "item.firewood": {
       "atlas": "items",
       "index": 7,
       "anchor": [

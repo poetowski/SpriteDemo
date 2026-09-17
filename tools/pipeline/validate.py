@@ -25,6 +25,24 @@ def run(content, man, tile_canvases):
     """Returns the list of gate names that passed, or raises GateError."""
     passed = []
 
+    # 0 - the art scale standard. Every atlas is drawn at 2x; a rig that drifts
+    #     back to the old size, or a new atlas added at the wrong one, fails
+    #     here rather than looking subtly chunky in the game.
+    STANDARD = {"actors": 64, "tiles": 32, "props": 64,
+                "props_big": 96, "items": 32, "fx": 16}
+    for name, meta in man["atlases"].items():
+        w, h = meta["frame"]
+        if w != h:
+            _fail("art-scale", f"atlas {name!r} frame {w}x{h} is not square")
+        want = STANDARD.get(name)
+        if want is None:
+            if w % 32:
+                _fail("art-scale", f"new atlas {name!r} is {w}px; the standard is "
+                                   f"a multiple of the 32px tile")
+        elif w != want:
+            _fail("art-scale", f"atlas {name!r} is {w}px, the standard is {want}px")
+    passed.append("art-scale")
+
     # 1 - every ID is well formed and unique within its kind
     for kind, defs in content.items():
         for cid, defn in defs.items():

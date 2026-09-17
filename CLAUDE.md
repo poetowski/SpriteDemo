@@ -17,7 +17,7 @@ node tools/shot.cjs --map                # 3. and shoot the whole world
 ```
 
 1. **Build.** `tools/build.py` regenerates every atlas, the manifest, the
-   `.aseprite` sources and `game/page.html`. All 21 gates must pass. A gate
+   `.aseprite` sources and `game/page.html`. All 23 gates must pass. A gate
    failure names an authored file - fix that file, never the generated output.
    Needs Pillow: `pip install pillow` if the import fails.
 
@@ -58,15 +58,52 @@ node tools/shot.cjs --map                # 3. and shoot the whole world
 
 Then commit and push to the session's branch.
 
+## The art scale standard
+
+**Everything is drawn at the 2x standard.** These are the frame sizes, and the
+`art-scale` gate enforces them:
+
+| Atlas | Frame | Anchor | Rig |
+|---|---|---|---|
+| `tiles` | 32x32 | - | `gen/tiles.py` |
+| `actors` | 64x64 | `(32, 58)` | `gen/actor.py`, `gen/animal.py` |
+| `props` | 64x64 | `(32, 58)` | `gen/props.py` |
+| `props_big` | 96x96 | `(48, 90)` | `gen/props.py` structures |
+| `items` | 32x32 | `(16, 28)` | `gen/items.py` |
+| `fx` | 16x16 | `(8, 8)` | `gen/fx.py` |
+
+A rig that drifts back to an older size, or a new atlas added at the wrong one,
+fails the build rather than looking subtly chunky in game. **New art is authored
+at these sizes** - never drawn small and scaled up in the pipeline.
+
+### Redraw, never upscale
+
+Doubling coordinates makes every pixel a 2x2 block and adds no detail; it is not
+a resolution change. Moving something up a scale means **redrawing it to use the
+new pixels** - the face gains brows and a white in the eye, the fleece becomes a
+texture rather than four bumps on an outline. There is deliberately no upscale
+helper left in the codebase; wanting one is the signal to redraw.
+
+### Shading
+
+`_shade` lights the 1px rim of a mass; `_form` gives it volume by position
+within its own bounds. Use `_form` on anything bigger than a few pixels, or it
+reads as a flat sticker. **Shade inside the silhouette**: painting shading by
+raw coordinate puts pixels outside the shape - that bug gave rocks striped tails
+and a sack legs, and no assertion catches it. Render a contact sheet and look.
+
+Texture comes from `scatter(seed)`, a fixed deterministic generator, so dense
+detail never shimmers between frames and the build stays reproducible.
+
 ## Where things live
 
 ```
 tools/gen/palette.py   the one palette; a character variant is a key remap
-tools/gen/actor.py     the biped rig      (32x32 frame, anchor [16, 29])
+tools/gen/actor.py     the biped rig      (64x64 frame, anchor [32, 58])
 tools/gen/animal.py    the quadruped rig  (same frame, same contract)
-tools/gen/props.py     props 32x32, structures 48x48 (anchor [24, 45])
-tools/gen/tiles.py     16x16 ground tiles
-tools/pipeline/        aseprite I/O, atlas packing, manifest, the 16 gates
+tools/gen/props.py     props 64x64, structures 96x96 (anchor [48, 90])
+tools/gen/tiles.py     32x32 ground tiles
+tools/pipeline/        aseprite I/O, atlas packing, manifest, the 23 gates
 content/               AUTHORED json - actors, props, tiles, dialogue, maps
 game/main.js           the Phaser scene: no art, no content, no hardcoded ids
 ```
@@ -87,7 +124,7 @@ body on each.
 (`biped` / `quadruped`), `states`, `speed`, `blocks`, `interact` and `wander`
 settings are all content. No JS changes.
 
-**An item** is a 16x16 icon function in `tools/gen/items.py` (added to
+**An item** is a 32x32 icon function in `tools/gen/items.py` (added to
 `ITEMS`), a file in `content/items/` with `kind` `material`, `weapon` or
 `armor`, and a line in the map. A weapon also carries a positive integer
 `damage` (the number a hit floats up) and names what the hand holds

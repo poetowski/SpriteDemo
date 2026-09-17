@@ -13,7 +13,7 @@ tile. Art and collision are authored separately on purpose, so a bush can have
 a canopy wider than the tile it stands on.
 """
 
-from gen.palette import Canvas, scatter, upscale
+from gen.palette import Canvas, scatter
 
 # Props are still drawn at the old scale and blown up in tools/build.py on the
 # way into the atlas. They are next in line to be redrawn natively at 64x64;
@@ -834,23 +834,499 @@ NATIVE = {
 }
 
 
+# --- the village set, redrawn at the 2x standard -----------------------------
+def _staves(c, x0, y0, x1, y1, key, dark, light):
+    """Vertical boards with a lit and a shaded edge - barrels, crates, doors."""
+    c.rect(x0, y0, x1, y1, key)
+    for x in range(x0, x1 + 1, 5):
+        c.col(x, y0, y1, dark)
+    c.col(x0, y0, y1, light)
+    c.row(x0, x1, y0, light)
+    c.row(x0, x1, y1, dark)
+
+
+def barrel64():
+    c = Canvas(NEW, NEW)
+    for i, y in enumerate(range(24, NEW_BASE + 1)):
+        bulge = 2 if 8 < i < 26 else (1 if 4 < i < 30 else 0)
+        c.row(18 - bulge, 45 + bulge, y, "WD")
+    for x in range(19, 46, 5):
+        c.col(x, 24, NEW_BASE, "WDD")           # staves
+    _form(c, "WD", "WDL", "WDD")
+    for y in (30, 46):                          # iron hoops
+        c.rect(16, y, 47, y + 2, "MT")
+        c.row(16, 47, y, "MTL")
+        c.row(16, 47, y + 2, "MTD")
+    c.rect(20, 22, 43, 25, "WDL")               # the lid, seen at an angle
+    c.row(20, 43, 22, "WD")
+    return c.outline()
+
+
+def crate64():
+    c = Canvas(NEW, NEW)
+    _staves(c, 14, 26, 49, NEW_BASE, "WD", "WDD", "WDL")
+    c.rect(14, 26, 49, 29, "WDL")               # a lid board
+    c.rect(14, 52, 49, 55, "WDD")               # and one at the foot
+    for i in range(24):                         # a diagonal brace
+        c.set(16 + i, 54 - i, "WDL")
+        c.set(17 + i, 54 - i, "WDD")
+    return c.outline()
+
+
+def chest64():
+    c = Canvas(NEW, NEW)
+    _staves(c, 13, 34, 50, NEW_BASE, "WD", "WDD", "WDL")
+    _blob(c, 22, (17, 18, 18, 19, 19, 19, 19, 19, 19, 19, 19, 19), "WD", cx=31)
+    _form(c, "WD", "WDL", "WDD")
+    for x in (20, 43):                          # iron bands over the lid
+        c.rect(x, 22, x + 3, NEW_BASE, "MT")
+        c.col(x, 22, NEW_BASE, "MTL")
+        c.col(x + 3, 22, NEW_BASE, "MTD")
+    c.rect(28, 32, 35, 42, "MT")                # the lock plate
+    c.row(28, 35, 32, "MTL")
+    c.rect(30, 36, 33, 39, "MTD")
+    return c.outline()
+
+
+def sack64():
+    c = Canvas(NEW, NEW)
+    # Taller than it is wide, or it reads as a cushion. Folds are painted only
+    # where cloth already is - drawing them by coordinate put lines below the
+    # body and gave it legs.
+    _blob(c, 24, (8, 12, 15, 17, 18, 19, 19, 20, 20, 20, 20, 20, 20,
+                  19, 19, 18, 17, 16, 14, 12, 9), "CLD", cx=31)
+    _form(c, "CLD", "CL", "CLD")
+    for x in (24, 31, 38):
+        for y in range(24, NEW_BASE):
+            if c.get(x, y) is not None:
+                c.set(x, y, "CLD")
+    for i, y in enumerate(range(14, 25)):       # the neck, pinched in
+        w = 7 - i // 2
+        c.row(31 - w, 32 + w, y, "CLD")
+        c.set(31 - w, y, "CL")
+    c.rect(22, 21, 41, 25, "WDD")               # the cord tying it shut
+    c.row(22, 41, 21, "WD")
+    c.rect(28, 10, 35, 15, "CL")                # the gathered top above it
+    return c.outline()
+
+def table64():
+    c = Canvas(NEW, NEW)
+    _plank(c, 8, 28, 55, 34)                    # the top
+    c.row(8, 55, 28, "WDL")
+    for x in (12, 48):                          # legs
+        _post(c, x, 35, NEW_BASE)
+        c.rect(x, 35, x + 3, NEW_BASE, "WD")
+        c.col(x + 3, 35, NEW_BASE, "WDD")
+    c.rect(14, 44, 49, 47, "WD")                # a stretcher between them
+    c.row(14, 49, 44, "WDL")
+    return c.outline()
+
+
+def bench64():
+    c = Canvas(NEW, NEW)
+    _plank(c, 10, 38, 53, 43)
+    for x in (14, 46):
+        c.rect(x, 44, x + 3, NEW_BASE, "WD")
+        c.col(x + 3, 44, NEW_BASE, "WDD")
+    c.rect(12, 24, 51, 28, "WD")                # a back rail
+    c.row(12, 51, 24, "WDL")
+    for x in (14, 46):
+        c.rect(x, 25, x + 3, 40, "WD")
+        c.col(x + 3, 25, 40, "WDD")
+    return c.outline()
+
+
+def anvil64():
+    c = Canvas(NEW, NEW)
+    c.rect(18, 44, 45, NEW_BASE, "WD")          # the block it stands on
+    for x in range(20, 46, 6):
+        c.col(x, 44, NEW_BASE, "WDD")
+    _form(c, "WD", "WDL", "WDD")
+    c.rect(16, 28, 47, 35, "MT")                # the face
+    c.rect(22, 35, 41, 40, "MT")                # the waist
+    c.rect(18, 40, 45, 44, "MT")                # and the foot
+    c.rect(6, 29, 17, 33, "MT")                 # the horn
+    c.rect(6, 30, 12, 32, "MT")
+    _form(c, "MT", "MTL", "MTD")
+    c.row(16, 47, 28, "MTL")
+    return c.outline()
+
+
+def woodpile64():
+    c = Canvas(NEW, NEW)
+    for row, y in enumerate((46, 36, 26)):
+        n = 5 - row
+        for i in range(n):
+            x = 8 + row * 6 + i * 10
+            c.rect(x, y, x + 9, y + 9, "WD")
+            _blob(c, y + 1, (3, 4, 4, 4, 4, 3), "WDD", cx=x + 4)
+            _blob(c, y + 3, (2, 2, 2), "WDL", cx=x + 4)
+            c.set(x + 4, y + 4, "WDD")
+    _shade(c, "WD", "WDL", "WDD")
+    c.rect(0, NEW_BASE + 1, NEW - 1, NEW - 1, None)
+    return c.outline()
+
+
+def campfire64():
+    c = Canvas(NEW, NEW)
+    # Three logs crossing, drawn first so the flame sits down among them.
+    for x0, y0, x1, y1 in ((8, 47, 38, 53), (26, 49, 56, 55), (12, 52, 44, 57)):
+        c.rect(x0, y0, x1, y1, "WD")
+        c.row(x0, x1, y0, "WDL")
+        c.row(x0, x1, y1, "WDD")
+        c.rect(x0, y0, x0 + 4, y1, "WDD")       # a sawn end on each
+    # A tongue of flame: narrow at the tip, widest at the base, with licks.
+    for i, y in enumerate(range(16, 50)):
+        w = 1 + i * 11 // 34
+        c.row(31 - w, 32 + w, y, "FI")
+    for i, y in enumerate(range(26, 50)):
+        w = i * 7 // 24
+        c.row(30 - w, 31 + w, y, "FIL")
+    for i, y in enumerate(range(38, 50)):
+        w = i * 4 // 12
+        c.row(30 - w, 31 + w, y, "EW")          # the white heart of it
+    for x, y, h in ((22, 30, 8), (41, 34, 7), (25, 40, 6)):
+        for k in range(h):                      # licks curling off the sides
+            c.set(x + k // 3, y + k, "FI")
+            c.set(x + k // 3 + 1, y + k, "FID")
+    for x, y in ((16, 24), (46, 20), (20, 14), (44, 30)):
+        c.rect(x, y, x + 1, y + 2, "FID")       # embers drifting up
+    return c.outline()
+
+def beehive64():
+    c = Canvas(NEW, NEW)
+    for i, (y, w) in enumerate(((20, 9), (27, 13), (35, 17), (44, 20),
+                                (51, 21))):
+        c.rect(31 - w, y, 32 + w, min(y + 8, NEW_BASE), "TH")
+        c.row(31 - w, 32 + w, y, "THL")         # coils of straw, each lit
+        c.row(31 - w, 32 + w, min(y + 7, NEW_BASE), "THD")
+    _form(c, "TH", "THL", "THD")
+    c.rect(26, 50, 37, NEW_BASE, "WDD")         # the entrance
+    c.rect(28, 53, 35, NEW_BASE, "OL")
+    for x, y in ((14, 30), (48, 40), (20, 18)):
+        c.rect(x, y, x + 2, y + 1, "FL")        # bees
+    return c.outline()
+
+
+def flower_pot64():
+    c = Canvas(NEW, NEW)
+    for i, y in enumerate(range(36, NEW_BASE + 1)):
+        taper = i // 4
+        c.row(20 + taper, 43 - taper, y, "RF")
+    c.rect(17, 32, 46, 38, "RF")                # the rim
+    _form(c, "RF", "RFL", "RFD")
+    c.row(17, 46, 32, "RFL")
+    c.rect(22, 34, 41, 37, "WDD")               # soil
+    c.rect(29, 18, 32, 36, "BU")                # stem
+    c.rect(33, 24, 40, 28, "BU")                # leaves
+    c.rect(21, 28, 28, 32, "BU")
+    _blob(c, 10, (3, 5, 6, 6, 5, 3), "FL", cx=30)
+    c.rect(28, 13, 31, 16, "RF")
+    return c.outline()
+
+
+def lamp_post64():
+    c = Canvas(NEW, NEW)
+    c.rect(28, 26, 35, NEW_BASE, "MT")          # the post
+    c.col(28, 26, NEW_BASE, "MTL")
+    c.col(35, 26, NEW_BASE, "MTD")
+    c.rect(24, 54, 39, NEW_BASE, "MTD")         # its foot
+    c.rect(22, 12, 41, 28, "MT")                # the lantern housing
+    c.rect(25, 15, 38, 25, "FL")                # the light inside
+    c.rect(27, 17, 36, 23, "EW")
+    c.row(22, 41, 12, "MTL")
+    c.rect(19, 6, 44, 12, "MTD")                # a little cap over it
+    c.row(19, 44, 6, "MT")
+    c.rect(30, 2, 33, 6, "MTD")
+    return c.outline()
+
+
+def scarecrow64():
+    c = Canvas(NEW, NEW)
+    c.rect(29, 26, 34, NEW_BASE, "WD")          # the post
+    c.col(34, 26, NEW_BASE, "WDD")
+    c.rect(10, 30, 53, 35, "WD")                # the crossbar
+    c.row(10, 53, 30, "WDL")
+    c.row(10, 53, 35, "WDD")
+    # Straw stuffed into a sack, sitting on the post - taller than wide, with
+    # the neck of it going down into the collar.
+    _blob(c, 4, (3, 5, 7, 8, 8, 9, 9, 9, 8, 8, 7, 6, 5), "TH", cx=31)
+    c.rect(28, 17, 35, 26, "TH")
+    _form(c, "TH", "THL", "THD")
+    c.rect(18, 24, 45, 50, "CL")                # the shirt, over the crossbar
+    c.rect(18, 24, 45, 29, "CLD")               # its collar
+    for x in range(21, 46, 6):
+        c.col(x, 30, 49, "CLD")
+    c.row(18, 45, 50, "CLD")
+    c.rect(11, 36, 21, 44, "TH")                # straw out of the cuffs
+    c.rect(42, 36, 52, 44, "TH")
+    c.rect(25, 50, 38, NEW_BASE, "TH")          # and out of the hem
+    c.rect(26, 8, 28, 11, "OL")                 # two stitched eyes
+    c.rect(35, 8, 37, 11, "OL")
+    for x in range(28, 36, 3):
+        c.set(x, 14, "OL")                      # a stitched mouth
+    return c.outline()
+
+def sign64():
+    c = Canvas(NEW, NEW)
+    c.rect(29, 36, 34, NEW_BASE, "WD")
+    c.col(34, 36, NEW_BASE, "WDD")
+    _plank(c, 14, 20, 49, 38)
+    c.rect(14, 20, 49, 23, "WDL")
+    c.rect(14, 35, 49, 38, "WDD")
+    for y in (26, 30):                          # carved lines, not readable text
+        c.rect(19, y, 44, y + 2, "WDD")
+    return c.outline()
+
+
+def signpost64():
+    c = Canvas(NEW, NEW)
+    c.rect(29, 12, 34, NEW_BASE, "WD")
+    c.col(34, 12, NEW_BASE, "WDD")
+    c.rect(26, 8, 37, 13, "WDL")                # a cap on the post
+    for y, x0, x1, point in ((18, 4, 33, "left"), (32, 30, 59, "right")):
+        c.rect(x0, y, x1, y + 9, "WD")          # two arms, pointing opposite
+        c.row(x0, x1, y, "WDL")
+        c.row(x0, x1, y + 9, "WDD")
+        for i in range(5):                      # the pointed end
+            if point == "left":
+                c.col(x0 - 1 + i, y + i, y + 9 - i, "WD")
+                c.set(x0 - 1 + i, y + i, "WDL")
+            else:
+                c.col(x1 + 1 - i, y + i, y + 9 - i, "WD")
+                c.set(x1 + 1 - i, y + i, "WDL")
+        c.rect(x0 + 6, y + 3, x1 - 6, y + 5, "WDD")
+    return c.outline()
+
+
+def statue64():
+    c = Canvas(NEW, NEW)
+    c.rect(12, 50, 51, NEW_BASE, "ST")          # the plinth
+    c.row(12, 51, 50, "STL")
+    c.row(12, 51, NEW_BASE, "STD")
+    c.rect(16, 44, 47, 51, "ST")
+    c.row(16, 47, 44, "STL")
+
+    for i, y in enumerate(range(26, 45)):       # a robe flaring to the base
+        w = 8 + i // 2
+        c.row(31 - w, 32 + w, y, "ST")
+    c.rect(24, 20, 39, 28, "ST")                # shoulders
+    _blob(c, 8, (4, 6, 7, 7, 7, 6, 5), "ST", cx=31)          # head
+    c.rect(29, 15, 34, 21, "ST")                # neck
+    for x0 in (17, 41):                         # arms, with a gap either side
+        c.rect(x0, 23, x0 + 5, 40, "ST")
+    _form(c, "ST", "STL", "STD")
+    _shade(c, "ST", "STL", "STD")
+    c.rect(26, 11, 28, 13, "STD")               # features, worn almost away
+    c.rect(35, 11, 37, 13, "STD")
+    c.row(29, 34, 28, "STD")                    # a fold at the collar
+    for y in range(32, 44, 4):                  # and down the robe
+        c.rect(26, y, 37, y + 1, "STD")
+    return c.outline()
+
+def tombstone64():
+    c = Canvas(NEW, NEW)
+    c.rect(16, 24, 47, NEW_BASE, "ST")
+    _blob(c, 14, (9, 12, 14, 15, 15, 16), "ST", cx=31)      # the rounded top
+    c.rect(12, 52, 51, NEW_BASE, "ST")                      # a base in the turf
+    _form(c, "ST", "STL", "STD")
+    _shade(c, "ST", "STL", "STD")
+    for y in (30, 36, 42):                      # weathered inscription
+        c.rect(22, y, 41, y + 2, "STD")
+    c.rect(26, 46, 37, 48, "STD")
+    return c.outline()
+
+
+def trough64():
+    c = Canvas(NEW, NEW)
+    c.rect(6, 30, 57, NEW_BASE, "WD")
+    c.rect(10, 34, 53, 50, "WA")                # water in it
+    c.rect(10, 34, 53, 37, "WAL")
+    for x in range(14, 52, 9):
+        c.rect(x, 40, x + 4, 41, "WAL")         # ripples
+    c.rect(6, 30, 57, 34, "WDL")                # the rim
+    c.rect(6, 50, 57, NEW_BASE, "WD")
+    c.row(6, 57, NEW_BASE, "WDD")
+    for x in (9, 52):                           # end boards
+        c.rect(x - 3, 30, x + 3, NEW_BASE, "WD")
+        c.col(x + 3, 30, NEW_BASE, "WDD")
+    return c.outline()
+
+
+def well64():
+    c = Canvas(NEW, NEW)
+    c.rect(12, 36, 51, NEW_BASE, "ST")          # the ring wall
+    for y in (42, 50):
+        c.row(12, 51, y, "STD")
+    for x in range(16, 52, 10):
+        c.col(x, 36, 42, "STD")
+        c.col(x + 5, 42, 50, "STD")
+    _form(c, "ST", "STL", "STD")
+    c.rect(18, 36, 45, 44, "OL")                # the dark of the shaft
+    c.rect(20, 38, 43, 43, "OL")
+    for x in (14, 47):                          # posts holding the roof
+        c.rect(x, 12, x + 4, 38, "WD")
+        c.col(x + 4, 12, 38, "WDD")
+    _taper(c, 2, 14, 6, 24, "TH", cx=31)        # a thatched roof
+    _form(c, "TH", "THL", "THD")
+    c.rect(26, 16, 37, 22, "WD")                # the winch drum
+    c.col(37, 16, 22, "WDD")
+    c.col(31, 23, 36, "MTD")                    # rope down into the dark
+    return c.outline()
+
+
+NATIVE.update({
+    "prop.barrel": barrel64,
+    "prop.crate": crate64,
+    "prop.chest": chest64,
+    "prop.sack": sack64,
+    "prop.table": table64,
+    "prop.bench": bench64,
+    "prop.anvil": anvil64,
+    "prop.woodpile": woodpile64,
+    "prop.campfire": campfire64,
+    "prop.beehive": beehive64,
+    "prop.flower_pot": flower_pot64,
+    "prop.lamp_post": lamp_post64,
+    "prop.scarecrow": scarecrow64,
+    "prop.sign": sign64,
+    "prop.signpost": signpost64,
+    "prop.statue": statue64,
+    "prop.tombstone": tombstone64,
+    "prop.trough": trough64,
+    "prop.well": well64,
+})
+
+
+# --- the structures, redrawn at 96x96 ---------------------------------------
+BIG_NEW = 96
+BIG_NEW_BASE = 89
+
+
+def _wall(c, x0, y0, x1, y1, key, light, dark):
+    c.rect(x0, y0, x1, y1, key)
+    c.row(x0, x1, y0, light)
+    c.row(x0, x1, y1, dark)
+    c.col(x0, y0, y1, light)
+    c.col(x1, y0, y1, dark)
+
+
+def _roof(c, y0, y1, w0, w1, cx, key, light, dark):
+    span = max(1, y1 - y0)
+    for y in range(y0, y1 + 1):
+        w = w0 + (w1 - w0) * (y - y0) // span
+        c.row(cx - w, cx + w, y, key)
+        c.set(cx - w, y, light)
+        c.set(cx + w, y, dark)
+    c.row(cx - w1, cx + w1, y1, dark)
+
+
+def house64():
+    c = Canvas(BIG_NEW, BIG_NEW)
+    _wall(c, 14, 44, 81, BIG_NEW_BASE, "CL", "CL", "CLD")
+    for x in range(18, 82, 12):                 # timbers in the plaster
+        c.col(x, 46, BIG_NEW_BASE - 1, "WDD")
+    c.rect(14, 44, 81, 47, "WDD")
+    _roof(c, 12, 46, 6, 44, 47, "RF", "RFL", "RFD")
+    for y in range(14, 46, 4):                  # courses of tile
+        c.row(47 - (y - 12), 47 + (y - 12), y, "RFD")
+    c.rect(40, 62, 55, BIG_NEW_BASE, "WD")      # the door
+    c.rect(42, 64, 53, BIG_NEW_BASE, "WDD")
+    c.set(51, 76, "MTL")
+    for x in (22, 66):                          # two shuttered windows
+        c.rect(x, 56, x + 13, 70, "WDD")
+        c.rect(x + 2, 58, x + 11, 68, "FL")
+        c.col(x + 6, 58, 68, "WDD")
+        c.row(x + 2, x + 11, 63, "WDD")
+    c.rect(60, 4, 71, 22, "ST")                 # a chimney
+    _form(c, "ST", "STL", "STD")
+    return c.outline()
+
+
+def barn64():
+    c = Canvas(BIG_NEW, BIG_NEW)
+    _wall(c, 8, 38, 87, BIG_NEW_BASE, "RF", "RFL", "RFD")
+    for x in range(12, 88, 9):                  # board and batten
+        c.col(x, 40, BIG_NEW_BASE - 1, "RFD")
+    _roof(c, 8, 40, 8, 46, 47, "WD", "WDL", "WDD")
+    for y in range(10, 40, 5):
+        c.row(47 - (y - 6), 47 + (y - 6), y, "WDD")
+    c.rect(30, 52, 65, BIG_NEW_BASE, "WD")      # the big doors
+    c.col(47, 52, BIG_NEW_BASE, "WDD")
+    c.rect(30, 52, 65, 55, "WDD")
+    for i in range(18):                         # cross braces on each leaf
+        c.set(32 + i, 86 - i, "WDD")
+        c.set(63 - i, 86 - i, "WDD")
+    c.rect(41, 22, 54, 34, "WDD")               # the hay door up in the gable
+    c.rect(43, 24, 52, 32, "OL")
+    return c.outline()
+
+
+def tower64():
+    c = Canvas(BIG_NEW, BIG_NEW)
+    _wall(c, 26, 22, 69, BIG_NEW_BASE, "ST", "STL", "STD")
+    for i, y in enumerate(range(24, BIG_NEW_BASE, 8)):   # courses, staggered
+        c.row(26, 69, y, "STD")
+        for x in range(30 + (i % 2) * 10, 70, 20):
+            c.col(x, y + 1, y + 7, "STD")
+    _form(c, "ST", "STL", "STD")
+    c.rect(20, 14, 75, 24, "ST")                # the parapet oversails
+    for x in range(20, 76, 11):                 # battlements
+        c.rect(x, 6, x + 6, 15, "ST")
+    _shade(c, "ST", "STL", "STD")
+    for y in (40, 58):                          # arrow slits
+        c.rect(45, y, 50, y + 12, "OL")
+        c.rect(46, y + 1, 49, y + 11, "OL")
+    c.rect(38, 72, 57, BIG_NEW_BASE, "WD")      # a studded door
+    c.rect(40, 74, 55, BIG_NEW_BASE, "WDD")
+    for x in (43, 52):
+        c.col(x, 76, 86, "MTD")
+    return c.outline()
+
+
+def windmill64():
+    c = Canvas(BIG_NEW, BIG_NEW)
+    for i, y in enumerate(range(36, BIG_NEW_BASE + 1)):  # a tapering tower
+        t = (BIG_NEW_BASE - y) // 6
+        c.row(26 + t, 69 - t, y, "CL")
+    for y in range(40, BIG_NEW_BASE, 7):
+        c.row(27, 68, y, "CLD")
+    _form(c, "CL", "CL", "CLD")
+    _roof(c, 22, 40, 10, 24, 47, "WD", "WDL", "WDD")     # the cap
+    c.rect(40, 70, 55, BIG_NEW_BASE, "WD")               # door
+    c.rect(42, 72, 53, BIG_NEW_BASE, "WDD")
+    c.rect(43, 50, 52, 60, "WDD")                        # a window
+    c.rect(45, 52, 50, 58, "FL")
+    for dx, dy in ((1, 1), (1, -1), (-1, 1), (-1, -1)):  # four sails
+        for i in range(4, 34):
+            c.set(47 + dx * i, 30 + dy * i, "WD")
+            c.set(47 + dx * i + dx, 30 + dy * i, "WDD")
+            if i % 4:                                    # the lattice of slats
+                c.set(47 + dx * i - dy * 3, 30 + dy * i + dx * 3, "WDL")
+                c.set(47 + dx * i - dy * 5, 30 + dy * i + dx * 5, "WDL")
+    c.rect(43, 26, 51, 34, "WDD")                        # the hub
+    c.rect(45, 28, 49, 32, "MTD")
+    return c.outline()
+
+
+BIG_NATIVE = {
+    "prop.house": house64,
+    "prop.barn": barn64,
+    "prop.tower": tower64,
+    "prop.windmill": windmill64,
+}
+
+
 def build_props():
     """[(id, Canvas), ...] in a stable order - the order is the atlas index.
 
-    Redrawn props come out at 64x64 as drawn; the rest are still at 32x32 and
-    are blown up here, so every entry leaves at the 2x standard whether or not
-    it has been redrawn yet.
+    Every prop is drawn at the 2x standard; NATIVE is the whole set. PROPS
+    below still holds the original 32x32 drawings, kept as the reference the
+    redraws were made from rather than as anything the build ships.
     """
-    out = []
-    for pid in PROP_ORDER:
-        if pid in NATIVE:
-            out.append((pid, NATIVE[pid]()))
-        else:
-            out.append((pid, upscale(PROPS[pid]())))
-    return out
+    return [(pid, NATIVE[pid]()) for pid in PROP_ORDER]
 
 
 def build_big_props():
-    """The structures, same contract, their own atlas. Still at the old drawing
-    scale, so blown up to the 2x standard on the way out."""
-    return [(pid, upscale(BIG_PROPS[pid]())) for pid in BIG_PROP_ORDER]
+    """The structures, same contract, their own atlas - redrawn at 96x96."""
+    return [(pid, BIG_NATIVE[pid]()) for pid in BIG_PROP_ORDER]

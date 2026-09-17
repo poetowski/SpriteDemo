@@ -28,7 +28,7 @@ sys.path.insert(0, TOOLS)
 
 from gen import (actor, animal, fx as fx_gen, items as items_gen,  # noqa: E402
                  props as props_gen, tiles as tiles_gen)
-from gen.palette import PALETTE, VARIANTS, resolve, upscale                   # noqa: E402
+from gen.palette import PALETTE, VARIANTS, resolve                   # noqa: E402
 import make_page                                                     # noqa: E402
 from pipeline import aseprite, manifest as manifest_mod, validate    # noqa: E402
 from pipeline.atlas import Atlas                                     # noqa: E402
@@ -70,9 +70,6 @@ def build_atlases(sprite_rigs):
     # ART SCALE. Rigs redrawn natively at the 2x standard pass their canvases
     # through untouched; the ones still waiting are blown up here, in one
     # visible place, so it is never a mystery which is which.
-    # Redrawn natively at the 2x standard: actors, tiles and the nature props
-    # (props_gen.NATIVE lists which). Still blown up on the way in: the village
-    # props, the structures, items and fx.
 
     props = Atlas("props", actor.FRAME, actor.FRAME, 8)
     prop_canvases = {}
@@ -91,22 +88,18 @@ def build_atlases(sprite_rigs):
         big_canvases[pid] = canvas
 
     # Items are 16x16: the same cell lies on the ground and sits in the HUD.
-    items = Atlas("items", items_gen.SIZE * 2, items_gen.SIZE * 2, 8)
+    items = Atlas("items", items_gen.SIZE, items_gen.SIZE, 8)
     item_canvases = {}
-    item_anchor = (items_gen.ANCHOR[0] * 2, items_gen.ANCHOR[1] * 2)
     for iid, canvas in items_gen.build_items():
-        scaled = upscale(canvas)
-        items.add(iid, [scaled], item_anchor)
-        item_canvases[iid] = scaled
+        items.add(iid, [canvas], items_gen.ANCHOR)
+        item_canvases[iid] = canvas
 
     # Effect glyphs: the digits a hit floats up, and the spark round them.
-    fx = Atlas("fx", fx_gen.SIZE * 2, fx_gen.SIZE * 2, 11)
+    fx = Atlas("fx", fx_gen.SIZE, fx_gen.SIZE, 11)
     fx_canvases = {}
-    fx_anchor = (fx_gen.ANCHOR[0] * 2, fx_gen.ANCHOR[1] * 2)
     for gid, canvas in fx_gen.build_fx():
-        scaled = upscale(canvas)
-        fx.add(gid, [scaled], fx_anchor)
-        fx_canvases[gid] = scaled
+        fx.add(gid, [canvas], fx_gen.ANCHOR)
+        fx_canvases[gid] = canvas
 
     sheets = [actors, tiles, props, big, items, fx]
     sprites = {}
@@ -149,8 +142,8 @@ def write_aseprite(by_sprite, tile_canvases, prop_canvases):
             ("tiles", tile_canvases, tiles_gen.SIZE),
             ("props", prop_canvases["props"], actor.FRAME),
             ("props_big", prop_canvases["props_big"], props_gen.BIG_FRAME * 2),
-            ("items", prop_canvases["items"], items_gen.SIZE * 2),
-            ("fx", prop_canvases["fx"], fx_gen.SIZE * 2)):
+            ("items", prop_canvases["items"], items_gen.SIZE),
+            ("fx", prop_canvases["fx"], fx_gen.SIZE)):
         path = os.path.join(out, f"{name}.aseprite")
         items = list(canvases.items())
         aseprite.write(
