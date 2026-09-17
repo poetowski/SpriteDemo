@@ -319,24 +319,37 @@ function buildPalettes() {
     terrain.append(el);
   }
 
+  // Objects are grouped by what they are, so the tab is three short lists
+  // rather than one wall of fifty icons.
   const objects = $("pal-objects");
   objects.replaceChildren();
   const groups = [["props", M.props], ["actors", M.actors], ["items", M.items]];
   for (const [kind, table] of groups) {
-    for (const id of Object.keys(table)) {
-      const rec = spriteFor(id);
-      if (!rec) continue;
+    const ids = Object.keys(table).filter((id) => spriteFor(id));
+    if (!ids.length) continue;
+    const group = document.createElement("div");
+    group.className = "group";
+    const head = document.createElement("h3");
+    head.append(document.createTextNode(kind));
+    const count = document.createElement("em");
+    count.textContent = ids.length;
+    head.append(count);
+    const grid = document.createElement("div");
+    grid.className = "palette";
+    for (const id of ids) {
       const el = document.createElement("div");
       el.className = "swatch " + (blocksOf(id) ? "solid" : "ground");
-      el.append(swatchCanvas(rec, 48));
+      el.append(swatchCanvas(spriteFor(id), 48));
       const label = document.createElement("span");
       label.textContent = id.split(".")[1];
       label.title = `${id} (${kind}, ${blocksOf(id) ? "solid" : "walkable"})`;
       el.append(label);
       el.onclick = () => { state.object = id; setTool("place"); markSelection(); };
       el.dataset.id = id;
-      objects.append(el);
+      grid.append(el);
     }
+    group.append(head, grid);
+    objects.append(group);
   }
   state.terrain = Object.keys(M.tiles)[0];
   state.object = Object.keys(M.props)[0];
@@ -544,6 +557,10 @@ function setTool(name) {
   for (const t of ["paint", "place", "erase", "spawn"]) {
     $(`t-${t}`).classList.toggle("on", t === name);
   }
+  // Terrain and objects are exclusive: the tool you are holding decides which
+  // set is on screen, so the panel never shows a palette you cannot paint with.
+  if (name === "paint") showTab(true);
+  else if (name === "place") showTab(false);
 }
 
 function message(text, bad = false) {
@@ -589,8 +606,8 @@ function wire() {
   $("save").onclick = save;
   $("build").onclick = saveAndBuild;
   $("resize").onclick = () => resize(Number($("mapW").value), Number($("mapH").value));
-  $("tab-terrain").onclick = () => showTab(true);
-  $("tab-objects").onclick = () => showTab(false);
+  $("tab-terrain").onclick = () => setTool("paint");
+  $("tab-objects").onclick = () => setTool("place");
 
   addEventListener("keydown", (e) => {
     if (e.target.tagName === "INPUT" || e.target.tagName === "SELECT") return;
@@ -616,7 +633,8 @@ function showTab(terrain) {
 // than a copy of its logic. (A top-level `const` in a classic script is not a
 // window property, hence the explicit handle.)
 Object.assign(window, {
-  editor: state, openMap, terrainAt, indexAt, place, erase, undo, save, setTool, render,
+  editor: state, openMap, terrainAt, indexAt, paint, place, erase, applyAt,
+  snapshot, undo, save, setTool, showTab, render,
 });
 
 boot().catch((e) => message(String(e.message || e), true));

@@ -82,6 +82,30 @@ function dropScratch() {
         boot.solidSwatches > 0 && boot.groundSwatches > 0,
         `${boot.solidSwatches} solid, ${boot.groundSwatches} walkable`);
 
+  // The two sets are exclusive: what is on screen must follow the tool, and
+  // `hidden` must actually hide (an author display rule beats the UA one).
+  const shown = () => page.evaluate(() => {
+    const vis = (id) => getComputedStyle(document.getElementById(id)).display !== 'none';
+    return { terrain: vis('pal-terrain'), objects: vis('pal-objects'),
+             groups: [...document.querySelectorAll('#pal-objects .group h3')]
+               .map((h) => h.firstChild.textContent) };
+  });
+  await page.evaluate(() => setTool('paint'));
+  const onPaint = await shown();
+  check('paint shows terrain only', onPaint.terrain && !onPaint.objects,
+        `terrain=${onPaint.terrain} objects=${onPaint.objects}`);
+  await page.evaluate(() => setTool('place'));
+  const onPlace = await shown();
+  check('place shows objects only', onPlace.objects && !onPlace.terrain,
+        `terrain=${onPlace.terrain} objects=${onPlace.objects}`);
+  check('objects are grouped by kind',
+        onPlace.groups.join(',') === 'props,actors,items', onPlace.groups.join(','));
+  await page.evaluate(() => document.getElementById('tab-terrain').click());
+  const viaTab = await page.evaluate(() => ({ tool: state.tool,
+    terrain: getComputedStyle(document.getElementById('pal-terrain')).display !== 'none' }));
+  check('the terrain tab picks up the paint tool', viaTab.tool === 'paint' && viaTab.terrain,
+        `tool=${viaTab.tool}`);
+
   // A click at a cell, through the page's real pointer handlers.
   const click = (cell, button = 0) => page.evaluate(([c, b]) => {
     const cv = document.getElementById('view');
@@ -130,7 +154,9 @@ function dropScratch() {
       && state.M.tiles[terrainAt(e.tile[0], e.tile[1])].walkable);
     const before = state.map.entities.length;
     state.terrain = 'tile.water'; state.brush = 1; setTool('paint');
-    paint(victim.tile[0], victim.tile[1]);
+    // applyAt, not paint: it takes the undo snapshot, so the undo below
+    // reverts this flood rather than an earlier edit.
+    applyAt(victim.tile[0], victim.tile[1], 0);
     return { def: victim.def, before, after: state.map.entities.length,
              msg: document.getElementById('msg').textContent };
   });
@@ -211,7 +237,6 @@ function dropScratch() {
     await page.evaluate(() => {
       state.zoom = 1; state.object = 'prop.tree_oak'; setTool('place');
       document.getElementById('zoom').value = '1';
-      showTab(false);
       markSelection(); render();
       message('ready');
     });

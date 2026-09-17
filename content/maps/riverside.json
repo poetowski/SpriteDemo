@@ -8,8 +8,8 @@
   ],
   "spawn": {
     "tile": [
-      19,
-      3
+      20,
+      14
     ],
     "facing": "down"
   },
@@ -25,27 +25,27 @@
   "ground": [
     ".t............................",
     ".........t.....,..............",
-    ".t....t..t....................",
-    "ttt...tt.t...,.....pppp.......",
-    "t..t.tt..t........pppppp......",
-    "....tt..tt......pppppppppp....",
-    ".tt............pppp....pppp...",
-    ".ttt.t.........ppp...,..ppp...",
-    ".t..ttt.......ppp........pp...",
-    "......ttt.....pp.......,.ppp..",
-    "..tt.t.t.t....pp..........pp..",
-    ".t...t.t.....ppp..........pp..",
-    ".....t.t.....pp...........pp..",
-    ".ttt........ppp....,.....ppp..",
-    "...tt......dppp.........ppp...",
-    ".....,....ppppd..,.....ppp....",
-    "..........pppd........ppp.....",
-    ".........ppp..........ppp....,",
-    "........ppp............ppp....",
+    ".t....t.pppp..................",
+    "ttt...tppppp.,.....pppp.......",
+    "t.dddttppppp......pppppp......",
+    "..dddt.pppppp...pppppppppp....",
+    ".tddd..pppppp..pppp....pppp...",
+    ".tdddd.pppppp..ppp...,..ppp...",
+    ".t.dddtpppp...ppp........pp...",
+    "...dddddt.....pp.......,.ppp..",
+    "..ttddddppppp.pp..........pp..",
+    ".t..ddddpppppppp..........pp..",
+    "....ddddppppp,p...........pp..",
+    ".ttt...ppppppp,....,.....ppp..",
+    "...tt..ppppppppd........ppp...",
+    ".....,.pppppppppp,.....ppp....",
+    ".........pppppppp#....ppp.....",
+    ".........ppp..ppp##...ppp....,",
+    "........ppp.....##.....ppp....",
     ".......ppp..............ppp,..",
     "...ppppppd...............ppp..",
     "ppppppppdd...........tttttpppp",
-    "pppp#ddddd..........tt~~~ttppp",
+    "pppp#ddddd..........tt,~~ttppp",
     "..#####............t~~~~~~~t.p",
     ".######............~~~~~~~~~tt",
     "######.##.........t~~~~~~~~~tt",
@@ -58,13 +58,6 @@
     {
       "def": "prop.tree_pine",
       "tile": [
-        3,
-        7
-      ]
-    },
-    {
-      "def": "prop.tree_pine",
-      "tile": [
         2,
         2
       ]
@@ -73,13 +66,6 @@
       "def": "prop.tree_pine",
       "tile": [
         5,
-        9
-      ]
-    },
-    {
-      "def": "prop.tree_oak",
-      "tile": [
-        4,
         9
       ]
     },
@@ -100,13 +86,6 @@
     {
       "def": "prop.tree_oak",
       "tile": [
-        1,
-        6
-      ]
-    },
-    {
-      "def": "prop.tree_oak",
-      "tile": [
         8,
         3
       ]
@@ -116,13 +95,6 @@
       "tile": [
         2,
         3
-      ]
-    },
-    {
-      "def": "prop.tree_pine",
-      "tile": [
-        3,
-        4
       ]
     },
     {
@@ -149,13 +121,6 @@
     {
       "def": "prop.tree_pine",
       "tile": [
-        3,
-        8
-      ]
-    },
-    {
-      "def": "prop.tree_pine",
-      "tile": [
         2,
         11
       ]
@@ -163,29 +128,8 @@
     {
       "def": "prop.tree_pine",
       "tile": [
-        5,
-        2
-      ]
-    },
-    {
-      "def": "prop.tree_oak",
-      "tile": [
-        4,
-        4
-      ]
-    },
-    {
-      "def": "prop.tree_pine",
-      "tile": [
         7,
         9
-      ]
-    },
-    {
-      "def": "prop.tree_pine",
-      "tile": [
-        4,
-        6
       ]
     },
     {
@@ -200,13 +144,6 @@
       "tile": [
         7,
         10
-      ]
-    },
-    {
-      "def": "prop.tree_oak",
-      "tile": [
-        6,
-        7
       ]
     },
     {
@@ -242,13 +179,6 @@
       "tile": [
         6,
         10
-      ]
-    },
-    {
-      "def": "prop.bush",
-      "tile": [
-        4,
-        7
       ]
     },
     {
@@ -270,20 +200,6 @@
       "tile": [
         6,
         3
-      ]
-    },
-    {
-      "def": "prop.bush",
-      "tile": [
-        6,
-        6
-      ]
-    },
-    {
-      "def": "prop.bush",
-      "tile": [
-        1,
-        8
       ]
     },
     {
@@ -304,13 +220,6 @@
       "def": "prop.bush",
       "tile": [
         2,
-        5
-      ]
-    },
-    {
-      "def": "prop.bush",
-      "tile": [
-        2,
         6
       ]
     },
@@ -338,27 +247,6 @@
     {
       "def": "prop.bush",
       "tile": [
-        10,
-        12
-      ]
-    },
-    {
-      "def": "prop.bush",
-      "tile": [
-        4,
-        10
-      ]
-    },
-    {
-      "def": "prop.bush",
-      "tile": [
-        2,
-        8
-      ]
-    },
-    {
-      "def": "prop.bush",
-      "tile": [
         1,
         13
       ]
@@ -373,29 +261,8 @@
     {
       "def": "prop.bush",
       "tile": [
-        4,
-        1
-      ]
-    },
-    {
-      "def": "prop.bush",
-      "tile": [
         6,
         4
-      ]
-    },
-    {
-      "def": "prop.bush",
-      "tile": [
-        5,
-        11
-      ]
-    },
-    {
-      "def": "prop.bush",
-      "tile": [
-        4,
-        8
       ]
     },
     {
@@ -417,13 +284,6 @@
       "tile": [
         8,
         9
-      ]
-    },
-    {
-      "def": "prop.bush",
-      "tile": [
-        7,
-        7
       ]
     },
     {
@@ -445,13 +305,6 @@
       "tile": [
         12,
         1
-      ]
-    },
-    {
-      "def": "prop.bush",
-      "tile": [
-        0,
-        7
       ]
     },
     {
@@ -585,13 +438,6 @@
       "tile": [
         26,
         5
-      ]
-    },
-    {
-      "def": "prop.bush",
-      "tile": [
-        4,
-        13
       ]
     },
     {
@@ -826,13 +672,6 @@
       ]
     },
     {
-      "def": "prop.stump",
-      "tile": [
-        4,
-        3
-      ]
-    },
-    {
       "def": "prop.log",
       "tile": [
         0,
@@ -879,13 +718,6 @@
       "tile": [
         16,
         13
-      ]
-    },
-    {
-      "def": "prop.log",
-      "tile": [
-        7,
-        8
       ]
     },
     {
@@ -1082,6 +914,160 @@
       "tile": [
         10,
         20
+      ]
+    },
+    {
+      "def": "prop.barn",
+      "tile": [
+        13,
+        9
+      ]
+    },
+    {
+      "def": "prop.table",
+      "tile": [
+        16,
+        22
+      ]
+    },
+    {
+      "def": "item.coin",
+      "tile": [
+        14,
+        26
+      ]
+    },
+    {
+      "def": "item.coin",
+      "tile": [
+        15,
+        25
+      ]
+    },
+    {
+      "def": "item.coin",
+      "tile": [
+        15,
+        25
+      ]
+    },
+    {
+      "def": "item.coin",
+      "tile": [
+        13,
+        25
+      ]
+    },
+    {
+      "def": "item.coin",
+      "tile": [
+        14,
+        25
+      ]
+    },
+    {
+      "def": "item.wool",
+      "tile": [
+        2,
+        16
+      ]
+    },
+    {
+      "def": "prop.tower",
+      "tile": [
+        20,
+        18
+      ]
+    },
+    {
+      "def": "prop.log",
+      "tile": [
+        11,
+        18
+      ]
+    },
+    {
+      "def": "prop.tree_pine",
+      "tile": [
+        26,
+        9
+      ]
+    },
+    {
+      "def": "prop.tree_pine",
+      "tile": [
+        23,
+        10
+      ]
+    },
+    {
+      "def": "prop.tree_pine",
+      "tile": [
+        21,
+        11
+      ]
+    },
+    {
+      "def": "prop.tree_pine",
+      "tile": [
+        23,
+        11
+      ]
+    },
+    {
+      "def": "prop.tree_pine",
+      "tile": [
+        24,
+        5
+      ]
+    },
+    {
+      "def": "prop.tree_pine",
+      "tile": [
+        22,
+        3
+      ]
+    },
+    {
+      "def": "npc.arne",
+      "tile": [
+        12,
+        10
+      ]
+    },
+    {
+      "def": "npc.arne",
+      "tile": [
+        15,
+        11
+      ]
+    },
+    {
+      "def": "npc.arne",
+      "tile": [
+        16,
+        9
+      ]
+    },
+    {
+      "def": "npc.arne",
+      "tile": [
+        17,
+        6
+      ]
+    },
+    {
+      "def": "actor.hero",
+      "tile": [
+        19,
+        3
+      ]
+    },
+    {
+      "def": "actor.hero",
+      "tile": [
+        22,
+        0
       ]
     }
   ]

@@ -86,9 +86,11 @@ build's own answer, not an approximation of it. It writes
 `content/maps/<name>.json` in the plain format, so a map made in the editor is
 indistinguishable from one written by hand.
 
-Paint terrain, place and erase objects (the palette marks which are solid and
-which are walkable ground), move the spawn, undo, save, and **save + build** to
-run the gates without leaving the page. Painting unwalkable ground over
+Paint terrain, place and erase objects, move the spawn, undo, save, and
+**save + build** to run the gates without leaving the page. Terrain and objects
+are exclusive sets: the tool decides which palette is on screen, so the panel
+never offers a swatch you cannot paint with. Objects are grouped by kind
+(props, actors, items) and marked solid or walkable ground. Painting unwalkable ground over
 something removes what stood there and says so, because the `map-footprint`
 gate would refuse the map otherwise.
 
