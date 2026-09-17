@@ -86,6 +86,10 @@ build's own answer, not an approximation of it. It writes
 `content/maps/<name>.json` in the plain format, so a map made in the editor is
 indistinguishable from one written by hand.
 
+A save may only write over the map it came from - the server compares the
+incoming `id` with the one in the target file and refuses a mismatch, so a map
+can never be destroyed by a save meant for another.
+
 Paint terrain, place and erase objects, move the spawn, undo, save, and
 **save + build** to run the gates without leaving the page. Terrain and objects
 are exclusive sets: the tool decides which palette is on screen, so the panel
@@ -95,7 +99,12 @@ something removes what stood there and says so, because the `map-footprint`
 gate would refuse the map otherwise.
 
 Nothing hot-reloads: F5 the page after editing `editor/*`, restart the server
-after editing `tools/editor.py`. `node tools/editor_test.cjs` drives the real
+after editing `tools/editor.py`. **Stop the old server before starting a new
+one.** It refuses to start on a port already in use, because on Windows
+SO_REUSEADDR happily lets a second server bind the same port and then requests
+go to whichever instance wins the race - an old server serving stale code and
+stale saves. That is not hypothetical: eight of them accumulated here and one
+overwrote a map. `node tools/editor_test.cjs` drives the real
 editor in a headless browser and checks all of the above
 (`EDITOR_SHOT=path` also leaves a screenshot).
 

@@ -72,6 +72,17 @@ class Handler(SimpleHTTPRequestHandler):
             except ValueError as e:
                 return self._json(HTTPStatus.BAD_REQUEST, {"error": f"not JSON: {e}"})
             path = os.path.join(ROOT, "content", "maps", f"{name}.json")
+            # A map may only be written over itself. Without this, a save
+            # carrying one map's contents could land on another map's file and
+            # quietly destroy it - an afternoon's work gone, and exactly the
+            # kind of accident an editor has to make impossible.
+            if os.path.exists(path):
+                with open(path, encoding="utf-8") as fh:
+                    existing = json.load(fh).get("id")
+                if existing and data.get("id") != existing:
+                    return self._json(HTTPStatus.CONFLICT, {
+                        "error": f"refusing to write {data.get('id')!r} over "
+                                 f"{existing!r} in {name}.json"})
             with open(path, "w", encoding="utf-8") as fh:
                 json.dump(data, fh, indent=2)
                 fh.write("\n")
@@ -86,9 +97,21 @@ class Handler(SimpleHTTPRequestHandler):
         return self._json(HTTPStatus.NOT_FOUND, {"error": "no such endpoint"})
 
 
+class Server(ThreadingHTTPServer):
+    # Off, deliberately. On Windows SO_REUSEADDR lets a second server bind a
+    # port that is already held, and then requests go to whichever instance
+    # wins the race - so an old server keeps serving stale code and stale
+    # saves. Better to refuse to start and say why.
+    allow_reuse_address = False
+
+
 def main():
-    server = ThreadingHTTPServer(("127.0.0.1", PORT), Handler)
     url = f"http://127.0.0.1:{PORT}/"
+    try:
+        server = Server(("127.0.0.1", PORT), Handler)
+    except OSError:
+        sys.exit(f"port {PORT} is already in use - another editor is running at "
+                 f"{url}. Stop it first, or set EDITOR_PORT to another port.")
     print(f"map editor at {url}   (Ctrl+C to stop)")
     if "--no-open" not in sys.argv:
         webbrowser.open(url)

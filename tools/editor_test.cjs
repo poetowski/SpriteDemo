@@ -46,6 +46,13 @@ function dropScratch() {
 
 (async () => {
   makeScratch();
+  // Fingerprint every other map before touching anything: the one thing an
+  // editor must never do is write over a map you did not open, and a test that
+  // edits maps is exactly where that would first show up.
+  const otherMaps = fs.readdirSync(MAPS).filter((f) => f !== `${MAP}.json`);
+  const otherBefore = Object.fromEntries(otherMaps.map((f) =>
+    [f, fs.readFileSync(path.join(MAPS, f), 'utf-8')]));
+
   const browser = await chromium.launch();
   const page = await browser.newPage({ viewport: { width: 1400, height: 1000 } });
   const problems = [];
@@ -229,6 +236,24 @@ function dropScratch() {
   });
   check('server ran the build and it passed', built.ok,
         (built.output || '').split('\n').slice(-2).join(' '));
+
+  const touched = otherMaps.filter((f) =>
+    fs.readFileSync(path.join(MAPS, f), 'utf-8') !== otherBefore[f]);
+  check('no other map was written', touched.length === 0, touched.join(', '));
+
+  // And the server must refuse a save aimed at someone else's file.
+  const crossWrite = await page.evaluate(async (other) => {
+    const r = await fetch(`/api/save?map=${other}`, {
+      method: 'POST', body: JSON.stringify({ id: 'map.scratch', ground: [], size: [1, 1] }),
+    });
+    return { status: r.status, body: await r.json() };
+  }, otherMaps[0].replace('.json', ''));
+  check('the server refuses to write one map over another',
+        crossWrite.status === 409 && /refusing/.test(crossWrite.body.error || ''),
+        `${crossWrite.status} ${JSON.stringify(crossWrite.body)}`);
+  const stillClean = otherMaps.filter((f) =>
+    fs.readFileSync(path.join(MAPS, f), 'utf-8') !== otherBefore[f]);
+  check('and left it untouched', stillClean.length === 0, stillClean.join(', '));
 
   check('no console errors', problems.length === 0, problems.join(' | '));
 
