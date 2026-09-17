@@ -131,38 +131,6 @@ the detail was real but every new prop then cost four times the pixel work, and
 the effort was not worth it for a game this size. Everything here is drawn to
 suit 16px ground, and anything new should be too.
 
-### The palette
-
-**Five colours, and the assertion at the bottom of `tools/gen/palette.py` holds
-the line** — a key that resolves to a sixth fails on import:
-
-| | | |
-|---|---|---|
-| `INK` | `#0d5d56` | outlines, hollows, deep water, every panel behind text |
-| `DEEP` | `#0c8346` | the shade step under almost everything |
-| `MID` | `#329f5b` | the workhorse: grass, and most mass |
-| `MINT` | `#8fd5a6` | the cool light |
-| `ROSE` | `#e5c2c0` | the warm light — the only warm colour there is |
-
-Four of them are one green ramp, so **value carries every read**. ROSE sits at
-the same value as MINT, so spending it buys warmth and not lightness. Ration it
-by the rule the module states: **a cool material lights to MINT, a warm one
-lights to ROSE.** Grass, water, stone, metal and the hero's tunic are cool; skin,
-sand, thatch, fire, flowers and a sheep's fleece are warm. Break that and the
-pink stops meaning anything.
-
-Two things follow that are easy to get wrong:
-
-- **A terrain has to be told apart by value or by hue, because it cannot be told
-  apart by colour.** Sand and the path are both pale, so they are the same three
-  colours inverted — warm sand, cool road. Water lights all the way to MINT
-  because at MID a shoal read as a pale-edged lawn.
-- **Only INK is dark enough to carry text at 4.5:1.** Every HUD panel is INK,
-  every raised cell is DEEP with an icon rather than words on it, and anything
-  selected inverts to INK on MINT. The map editor keeps its amber and red status
-  colours on purpose: the map is green edge to edge now, and a green warning
-  would be scenery.
-
 ### Shading
 
 `_shade` lights the 1px rim of a mass; `_form` gives it volume by position
@@ -218,7 +186,7 @@ Ground is authored as plain terrain and drawn with variation and edges:
 ## Where things live
 
 ```
-tools/gen/palette.py   the one palette: five colours; a variant is a key remap
+tools/gen/palette.py   the one palette; a character variant is a key remap
 tools/gen/actor.py     the biped rig      (32x32 frame, anchor [16, 29])
 tools/gen/animal.py    the quadruped rig  (same frame, same contract)
 tools/gen/props.py     props 32x32, structures 48x48 (anchor [24, 45])

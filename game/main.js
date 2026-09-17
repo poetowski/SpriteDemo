@@ -656,10 +656,7 @@ class World extends Phaser.Scene {
   }
 
   flinch(sprite, shake = false) {
-    sprite.setTintFill(0xe5c2c0);                        // a hit flash, in the
-                                                         // palette's one warm
-                                                         // colour - white would
-                                                         // be a sixth
+    sprite.setTintFill(0xffffff);                        // a white hit flash
     this.time.delayedCall(70, () => sprite.clearTint());
     if (!shake) return;
     const x0 = sprite.x;
@@ -911,7 +908,7 @@ window.game = new Phaser.Game({
   height: VIEW_H,
   pixelArt: true,
   roundPixels: true,
-  backgroundColor: '#0d5d56',       // the palette's ink, for the letterboxing
+  backgroundColor: '#2f3b2a',
   physics: { default: 'arcade', arcade: { debug: false } },
   scale: { mode: Phaser.Scale.FIT, autoCenter: Phaser.Scale.CENTER_BOTH },
   scene: World,

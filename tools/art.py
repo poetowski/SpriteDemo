@@ -38,13 +38,13 @@ sys.path.insert(0, TOOLS)
 
 from gen import (actor, animal, fx as fx_gen, items as items_gen,  # noqa: E402
                  props as props_gen, tiles as tiles_gen)
-from gen.palette import INK, MID, PALETTE, VARIANTS, resolve         # noqa: E402
+from gen.palette import PALETTE, VARIANTS, resolve                   # noqa: E402
 from pipeline import aseprite                                        # noqa: E402
 from pipeline.atlas import Atlas                                     # noqa: E402
 from pipeline.manifest import load_content                           # noqa: E402
 
 ASSETS = os.path.join(ROOT, "assets")
-TAG_COLOR = MID[:3]           # even the tag strips in Aseprite are on-palette
+TAG_COLOR = (0x4f, 0xa5, 0x55)
 
 # Rigs are interchangeable: same frame size, same anchor rule, same build_frames
 # shape. Adding a species is a content field, not a pipeline change.
@@ -256,7 +256,7 @@ def write_preview(sheets):
     imgs = [a.render() for a in sheets]
     w = max(i.width for i in imgs) * zoom + pad * 2
     h = sum(i.height for i in imgs) * zoom + pad * (len(imgs) + 1)
-    out = Image.new("RGBA", (w, h), INK)   # the contact sheet sits on our own ink
+    out = Image.new("RGBA", (w, h), (0x9a, 0xa2, 0xaa, 255))
     y = pad
     for img in imgs:
         big = img.resize((img.width * zoom, img.height * zoom), Image.NEAREST)

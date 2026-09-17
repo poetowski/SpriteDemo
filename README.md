@@ -86,18 +86,6 @@ failure points at an authored file, never at generated output:
 
 ## How the art works
 
-**Five colours, and nothing else.**
-[`e5c2c0 8fd5a6 329f5b 0c8346 0d5d56`](https://coolors.co/e5c2c0-8fd5a6-329f5b-0c8346-0d5d56)
-is the whole world: every sprite, every tile and the HUD around them. Four are
-one green ramp, so *value* does all the work — near, raised, in shade. The
-fifth, `e5c2c0`, is the only warm colour and sits at the same value as the
-mint, so it buys warmth rather than lightness; it is rationed by one rule, that
-a cool material lights to mint and a warm one lights to rose. That is why the
-meadow flowers, the shoreline and everyone's face are the only pink in a green
-world. `tools/gen/palette.py` asserts on import that no key resolves to a sixth
-colour, so a shade mixed by eye fails there rather than after three hundred
-sprites have drifted.
-
 **The character is a rig, not a pile of drawings.** `draw_actor(direction, bob,
 leg, swing)` composes the same body-part functions for every frame, so the
 character cannot drift between facings or states. Outlines are computed from the
@@ -105,15 +93,14 @@ silhouette, not drawn.
 
 **A second character costs a palette, not art.** Sprites store palette *keys*,
 so `VARIANTS` in `tools/gen/palette.py` turns one rig into many characters —
-Arne the smith is the hero's frames moved down the ramp: a soot-dark apron
-where the hero wears mint, and hair at the pale end instead of the deep one.
+Arne the smith is the hero's frames with a rust apron and grey hair.
 
 **Two rigs, one contract.** `tools/gen/actor.py` is the biped; `animal.py` is
 the quadruped (walk, idle and a head-down `graze`). Both use a 32×32 frame, the
 same ground line and the same `build_frames()` shape, so the atlas, the anchors
 and the depth sorting treat them identically. A goat is the sheep rig with horns,
-a beard, a smooth back and a coat one rung down the ramp — which species an
-actor uses is a `"rig"` field in `content/`, not a pipeline change.
+a beard, a smooth back and a tan palette — which species an actor uses is a
+`"rig"` field in `content/`, not a pipeline change.
 
 **Anchors, not offsets.** Every sprite exports the pixel that sits on a map tile
 (`[16, 29]` — between the feet). The game sets sprite origin from it, so art of
