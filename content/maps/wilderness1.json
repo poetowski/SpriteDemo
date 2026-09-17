@@ -1,6 +1,6 @@
 {
-  "id": "map.shieling",
-  "name": "Shieling",
+  "id": "map.wilderness1",
+  "name": "Wilderness I",
   "tile_size": 16,
   "size": [
     20,
@@ -232,6 +232,26 @@
         10,
         14
       ]
+    }
+  ],
+  "exits": [
+    {
+      "tiles": [
+        [
+          0,
+          19
+        ],
+        [
+          1,
+          19
+        ]
+      ],
+      "to": "map.wilderness2",
+      "spawn": [
+        30,
+        30
+      ],
+      "facing": "left"
     }
   ]
 }

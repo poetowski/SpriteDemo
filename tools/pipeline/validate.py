@@ -111,6 +111,7 @@ def run(content, man, tile_canvases=None):
     passed.append("tile-seam")
 
     # 6 - maps: rectangular grid, legend covers it, entities land in bounds
+    all_claimed = {}                     # per map, the tiles solid things hold
     for mid, m in content["maps"].items():
         w, h = m["size"]
         if len(m["ground"]) != h:
@@ -169,12 +170,57 @@ def run(content, man, tile_canvases=None):
         if (sx, sy) in claimed:
             _fail("map-spawn", f"{mid}: spawn {m['spawn']['tile']} is inside "
                                f"{claimed[(sx, sy)]}")
+        all_claimed[mid] = claimed
     passed.append("map-shape")
     passed.append("map-legend")
     passed.append("map-entity")
     passed.append("map-footprint")
     passed.append("map-overlap")
     passed.append("map-spawn")
+
+    # 6bis - exits. A way off one map has to be standable at both ends, and it
+    #        must not put you down on the way back: arriving on the return exit
+    #        bounces the player through it again the moment they move, which
+    #        looks like the two maps flickering rather than like a bug.
+    def _standable(mm, mid_, tx, ty):
+        w_, h_ = mm["size"]
+        if not (0 <= tx < w_ and 0 <= ty < h_):
+            return "off the map"
+        tid = mm["legend"][mm["ground"][ty][tx]]
+        if not man["tiles"][tid]["walkable"]:
+            return f"on {tid}"
+        if (tx, ty) in all_claimed.get(mid_, {}):
+            return f"inside {all_claimed[mid_][(tx, ty)]}"
+        return None
+
+    for mid, m in content["maps"].items():
+        for i, ex in enumerate(m.get("exits") or []):
+            where = f"{m['_file']}: exit {i}"
+            tiles = ex.get("tiles")
+            if not tiles:
+                _fail("map-exit", f"{where} has no \"tiles\"")
+            dest_id = ex.get("to")
+            if dest_id not in content["maps"]:
+                _fail("map-exit", f"{where} leads to unknown map {dest_id!r}")
+            dest = content["maps"][dest_id]
+            for tx, ty in tiles:
+                why = _standable(m, mid, tx, ty)
+                if why:
+                    _fail("map-exit", f"{where}: doorway tile [{tx}, {ty}] is {why}")
+            spawn = ex.get("spawn")
+            if not spawn:
+                _fail("map-exit", f"{where} says where it goes but not where "
+                                  f"you come in (\"spawn\")")
+            why = _standable(dest, dest_id, spawn[0], spawn[1])
+            if why:
+                _fail("map-exit", f"{where}: arrives at {spawn} on {dest_id}, "
+                                  f"which is {why}")
+            back = {tuple(t) for b in (dest.get("exits") or []) for t in b["tiles"]}
+            if tuple(spawn) in back:
+                _fail("map-exit", f"{where}: arrives at {spawn} on {dest_id}, "
+                                  f"which is itself an exit - the player would "
+                                  f"be sent straight back")
+    passed.append("map-exit")
 
     # 6a - the resolved grid: rectangular, and every index a real tile
     count = man["atlases"]["tiles"]["count"]

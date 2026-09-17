@@ -37,7 +37,7 @@
    ],
    "cols": 8,
    "rows": 4,
-   "count": 29
+   "count": 30
   },
   "props_big": {
    "image": "atlases/props_big.png",
@@ -9066,6 +9066,14 @@
   "prop.flower_pot": {
    "atlas": "props",
    "index": 28,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "prop.flowers": {
+   "atlas": "props",
+   "index": 29,
    "anchor": [
     16,
     29

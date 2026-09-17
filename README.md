@@ -76,6 +76,7 @@ failure points at an authored file, never at generated output:
 | `map-footprint` | a cottage with one corner in the river |
 | `map-overlap` | two solid things claiming the same tile |
 | `map-spawn` | a spawn in water, or inside a wall |
+| `map-exit` | a way to another map that lands nowhere real, or lands on the way back |
 | `dialogue-exists` | an NPC pointing at dialogue that does not exist |
 | `dialogue-shape` | a conversation with no start, or a node that says nothing |
 | `dialogue-links` | a reply pointing at a node that is not there, or writing nobody can reach |

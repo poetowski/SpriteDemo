@@ -12,7 +12,7 @@
  */
 
 const M = ART.manifest;
-const MAP_ID = 'map.shieling';
+const DEFAULT_MAP = 'map.wilderness1';   // where a fresh game starts
 const VIEW_W = 320;
 const VIEW_H = 240;
 
@@ -55,13 +55,25 @@ class World extends Phaser.Scene {
     this.load.image('tileset', ART.images.tiles);
   }
 
+  /** Walking off one map and onto another restarts this scene, so everything
+   *  that has to survive the crossing arrives here as data rather than living
+   *  on the scene object - which Phaser throws away on restart. */
+  init(data) {
+    const d = data || {};
+    this.mapId = d.map || DEFAULT_MAP;
+    this.entryTile = d.spawn || null;      // where to come in, if not the
+    this.entryFacing = d.facing || null;   // map's own spawn
+    this.carry = d.carry || null;          // bag, gear, level, what was said
+  }
+
   create() {
-    const map = M.maps[MAP_ID];
+    const map = M.maps[this.mapId];
     this.map = map;
     this.ts = map.tile_size;
     const [cols, rows] = map.size;
 
     for (const [key, a] of Object.entries(M.anims)) {
+      if (this.anims.exists(key)) continue;   // a crossing re-runs create()
       this.anims.create({
         key,
         frames: a.frames.map((f) => ({ key: a.atlas, frame: f })),
@@ -130,14 +142,15 @@ class World extends Phaser.Scene {
     // --- player ----------------------------------------------------------
     const hero = M.actors['actor.hero'];
     const { ox, oy } = originOf(`${hero.sprite}/idle/down/0`);
-    const p = this.tileCentre(map.spawn.tile[0], map.spawn.tile[1]);
+    const start = this.entryTile || map.spawn.tile;
+    const p = this.tileCentre(start[0], start[1]);
     this.hero = this.physics.add.sprite(p.x, p.y, 'actors').setOrigin(ox, oy);
     this.hero.body.setSize(12, 8).setOffset(10, 21);   // feet, not the whole frame
     this.hero.setCollideWorldBounds(true);
     this.heroDef = hero;
     this.heroSprite = hero.sprite;        // swapped for a wielding set when armed
     this.speed = hero.speed;
-    this.facing = map.spawn.facing;
+    this.facing = this.entryFacing || map.spawn.facing;
     this.hero.anims.play(`${hero.sprite}/idle/${this.facing}`);
     this.hero.on('animationcomplete', (anim) => this.onAnimDone(anim));
     this.hero.on('animationupdate', (anim, frame) => this.onAnimFrame(anim, frame));
@@ -163,6 +176,32 @@ class World extends Phaser.Scene {
     this.flags = new Set();               // what conversations remember
     this.busy = false;                    // a one-shot animation owns the hero
     this.pending = null;                  // the pickup a gather will collect
+
+    // --- what came across the map edge with us -----------------------------
+    // Crossing restarts the scene, which would otherwise hand the player a
+    // fresh bag and a level 1 sheet every time they walked west.
+    if (this.carry) {
+      this.inventory = this.carry.inventory.slice();
+      this.weapon = this.carry.weapon;
+      this.armor = this.carry.armor;
+      this.level = this.carry.level;
+      this.xp = this.carry.xp;
+      this.hp = this.carry.hp;
+      this.flags = new Set(this.carry.flags);
+      this.refreshLook();
+    }
+
+    // --- the ways out ------------------------------------------------------
+    // An exit is authored in content/maps/: which tiles are the doorway, where
+    // they lead, and where you come in at the other end. Arriving next to the
+    // way back must not throw you straight through it, so exits stay locked
+    // until the hero has stepped clear of every one of them.
+    this.exits = new Map();
+    for (const ex of map.exits || []) {
+      for (const t of ex.tiles) this.exits.set(`${t[0]},${t[1]}`, ex);
+    }
+    this.exitLocked = true;
+    this.travelling = false;
 
     this.physics.add.collider(this.hero, layer);
     this.physics.add.collider(this.hero, this.solid);
@@ -222,6 +261,34 @@ class World extends Phaser.Scene {
 
   tileCentre(tx, ty) {
     return { x: tx * this.ts + this.ts / 2, y: ty * this.ts + this.ts / 2 };
+  }
+
+  /** The hero's tile, which is the tile under the feet: the sprite's origin is
+   *  its authored anchor, so its y is already the ground line. */
+  heroTile() {
+    return [Math.floor(this.hero.x / this.ts), Math.floor(this.hero.y / this.ts)];
+  }
+
+  /** Step onto an exit tile and come out on another map, carrying everything.
+   *  The scene restarts rather than rebuilding in place, so nothing from the
+   *  old map - a body, a timer, a wandering sheep - can outlive the crossing. */
+  checkExit() {
+    if (this.travelling || !this.exits.size) return;
+    const [tx, ty] = this.heroTile();
+    const ex = this.exits.get(`${tx},${ty}`);
+    if (!ex) { this.exitLocked = false; return; }
+    if (this.exitLocked) return;
+    this.travelling = true;
+    this.hero.setVelocity(0, 0);
+    this.scene.restart({
+      map: ex.to,
+      spawn: ex.spawn,
+      facing: ex.facing,
+      carry: {
+        inventory: this.inventory, weapon: this.weapon, armor: this.armor,
+        level: this.level, xp: this.xp, hp: this.hp, flags: [...this.flags],
+      },
+    });
   }
 
   /** Create one entity from its definition id, at a tile. */
@@ -887,11 +954,13 @@ class World extends Phaser.Scene {
       if (d < bestD) { bestD = d; best = it; }
     }
     this.nearest = best;
+    this.checkExit();
+    if (this.travelling) return;          // the scene is on its way out
 
     if (window.__hud) {
       window.__hud({
         anim: shown.split('/').slice(1).join('-'),
-        tile: [Math.floor(this.hero.x / this.ts), Math.floor(this.hero.y / this.ts)],
+        tile: this.heroTile(),
         prompt: !talking && best ? (best.def.name || best.id.split('.')[1]) : null,
         verb: best && best.item ? 'take' : 'talk',
         bagFull: !this.inventory.includes(null),

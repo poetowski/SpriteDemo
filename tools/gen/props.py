@@ -462,6 +462,33 @@ def trough():
     return c.outline()
 
 
+def flowers():
+    """A clump of wildflowers. Walkable, so unlike every other prop here the
+    hero goes through it rather than round it - which is the whole reason it is
+    drawn low and open, with the ground showing between the stems. Anything
+    tall enough to hide a footfall reads as a bush, and a player who thinks a
+    thing is solid will walk round it whatever the collision map says.
+
+    No outline, for the same reason: the 1px rim that makes a prop sit *on* the
+    grass is exactly what would stop these sitting *in* it.
+    """
+    c = Canvas(FRAME, FRAME)
+    for x, h, head in ((10, 5, "FL"), (13, 7, "EW"), (16, 6, "FL"),
+                       (19, 4, "EW"), (21, 6, "FL"), (12, 4, "FL")):
+        top = BASE_Y - h
+        c.col(x, top + 1, BASE_Y, "GRD")         # the stem, in the grass shade
+        c.set(x, top, head)                      # and the head above it
+        c.set(x - 1, top, head)
+        c.set(x + 1, top, head)
+        c.set(x, top - 1, head)
+        c.set(x, top + 1, "GRX")                 # a shadow under each head
+    for x in (9, 14, 18, 22):                    # leaves, sitting in the turf
+        c.set(x, BASE_Y, "GRL")
+        c.set(x + 1, BASE_Y - 1, "GRD")
+        c.set(x - 1, BASE_Y - 1, "GRX")
+    return c
+
+
 def flower_pot():
     c = Canvas(FRAME, FRAME)
     _taper(c, 21, BASE_Y, 6, 4, "RFD")   # a terracotta pot, narrowing down
@@ -649,6 +676,7 @@ PROPS = {
     "prop.campfire": campfire,
     "prop.trough": trough,
     "prop.flower_pot": flower_pot,
+    "prop.flowers": flowers,
 }
 PROP_ORDER = list(PROPS)
 

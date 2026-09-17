@@ -42,6 +42,7 @@ const MID = flag('--mid');                // with --slash: photograph the moment
 const CHOOSE = args.includes('--choose')  // with --talk: take the nth reply (1-based)
   ? Number(value('--choose', '1')) - 1 : null;
 const TILE = value('--tile', null);
+const ON = value('--on', null);           // start on a map other than the default
 const WAIT = Number(value('--wait', MAP_MODE ? 1200 : 900));
 const OUT = path.resolve(ROOT, value('--out', MAP_MODE ? 'build/map.png' : 'build/shot.png'));
 
@@ -80,6 +81,16 @@ const BOOTED = () => !!(window.game && window.game.scene
     if (f) f.classList.remove('show');
   });
 
+  if (ON) {
+    // Crossing a map edge restarts the scene, so starting somewhere else is
+    // the same operation the game itself performs.
+    await page.evaluate((id) => window.game.scene.scenes[0].scene.restart({ map: id }), ON);
+    await page.waitForFunction(
+      (id) => window.game.scene.scenes[0].mapId === id && !!window.game.scene.scenes[0].hero,
+      ON, { timeout: 20000 });
+    await page.waitForTimeout(250);
+  }
+
   if (TILE) {
     const [tx, ty] = TILE.split(',').map(Number);
     await page.evaluate(([x, y]) => {
@@ -109,6 +120,14 @@ const BOOTED = () => !!(window.game && window.game.scene
       tileSize: map.tile_size,
       entities: map.entities.length,
       itemEntities: map.entities.filter((e) => m.items[e.def]).length,
+      // Things that put a tile in the blocked set: solid, and not a wanderer -
+      // a wanderer carries its body with it and claims no tile. Counted from
+      // the definitions rather than inferred by subtracting the kinds we know
+      // about, which quietly broke the moment a prop was authored walkable.
+      staticBlockers: map.entities.filter((e) => {
+        const d = m.props[e.def] || m.actors[e.def];
+        return !!(d && d.blocks && !d.wander);
+      }).length,
       sprites: s.children.list.filter((o) => o.type === 'Sprite').length,
       pickups: s.pickups.length,
       solids: s.solid.getChildren().length,
@@ -143,8 +162,8 @@ const BOOTED = () => !!(window.game && window.game.scene
       `${report.sprites} sprites vs ${report.entities} entities + hero`],
     ['every item lying in the world', report.pickups === report.itemEntities,
       `${report.pickups} pickups vs ${report.itemEntities} placed`],
-    ['collision tiles claimed', report.blocked >= report.entities - report.itemEntities
-      - report.wanderers, `${report.blocked} blocked tiles`],
+    ['collision tiles claimed', report.blocked >= report.staticBlockers,
+      `${report.blocked} blocked tiles for ${report.staticBlockers} solid things`],
     ['one body per blocked tile', report.solids === report.blocked,
       `${report.solids} bodies vs ${report.blocked} tiles`],
     ['livestock is wandering', report.wanderers > 0, `${report.wanderers}`],
@@ -249,6 +268,40 @@ const BOOTED = () => !!(window.game && window.game.scene
         after.gap > 8, `gap closed from ${setup.gap.toFixed(1)} to ${after.gap.toFixed(1)}`]);
     } else {
       checks.push(['a solid animal exists to walk into', false, 'none are blocks:true']);
+    }
+  }
+
+  if (flag('--cross')) {
+    // Walk out of one map and into the next. The crossing restarts the scene,
+    // so the thing worth proving is not that the map changed but that the
+    // player arrived with what they were carrying - a restart hands out a
+    // fresh bag unless the state is carried across on purpose.
+    const before = await page.evaluate(() => {
+      const s = window.game.scene.scenes[0];
+      const ex = (s.map.exits || [])[0];
+      if (!ex) return null;
+      s.addItem('item.axe');
+      s.hero.setPosition(...Object.values(s.tileCentre(ex.tiles[0][0], ex.tiles[0][1])));
+      s.exitLocked = false;                   // as if we had walked onto it
+      return { from: s.mapId, to: ex.to, bag: s.inventory.filter(Boolean).length };
+    });
+    if (before) {
+      await page.waitForFunction(
+        (to) => window.game.scene.scenes[0].mapId === to && !!window.game.scene.scenes[0].hero,
+        before.to, { timeout: 10000 }).catch(() => {});
+      const after = await page.evaluate(() => {
+        const s = window.game.scene.scenes[0];
+        return { map: s.mapId, bag: s.inventory.filter(Boolean).length,
+                 tile: s.heroTile(), onExit: !!s.exits.get(s.heroTile().join(',')) };
+      });
+      checks.push([`${before.from} leads to ${before.to}`,
+        after.map === before.to, after.map]);
+      checks.push(['the bag came across',
+        after.bag === before.bag, `${before.bag} -> ${after.bag}`]);
+      checks.push(['and you do not land on the way back',
+        !after.onExit, `arrived at ${after.tile}`]);
+    } else {
+      checks.push(['the map has an exit to cross', false, 'none authored']);
     }
   }
 

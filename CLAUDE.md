@@ -39,7 +39,7 @@ node tools/shot.cjs --map    # 3. and shoot the whole world
                              # 4. publish game/page.html (below)
 ```
 
-1. **Build.** All 24 gates must pass. A gate failure names an authored file -
+1. **Build.** All 25 gates must pass. A gate failure names an authored file -
    fix that file, never the generated output. Needs Pillow.
 
 2. **Screenshot.** `tools/shot.cjs` loads `game/index.html` in a headless
@@ -60,6 +60,8 @@ node tools/shot.cjs --map    # 3. and shoot the whole world
    node tools/shot.cjs --give item.axe --bag   # open the bag (I), check the cursor moves
    node tools/shot.cjs --pose slash,1 --page   # freeze the strike, shoot the whole page
    node tools/shot.cjs --map                # the whole world in one frame
+   node tools/shot.cjs --on map.wilderness2 # start on another map, not the default
+   node tools/shot.cjs --cross              # walk out of the map, check the bag arrives
    ```
 
 3. **Publish.** `game/page.html` is the whole game in one file. Publish it with
@@ -195,7 +197,7 @@ tools/art.py           the art pipeline: draws everything -> assets/
 tools/build.py         the game build: assets/ + content/ -> build/ + game/
 tools/editor.py        serves the map editor in editor/
 tools/cdp.cjs          drives an installed Chrome when Playwright is absent
-tools/pipeline/        aseprite I/O, atlas packing, autotile, manifest, the 24 gates
+tools/pipeline/        aseprite I/O, atlas packing, autotile, manifest, the 25 gates
 assets/                COMMITTED art library: atlases, atlases.json, .aseprite
 build/                 DERIVED, gitignored - manifest, screenshots
 content/               AUTHORED json - actors, props, tiles, dialogue, maps
@@ -247,6 +249,25 @@ choice may carry `when` (`flag` / `noflag` / `has` / `nothas` / `all`) and the
 effects `set`, `give` and `take`; no `goto` ends it. Effects run take, give,
 set, so a trade works with a full bag. Keep the condition language as small as
 it is - the gates can only check branches they understand.
+
+**A way from one map to another** is an `exits` entry on the map you leave -
+no engine change, like everything else here:
+
+```json
+"exits": [{ "tiles": [[0, 19], [1, 19]], "to": "map.wilderness2",
+            "spawn": [30, 30], "facing": "left" }]
+```
+
+`tiles` are the doorway, `spawn` is where you come in on the other side. The
+crossing **restarts the scene**, so anything the player must keep - bag, gear,
+level, xp, flags - is carried across explicitly in `checkExit()`; a field added
+to the scene and not to that list is silently lost at the map edge. Write the
+way back as an `exits` entry on the other map. Two rules the `map-exit` gate
+enforces, both of which are bugs you would otherwise find by playing: an
+arrival tile has to be standable (in bounds, walkable, not inside a solid), and
+it must not itself be an exit - landing on the way back bounces the player
+straight through it, which looks like the two maps flickering. `node
+tools/shot.cjs --cross` walks it for real and checks the bag arrives too.
 
 **A map** is ASCII rows plus a legend. Roads must stay clear - scenery placed on
 a path tile can wall off the only route across the world.
