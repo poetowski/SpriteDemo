@@ -3,105 +3,148 @@
 One palette for the whole project. Sprites store palette *keys*, not colours,
 which is what makes a variant (a second NPC, a recoloured tileset) a remap
 rather than a redraw.
+
+**Five colours, and nothing else.** Every key below resolves to one of the five
+in RAMP, and the assertion at the bottom of this module holds the line - a new
+key mixed by eye would fail on import rather than after three hundred sprites
+had quietly drifted off the palette.
+
+Four of the five are one green ramp, so *value* carries every read: what is
+near, what is raised, what is in shade. The fifth, ROSE, is the only warm
+colour in the world and sits at the same value as MINT, so it is a hue step
+rather than a lighter one - spending it on a surface buys nothing but warmth.
+That makes it precious, and it is rationed by a rule:
+
+    a cool material lights to MINT; a warm one lights to ROSE.
+
+Grass, water, stone, metal and the hero's tunic are cool. Skin, sand, thatch,
+fire, flowers and the wool on a sheep's back are warm. The warm ones are the
+things meant to be looked at, which is why the meadow flowers, the shoreline
+and everyone's face are the only pink in a green world.
 """
+
+# https://coolors.co/e5c2c0-8fd5a6-329f5b-0c8346-0d5d56
+INK = (0x0d, 0x5d, 0x56, 255)    # darkest: outlines, hollows, the deep water
+DEEP = (0x0c, 0x83, 0x46, 255)   # the shade step under almost everything
+MID = (0x32, 0x9f, 0x5b, 255)    # the workhorse: grass, and most mass
+MINT = (0x8f, 0xd5, 0xa6, 255)   # the cool light
+ROSE = (0xe5, 0xc2, 0xc0, 255)   # the warm light - the only warm colour there is
+
+RAMP = (INK, DEEP, MID, MINT, ROSE)
 
 # Key -> (RGBA, human name).
 PALETTE = {
-    "OL":  ((0x24, 0x1a, 0x2e, 255), "outline"),
-    "SK":  ((0xf2, 0xc2, 0x92, 255), "skin"),
-    "SKS": ((0xcc, 0x94, 0x64, 255), "skin shade"),
-    "HR":  ((0x5c, 0x3a, 0x24, 255), "hair"),
-    "HRL": ((0x82, 0x55, 0x35, 255), "hair light"),
-    "TU":  ((0x4f, 0xa5, 0x55, 255), "tunic"),
-    "TUS": ((0x2f, 0x71, 0x3c, 255), "tunic shade"),
-    "TUL": ((0x74, 0xc4, 0x6b, 255), "tunic light"),
-    "PN":  ((0x3d, 0x5d, 0x94, 255), "pants"),
-    "PNS": ((0x28, 0x41, 0x6d, 255), "pants shade"),
-    "BT":  ((0x7d, 0x51, 0x2f, 255), "boots"),
-    "BTS": ((0x55, 0x34, 0x1d, 255), "boots shade"),
-    "EY":  ((0x24, 0x1a, 0x2e, 255), "eye"),
-    "EW":  ((0xf4, 0xef, 0xe4, 255), "eye white"),
-    "SH":  ((0x24, 0x1a, 0x2e, 90),  "ground shadow"),
-    # scenery
-    "GR":  ((0x4e, 0x7a, 0x3a, 255), "grass"),
-    "GRD": ((0x42, 0x6b, 0x31, 255), "grass dark"),
-    "GRL": ((0x5e, 0x8c, 0x45, 255), "grass light"),
-    "FL":  ((0xd8, 0xc0, 0x5c, 255), "flower"),
-    "PT":  ((0xa8, 0x8a, 0x5e, 255), "path"),
-    "PTD": ((0x8c, 0x71, 0x49, 255), "path dark"),
-    "PTL": ((0xc0, 0xa3, 0x76, 255), "path light"),
-    "WA":  ((0x36, 0x6d, 0xa8, 255), "water"),
-    "WAD": ((0x27, 0x53, 0x84, 255), "water dark"),
-    "WAL": ((0x52, 0x92, 0xc4, 255), "water light"),
-    "WAX": ((0x1f, 0x42, 0x6b, 255), "water deep"),
-    "GRX": ((0x38, 0x5a, 0x29, 255), "grass deep"),
-    "SA":  ((0xd8, 0xc5, 0x8e, 255), "sand"),
-    "SAD": ((0xb9, 0xa5, 0x70, 255), "sand dark"),
-    "SAL": ((0xee, 0xdf, 0xb0, 255), "sand light"),
-    "LF":  ((0x8c, 0x6a, 0x30, 255), "leaf litter"),
-    "LFD": ((0x6a, 0x4e, 0x22, 255), "leaf litter dark"),
-    "DR":  ((0x7f, 0x5b, 0x3d, 255), "dirt"),
-    "DRD": ((0x64, 0x46, 0x2e, 255), "dirt dark"),
-    "DRL": ((0x9a, 0x75, 0x53, 255), "dirt light"),
-    "ST":  ((0x82, 0x84, 0x8e, 255), "stone"),
-    "STD": ((0x5e, 0x60, 0x6c, 255), "stone dark"),
-    "STL": ((0xa2, 0xa4, 0xae, 255), "stone light"),
-    "STX": ((0x44, 0x46, 0x50, 255), "stone deep"),
-    "BU":  ((0x35, 0x72, 0x3a, 255), "bush"),
-    "BUD": ((0x23, 0x4f, 0x2b, 255), "bush dark"),
-    "BUL": ((0x45, 0x89, 0x4a, 255), "bush light"),
-    "WD":  ((0x7a, 0x5a, 0x38, 255), "wood"),
-    "WDD": ((0x55, 0x3d, 0x25, 255), "wood dark"),
-    "WDL": ((0x9c, 0x78, 0x4e, 255), "wood light"),
+    "OL":  (INK,  "outline"),
+    "SK":  (ROSE, "skin"),
+    "SKS": (MID,  "skin shade"),
+    "HR":  (DEEP, "hair"),
+    "HRL": (MID,  "hair light"),
+    "TU":  (MINT, "tunic"),
+    "TUS": (MID,  "tunic shade"),
+    "TUL": (ROSE, "tunic light"),
+    "PN":  (DEEP, "pants"),
+    "PNS": (INK,  "pants shade"),
+    "BT":  (DEEP, "boots"),
+    "BTS": (INK,  "boots shade"),
+    "EY":  (INK,  "eye"),
+    "EW":  (MINT, "eye white"),
+    "SH":  ((*INK[:3], 90), "ground shadow"),
+    # scenery. The hero wears the pale end of the ramp and walks on the middle
+    # of it, so he reads against the ground from any distance.
+    "GR":  (MID,  "grass"),
+    "GRD": (DEEP, "grass dark"),
+    "GRL": (MINT, "grass light"),
+    "FL":  (ROSE, "flower"),
+    "PT":  (MINT, "path"),
+    "PTD": (MID,  "path dark"),
+    "PTL": (ROSE, "path light"),
+    # Water lights all the way to MINT, two steps above its own body. A shoal
+    # is drawn in that light alone, and at MID it read as a pale-edged lawn
+    # rather than as water; at MINT it is the brightest ground there is, which
+    # is what water does when the sun is on it.
+    "WA":  (DEEP, "water"),
+    "WAD": (INK,  "water dark"),
+    "WAL": (MINT, "water light"),
+    "WAX": (INK,  "water deep"),
+    "GRX": (INK,  "grass deep"),
+    # Sand is warm and the path is cool, though both are pale: the same three
+    # colours inverted, which is what keeps a beach and a road apart when they
+    # cannot be told apart by value.
+    "SA":  (ROSE, "sand"),
+    "SAD": (MID,  "sand dark"),
+    "SAL": (MINT, "sand light"),
+    "LF":  (MID,  "leaf litter"),
+    "LFD": (DEEP, "leaf litter dark"),
+    "DR":  (DEEP, "dirt"),
+    "DRD": (INK,  "dirt dark"),
+    "DRL": (MID,  "dirt light"),
+    "ST":  (MINT, "stone"),
+    "STD": (MID,  "stone dark"),
+    "STL": (ROSE, "stone light"),
+    "STX": (DEEP, "stone deep"),
+    "BU":  (DEEP, "bush"),
+    "BUD": (INK,  "bush dark"),
+    "BUL": (MID,  "bush light"),
+    "WD":  (DEEP, "wood"),
+    "WDD": (INK,  "wood dark"),
+    "WDL": (MID,  "wood light"),
     # built scenery - roofs, thatch, iron, fire, cloth
-    "RF":  ((0xa8, 0x4b, 0x3c, 255), "roof"),
-    "RFD": ((0x7c, 0x33, 0x2a, 255), "roof dark"),
-    "RFL": ((0xc9, 0x6a, 0x54, 255), "roof light"),
-    "TH":  ((0xc4, 0xa0, 0x52, 255), "thatch"),
-    "THD": ((0x96, 0x77, 0x39, 255), "thatch dark"),
-    "THL": ((0xdc, 0xc0, 0x78, 255), "thatch light"),
-    "MT":  ((0x6e, 0x76, 0x84, 255), "metal"),
-    "MTD": ((0x4a, 0x51, 0x5c, 255), "metal dark"),
-    "MTL": ((0x99, 0xa2, 0xb0, 255), "metal light"),
-    "FI":  ((0xe0, 0x7a, 0x2c, 255), "fire"),
-    "FID": ((0xb0, 0x42, 0x20, 255), "fire dark"),
-    "FIL": ((0xf5, 0xcc, 0x55, 255), "fire light"),
-    "CL":  ((0xd8, 0xd2, 0xc0, 255), "cloth"),
-    "CLD": ((0xab, 0xa4, 0x90, 255), "cloth dark"),
+    "RF":  (DEEP, "roof"),
+    "RFD": (INK,  "roof dark"),
+    "RFL": (MID,  "roof light"),
+    "TH":  (MINT, "thatch"),
+    "THD": (MID,  "thatch dark"),
+    "THL": (ROSE, "thatch light"),
+    "MT":  (MID,  "metal"),
+    "MTD": (DEEP, "metal dark"),
+    "MTL": (MINT, "metal light"),
+    "FI":  (MID,  "fire"),
+    "FID": (DEEP, "fire dark"),
+    "FIL": (ROSE, "fire light"),
+    "CL":  (MINT, "cloth"),
+    "CLD": (MID,  "cloth dark"),
     # animals - generic keys so a species is a palette swap of one rig
-    "AB":  ((0xe4, 0xde, 0xcd, 255), "animal body"),
-    "ABS": ((0xc0, 0xb8, 0xa4, 255), "animal body shade"),
-    "ABL": ((0xf5, 0xf1, 0xe6, 255), "animal body light"),
-    "AF":  ((0x5b, 0x52, 0x4b, 255), "animal face"),
-    "AFS": ((0x3e, 0x37, 0x32, 255), "animal face shade"),
-    "AH":  ((0x4a, 0x41, 0x3a, 255), "animal hoof"),
-    "HN":  ((0xcd, 0xbb, 0x96, 255), "horn"),
-    "HNS": ((0xa3, 0x90, 0x6d, 255), "horn shade"),
+    "AB":  (MINT, "animal body"),
+    "ABS": (MID,  "animal body shade"),
+    "ABL": (ROSE, "animal body light"),
+    "AF":  (DEEP, "animal face"),
+    "AFS": (INK,  "animal face shade"),
+    "AH":  (INK,  "animal hoof"),
+    "HN":  (ROSE, "horn"),
+    "HNS": (MID,  "horn shade"),
 }
 
 # Palette swaps. The frames are identical pixels; only the lookup changes, so a
 # second character costs nothing to draw and stays in perfect sync with the rig.
+# With five colours a swap can only move a character along the ramp, so each one
+# takes a different rung: the hero is pale-chested, the smith is dark.
 VARIANTS = {
     "hero": {},
     "smith": {
-        "TU":  (0x9c, 0x4f, 0x3a, 255),   # rust apron
-        "TUS": (0x6e, 0x33, 0x25, 255),
-        "TUL": (0xc0, 0x6e, 0x50, 255),
-        "HR":  (0x54, 0x51, 0x4d, 255),   # grey hair
-        "HRL": (0x77, 0x74, 0x6f, 255),
-        "PN":  (0x4a, 0x44, 0x3c, 255),
-        "PNS": (0x33, 0x2e, 0x29, 255),
+        "TU":  DEEP,                      # a soot-dark apron, not the hero's mint
+        "TUS": INK,
+        "TUL": MID,
+        "HR":  MINT,                      # grey hair, which on this ramp is pale
+        "HRL": ROSE,
+        "PN":  MID,
+        "PNS": DEEP,
     },
     "sheep": {},                          # the base animal palette is the sheep
     "goat": {
-        "AB":  (0xa8, 0x82, 0x52, 255),   # tan coat instead of wool
-        "ABS": (0x83, 0x62, 0x3c, 255),
-        "ABL": (0xc4, 0xa0, 0x6e, 255),
-        "AF":  (0x6d, 0x51, 0x32, 255),
-        "AFS": (0x4c, 0x38, 0x22, 255),
-        "AH":  (0x39, 0x2c, 0x22, 255),
+        # A mid coat where the sheep's fleece is the pale end. The face and
+        # hooves need no override any more: the two species are told apart by
+        # the coat, the horns and the beard, which is the silhouette doing the
+        # work rather than a second brown.
+        "AB":  MID,
+        "ABS": DEEP,
+        "ABL": MINT,
     },
 }
+
+_FIVE = {c[:3] for c in RAMP}
+assert all(rgba[:3] in _FIVE for rgba, _n in PALETTE.values()), "off-palette key"
+assert all(rgba[:3] in _FIVE for v in VARIANTS.values()
+           for rgba in v.values()), "off-palette variant"
 
 
 def resolve(variant="hero"):

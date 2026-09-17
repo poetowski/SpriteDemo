@@ -261,7 +261,9 @@ function render() {
 
   const sp = m.spawn && m.spawn.tile;
   if (sp) {
-    ctx.strokeStyle = "#74c46b";
+    // Rose, not the old green: the map is green from edge to edge now, and a
+    // green spawn marker sat on the grass it was meant to be pointing at.
+    ctx.strokeStyle = "#e5c2c0";
     ctx.lineWidth = 2;
     ctx.strokeRect(sp[0] * ts * z + 1, sp[1] * ts * z + 1, ts * z - 2, ts * z - 2);
   }

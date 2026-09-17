@@ -5,8 +5,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Map editor</title>
 <style>
-  :root { --bg:#141821; --panel:#1b2130; --panel2:#222a3b; --line:#2e3748; --ink:#e8e4da;
-          --muted:#8b93a7; --accent:#74c46b; --warn:#e0a340; --bad:#e06a5a; }
+  /* The chrome is the game's five colours (tools/gen/palette.py), so the panel
+     and the preview it frames are the same world. --warn and --bad are not:
+     they are the only two colours here that mean "this went wrong", and the
+     map is now green from edge to edge - a green warning would be scenery. */
+  :root { --bg:#0d5d56; --panel:#0d5d56; --panel2:#0d5d56; --line:#329f5b; --ink:#e5c2c0;
+          --muted:#8fd5a6; --accent:#8fd5a6; --deep:#0c8346;
+          --warn:#e0a340; --bad:#e06a5a; }
   * { box-sizing: border-box; }
   html, body { height: 100%; margin: 0; }
   body {
@@ -27,8 +32,10 @@
   input[type=number] { width: 58px; }
   button { cursor: pointer; }
   button:hover { border-color: var(--muted); }
-  button.on { background: #2f4a2c; border-color: var(--accent); color: #d8f2cf; }
-  button.primary { background: #2f4a2c; border-color: var(--accent); }
+  /* Only the darkest of the five carries text, so a selected control inverts
+     rather than tinting: mint under ink. */
+  button.on { background: var(--accent); border-color: var(--ink); color: var(--bg); }
+  button.primary { background: var(--deep); border-color: var(--accent); }
   button.warn { border-color: var(--warn); }
   .tools { display: flex; gap: 4px; }
   kbd { color: var(--muted); font-size: 11px; }
@@ -49,13 +56,13 @@
     color: var(--muted); border-bottom: 1px solid var(--line); padding-bottom: 3px;
     display: flex; justify-content: space-between; align-items: baseline;
   }
-  .group h3 em { font-style: normal; color: #5d6679; letter-spacing: 0; }
+  .group h3 em { font-style: normal; color: var(--line); letter-spacing: 0; }
   .swatch {
     display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 6px 4px;
     background: var(--panel2); border: 1px solid var(--line); border-radius: 4px; cursor: pointer;
   }
   .swatch:hover { border-color: var(--muted); }
-  .swatch.on { border-color: var(--accent); background: #26362a; }
+  .swatch.on { border-color: var(--ink); background: var(--deep); }
   .swatch canvas { image-rendering: pixelated; width: 48px; height: 48px; }
   .swatch span { font-size: 10px; color: var(--muted); text-align: center; word-break: break-all; }
   .swatch.solid span::before { content: "■ "; color: var(--bad); }
@@ -63,7 +70,7 @@
   .legend { color: var(--muted); font-size: 11px; line-height: 1.6; }
   .legend b { color: var(--ink); font-weight: 500; }
 
-  .main { grid-area: main; overflow: auto; background: #0e1015; position: relative; }
+  .main { grid-area: main; overflow: auto; background: var(--bg); position: relative; }
   #view { image-rendering: pixelated; display: block; cursor: crosshair; }
 
   .status { grid-area: status; display: flex; flex-wrap: wrap; gap: 8px 18px; padding: 6px 12px;

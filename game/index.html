@@ -5,13 +5,32 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Riverside Sandbox</title>
 <style>
-  :root { --bg:#141821; --panel:#1e2531; --ink:#e8e4da; --muted:#8b93a7; --accent:#74c46b; }
+  /* The frame round the window is made of the same five colours as the view
+     through it - the ramp in tools/gen/palette.py, nothing mixed by eye.
+     https://coolors.co/e5c2c0-8fd5a6-329f5b-0c8346-0d5d56
+
+     Only INK is dark enough to carry text at 4.5:1, so every panel is INK and
+     every raised cell is DEEP with an icon on it rather than words. Selected
+     things invert to INK on MINT: the two light ends of this ramp are the same
+     value, so a flip is the only highlight that stays readable. Shadows stay
+     transparent black - a shadow is an absence of light, not a sixth colour. */
+  :root {
+    --ink:#0d5d56; --deep:#0c8346; --mid:#329f5b; --mint:#8fd5a6; --rose:#e5c2c0;
+    --bg:var(--ink); --panel:var(--deep); --text:var(--rose);
+    --muted:var(--mint); --accent:var(--mint);
+    /* Planks: dark boards with a lit seam, the same read as the wood_floor
+       tile, because on this ramp a groove can only be lighter than INK. One
+       pixel of it - at three the panels read as ruled paper, since INK to DEEP
+       is the widest step on the ramp. */
+    --planks: repeating-linear-gradient(180deg,
+      var(--ink) 0 33px, var(--deep) 33px 34px);
+  }
   * { box-sizing: border-box; }
   /* 100% rather than 100vh: when this page is embedded in a host that already
      pads for the phone's safe area, 100vh would overflow it by exactly that. */
   html { height: 100%; }
   body {
-    margin: 0; min-height: 100%; background: var(--bg); color: var(--ink);
+    margin: 0; min-height: 100%; background: var(--bg); color: var(--text);
     display: flex; flex-direction: column; align-items: center; justify-content: center;
     gap: 12px; padding-block: 20px; padding-inline: 20px;
     font: 14px/1.5 ui-monospace, "Cascadia Code", Consolas, monospace;
@@ -20,7 +39,7 @@
   h1 span { color: var(--muted); font-weight: 400; }
   .stage {
     position: relative; width: min(94vw, 960px); aspect-ratio: 4 / 3;
-    background: #000; border: 2px solid #2c3242; border-radius: 4px;
+    background: var(--ink); border: 2px solid var(--deep); border-radius: 4px;
     overflow: hidden; box-shadow: 0 10px 40px #0008;
   }
   #game, #game canvas { width: 100%; height: 100%; display: block; }
@@ -29,71 +48,69 @@
   #dialogue {
     position: absolute; left: 0; right: 0; bottom: 0;
     display: flex; flex-direction: column; gap: 6px; padding: 14px 16px 16px;
-    background:
-      repeating-linear-gradient(180deg, #7a5a38 0 26px, #6a4c2e 26px 28px, #8a683f 28px 30px, #7a5a38 30px 34px);
-    border-top: 4px solid #3d2a17; box-shadow: 0 -6px 18px #0007;
+    background: var(--planks);
+    border-top: 4px solid var(--mid); box-shadow: 0 -6px 18px #0007;
     transform: translateY(104%); transition: transform .2s ease-out;
   }
   #dialogue.show { transform: none; }
   @media (prefers-reduced-motion: reduce) { #dialogue { transition: none; } }
   #speaker { align-self: flex-start; font-size: 12px; letter-spacing: .08em;
-             color: #f1e4c8; background: #3d2a17; padding: 2px 8px; border-radius: 2px; }
+             color: var(--ink); background: var(--mint); padding: 2px 8px; border-radius: 2px; }
   #speaker:empty { display: none; }
-  #line { font-size: 15px; line-height: 1.45; color: #f7efdc; text-shadow: 0 1px 0 #3d2a1780; }
-  #more { color: #d9c7a3; font-size: 12px; text-align: right; }
+  #line { font-size: 15px; line-height: 1.45; color: var(--text); }
+  #more { color: var(--muted); font-size: 12px; text-align: right; }
   #choices { display: flex; flex-direction: column; gap: 2px; }
   #choices:empty { display: none; }
   #choices button {
     display: flex; gap: 8px; align-items: baseline; width: 100%; text-align: left;
-    font: inherit; color: #e6d5b2; background: #5e4229; border: 2px solid #4d3520;
+    font: inherit; color: var(--text); background: var(--ink); border: 2px solid var(--mid);
     border-radius: 3px; padding: 5px 9px; cursor: pointer;
   }
-  #choices button .n { color: #a58b63; font-size: 11px; }
-  #choices button.on { background: #4f5a2c; color: #f7efdc; border-color: var(--accent); }
-  #choices button.on .n { color: #cfe3ad; }
+  #choices button .n { color: var(--muted); font-size: 11px; }
+  #choices button.on { background: var(--mint); color: var(--ink); border-color: var(--rose); }
+  #choices button.on .n { color: var(--deep); }
 
   #focus {
     position: absolute; inset: 0; display: none; place-items: center;
-    background: #0b0e14b0; cursor: pointer;
+    background: #0d5d56cc; cursor: pointer;
   }
   #focus.show { display: grid; }
-  #focus span { border: 1px solid #ffffff40; border-radius: 4px; padding: 9px 14px; background: #1e2531cc; }
+  #focus span { border: 1px solid var(--mid); border-radius: 4px; padding: 9px 14px; background: var(--ink); }
 
   .bar { width: min(94vw, 960px); display: flex; flex-wrap: wrap; gap: 8px 20px;
          align-items: center; justify-content: space-between; color: var(--muted); }
-  kbd { background: var(--panel); border: 1px solid #39405240; border-bottom-width: 2px;
-        border-radius: 3px; padding: 1px 6px; color: var(--ink); }
+  kbd { background: var(--ink); border: 1px solid var(--mid); border-bottom-width: 2px;
+        border-radius: 3px; padding: 1px 6px; color: var(--text); }
   #hud { color: var(--accent); }
-  #prompt { color: var(--ink); }
+  #prompt { color: var(--text); }
 
-  /* The bag: a wooden panel that slides in from the left of the stage. Planks
-     are a repeating gradient in the palette's wood tones; slots are cells of a
-     dark grid, so the thin lines between them are the grid showing through. */
+  /* The bag: a panel of planks that slides in from the left of the stage.
+     Slots are cells of a lighter grid, so the thin lines between them are the
+     grid showing through. */
   #bag {
     position: absolute; left: 0; top: 0; bottom: 0; width: min(46%, 340px);
     display: flex; flex-direction: column; gap: 3%; padding: 4% 3.5%;
-    background:
-      repeating-linear-gradient(180deg, #7a5a38 0 26px, #6a4c2e 26px 28px, #8a683f 28px 30px, #7a5a38 30px 34px);
-    border-right: 4px solid #3d2a17; box-shadow: 6px 0 18px #0007;
+    background: var(--planks);
+    border-right: 4px solid var(--mid); box-shadow: 6px 0 18px #0007;
     transform: translateX(-104%); transition: transform .22s ease-out;
   }
   #bag.open { transform: none; }
   @media (prefers-reduced-motion: reduce) { #bag { transition: none; } }
-  #bag .title { color: #f1e4c8; font-weight: 600; letter-spacing: .06em; text-shadow: 0 1px 0 #3d2a17; }
-  #bag .hint { color: #d9c7a3; font-size: 11px; }
+  #bag .title { color: var(--text); font-weight: 600; letter-spacing: .06em; }
+  #bag .hint { color: var(--muted); font-size: 11px; }
   #slots {
     display: grid; grid-template-columns: repeat(4, 1fr); gap: 2px;
-    background: #3d2a17; border: 2px solid #3d2a17; border-radius: 3px;
+    background: var(--mid); border: 2px solid var(--mid); border-radius: 3px;
   }
   #slots .cell {
-    aspect-ratio: 1; display: grid; place-items: center; background: #5e4229;
-    box-shadow: inset 0 2px 0 #6d4f31, inset 0 -2px 0 #4d3520;
+    aspect-ratio: 1; display: grid; place-items: center; background: var(--panel);
+    box-shadow: inset 0 2px 0 var(--mid), inset 0 -2px 0 var(--ink);
   }
-  #slots .cell.cur { outline: 2px solid var(--accent); outline-offset: -2px; }
-  #slots .cell.on { background: #4f5a2c; }
+  #slots .cell.cur { outline: 2px solid var(--rose); outline-offset: -2px; }
+  #slots .cell.on { background: var(--mint); }
   .icon { width: 48px; height: 48px; max-width: 80%; max-height: 80%;
           image-rendering: pixelated; background-repeat: no-repeat; }
-  #bag .name { color: #f1e4c8; min-height: 1.5em; }
+  #bag .name { color: var(--text); min-height: 1.5em; }
   #wname { color: var(--accent); }
 
   /* The character sheet: the same planks as the bag, dropping from the top.
@@ -102,55 +119,55 @@
   #sheet {
     position: absolute; left: 0; right: 0; top: 0;
     display: flex; flex-direction: column; gap: 10px; padding: 14px 16px 16px;
-    background:
-      repeating-linear-gradient(180deg, #7a5a38 0 26px, #6a4c2e 26px 28px, #8a683f 28px 30px, #7a5a38 30px 34px);
-    border-bottom: 4px solid #3d2a17; box-shadow: 0 6px 18px #0007;
+    background: var(--planks);
+    border-bottom: 4px solid var(--mid); box-shadow: 0 6px 18px #0007;
     transform: translateY(-104%); transition: transform .22s ease-out;
   }
   #sheet.open { transform: none; }
   @media (prefers-reduced-motion: reduce) { #sheet { transition: none; } }
   #sheet .who { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
-  #sheet .name { color: #f7efdc; font-size: 17px; letter-spacing: .02em;
-                 text-shadow: 0 1px 0 #3d2a17; }
-  #sheet .lvl { color: #f1e4c8; font-size: 12px; letter-spacing: .08em;
-                background: #3d2a17; padding: 2px 8px; border-radius: 2px; }
+  #sheet .name { color: var(--text); font-size: 17px; letter-spacing: .02em; }
+  #sheet .lvl { color: var(--ink); font-size: 12px; letter-spacing: .08em;
+                background: var(--mint); padding: 2px 8px; border-radius: 2px; }
   #sheet .cols { display: grid; grid-template-columns: minmax(0, 360px) auto;
                  gap: 16px 28px; align-items: start; justify-content: space-between; }
   @media (max-width: 560px) { #sheet .cols { grid-template-columns: 1fr; } }
 
   .stats { display: flex; flex-direction: column; gap: 5px; min-width: 0; }
   .stat { display: grid; grid-template-columns: 74px 1fr auto; gap: 8px; align-items: center; }
-  .stat .k { color: #d9c7a3; font-size: 11px; letter-spacing: .09em; text-transform: uppercase; }
-  .stat .v { color: #f7efdc; font-variant-numeric: tabular-nums; }
-  .stat .meter { width: 100%; height: 10px; background: #3d2a17; border-radius: 2px;
+  .stat .k { color: var(--muted); font-size: 11px; letter-spacing: .09em; text-transform: uppercase; }
+  .stat .v { color: var(--text); font-variant-numeric: tabular-nums; }
+  .stat .meter { width: 100%; height: 10px; background: var(--panel); border-radius: 2px;
                  overflow: hidden; box-shadow: inset 0 1px 0 #00000055; }
   .stat .meter i { display: block; height: 100%; }
-  .stat .meter i.hp { background: linear-gradient(#b4483f, #8d3129); }
-  .stat .meter i.xp { background: linear-gradient(#8fb14a, #5f7f30); }
+  /* Health and experience are the same value on this ramp, so they are told
+     apart by hue: the warm one is the one that runs out. */
+  .stat .meter i.hp { background: linear-gradient(var(--rose), var(--mid)); }
+  .stat .meter i.xp { background: linear-gradient(var(--mint), var(--deep)); }
   .stat.plain .v { grid-column: 2 / 4; justify-self: start; }
 
   .gear { display: flex; gap: 10px; }
   .gear .slot { display: flex; flex-direction: column; align-items: center; gap: 4px; width: 80px; }
-  .gear .label { color: #d9c7a3; font-size: 10px; letter-spacing: .1em; text-transform: uppercase; }
+  .gear .label { color: var(--muted); font-size: 10px; letter-spacing: .1em; text-transform: uppercase; }
   .gear .cell {
     width: 100%; aspect-ratio: 1; display: grid; place-items: center;
-    background: #5e4229; border: 2px solid #3d2a17; border-radius: 3px;
-    box-shadow: inset 0 2px 0 #6d4f31, inset 0 -2px 0 #4d3520;
+    background: var(--panel); border: 2px solid var(--mid); border-radius: 3px;
+    box-shadow: inset 0 2px 0 var(--mid), inset 0 -2px 0 var(--ink);
   }
-  .gear .cell.cur { outline: 2px solid var(--accent); outline-offset: -4px; }
-  .gear .cell.empty { color: #8a6b48; font-size: 20px; }
-  .gear .worn { color: #f1e4c8; font-size: 11px; text-align: center; min-height: 2.6em; }
-  .gear .worn em { display: block; color: #a58b63; font-style: normal; font-size: 10px; }
-  #sheet .hint { color: #d9c7a3; font-size: 11px; }
+  .gear .cell.cur { outline: 2px solid var(--rose); outline-offset: -4px; }
+  .gear .cell.empty { color: var(--mint); font-size: 20px; }
+  .gear .worn { color: var(--text); font-size: 11px; text-align: center; min-height: 2.6em; }
+  .gear .worn em { display: block; color: var(--muted); font-style: normal; font-size: 10px; }
+  #sheet .hint { color: var(--muted); font-size: 11px; }
 
   /* touch controls: a d-pad and the three actions, only on coarse pointers */
   .touch { display: none; gap: 16px; align-items: center; }
   @media (pointer: coarse) { .touch { display: flex; } }
   .dpad { display: grid; grid-template-columns: repeat(3, 44px); gap: 5px; }
   .acts { display: grid; grid-template-columns: repeat(2, 52px); gap: 5px; }
-  .touch button { height: 44px; font-size: 15px; color: var(--ink); background: var(--panel);
-                  border: 1px solid #39405260; border-radius: 4px; touch-action: none; }
-  .touch button.on { background: var(--accent); color: #10141c; }
+  .touch button { height: 44px; font-size: 15px; color: var(--text); background: var(--ink);
+                  border: 1px solid var(--mid); border-radius: 4px; touch-action: none; }
+  .touch button.on { background: var(--accent); color: var(--ink); }
   .dpad .sp { visibility: hidden; }
   .acts .slash { font-size: 19px; }
 </style>
