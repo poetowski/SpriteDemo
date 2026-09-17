@@ -4,29 +4,52 @@ A top-down RPG sandbox whose art and content are generated from Python rigs and
 engine-neutral JSON. `tools/` and `content/` are truth; `build/` and
 `game/art-embed.js` are derived and must never be hand-edited.
 
-## The loop
+## Two pipelines
 
-Every request that changes the game ends with a playable link and a picture.
-Run all four steps, in order, every time:
+Art and game are separate, and art does not regenerate on every build:
 
 ```sh
-python tools/build.py                    # 1. regenerate art + data, run the gates
-node tools/shot.cjs                      # 2. smoke-test the real game, shoot it
-node tools/shot.cjs --map                # 3. and shoot the whole world
-                                         # 4. publish game/page.html (below)
+python tools/art.py        # only when a generator or the palette changed
+python tools/build.py      # every time content or a map changed
+python tools/editor.py     # the map editor, at http://127.0.0.1:8765/
 ```
 
-1. **Build.** `tools/build.py` regenerates every atlas, the manifest, the
-   `.aseprite` sources and `game/page.html`. All 24 gates must pass. A gate
-   failure names an authored file - fix that file, never the generated output.
-   Needs Pillow: `pip install pillow` if the import fails.
+- **`tools/art.py`** is the only thing that knows about rigs, palettes and
+  generators. It draws everything, packs the atlases, writes the `.aseprite`
+  sources, and emits `assets/atlases.json` - every sprite's atlas, index and
+  anchor, every animation, the tile index, each wielding actor's looks. It
+  checks itself: tile seams, an `.aseprite` round trip, and a second full
+  generation that must match byte for byte.
+- **`tools/build.py`** consumes `assets/` and `content/` and draws nothing. It
+  resolves maps, assembles `build/manifest.json`, and writes the game. If the
+  content names art the library does not have, it fails with `art-stale` and
+  tells you to run the art pipeline - it will never quietly draw it for you.
+- **`assets/` is committed**; `build/` is not. The art library is the
+  reviewable record of what the art looks like. `build/` is derived, and
+  committing it produced a phantom diff of every PNG on every machine.
 
-2. **Screenshot.** `tools/shot.cjs` loads `game/index.html` in headless
-   Chromium, checks the scene actually booted (no console errors, every entity
-   spawned, one collision body per blocked tile, livestock wandering) and writes
-   `build/shot.png`. It exits non-zero if a check fails, so treat a red run as a
-   broken build. Needs `NODE_PATH=/opt/node22/lib/node_modules` on Claude Code
-   web, where playwright is installed globally. Useful flags:
+## The loop
+
+Every request that changes the game ends with a playable link and a picture:
+
+```sh
+python tools/build.py        # 1. rebuild and run the gates (art.py first if art changed)
+node tools/shot.cjs          # 2. smoke-test the real game and shoot it
+node tools/shot.cjs --map    # 3. and shoot the whole world
+                             # 4. publish game/page.html (below)
+```
+
+1. **Build.** All 24 gates must pass. A gate failure names an authored file -
+   fix that file, never the generated output. Needs Pillow.
+
+2. **Screenshot.** `tools/shot.cjs` loads `game/index.html` in a headless
+   browser, checks the scene actually booted (no console errors, every entity
+   spawned, one collision body per blocked tile, livestock wandering) and
+   writes `build/shot.png`. It exits non-zero if a check fails, so treat a red
+   run as a broken build. It uses Playwright when it is installed and otherwise
+   drives an installed Chrome or Edge through `tools/cdp.cjs`, so it runs on a
+   developer machine with nothing to set up (`CHROME_PATH` overrides the
+   search). Useful flags:
 
    ```sh
    node tools/shot.cjs --tile 33,40         # stand at a tile and look
@@ -35,30 +58,46 @@ node tools/shot.cjs --map                # 3. and shoot the whole world
    node tools/shot.cjs --gather --tile 34,37   # stand by an item, press E, check the bag
    node tools/shot.cjs --give item.axe --slash # arm the hero and swing
    node tools/shot.cjs --give item.axe --bag   # open the bag (I), check the cursor moves
-   node tools/shot.cjs --give item.axe --slash --mid --tile 40,62   # hit the scarecrow, shoot the impact
    node tools/shot.cjs --pose slash,1 --page   # freeze the strike, shoot the whole page
    node tools/shot.cjs --map                # the whole world in one frame
-   node tools/shot.cjs --out /tmp/a.png --wait 1500
    ```
 
-3. **Publish.** `game/page.html` is the whole game in one file (Phaser from a
-   pinned CDN, art inlined as data URIs). Publish it with the `Artifact` tool -
-   that URL is the thing the person opens on their phone and plays.
+3. **Publish.** `game/page.html` is the whole game in one file. Publish it with
+   the `Artifact` tool.
 
-   **Reuse the existing artifact** — it is
-   <https://claude.ai/artifact/Ex6wAvYHUJqhpC5KYqAwQm>. `action: "read"` it
-   first, then publish with that `url`, so the link already on someone's phone
+   **There is exactly one artifact for this game** -
+   <https://claude.ai/code/artifact/355a8c48-d634-4c00-9a5f-9df0ab78c216>.
+   Publish with that `url` every time so the link already in someone's hands
    keeps working. Publishing without `url` makes a *second* artifact with a
-   different link, which is almost never what is wanted. (`action: "list"` finds
-   it again if this line ever goes stale.)
+   different link, which is never what is wanted. (`action: "list"` finds it
+   again if this line ever goes stale.)
 
 4. **Reply** with the artifact link, and send `build/shot.png` (and
-   `build/map.png` when the map changed) with `SendUserFile` so the result is
-   visible without opening anything.
+   `build/map.png` when the map changed) with `SendUserFile`.
 
-Then commit and push to the session's branch.
+Then commit and push.
 
-## The art scale standard
+## The map editor
+
+`python tools/editor.py` serves `editor/` at <http://127.0.0.1:8765/>. It reads
+`build/manifest.json` and the same sheets the game loads, and resolves terrain
+edges live with the mask table the build exported - so the preview is the
+build's own answer, not an approximation of it. It writes
+`content/maps/<name>.json` in the plain format, so a map made in the editor is
+indistinguishable from one written by hand.
+
+Paint terrain, place and erase objects (the palette marks which are solid and
+which are walkable ground), move the spawn, undo, save, and **save + build** to
+run the gates without leaving the page. Painting unwalkable ground over
+something removes what stood there and says so, because the `map-footprint`
+gate would refuse the map otherwise.
+
+Nothing hot-reloads: F5 the page after editing `editor/*`, restart the server
+after editing `tools/editor.py`. `node tools/editor_test.cjs` drives the real
+editor in a headless browser and checks all of the above
+(`EDITOR_SHOT=path` also leaves a screenshot).
+
+## The art scale standard## The art scale standard
 
 **Everything is drawn at the 2x standard.** These are the frame sizes, and the
 `art-scale` gate enforces them:
@@ -131,7 +170,13 @@ tools/gen/actor.py     the biped rig      (64x64 frame, anchor [32, 58])
 tools/gen/animal.py    the quadruped rig  (same frame, same contract)
 tools/gen/props.py     props 64x64, structures 96x96 (anchor [48, 90])
 tools/gen/tiles.py     32x32 ground tiles, variants and the blob transitions
+tools/art.py           the art pipeline: draws everything -> assets/
+tools/build.py         the game build: assets/ + content/ -> build/ + game/
+tools/editor.py        serves the map editor in editor/
+tools/cdp.cjs          drives an installed Chrome when Playwright is absent
 tools/pipeline/        aseprite I/O, atlas packing, autotile, manifest, the 24 gates
+assets/                COMMITTED art library: atlases, atlases.json, .aseprite
+build/                 DERIVED, gitignored - manifest, screenshots
 content/               AUTHORED json - actors, props, tiles, dialogue, maps
 game/main.js           the Phaser scene: no art, no content, no hardcoded ids
 ```

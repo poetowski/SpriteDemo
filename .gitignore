@@ -14,3 +14,4 @@ desktop.ini
 # Aseprite working files
 *.aseprite-data
 *.bak
+build/

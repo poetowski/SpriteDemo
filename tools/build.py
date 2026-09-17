@@ -1,343 +1,170 @@
-"""Build every art and data artifact for the game.
+"""Build the game from the art library and the content.
 
     python tools/build.py
 
-    content/*.json  +  tools/gen/*.py
-            |  generate
-    build/atlas/*.png  +  build/manifest.json  +  build/aseprite/*.aseprite
-            |  validate   (tools/pipeline/validate.py - all gates must pass)
-    game/art-embed.js   the single file the game loads
-    game/page.html      the whole game bundled into one shareable file
+    assets/ (tools/art.py)  +  content/*.json
+            |  resolve maps, assemble, validate
+    build/manifest.json     one registry the engine and the editor read
+    game/art-embed.js       the manifest plus the sheets as data URIs
+    game/page.html          the whole game bundled into one shareable file
 
-Nothing in build/ is hand-edited; delete it at any time and re-run. A gate
-failure always points at an authored file in content/ or a generator.
+This build draws nothing. Art comes from assets/, where tools/art.py put it;
+if the content names a sprite the library does not have, the fix is to run
+the art pipeline, and the build says so. Nothing in build/ is hand-edited.
 """
 
 import base64
 import hashlib
-import io
 import json
 import os
 import sys
-
-from PIL import Image
 
 TOOLS = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(TOOLS)
 sys.path.insert(0, TOOLS)
 
-from gen import (actor, animal, fx as fx_gen, items as items_gen,  # noqa: E402
-                 props as props_gen, tiles as tiles_gen)
-from gen.palette import PALETTE, VARIANTS, resolve                   # noqa: E402
 import make_page                                                     # noqa: E402
-from pipeline import aseprite, autotile, manifest as manifest_mod, validate  # noqa: E402
-from pipeline.atlas import Atlas                                     # noqa: E402
+from pipeline import autotile, manifest as manifest_mod, validate    # noqa: E402
 
+ASSETS = os.path.join(ROOT, "assets")
 BUILD = os.path.join(ROOT, "build")
 GAME = os.path.join(ROOT, "game")
-TAG_COLOR = (0x4f, 0xa5, 0x55)
+FULL = 255
 
 
-# Rigs are interchangeable: same frame size, same anchor rule, same build_frames
-# shape. Adding a species is a content field, not a pipeline change.
-RIGS = {"biped": actor, "quadruped": animal}
+class Sheet:
+    """What manifest.build needs to know about an atlas: its name and meta."""
+
+    def __init__(self, name, meta):
+        self.name, self._meta = name, meta
+
+    def meta(self):
+        return dict(self._meta)
 
 
-# ------------------------------------------------------------- generation ---
-def build_atlases(sprite_rigs, content):
-    """sprite_rigs: {sprite_key: (rig_name, variant)}."""
-    actors = Atlas("actors", actor.FRAME, actor.FRAME, 6)
-    anims = {}
-    by_sprite = {}
-    for sprite_key, (rig_name, variant, states, held, worn) in sorted(sprite_rigs.items()):
-        rig = RIGS[rig_name]
-        pal = resolve(variant)
-        frames = rig.build_frames(variant, states, held, worn)
-        by_sprite[sprite_key] = (rig_name, variant, frames)
-        for state, facing, i, cel, shadow, ms, loops in frames:
-            base = f"{sprite_key}/{state}/{facing}"
-            idx = actors.add(f"{base}/{i}", [shadow, cel], rig.ANCHOR, ms, pal)
-            anims.setdefault(base, {"atlas": "actors", "frames": [], "ms": ms,
-                                    "loop": loops})
-            anims[base]["frames"].append(idx)
-
-    # Tiles: every base in each of its seeded variants, then - for tiles the
-    # content marks `blend` - the 47 transition arrangements, so the map can be
-    # authored as plain terrain and the edges resolved by pipeline/autotile.
-    tiles = Atlas("tiles", tiles_gen.SIZE, tiles_gen.SIZE, 16)
-    tile_canvases = {}
-    tile_index = {}                       # tid -> {"base": [...], "masks": {...}}
-    for tid in tiles_gen.TILE_ORDER:
-        defn = content["tiles"].get(tid)
-        if defn is None:
-            continue                      # drawn but not defined: not shipped
-        entry = {"base": [], "masks": {}, "anim": {}}
-        phases = tiles_gen.ANIMATED.get(tid, 1)
-
-        def add_frames(key, draw, entry=entry, phases=phases):
-            """The base frame, then every further phase as its own frame;
-            the engine cycles the sequence recorded under the base index."""
-            first_canvas = draw(0)
-            first = tiles.add(key, [first_canvas], (0, 0))
-            tile_canvases[key] = first_canvas
-            if phases > 1:
-                seq = [first]
-                for ph in range(1, phases):
-                    cp = draw(ph)
-                    seq.append(tiles.add(f"{key}/f{ph}", [cp], (0, 0)))
-                    tile_canvases[f"{key}/f{ph}"] = cp
-                entry["anim"][first] = seq
-            return first
-
-        for v in range(tiles_gen.VARIANTS.get(tid, 1)):
-            key = tid if v == 0 else f"{tid}/v{v}"
-            entry["base"].append(
-                add_frames(key, lambda ph, v=v: tiles_gen.frame(tid, v, ph)))
-        if defn.get("blend"):
-            if tid not in tiles_gen.STYLE:
-                sys.exit(f"[tile-blend] {defn['_file']}: blend is set but "
-                         f"tools/gen/tiles.py has no edge style for {tid!r}")
-            for mask in tiles_gen.ALL_MASKS:
-                if mask == tiles_gen.FULL:
-                    continue
-                key = f"{tid}/m{mask}"
-                entry["masks"][mask] = add_frames(
-                    key, lambda ph, m=mask: tiles_gen.blend(tid, m, ph))
-        tile_index[tid] = entry
-
-    # ART SCALE. Rigs redrawn natively at the 2x standard pass their canvases
-    # through untouched; the ones still waiting are blown up here, in one
-    # visible place, so it is never a mystery which is which.
-
-    props = Atlas("props", actor.FRAME, actor.FRAME, 8)
-    prop_canvases = {}
-    for pid, canvas in props_gen.build_props():
-        props.add(pid, [canvas], actor.ANCHOR)      # arrives at 2x already
-        prop_canvases[pid] = canvas
-
-    # Structures need more than the actor's frame, so they get their own sheet.
-    # Nothing downstream cares: a sprite record carries its atlas and its
-    # anchor, and the engine reads the frame size off the atlas.
-    big = Atlas("props_big", props_gen.BIG_FRAME * 2, props_gen.BIG_FRAME * 2, 4)
-    big_canvases = {}
-    big_anchor = (props_gen.BIG_ANCHOR[0] * 2, props_gen.BIG_ANCHOR[1] * 2)
-    for pid, canvas in props_gen.build_big_props():
-        big.add(pid, [canvas], big_anchor)          # arrives at 2x already
-        big_canvases[pid] = canvas
-
-    # Items are 16x16: the same cell lies on the ground and sits in the HUD.
-    items = Atlas("items", items_gen.SIZE, items_gen.SIZE, 8)
-    item_canvases = {}
-    for iid, canvas in items_gen.build_items():
-        items.add(iid, [canvas], items_gen.ANCHOR)
-        item_canvases[iid] = canvas
-
-    # Effect glyphs: the digits a hit floats up, and the spark round them.
-    fx = Atlas("fx", fx_gen.SIZE, fx_gen.SIZE, 11)
-    fx_canvases = {}
-    for gid, canvas in fx_gen.build_fx():
-        fx.add(gid, [canvas], fx_gen.ANCHOR)
-        fx_canvases[gid] = canvas
-
-    sheets = [actors, tiles, props, big, items, fx]
-    sprites = {}
-    for a in sheets:
-        sprites.update(a.sprites())
-    return (tile_index, sheets, sprites, anims, tile_canvases,
-            {"props": prop_canvases, "props_big": big_canvases,
-             "items": item_canvases, "fx": fx_canvases}, by_sprite)
+def load_library():
+    path = os.path.join(ASSETS, "atlases.json")
+    if not os.path.exists(path):
+        sys.exit("[art-missing] assets/atlases.json not found - run python tools/art.py")
+    with open(path, encoding="utf-8") as fh:
+        lib = json.load(fh)
+    for name, meta in lib["atlases"].items():
+        if not os.path.exists(os.path.join(ASSETS, meta["image"])):
+            sys.exit(f"[art-missing] assets/{meta['image']} not found - run python tools/art.py")
+    return lib
 
 
-# ---------------------------------------------------------------- exports ---
-def write_aseprite(by_sprite, tile_canvases, prop_canvases):
-    """Layered, tagged sources - the hand-editing escape hatch."""
-    out = os.path.join(BUILD, "aseprite")
-    os.makedirs(out, exist_ok=True)
-    written = []
-
-    for sprite_key, (rig_name, variant, frames) in sorted(by_sprite.items()):
-        rig = RIGS[rig_name]
-        tags = []                          # one tag per run of state-facing,
-        for i, (state, facing, *_rest) in enumerate(frames):   # read off the
-            name = f"{state}-{facing}"     # frames, so a frame set with slash
-            if tags and tags[-1][0] == name:                   # and one without
-                tags[-1] = (name, tags[-1][1], i, TAG_COLOR)   # both tag right
-            else:
-                tags.append((name, i, i, TAG_COLOR))
-        pal = resolve(variant)
-        path = os.path.join(out, f"{sprite_key.replace('.', '_')}.aseprite")
-        aseprite.write(
-            path, rig.FRAME, rig.FRAME, ["shadow", "actor"],
-            [([s.rgba_bytes(pal), c.rgba_bytes(pal)], ms)
-             for _st, _f, _i, c, s, ms, _loop in frames],
-            [(pal[k], name) for k, (_rgba, name) in PALETTE.items()],
-            tags,
-        )
-        _verify_ase(path, len(frames), ["shadow", "actor"], len(tags))
-        written.append(path)
-
-    for name, canvases, size in (
-            ("tiles", tile_canvases, tiles_gen.SIZE),
-            ("props", prop_canvases["props"], actor.FRAME),
-            ("props_big", prop_canvases["props_big"], props_gen.BIG_FRAME * 2),
-            ("items", prop_canvases["items"], items_gen.SIZE),
-            ("fx", prop_canvases["fx"], fx_gen.SIZE)):
-        path = os.path.join(out, f"{name}.aseprite")
-        items = list(canvases.items())
-        aseprite.write(
-            path, size, size, [name],
-            [([c.rgba_bytes()], 100) for _k, c in items],
-            [(rgba, n) for rgba, n in PALETTE.values()],
-            [(k, i, i, TAG_COLOR) for i, (k, _c) in enumerate(items)],
-        )
-        _verify_ase(path, len(items), [name], len(items))
-        written.append(path)
-    return written
-
-
-def _verify_ase(path, n_frames, layers, n_tags):
-    """Parse back what we just wrote - the round trip is the proof."""
-    doc = aseprite.read(path)
-    assert doc["layers"] == layers, (path, doc["layers"])
-    assert len(doc["frames"]) == n_frames, (path, len(doc["frames"]))
-    assert len(doc["tags"]) == n_tags, (path, len(doc["tags"]))
-
-
-def write_preview(sheets):
-    """One contact sheet, 4x, for eyeballing everything the build produced."""
-    zoom, pad = 4, 10
-    imgs = [a.render() for a in sheets]
-    w = max(i.width for i in imgs) * zoom + pad * 2
-    h = sum(i.height for i in imgs) * zoom + pad * (len(imgs) + 1)
-    out = Image.new("RGBA", (w, h), (0x9a, 0xa2, 0xaa, 255))
-    y = pad
-    for img in imgs:
-        big = img.resize((img.width * zoom, img.height * zoom), Image.NEAREST)
-        out.alpha_composite(big, (pad, y))
-        y += big.height + pad
-    return out
-
-
-def data_uri(img):
-    buf = io.BytesIO()
-    img.save(buf, "PNG", optimize=True)
-    return "data:image/png;base64," + base64.b64encode(buf.getvalue()).decode()
-
-
-def write_embed(man, sheets):
-    cfg = {"manifest": man,
-           "images": {a.name: data_uri(a.render()) for a in sheets}}
-    return ("// Generated by tools/build.py - do not edit.\n"
-            "window.ART = " + json.dumps(cfg, separators=(",", ":")) + ";\n")
+def check_art_covers(content, lib):
+    """Every sprite the content names must be in the library. This is the one
+    failure whose fix is not in content/: it means the art is stale."""
+    wanted = []
+    for kind in ("tiles", "props", "items"):
+        for defn in content[kind].values():
+            wanted.append((defn["_file"], defn["sprite"], "sprites"))
+    for defn in content["actors"].values():
+        wanted.append((defn["_file"], f"{defn['sprite']}/idle/down", "anims"))
+    for file, key, table in wanted:
+        if key not in lib[table]:
+            sys.exit(f"[art-stale] {file} names {key!r}, which assets/atlases.json "
+                     f"does not have - run python tools/art.py")
 
 
 # ------------------------------------------------------------------- main ---
 def assemble():
-    """Everything up to writing files; returned twice to prove determinism."""
+    """Everything up to writing files; run twice to prove determinism."""
     content = manifest_mod.load_content(ROOT)
-    sprite_rigs = {}
-    for d in content["actors"].values():
-        rig_name = d.get("rig", "biped")
-        variant = d["sprite"].split(".", 1)[1]
-        if rig_name not in RIGS:
-            sys.exit(f"[rig] {d['_file']}: unknown rig {rig_name!r}")
-        if variant not in VARIANTS:
-            sys.exit(f"[variant] {d['_file']}: sprite {d['sprite']!r} has no "
-                     f"palette variant {variant!r} in tools/gen/palette.py")
-        sprite_rigs[d["sprite"]] = (rig_name, variant, d.get("states"), None, None)
-        if not d.get("wields"):
-            continue
-        # One frame set per look: every weapon the rig can draw crossed with
-        # every armour, plus none of each. The engine dresses and arms a
-        # character by switching sprite base and nothing else, so the map from
-        # "<weapon>|<armor>" to sprite is written into the actor's own record.
-        rig = RIGS[rig_name]
-        weapons, armours = [(None, "")], [(None, "")]
-        for iid, item in sorted(content["items"].items()):
-            if item.get("held"):
-                if item["held"] not in getattr(rig, "WEAPONS", {}):
-                    sys.exit(f"[item-held] {item['_file']}: the {rig_name} rig has "
-                             f"no drawing for {item['held']!r}")
-                weapons.append((item["held"], iid))
-            if item.get("worn"):
-                if item["worn"] not in getattr(rig, "ARMOURS", {}):
-                    sys.exit(f"[item-held] {item['_file']}: the {rig_name} rig has "
-                             f"no drawing for {item['worn']!r}")
-                armours.append((item["worn"], iid))
-        d["looks"] = {}
-        for held, wid in weapons:
-            for worn, aid in armours:
-                key = d["sprite"] + (f"_{held}" if held else "") + (f"_{worn}" if worn else "")
-                sprite_rigs[key] = (rig_name, variant, d.get("states"), held, worn)
-                d["looks"][f"{wid}|{aid}"] = key
-    tile_index, sheets, sprites, anims, tile_canvases, prop_canvases, by_sprite = \
-        build_atlases(sprite_rigs, content)
+    lib = load_library()
+    check_art_covers(content, lib)
+
+    # A wielding actor's looks were worked out by the art pipeline; they ride
+    # on the actor's own record so the engine can dress it by sprite swap.
+    for aid, looks in lib.get("looks", {}).items():
+        if aid in content["actors"]:
+            content["actors"][aid]["looks"] = looks
+
+    tiles = lib["tiles"]
+    for tid, defn in content["tiles"].items():
+        if tid not in tiles:
+            sys.exit(f"[art-stale] {defn['_file']}: no tile art for {tid!r} - "
+                     f"run python tools/art.py")
 
     def lookup(tid, x, y, mask):
-        entry = tile_index[tid]
-        if mask != tiles_gen.FULL and entry["masks"]:
-            return entry["masks"][mask]
+        entry = tiles[tid]
+        if mask != FULL and entry["masks"]:
+            return entry["masks"][str(mask)]
         return entry["base"][autotile.pick_variant(x, y, len(entry["base"]))]
 
     grids = {mid: autotile.resolve(m, content["tiles"], lookup)
              for mid, m in content["maps"].items()}
-    blocking = sorted(i for tid, e in tile_index.items()
-                      if not content["tiles"][tid].get("walkable", True)
-                      for i in list(e["base"]) + list(e["masks"].values())
-                      + [j for seq in e["anim"].values() for j in seq])
-    tileset = {"blocking": blocking,
-               "animated": {str(i): seq for e in tile_index.values()
-                            for i, seq in e["anim"].items()},
-               "anim_ms": tiles_gen.ANIM_MS,
-               "variants": {tid: e["base"] for tid, e in tile_index.items()},
-               "transitions": {tid: len(e["masks"]) for tid, e in tile_index.items()
-                               if e["masks"]}}
-    man = manifest_mod.build(content, sheets, sprites, anims,
+    blocking = sorted(
+        i for tid, e in tiles.items()
+        if tid in content["tiles"] and not content["tiles"][tid].get("walkable", True)
+        for i in list(e["base"]) + list(e["masks"].values())
+        + [j for seq in e["anim"].values() for j in seq])
+    tileset = {
+        "blocking": blocking,
+        "animated": {i: seq for e in tiles.values() for i, seq in e["anim"].items()},
+        "anim_ms": lib["anim_ms"],
+        "variants": {tid: e["base"] for tid, e in tiles.items()},
+        "transitions": {tid: len(e["masks"]) for tid, e in tiles.items() if e["masks"]},
+        # the full mask table, so the editor can resolve edges live exactly
+        # the way the build does
+        "masks": {tid: e["masks"] for tid, e in tiles.items() if e["masks"]},
+        "standard": lib.get("standard", {}),
+    }
+    sheets = [Sheet(name, meta) for name, meta in lib["atlases"].items()]
+    man = manifest_mod.build(content, sheets, lib["sprites"], lib["anims"],
                              tileset=tileset, grids=grids)
-    return content, sprite_rigs, sheets, man, tile_canvases, prop_canvases, by_sprite
+    return content, lib, man
+
+
+def data_uri(path):
+    with open(path, "rb") as fh:
+        return "data:image/png;base64," + base64.b64encode(fh.read()).decode()
+
+
+def write_embed(man, lib):
+    images = {name: data_uri(os.path.join(ASSETS, meta["image"]))
+              for name, meta in lib["atlases"].items()}
+    cfg = {"manifest": man, "images": images}
+    return ("// Generated by tools/build.py - do not edit.\n"
+            "window.ART = " + json.dumps(cfg, separators=(",", ":")) + ";\n")
 
 
 def main():
-    content, sprite_rigs, sheets, man, tile_canvases, prop_canvases, by_sprite = assemble()
+    content, lib, man = assemble()
+    gates = validate.run(content, man, None)
 
-    gates = validate.run(content, man, tile_canvases)
-
-    # determinism gate: a second pass must produce byte-identical output
-    again = assemble()[3]
+    again = assemble()[2]
     if json.dumps(man, sort_keys=True) != json.dumps(again, sort_keys=True):
         sys.exit("[deterministic] two builds produced different manifests")
     gates.append("deterministic")
 
-    os.makedirs(os.path.join(BUILD, "atlas"), exist_ok=True)
+    os.makedirs(BUILD, exist_ok=True)
     os.makedirs(GAME, exist_ok=True)
-    for a in sheets:
-        a.render().save(os.path.join(BUILD, "atlas", f"{a.name}.png"), optimize=True)
     with open(os.path.join(BUILD, "manifest.json"), "w", encoding="utf-8") as fh:
         json.dump(man, fh, indent=2)
-    ase = write_aseprite(by_sprite, tile_canvases, prop_canvases)
-    write_preview(sheets).save(os.path.join(BUILD, "preview.png"))
-    embed = write_embed(man, sheets)
+    embed = write_embed(man, lib)
     with open(os.path.join(GAME, "art-embed.js"), "w", encoding="utf-8") as fh:
         fh.write(embed)
-
-    page, page_size = make_page.build()
+    make_page.build()
 
     n_defs = sum(len(v) for v in content.values())
     print(f"content   {n_defs} definitions from content/")
-    rigs = ", ".join(f"{k.split('.')[1]}[{v[0]}]" for k, v in sorted(sprite_rigs.items()))
-    print(f"actors    {rigs}")
-    for a in sheets:
-        p = os.path.join(BUILD, "atlas", f"{a.name}.png")
-        print(f"  atlas/{a.name + '.png':<14}{os.path.getsize(p):>8} B  "
-              f"{a.cols * a.fw}x{a.rows * a.fh}, {len(a.entries)} frames")
-    for p in ase:
-        print(f"  aseprite/{os.path.basename(p):<18}{os.path.getsize(p):>8} B"
-              f"  [round-trip verified]")
-    for rel in ("build/manifest.json", "build/preview.png", "game/art-embed.js",
-                "game/page.html"):
-        print(f"  {rel:<27}{os.path.getsize(os.path.join(ROOT, rel)):>8} B")
+    print(f"art       assets/atlases.json: {len(lib['sprites'])} sprites, "
+          f"{len(lib['anims'])} animations, {len(lib['atlases'])} atlases")
+    for mid, m in content["maps"].items():
+        w, h = m["size"]
+        print(f"map       {mid}: {w}x{h}, {len(m['entities'])} entities, "
+              f"{sum(1 for r in man['maps'][mid]['grid'] for i in r if str(i) in tileset_anim(man))} animated cells")
+    for rel in ("build/manifest.json", "game/art-embed.js", "game/page.html"):
+        print(f"  {rel:<22}{os.path.getsize(os.path.join(ROOT, rel)):>8} B")
     print(f"gates     {len(gates)} passed: {', '.join(gates)}")
     print(f"digest    {hashlib.md5(embed.encode()).hexdigest()[:12]}")
+
+
+def tileset_anim(man):
+    return man.get("tileset", {}).get("animated", {})
 
 
 if __name__ == "__main__":

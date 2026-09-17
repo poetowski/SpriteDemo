@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Map editor</title>
+<style>
+  :root { --bg:#141821; --panel:#1b2130; --panel2:#222a3b; --line:#2e3748; --ink:#e8e4da;
+          --muted:#8b93a7; --accent:#74c46b; --warn:#e0a340; --bad:#e06a5a; }
+  * { box-sizing: border-box; }
+  html, body { height: 100%; margin: 0; }
+  body {
+    background: var(--bg); color: var(--ink);
+    font: 13px/1.45 ui-monospace, "Cascadia Code", Consolas, monospace;
+    display: grid; grid-template-rows: auto 1fr auto; grid-template-columns: 300px 1fr;
+    grid-template-areas: "bar bar" "side main" "status status";
+  }
+  .bar { grid-area: bar; display: flex; flex-wrap: wrap; gap: 8px 14px; align-items: center;
+         padding: 8px 12px; background: var(--panel); border-bottom: 1px solid var(--line); }
+  .bar h1 { margin: 0 8px 0 0; font-size: 13px; font-weight: 600; letter-spacing: .04em; }
+  .bar h1 span { color: var(--muted); font-weight: 400; }
+  .bar label { color: var(--muted); display: flex; gap: 6px; align-items: center; }
+  select, input[type=number], button {
+    font: inherit; color: var(--ink); background: var(--panel2); border: 1px solid var(--line);
+    border-radius: 3px; padding: 3px 8px;
+  }
+  input[type=number] { width: 58px; }
+  button { cursor: pointer; }
+  button:hover { border-color: var(--muted); }
+  button.on { background: #2f4a2c; border-color: var(--accent); color: #d8f2cf; }
+  button.primary { background: #2f4a2c; border-color: var(--accent); }
+  button.warn { border-color: var(--warn); }
+  .tools { display: flex; gap: 4px; }
+  kbd { color: var(--muted); font-size: 11px; }
+
+  .side { grid-area: side; overflow: auto; background: var(--panel); border-right: 1px solid var(--line);
+          padding: 10px; display: flex; flex-direction: column; gap: 12px; }
+  .side h2 { margin: 0; font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
+  .tabs { display: flex; gap: 4px; }
+  .tabs button { flex: 1; }
+  .palette { display: grid; grid-template-columns: repeat(auto-fill, minmax(84px, 1fr)); gap: 6px; }
+  .swatch {
+    display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 6px 4px;
+    background: var(--panel2); border: 1px solid var(--line); border-radius: 4px; cursor: pointer;
+  }
+  .swatch:hover { border-color: var(--muted); }
+  .swatch.on { border-color: var(--accent); background: #26362a; }
+  .swatch canvas { image-rendering: pixelated; width: 48px; height: 48px; }
+  .swatch span { font-size: 10px; color: var(--muted); text-align: center; word-break: break-all; }
+  .swatch.solid span::before { content: "■ "; color: var(--bad); }
+  .swatch.ground span::before { content: "● "; color: var(--accent); }
+  .legend { color: var(--muted); font-size: 11px; line-height: 1.6; }
+  .legend b { color: var(--ink); font-weight: 500; }
+
+  .main { grid-area: main; overflow: auto; background: #0e1015; position: relative; }
+  #view { image-rendering: pixelated; display: block; cursor: crosshair; }
+
+  .status { grid-area: status; display: flex; flex-wrap: wrap; gap: 8px 18px; padding: 6px 12px;
+            background: var(--panel); border-top: 1px solid var(--line); color: var(--muted); }
+  .status b { color: var(--ink); font-weight: 500; }
+  #msg { color: var(--accent); }
+  #msg.bad { color: var(--bad); }
+  #log { white-space: pre-wrap; max-height: 160px; overflow: auto; width: 100%;
+         font-size: 11px; color: var(--muted); display: none; }
+  #log.show { display: block; }
+</style>
+</head>
+<body>
+
+<div class="bar">
+  <h1>Map editor <span>&middot; paints terrain, places objects, saves to content/maps/</span></h1>
+  <label>map <select id="mapSel"></select></label>
+  <label>size <input id="mapW" type="number" min="8" max="200"> &times; <input id="mapH" type="number" min="8" max="200">
+    <button id="resize" title="Resize (pads with grass, crops from the bottom-right)">apply</button></label>
+  <div class="tools">
+    <button id="t-paint" class="on" title="P">paint</button>
+    <button id="t-place" title="O">place</button>
+    <button id="t-erase" title="X">erase</button>
+    <button id="t-spawn" title="S">spawn</button>
+  </div>
+  <label>brush <select id="brush"><option>1</option><option>2</option><option>3</option></select></label>
+  <label>zoom <select id="zoom"><option>1</option><option selected>2</option><option>3</option></select></label>
+  <label><input id="grid" type="checkbox" checked> grid</label>
+  <button id="undo" title="Ctrl+Z">undo</button>
+  <button id="save" class="primary" title="Ctrl+S">save</button>
+  <button id="build" class="warn" title="save, then run tools/build.py">save + build</button>
+  <a id="play" href="/game/index.html" target="_blank"><button>open game</button></a>
+</div>
+
+<div class="side">
+  <div class="tabs">
+    <button id="tab-terrain" class="on">terrain</button>
+    <button id="tab-objects">objects</button>
+  </div>
+  <div id="pal-terrain" class="palette"></div>
+  <div id="pal-objects" class="palette" hidden></div>
+  <div class="legend">
+    <b>paint</b> drag to paint terrain; edges resolve live<br>
+    <b>place</b> click to put the selected object down<br>
+    <b>erase</b> click an object to remove it<br>
+    <b>spawn</b> click to set where the player starts<br>
+    <b>right-click</b> erases an object in any tool<br>
+    <b>alt-click</b> picks up the terrain or object under the cursor<br>
+    <span style="color:var(--bad)">&#9632;</span> solid &nbsp;
+    <span style="color:var(--accent)">&#9679;</span> ground object (walkable)
+  </div>
+</div>
+
+<div class="main"><canvas id="view"></canvas></div>
+
+<div class="status">
+  <span>tile <b id="st-tile">-</b></span>
+  <span>terrain <b id="st-terrain">-</b></span>
+  <span>objects <b id="st-objects">-</b></span>
+  <span>entities <b id="st-count">-</b></span>
+  <span id="msg"></span>
+  <pre id="log"></pre>
+</div>
+
+<script src="/editor/editor.js"></script>
+</body>
+</html>

@@ -21,7 +21,7 @@ def _fail(gate, msg):
     raise GateError(f"[{gate}] {msg}")
 
 
-def run(content, man, tile_canvases):
+def run(content, man, tile_canvases=None):
     """Returns the list of gate names that passed, or raises GateError."""
     passed = []
 
@@ -99,9 +99,9 @@ def run(content, man, tile_canvases):
             _fail("anchor-bounds", f"{key}: anchor {rec['anchor']} outside {fw}x{fh}")
     passed.append("anchor-bounds")
 
-    # 5 - tiles repeat without a seam: opposite edges must be free of detail
-    #     that would read as a hard line when the tile is tiled.
-    for tid, c in tile_canvases.items():
+    # 5 - tiles repeat without a seam. The art pipeline runs this on the
+    #     canvases it draws; the game build has no canvases and skips it.
+    for tid, c in (tile_canvases or {}).items():
         for y in range(c.h):
             if c.px[y][0] is None or c.px[y][c.w - 1] is None:
                 _fail("tile-seam", f"{tid}: transparent pixel on a vertical edge")

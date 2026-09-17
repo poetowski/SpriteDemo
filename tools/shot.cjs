@@ -52,9 +52,11 @@ try {
     ({ chromium } = require(path.join(
       process.env.NODE_PATH || '/opt/node22/lib/node_modules', 'playwright')));
   } catch (e2) {
-    console.error('playwright not found. npm i -g playwright (Chromium is at '
-                  + '/opt/pw-browsers in this environment).');
-    process.exit(2);
+    // No Playwright here. Drive whatever Chrome or Edge is installed over the
+    // DevTools protocol instead; tools/cdp.cjs speaks the slice of the
+    // Playwright page API this script uses. Set CHROME_PATH if it cannot find
+    // a browser on its own.
+    ({ chromium } = require('./cdp.cjs'));
   }
 }
 
@@ -100,6 +102,7 @@ const BOOTED = () => !!(window.game && window.game.scene
     const cur = s.hero.anims.currentAnim ? s.hero.anims.currentAnim.key : '';
     return {
       size: map.size,
+      tileSize: map.tile_size,
       entities: map.entities.length,
       itemEntities: map.entities.filter((e) => m.items[e.def]).length,
       sprites: s.children.list.filter((o) => o.type === 'Sprite').length,
@@ -130,8 +133,8 @@ const BOOTED = () => !!(window.game && window.game.scene
   const [cols, rows] = report.size;
   const checks = [
     ['no console errors', problems.length === 0, problems.join(' | ')],
-    ['world matches the map', report.worldBounds[0] === cols * 16
-      && report.worldBounds[1] === rows * 16, JSON.stringify(report.worldBounds)],
+    ['world matches the map', report.worldBounds[0] === cols * report.tileSize
+      && report.worldBounds[1] === rows * report.tileSize, JSON.stringify(report.worldBounds)],
     ['every entity spawned', report.sprites === report.entities + 1,
       `${report.sprites} sprites vs ${report.entities} entities + hero`],
     ['every item lying in the world', report.pickups === report.itemEntities,
@@ -268,7 +271,7 @@ const BOOTED = () => !!(window.game && window.game.scene
       requestAnimationFrame(() => requestAnimationFrame(() => {
         g.renderer.snapshot((img) => done(img.src));
       }));
-    }), [cols * 16, rows * 16]);
+    }), [cols * report.tileSize, rows * report.tileSize]);
     fs.writeFileSync(OUT, Buffer.from(b64.split(',')[1], 'base64'));
   } else {
     await page.locator('.stage').screenshot({ path: OUT });
