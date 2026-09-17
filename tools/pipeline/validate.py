@@ -158,6 +158,27 @@ def run(content, man, tile_canvases):
     passed.append("map-overlap")
     passed.append("map-spawn")
 
+    # 6b - a playable actor carries a whole stat block, or the sheet shows
+    #      blanks that only surface when someone presses C.
+    for cid, defn in content["actors"].items():
+        if "display_name" not in defn:
+            continue
+        for field in ("level", "hp_max", "hp_per_level", "base_damage",
+                      "xp_curve", "gear_slots"):
+            if field not in defn:
+                _fail("hero-stats", f"{defn['_file']}: {cid} has a display_name "
+                                    f"but no {field!r}")
+        curve = defn["xp_curve"]
+        for k in ("base", "growth"):
+            if not isinstance(curve.get(k), (int, float)) or curve[k] <= 0:
+                _fail("hero-stats", f"{defn['_file']}: xp_curve.{k} must be a "
+                                    f"positive number")
+        for slot in defn["gear_slots"]:
+            if not any(i.get("slot") == slot for i in content["items"].values()):
+                _fail("hero-stats", f"{defn['_file']}: gear slot {slot!r} has no "
+                                    f"item that fits it")
+    passed.append("hero-stats")
+
     # 7 - every dialogue referenced by an entity exists
     for kind in ("props", "actors"):
         for cid, defn in content[kind].items():

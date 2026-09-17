@@ -21,7 +21,8 @@ node tools/shot.cjs            # boot the game headless, check it, photograph it
 ```
 
 Then open `game/index.html` — double-click is enough, no server needed.
-**Arrows / WASD** to move, **E** to talk. On a phone there is a d-pad.
+**Arrows / WASD** move · **E** talk / take · **Space** slash · **I** bag ·
+**C** character sheet · **Q** swap weapon On a phone there is a d-pad.
 
 `game/page.html` is the same game as a single self-contained file, which is what
 gets published when a link is wanted.

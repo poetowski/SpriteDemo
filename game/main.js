@@ -118,8 +118,19 @@ class World extends Phaser.Scene {
     this.inventory = new Array(BAG_SLOTS).fill(null);
     this.cursor = 0;                      // the slot the panel's cursor is on
     this.bagOpen = false;
+    // Worn gear lives here, not in a bag slot: a drawn sword is in the hero's
+    // hand, so it should not also be taking up room in the pack.
     this.weapon = null;                   // item id in the weapon hand
     this.armor = null;                    // item id worn over the tunic
+
+    // --- the character sheet ----------------------------------------------
+    this.who = hero.display_name;
+    this.level = hero.level;
+    this.hpMax = hero.hp_max;
+    this.hp = this.hpMax;
+    this.xp = 0;
+    this.sheetOpen = false;
+    this.sheetCursor = 0;                 // 0 weapon, 1 armour
     this.flags = new Set();               // what conversations remember
     this.busy = false;                    // a one-shot animation owns the hero
     this.pending = null;                  // the pickup a gather will collect
@@ -132,7 +143,7 @@ class World extends Phaser.Scene {
     this.keys = this.input.keyboard.addKeys({
       up: 'UP', down: 'DOWN', left: 'LEFT', right: 'RIGHT',
       w: 'W', a: 'A', s: 'S', d: 'D',
-      talk: 'E', space: 'SPACE', swap: 'Q', bag: 'I', esc: 'ESC',
+      talk: 'E', space: 'SPACE', swap: 'Q', bag: 'I', sheet: 'C', esc: 'ESC',
     });
     const axisOf = { up: 'y', down: 'y', w: 'y', s: 'y',
                      left: 'x', right: 'x', a: 'x', d: 'x' };
@@ -146,6 +157,7 @@ class World extends Phaser.Scene {
         // On the event, not polled: a tap shorter than a frame must still
         // move the cursor one slot, and JustDown loses it to the key-up.
         if (this.bagOpen) this.moveCursor(...stepOf[name]);
+        else if (this.sheetOpen) this.moveGearCursor(stepOf[name][0]);
         else if (this.dialogue) this.moveChoice(stepOf[name][1]);
       });
     }
@@ -159,15 +171,23 @@ class World extends Phaser.Scene {
     this.keys.space.on('down', () => this.act('slash'));
     this.keys.swap.on('down', () => this.act('swap'));
     this.keys.bag.on('down', () => this.act('bag'));
+    this.keys.sheet.on('down', () => this.act('sheet'));
     this.keys.esc.on('down', () => {
+      if (this.sheetOpen) return this.act('sheet');
       if (this.bagOpen) return this.act('bag');
       this.closeDialogue();
     });
     window.__act = (name) => this.act(name);   // the touch buttons come in here
+    window.__gear = (i) => {                   // tapping a gear slot on the sheet
+      this.sheetCursor = i;
+      this.useGearSlot(i);
+      this.pushSheet();
+    };
 
     this.dialogue = null;
     this.nearest = null;
     this.pushInventory();
+    this.pushSheet();
   }
 
   tileCentre(tx, ty) {
@@ -300,8 +320,21 @@ class World extends Phaser.Scene {
     if (name === 'bag') {
       if (this.dialogue || this.busy) return;
       this.bagOpen = !this.bagOpen;
-      if (this.bagOpen) this.hero.setVelocity(0, 0);
+      if (this.bagOpen) { this.sheetOpen = false; this.hero.setVelocity(0, 0); }
+      this.pushSheet();
       return this.pushInventory();
+    }
+    if (name === 'sheet') {
+      if (this.dialogue || this.busy) return;
+      this.sheetOpen = !this.sheetOpen;
+      if (this.sheetOpen) { this.bagOpen = false; this.hero.setVelocity(0, 0); }
+      this.pushInventory();
+      return this.pushSheet();
+    }
+    if (this.sheetOpen) {                  // the sheet has the keys while open
+      if (name === 'talk') return this.useGearSlot(this.sheetCursor);
+      if (name === 'swap') return this.cycleWeapon();
+      return;
     }
     if (this.bagOpen) {                    // the panel has the keys while open
       if (name === 'talk') return this.useSlot(this.cursor);
@@ -322,7 +355,7 @@ class World extends Phaser.Scene {
   }
 
   gather(pick) {
-    if (!this.inventory.includes(null)) return;   // bag full: the prompt says so
+    if (!this.canTake(pick.id)) return;           // bag full: the prompt says so
     this.busy = true;
     this.pending = pick;
     this.hero.setVelocity(0, 0);
@@ -360,26 +393,65 @@ class World extends Phaser.Scene {
     this.addItem(pick.id);
   }
 
-  /** Put one thing in the first empty slot. False when there is none. */
+  /** Can this be picked up at all? Gear going straight onto an empty body
+   *  slot needs no bag room, which is why a full bag does not block it. */
+  canTake(id) {
+    const kind = M.items[id].slot;
+    if (kind && !this.gearIn(kind)) return true;
+    return this.inventory.includes(null);
+  }
+
+  gearIn(kind) {
+    return kind === 'weapon' ? this.weapon : this.armor;
+  }
+
+  /** Put one thing away. Gear goes to the body when that slot is free. */
   addItem(id) {
+    const kind = M.items[id].slot;
+    if (kind && !this.gearIn(kind)) {
+      if (kind === 'weapon') this.weapon = id; else this.armor = id;
+      this.refreshLook();
+      return true;
+    }
     const slot = this.inventory.indexOf(null);
     if (slot < 0) return false;
     this.inventory[slot] = id;
-    const def = M.items[id];
-    if (def.slot === 'weapon' && !this.weapon) this.equip(id);   // first blade: draw it
-    if (def.slot === 'armor' && !this.armor) this.wear(id);      // first armour: put it on
     this.pushInventory();
     return true;
   }
 
-  /** E on a slot in the open bag: a weapon is drawn or put away, armour is
-   *  put on or taken off. */
+  /** Move gear between the bag and the body. The two trade places, so putting
+   *  something on never needs a free slot - only taking something off does,
+   *  and then only because it has to land somewhere. */
+  setGear(kind, id) {
+    const cur = this.gearIn(kind);
+    if (id === cur) return true;
+    if (id) {
+      const slot = this.inventory.indexOf(id);
+      if (slot < 0) return false;
+      this.inventory[slot] = cur;            // what was worn drops into its place
+    } else {
+      const free = this.inventory.indexOf(null);
+      if (free < 0) return false;            // bag full: it stays on
+      this.inventory[free] = cur;
+    }
+    if (kind === 'weapon') this.weapon = id; else this.armor = id;
+    this.refreshLook();
+    return true;
+  }
+
+  /** E on a slot in the open bag: put that piece of gear on. */
   useSlot(slot) {
     const id = this.inventory[slot];
     if (!id) return;
     const kind = M.items[id].slot;
-    if (kind === 'weapon') this.equip(id === this.weapon ? null : id);
-    if (kind === 'armor') this.wear(id === this.armor ? null : id);
+    if (kind) this.setGear(kind, id);
+  }
+
+  /** E on a slot in the open sheet: take that piece of gear off. */
+  useGearSlot(i) {
+    const kind = ['weapon', 'armor'][i];
+    if (this.gearIn(kind)) this.setGear(kind, null);
   }
 
   /** The hero's look is one baked frame set per weapon-and-armour pair; the
@@ -387,33 +459,91 @@ class World extends Phaser.Scene {
   refreshLook() {
     this.heroSprite = this.heroDef.looks[`${this.weapon || ''}|${this.armor || ''}`];
     this.pushInventory();
+    this.pushSheet();
   }
 
-  wear(id) {
-    this.armor = id;
-    this.refreshLook();
-  }
-
+  /** Every weapon to hand: the drawn one, plus any in the bag. */
   weaponsHeld() {
     const seen = new Set();
+    if (this.weapon) seen.add(this.weapon);
     for (const id of this.inventory) {
       if (id && M.items[id].slot === 'weapon') seen.add(id);
     }
     return [...seen];
   }
 
-  /** Arm the hero, or disarm with null. Just a sprite base: every pose of the
-   *  wielding frame set already has the weapon in hand. */
-  equip(id) {
-    this.weapon = id;
-    this.refreshLook();
-  }
-
   cycleWeapon() {
     const held = this.weaponsHeld();
     if (!held.length) return;
     const ring = [null, ...held];
-    this.equip(ring[(ring.indexOf(this.weapon) + 1) % ring.length]);
+    this.setGear('weapon', ring[(ring.indexOf(this.weapon) + 1) % ring.length]);
+  }
+
+  // --- the character sheet ---------------------------------------------------
+  /** What the next level costs. A curve, not a table, so levels past the ones
+   *  anyone has reached still have a number. */
+  xpToNext(level = this.level) {
+    const { base, growth } = this.heroDef.xp_curve;
+    return Math.round(base * Math.pow(level, growth));
+  }
+
+  damageDealt() {
+    return this.heroDef.base_damage
+         + (this.weapon ? M.items[this.weapon].damage : 0);
+  }
+
+  armorWorn() {
+    return this.armor ? M.items[this.armor].defense : 0;
+  }
+
+  /** Landing a blow is worth what it took off. Levels roll over, carrying the
+   *  remainder, so a big hit can never strand you a point short. */
+  addXp(n) {
+    this.xp += n;
+    while (this.xp >= this.xpToNext()) {
+      this.xp -= this.xpToNext();
+      this.level += 1;
+      this.hpMax += this.heroDef.hp_per_level;
+      this.hp = this.hpMax;
+      if (window.__levelUp) window.__levelUp(this.level);
+    }
+    this.pushSheet();
+  }
+
+  pushSheet() {
+    if (!window.__sheet) return;
+    const gear = (kind) => {
+      const id = this.gearIn(kind);
+      if (!id) return null;
+      const d = M.items[id];
+      return {
+        id, name: d.name, index: M.sprites[d.sprite].index,
+        stat: kind === 'weapon' ? `+${d.damage} damage` : `+${d.defense} armour`,
+      };
+    };
+    window.__sheet({
+      open: this.sheetOpen,
+      name: this.who,
+      level: this.level,
+      hp: this.hp,
+      hpMax: this.hpMax,
+      xp: this.xp,
+      xpNext: this.xpToNext(),
+      damage: this.damageDealt(),
+      armor: this.armorWorn(),
+      cursor: this.sheetCursor,
+      slots: [
+        { kind: 'weapon', label: 'Weapon', item: gear('weapon') },
+        { kind: 'armor', label: 'Armour', item: gear('armor') },
+      ],
+      bagFull: !this.inventory.includes(null),
+    });
+  }
+
+  moveGearCursor(dx) {
+    if (!dx) return;
+    this.sheetCursor = Math.max(0, Math.min(1, this.sheetCursor + dx));
+    this.pushSheet();
   }
 
   /** What the swing reaches: a tile ahead, a tile and a bit either side. */
@@ -438,7 +568,7 @@ class World extends Phaser.Scene {
 
   /** A blow's worth: the weapon's damage, give or take a fifth. */
   rollDamage() {
-    const base = M.items[this.weapon].damage;
+    const base = this.damageDealt();
     return Math.max(1, Math.round(base * (0.8 + Math.random() * 0.4)));
   }
 
@@ -447,6 +577,7 @@ class World extends Phaser.Scene {
    *  they are pixels of the same size as everything else, not blurred text. */
   floatDamage(target) {
     const n = this.rollDamage();
+    this.addXp(n);
     this.hits = (this.hits || 0) + 1;
     const scale = 2;                                  // 3x5 glyphs are too shy at 1x
     const advance = 5 * scale;                        // outlined glyph is 5 wide
@@ -656,8 +787,12 @@ class World extends Phaser.Scene {
     const k = this.keys;
     const pad = window.__pad || {};
     const talking = !!this.dialogue;
-    const locked = talking || this.busy || this.bagOpen;   // something else owns the body
+    const locked = talking || this.busy || this.bagOpen || this.sheetOpen;
 
+    if (this.sheetOpen && (pad.left || pad.right)) {
+      this.moveGearCursor((pad.right ? 1 : 0) - (pad.left ? 1 : 0));
+      window.__pad = {};
+    }
     if (this.bagOpen && (pad.left || pad.right || pad.up || pad.down)) {
       // the touch d-pad drives the cursor too; one tap is one slot
       this.moveCursor((pad.right ? 1 : 0) - (pad.left ? 1 : 0),

@@ -6424,6 +6424,19 @@
         "gather"
       ],
       "wields": true,
+      "display_name": "Erexon the Great",
+      "level": 1,
+      "hp_max": 24,
+      "hp_per_level": 6,
+      "base_damage": 2,
+      "xp_curve": {
+        "base": 40,
+        "growth": 1.6
+      },
+      "gear_slots": [
+        "weapon",
+        "armor"
+      ],
       "looks": {
         "|": "actor.hero",
         "|item.mail": "actor.hero_mail",
