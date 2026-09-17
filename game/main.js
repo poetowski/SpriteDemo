@@ -13,11 +13,8 @@
 
 const M = ART.manifest;
 const MAP_ID = 'map.riverside';
-// The art is drawn at the 2x standard (32px tiles, 64px actors), so the
-// viewport doubles with it: the player sees the same slice of world as before,
-// in twice the detail, rather than half the world at the same detail.
-const VIEW_W = 640;
-const VIEW_H = 480;
+const VIEW_W = 320;
+const VIEW_H = 240;
 
 /** Origin that puts a sprite's authored anchor on its world position. */
 function originOf(spriteKey) {

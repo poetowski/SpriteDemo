@@ -97,42 +97,41 @@ after editing `tools/editor.py`. `node tools/editor_test.cjs` drives the real
 editor in a headless browser and checks all of the above
 (`EDITOR_SHOT=path` also leaves a screenshot).
 
-## The art scale standard## The art scale standard
+## The art scale standard
 
-**Everything is drawn at the 2x standard.** These are the frame sizes, and the
-`art-scale` gate enforces them:
+**These are the frame sizes, and the `art-scale` gate enforces them:**
 
 | Atlas | Frame | Anchor | Rig |
 |---|---|---|---|
-| `tiles` | 32x32 | - | `gen/tiles.py` |
-| `actors` | 64x64 | `(32, 58)` | `gen/actor.py`, `gen/animal.py` |
-| `props` | 64x64 | `(32, 58)` | `gen/props.py` |
-| `props_big` | 96x96 | `(48, 90)` | `gen/props.py` structures |
-| `items` | 32x32 | `(16, 28)` | `gen/items.py` |
-| `fx` | 16x16 | `(8, 8)` | `gen/fx.py` |
+| `tiles` | 16x16 | - | `gen/tiles.py` |
+| `actors` | 32x32 | `(16, 29)` | `gen/actor.py`, `gen/animal.py` |
+| `props` | 32x32 | `(16, 29)` | `gen/props.py` |
+| `props_big` | 48x48 | `(24, 45)` | `gen/props.py` structures |
+| `items` | 16x16 | `(8, 14)` | `gen/items.py` |
+| `fx` | 8x8 | `(4, 4)` | `gen/fx.py` |
 
-A rig that drifts back to an older size, or a new atlas added at the wrong one,
-fails the build rather than looking subtly chunky in game. **New art is authored
-at these sizes** - never drawn small and scaled up in the pipeline.
+A rig that drifts to another size, or a new atlas added at the wrong one, fails
+the build rather than looking subtly wrong in game. **New art is authored at
+these sizes** - never drawn at another scale and resized in the pipeline. There
+is deliberately no upscale helper in the codebase.
 
-### Redraw, never upscale
-
-Doubling coordinates makes every pixel a 2x2 block and adds no detail; it is not
-a resolution change. Moving something up a scale means **redrawing it to use the
-new pixels** - the face gains brows and a white in the eye, the fleece becomes a
-texture rather than four bumps on an outline. There is deliberately no upscale
-helper left in the codebase; wanting one is the signal to redraw.
+This scale was chosen on purpose. The art was once redrawn at twice this size;
+the detail was real but every new prop then cost four times the pixel work, and
+the effort was not worth it for a game this size. Everything here is drawn to
+suit 16px ground, and anything new should be too.
 
 ### Shading
 
 `_shade` lights the 1px rim of a mass; `_form` gives it volume by position
-within its own bounds. Use `_form` on anything bigger than a few pixels, or it
-reads as a flat sticker. **Shade inside the silhouette**: painting shading by
-raw coordinate puts pixels outside the shape - that bug gave rocks striped tails
-and a sack legs, and no assertion catches it. Render a contact sheet and look.
+within its own bounds. **Shade inside the silhouette**: painting shading by raw
+coordinate puts pixels outside the shape, and no assertion catches it. Render a
+contact sheet and look.
 
-Texture comes from `scatter(seed)`, a fixed deterministic generator, so dense
-detail never shimmers between frames and the build stays reproducible.
+Texture comes from `scatter(seed)`, a fixed deterministic generator. It returns
+the *high* bits of its state: the low bits of an LCG cycle with a period as
+short as the modulus, which laid tufts out in diagonal stripes and made grass
+read as hatching. Use `_put` to place detail, so it wraps at the tile edge and
+the tile repeats seamlessly.
 
 ### Ground
 
@@ -166,10 +165,10 @@ Ground is authored as plain terrain and drawn with variation and edges:
 
 ```
 tools/gen/palette.py   the one palette; a character variant is a key remap
-tools/gen/actor.py     the biped rig      (64x64 frame, anchor [32, 58])
+tools/gen/actor.py     the biped rig      (32x32 frame, anchor [16, 29])
 tools/gen/animal.py    the quadruped rig  (same frame, same contract)
-tools/gen/props.py     props 64x64, structures 96x96 (anchor [48, 90])
-tools/gen/tiles.py     32x32 ground tiles, variants and the blob transitions
+tools/gen/props.py     props 32x32, structures 48x48 (anchor [24, 45])
+tools/gen/tiles.py     16x16 ground tiles, variants and the blob transitions
 tools/art.py           the art pipeline: draws everything -> assets/
 tools/build.py         the game build: assets/ + content/ -> build/ + game/
 tools/editor.py        serves the map editor in editor/
@@ -197,7 +196,7 @@ body on each.
 (`biped` / `quadruped`), `states`, `speed`, `blocks`, `interact` and `wander`
 settings are all content. No JS changes.
 
-**An item** is a 32x32 icon function in `tools/gen/items.py` (added to
+**An item** is a 16x16 icon function in `tools/gen/items.py` (added to
 `ITEMS`), a file in `content/items/` with `kind` `material`, `weapon` or
 `armor`, and a line in the map. A weapon also carries a positive integer
 `damage` (the number a hit floats up) and names what the hand holds

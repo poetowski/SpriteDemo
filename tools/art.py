@@ -154,9 +154,9 @@ def build_atlases(sprite_rigs, content):
         props.add(pid, [canvas], actor.ANCHOR)
         prop_canvases[pid] = canvas
 
-    big = Atlas("props_big", props_gen.BIG_FRAME * 2, props_gen.BIG_FRAME * 2, 4)
+    big = Atlas("props_big", props_gen.BIG_FRAME, props_gen.BIG_FRAME, 4)
     big_canvases = {}
-    big_anchor = (props_gen.BIG_ANCHOR[0] * 2, props_gen.BIG_ANCHOR[1] * 2)
+    big_anchor = props_gen.BIG_ANCHOR
     for pid, canvas in props_gen.build_big_props():
         big.add(pid, [canvas], big_anchor)
         big_canvases[pid] = canvas
@@ -230,7 +230,7 @@ def write_aseprite(by_sprite, tile_canvases, others):
     for name, canvases, size in (
             ("tiles", tile_canvases, tiles_gen.SIZE),
             ("props", others["props"], actor.FRAME),
-            ("props_big", others["props_big"], props_gen.BIG_FRAME * 2),
+            ("props_big", others["props_big"], props_gen.BIG_FRAME),
             ("items", others["items"], items_gen.SIZE),
             ("fx", others["fx"], fx_gen.SIZE)):
         path = os.path.join(out, f"{name}.aseprite")
@@ -270,7 +270,7 @@ def library(sheets, sprites, anims, tile_index, looks):
     return {
         "art_version": 1,
         "standard": {"tile": tiles_gen.SIZE, "actor": actor.FRAME,
-                     "prop": actor.FRAME, "structure": props_gen.BIG_FRAME * 2,
+                     "prop": actor.FRAME, "structure": props_gen.BIG_FRAME,
                      "item": items_gen.SIZE, "fx": fx_gen.SIZE},
         "atlases": {a.name: {**a.meta(), "image": f"atlases/{a.name}.png"}
                     for a in sheets},

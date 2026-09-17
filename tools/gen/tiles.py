@@ -1,18 +1,21 @@
-"""32x32 ground tiles, the transitions between them, and the frames that move.
+"""16x16 ground tiles, the transitions between them, and the frames that move.
 
 Two things separate ground that looks like a place from ground that looks like
 wallpaper. The first is variation: a field is several grass drawings chosen by
 position, not one stamp repeated. The second is edges: a path has a trodden
 margin where it meets the turf, water has a shore, and a stone outcrop has a
-face on its downhill side and a shadow under it, instead of a hard seam.
+lit lip with a shadow under it, instead of a hard seam.
 
-Because the tiles are generated, all of it comes cheap. Base textures take a
-seed and wrap at the edges (detail is placed modulo the tile size), so every
-variant tiles seamlessly. Transitions are the standard 47-tile blob set - one
-tile per distinct neighbour arrangement - carved out of the grass along a
+None of that costs authoring effort, because it is generated. Base textures
+take a seed and wrap at the edges (detail is placed modulo the tile size), so
+every variant tiles seamlessly. Transitions are the standard 47-tile blob set -
+one tile per distinct neighbour arrangement - carved out of the grass along a
 slightly wobbling boundary, with a treatment per terrain along that boundary.
-Water is drawn in several phases and the engine cycles them, so a pond moves.
+Water is drawn in phases and the engine cycles them, so a pond moves.
 pipeline/autotile.py picks the tile for each map cell.
+
+At 16 the treatments are one or two pixels wide rather than four or five, so
+they read as an edge rather than as a border - which is the point.
 
 A tile's id, whether it blocks movement, and whether it blends at all live in
 content/tiles/; this module only draws pixels.
@@ -22,7 +25,7 @@ import math
 
 from gen.palette import Canvas, scatter
 
-SIZE = 32
+SIZE = 16
 
 # Neighbour bits, clockwise from north. Used by pipeline/autotile.py too.
 N, NE, E, SE, S, SW, W, NW = 1, 2, 4, 8, 16, 32, 64, 128
@@ -54,26 +57,23 @@ def _put(c, x, y, key):
     c.set(x % SIZE, y % SIZE, key)
 
 
-def _blade(c, x, y, h, key, lean=None):
+def _blade(c, x, y, h, key):
     for i in range(h):
         _put(c, x, y - i, key)
-    tip = lean if lean is not None else (1 if (x + y) % 2 else -1)
-    _put(c, x + tip, y - h, key)
+    _put(c, x + (1 if (x + y) % 2 else -1), y - h, key)
 
 
 def _patch(c, rnd, x, y, w, h, key, n):
-    """A loose scatter of n pixels around (x, y): a patch of a second shade."""
     for _ in range(n):
         _put(c, x + rnd(w) - w // 2, y + rnd(h) - h // 2, key)
 
 
 def _pool(c, cx, cy, rx, ry, key):
-    """A filled, soft-edged ellipse - one continuous mass, not a scatter. The
-    outermost ring is dithered so the edge reads as a gradient into the base."""
+    """A filled, soft-edged ellipse - one continuous mass, not a scatter."""
     for dy in range(-ry, ry + 1):
         for dx in range(-rx, rx + 1):
             v = (dx / rx) ** 2 + (dy / ry) ** 2
-            if v <= 0.72 or (v <= 1.0 and (dx + dy) % 2 == 0):
+            if v <= 0.7 or (v <= 1.0 and (dx + dy) % 2 == 0):
                 _put(c, cx + dx, cy + dy, key)
 
 
@@ -82,19 +82,12 @@ def grass(seed=0, phase=0):
     c = Canvas(SIZE, SIZE)
     c.rect(0, 0, SIZE - 1, SIZE - 1, "GR")
     rnd = scatter(0x6A55 + seed * 977)
-    for _ in range(5):                            # deep patches under the blades
-        _patch(c, rnd, rnd(SIZE), rnd(SIZE), 9, 5, "GRX", 10 + rnd(8))
-    for _ in range(3):                            # and a few worn, lighter ones
-        _patch(c, rnd, rnd(SIZE), rnd(SIZE), 7, 4, "GRD", 6 + rnd(6))
-    for _ in range(30):                           # blades in the shade
-        _blade(c, rnd(SIZE), rnd(SIZE), 2 + rnd(2), "GRD")
-    for _ in range(20):                           # blades catching the light
-        _blade(c, rnd(SIZE), rnd(SIZE), 2 + rnd(2), "GRL")
-    for _ in range(4):                            # clover
-        x, y = rnd(SIZE), rnd(SIZE)
-        _put(c, x, y, "GRL")
-        _put(c, x + 1, y, "GRL")
-        _put(c, x, y + 1, "GRL")
+    for _ in range(2):                            # deep patches under the blades
+        _patch(c, rnd, rnd(SIZE), rnd(SIZE), 5, 3, "GRX", 4 + rnd(3))
+    for _ in range(8):                            # blades in the shade
+        _blade(c, rnd(SIZE), rnd(SIZE), 1 + rnd(2), "GRD")
+    for _ in range(6):                            # blades catching the light
+        _blade(c, rnd(SIZE), rnd(SIZE), 1 + rnd(2), "GRL")
     return c
 
 
@@ -103,28 +96,25 @@ def grass_tall(seed=0, phase=0):
     c = Canvas(SIZE, SIZE)
     c.rect(0, 0, SIZE - 1, SIZE - 1, "GRD")
     rnd = scatter(0x7A11 + seed * 613)
-    for _ in range(6):
-        _patch(c, rnd, rnd(SIZE), rnd(SIZE), 9, 6, "GRX", 12 + rnd(8))
-    for _ in range(34):
-        _blade(c, rnd(SIZE), rnd(SIZE), 3 + rnd(3), "GRX")
-    for _ in range(26):
-        x, y, h = rnd(SIZE), rnd(SIZE), 3 + rnd(3)
+    for _ in range(2):
+        _patch(c, rnd, rnd(SIZE), rnd(SIZE), 5, 4, "GRX", 5 + rnd(4))
+    for _ in range(10):
+        _blade(c, rnd(SIZE), rnd(SIZE), 2 + rnd(2), "GRX")
+    for _ in range(8):
+        x, y, h = rnd(SIZE), rnd(SIZE), 2 + rnd(2)
         _blade(c, x, y, h, "GR")
-        _put(c, x, y - h + 1, "GRL")              # the tip catches the light
+        _put(c, x, y - h, "GRL")                  # the tip catches the light
     return c
 
 
 def grass_flower(seed=0, phase=0):
     c = grass(seed)
     rnd = scatter(0xF10E + seed * 331)
-    for i in range(5):
+    for i in range(3):
         x, y = rnd(SIZE), rnd(SIZE)
-        head = "FL" if i % 3 else "EW"            # mostly yellow, some white
         _put(c, x, y + 1, "GRL")                  # stem
-        _put(c, x, y + 2, "GRL")
-        for dx, dy in ((-1, 0), (1, 0), (0, -1), (0, 1)):
-            _put(c, x + dx, y + dy, head)
-        _put(c, x, y, "GRD" if head == "FL" else "FL")
+        _put(c, x, y, "FL" if i % 2 else "EW")    # and the head
+        _put(c, x - 1, y, "FL" if i % 2 else "EW")
     return c
 
 
@@ -132,68 +122,51 @@ def path(seed=0, phase=0):
     c = Canvas(SIZE, SIZE)
     c.rect(0, 0, SIZE - 1, SIZE - 1, "PT")
     rnd = scatter(0x9C31 + seed * 401)
-    for _ in range(4):                            # worn darker patches
-        _patch(c, rnd, rnd(SIZE), rnd(SIZE), 10, 5, "PTD", 10 + rnd(8))
-    for _ in range(3):                            # dust, lighter
-        _patch(c, rnd, rnd(SIZE), rnd(SIZE), 8, 4, "PTL", 8 + rnd(6))
-    for _ in range(14):                           # pebbles: dark body, lit top
+    for _ in range(2):                            # worn darker patches
+        _patch(c, rnd, rnd(SIZE), rnd(SIZE), 6, 3, "PTD", 5 + rnd(4))
+    for _ in range(5):                            # pebbles: dark body, lit top
         x, y = rnd(SIZE), rnd(SIZE)
-        w = 1 + rnd(2)
-        for dx in range(w + 1):
-            _put(c, x + dx, y, "PTD")
-            _put(c, x + dx, y + 1, "PTD")
-        _put(c, x, y, "PTL")
-    for _ in range(3):                            # the odd real stone
-        x, y = rnd(SIZE), rnd(SIZE)
-        _put(c, x, y, "STL")
-        _put(c, x + 1, y, "ST")
-        _put(c, x, y + 1, "ST")
-        _put(c, x + 1, y + 1, "STD")
-    for _ in range(18):
+        _put(c, x, y, "PTD")
+        _put(c, x + 1, y, "PTD")
+        _put(c, x, y - 1, "PTL")
+    for _ in range(8):
         _put(c, rnd(SIZE), rnd(SIZE), "PTL")      # grit
     return c
 
 
 def dirt(seed=0, phase=0):
-    """Bare earth: clods, grit, the odd stone. Darker and redder than the path."""
+    """Bare earth: clods and grit. Darker and redder than the path."""
     c = Canvas(SIZE, SIZE)
     c.rect(0, 0, SIZE - 1, SIZE - 1, "DR")
     rnd = scatter(0xD1A7 + seed * 173)
-    for _ in range(12):                           # clods
+    for _ in range(6):                            # clods
         x, y = rnd(SIZE), rnd(SIZE)
-        w = 1 + rnd(3)
-        for dx in range(w + 1):
-            _put(c, x + dx, y, "DRD")
+        _put(c, x, y, "DRD")
+        _put(c, x + 1, y, "DRD")
         _put(c, x, y - 1, "DRL")
-    for _ in range(4):
-        _patch(c, rnd, rnd(SIZE), rnd(SIZE), 8, 4, "DRD", 8 + rnd(6))
-    for _ in range(16):
-        _put(c, rnd(SIZE), rnd(SIZE), "DRL")
     for _ in range(2):
-        x, y = rnd(SIZE), rnd(SIZE)
-        _put(c, x, y, "STL")
-        _put(c, x + 1, y, "ST")
-        _put(c, x + 1, y + 1, "STD")
+        _patch(c, rnd, rnd(SIZE), rnd(SIZE), 5, 3, "DRD", 4 + rnd(3))
+    for _ in range(6):
+        _put(c, rnd(SIZE), rnd(SIZE), "DRL")
     return c
 
 
 def water(seed=0, phase=0):
-    """Still water that is not quite still. Deep pools are continuous masses;
-    ripples drift a little with each phase and a different glint catches the
-    light, which is all a pond needs to read as moving."""
+    """Still water that is not quite still: the ripples drift a pixel with each
+    phase and a different glint catches the light."""
     c = Canvas(SIZE, SIZE)
     c.rect(0, 0, SIZE - 1, SIZE - 1, "WA")
     rnd = scatter(0x0A7E + seed * 809)
-    for _ in range(3):
-        _pool(c, rnd(SIZE), rnd(SIZE), 5 + rnd(4), 3 + rnd(3), "WAX")
-    arcs = [(rnd(SIZE), rnd(SIZE), 3 + rnd(4)) for _ in range(6)]
+    for _ in range(2):
+        _pool(c, rnd(SIZE), rnd(SIZE), 3 + rnd(2), 2 + rnd(2), "WAX")
+    arcs = [(rnd(SIZE), rnd(SIZE), 2 + rnd(2)) for _ in range(3)]
     for i, (ax, ay, w) in enumerate(arcs):
-        ox = ax + phase * 2 * (1 if i % 2 else -1)   # alternate arcs drift apart
+        ox = ax + phase * (1 if i % 2 else -1)    # alternate arcs drift apart
         for k in range(-w, w + 1):
-            y = ay + (abs(k) + 1) // 3
+            y = ay + (1 if abs(k) == w else 0)
             _put(c, ox + k, y, "WAL")
             _put(c, ox + k, y + 1, "WAD")
-    glints = [(rnd(SIZE), rnd(SIZE)) for _ in range(6)]
+    glints = [(rnd(SIZE), rnd(SIZE)) for _ in range(3)]
     for i, (gx, gy) in enumerate(glints):
         if (i + phase) % 3 == 0:
             _put(c, gx, gy, "EW")
@@ -201,30 +174,18 @@ def water(seed=0, phase=0):
 
 
 def stone(seed=0, phase=0):
-    """Flagstones: a jittered partition of the tile, mortar between, each
-    stone lit along its top and left."""
+    """Flagstones: courses with staggered joints, each stone lit along its top."""
     c = Canvas(SIZE, SIZE)
     c.rect(0, 0, SIZE - 1, SIZE - 1, "ST")
     rnd = scatter(0x51A7 + seed * 257)
-    ys = [0, 10 + rnd(3), 21 + rnd(3), SIZE]
-    for r in range(3):
-        y0, y1 = ys[r], ys[r + 1]
-        off = (r * 7 + rnd(4)) % 12
-        xs = [off]
-        while xs[-1] < SIZE + off:
-            xs.append(xs[-1] + 9 + rnd(5))
-        for x0, x1 in zip(xs, xs[1:]):
-            for x in range(x0, x1):
-                for y in range(y0, y1):
-                    key = "ST"
-                    if y == y0 + 1 or x == x0 + 1:
-                        key = "STL"
-                    if y == y1 - 1 or x == x1 - 1:
-                        key = "STD"
-                    if y == y0 or x == x0:
-                        key = "STD"               # mortar
-                    _put(c, x, y, key)
-    for _ in range(10):                           # pitting
+    for i, y in enumerate((5, 11, 15)):
+        c.row(0, SIZE - 1, y, "STD")              # the mortar between courses
+        if y > 0:
+            c.row(0, SIZE - 1, y - 1, "STL")      # each block lit along its top
+        for x in range((i % 2) * 5, SIZE, 9):
+            for yy in range(max(0, y - 4), y):
+                _put(c, x, yy, "STD")
+    for _ in range(4):                            # pitting
         _put(c, rnd(SIZE), rnd(SIZE), "STD")
     return c
 
@@ -244,8 +205,8 @@ TILE_ORDER = list(BASE)
 # so the field changes without anyone having authored it.
 VARIANTS = {"tile.grass": 3, "tile.grass_tall": 2, "tile.water": 2}
 
-# Tiles drawn in several phases. The build emits every phase as its own frame
-# and the engine cycles them; the base frame is what the map resolves to.
+# Tiles drawn in several phases. The art pipeline emits every phase as its own
+# frame and the engine cycles them; the base frame is what the map resolves to.
 ANIMATED = {"tile.water": 3}
 ANIM_MS = 420
 
@@ -256,29 +217,22 @@ def frame(tid, variant=0, phase=0):
 
 # ------------------------------------------------------------- transitions --
 def _wobble(t, phase):
-    """A gentle periodic wave along a 32px edge, quiet near the corners so it
+    """A gentle periodic wave along the edge, quiet near the corners so it
     never fights the corner arcs. Periodic, so the line continues across the
     seam into the next tile."""
-    w = math.sin(t / SIZE * 4 * math.pi + phase) * 1.5
-    taper = min(1.0, min(t, SIZE - 1 - t) / 10.0)
-    return w * taper
+    w = math.sin(t / SIZE * 4 * math.pi + phase) * 0.8
+    return w * min(1.0, min(t, SIZE - 1 - t) / 5.0)
 
 
-BAND = 6                       # how far the grass reaches into an open edge
-ROUND = 6                      # radius of an outer corner's arc
+BAND = 3                       # how far the grass reaches into an open edge
+ROUND = 3                      # radius of an outer corner's arc
 
 
 def depth(x, y, mask):
     """(depth, which): how far inside the terrain a pixel is, and which open
-    edge or corner put the boundary there. Depth is in pixels, negative is
-    grass; `which` lets a style treat a downhill edge differently from an
-    uphill one, which is what makes an outcrop read as raised.
-
-    Each open edge pushes the boundary in by BAND (plus wobble). Two adjacent
-    open edges meet in an arc rather than a square corner. An open diagonal
-    with both cardinals closed takes a quarter-disc bite out of that corner,
-    sized so it continues the neighbours' own edge bands exactly.
-    """
+    edge or corner put the boundary there. Negative is grass. `which` lets a
+    style treat a downhill edge differently from an uphill one, which is what
+    makes an outcrop read as raised."""
     last = SIZE - 1
     d, which = 99.0, "in"
 
@@ -317,47 +271,42 @@ def depth(x, y, mask):
 def _edge_water(d, which, x, y, over, under, rnd, phase):
     if d < 0:
         return under
-    if d < 2.5:
+    if d < 1.2:
         return "SAD" if rnd(6) == 0 else "SA"                # a strip of shore
-    if d < 3.5:
-        return "WAL" if (x + y * 3 + phase * 2) % 5 else "WA"   # foam, creeping
-    if d < 5.5 and over == "WAX":
+    if d < 2.0:
+        return "WAL" if (x + y * 3 + phase * 2) % 4 else "WA"   # foam, creeping
+    if d < 3.0 and over == "WAX":
         return "WA"                                          # the shallows
     return over
 
 
 def _edge_trodden(d, which, x, y, over, under, rnd, dark, light):
-    """A path or bare earth. Worn hardest at the verge and on bends, lighter
-    with dust down the middle - the way a real track is."""
+    """A path or bare earth: worn hardest at the verge and on bends, lighter
+    with dust down the middle."""
     if d < 0:
         return under
     if d < 1:
         return dark if (x + y) % 2 else under
-    if d < 2:
-        return dark
     bend = which.startswith("c")
-    if d < 4.5 and (rnd(3) == 0 or (bend and rnd(2) == 0)):
+    if d < 2.2 and (rnd(3) == 0 or (bend and rnd(2) == 0)):
         return dark
-    if d >= 9 and rnd(4) == 0:
+    if d >= 5 and rnd(5) == 0:
         return light
     return over
 
 
 def _edge_stone(d, which, x, y, over, under, rnd, phase):
-    """An outcrop is raised ground. Its downhill (south-facing) edge is a
-    cliff face with a lit lip and a shadow thrown on the grass below; its other
-    edges get a lit rim, the way the top of a step catches the light."""
+    """An outcrop is raised ground: its downhill edge is a face with a lit lip
+    and a shadow on the grass below; the other edges get a lit rim."""
     downhill = which in ("S", "cSE", "cSW")
     if d < 0:
-        return "GRX" if downhill and d >= -3 else under
+        return "GRX" if downhill and d >= -1.5 else under
     if downhill:
-        if d >= 7:
+        if d >= 3:
             return over
-        if d >= 6:
+        if d >= 2:
             return "STL"                                     # the lip
-        if x % 7 in (0, 1) and d < 4:
-            return "STX"                                     # cracks in the face
-        return "STD" if d > 1.5 else "STX"                   # darker at the foot
+        return "STX" if x % 5 == 0 else "STD"                # the face, cracked
     if d < 1:
         return "STL"                                         # rim
     return over
@@ -378,8 +327,8 @@ def blend(tid, mask, phase=0):
     style = STYLE[tid]
     c = Canvas(SIZE, SIZE)
     for y in range(SIZE):
-        # The stable rng restarts per row from the mask, so every phase of an
-        # animated tile makes the same sand and wear decisions.
+        # The rng restarts per row from the mask, so every phase of an animated
+        # tile makes the same sand and wear decisions and only the water moves.
         rnd = scatter(0x5EED ^ (mask * 7919) ^ sum(map(ord, tid)) ^ (y * 331))
         for x in range(SIZE):
             d, which = depth(x, y, mask)

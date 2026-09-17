@@ -24,7 +24,28 @@ catch (e) { ({ chromium } = require('./cdp.cjs')); }
 const checks = [];
 const check = (name, ok, detail = '') => checks.push([name, !!ok, detail]);
 
+// The test edits a throwaway copy of a real map, so a failed run can never
+// leave someone's map half-painted. It makes the copy itself and removes it
+// afterwards, so there is nothing to set up and nothing left behind.
+const MAPS = path.join(ROOT, 'content', 'maps');
+const scratch = path.join(MAPS, `${MAP}.json`);
+let madeScratch = false;
+function makeScratch() {
+  if (fs.existsSync(scratch)) return;
+  const source = fs.readdirSync(MAPS).find((f) => f.endsWith('.json') && !f.startsWith('_'));
+  if (!source) throw new Error('no map to copy for the scratch map');
+  const m = JSON.parse(fs.readFileSync(path.join(MAPS, source), 'utf-8'));
+  m.id = 'map.scratch';
+  m.name = 'Scratch';
+  fs.writeFileSync(scratch, JSON.stringify(m, null, 2) + '\n');
+  madeScratch = true;
+}
+function dropScratch() {
+  if (madeScratch && fs.existsSync(scratch)) fs.unlinkSync(scratch);
+}
+
 (async () => {
+  makeScratch();
   const browser = await chromium.launch();
   const page = await browser.newPage({ viewport: { width: 1400, height: 1000 } });
   const problems = [];
@@ -43,6 +64,8 @@ const check = (name, ok, detail = '') => checks.push([name, !!ok, detail]);
   const boot = await page.evaluate(() => ({
     canvas: [document.getElementById('view').width, document.getElementById('view').height],
     size: state.map.size,
+    ts: state.map.tile_size,
+    zoom: state.zoom,
     tiles: document.querySelectorAll('#pal-terrain .swatch').length,
     objects: document.querySelectorAll('#pal-objects .swatch').length,
     entities: state.map.entities.length,
@@ -50,8 +73,9 @@ const check = (name, ok, detail = '') => checks.push([name, !!ok, detail]);
     groundSwatches: document.querySelectorAll('#pal-objects .swatch.ground').length,
   }));
   const [w, h] = boot.size;
-  check('map opened and canvas sized', boot.canvas[0] === w * 32 * 2 && boot.canvas[1] === h * 32 * 2,
-        `${boot.canvas} for ${w}x${h}`);
+  check('map opened and canvas sized',
+        boot.canvas[0] === w * boot.ts * boot.zoom && boot.canvas[1] === h * boot.ts * boot.zoom,
+        `${boot.canvas} for ${w}x${h} at ${boot.ts}px x${boot.zoom}`);
   check('terrain palette built', boot.tiles === 7, `${boot.tiles} swatches`);
   check('object palette built', boot.objects > 40, `${boot.objects} swatches`);
   check('solid and ground objects both offered',
@@ -197,6 +221,7 @@ const check = (name, ok, detail = '') => checks.push([name, !!ok, detail]);
   }
 
   await browser.close();
+  dropScratch();
   const failed = checks.filter(([, ok]) => !ok);
   for (const [name, ok, detail] of checks) {
     console.log(`  ${ok ? 'ok  ' : 'FAIL'}  ${name}${ok ? '' : '   ' + detail}`);
@@ -204,4 +229,4 @@ const check = (name, ok, detail = '') => checks.push([name, !!ok, detail]);
   console.log(`editor    ${boot.tiles} terrains, ${boot.objects} objects, `
               + `${boot.entities} entities on ${MAP} (${w}x${h})`);
   process.exit(failed.length ? 1 : 0);
-})().catch((e) => { console.error(e); process.exit(1); });
+})().catch((e) => { dropScratch(); console.error(e); process.exit(1); });
