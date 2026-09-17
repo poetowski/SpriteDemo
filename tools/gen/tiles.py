@@ -1,64 +1,102 @@
-"""16x16 ground tiles.
+"""32x32 ground tiles.
 
-All detail is kept away from the tile edges so a tile repeats without a visible
-seam - the pipeline checks this rather than trusting it (see pipeline/validate).
-A tile's id and whether it blocks movement live in content/tiles/, not here;
-this module only draws pixels.
+Drawn at this size, not blown up from a smaller one: at 16px a tile could only
+carry a handful of stray pixels, where 32 has room for real blades of grass,
+pebbles with a lit edge, and courses of stone with staggered joints.
+
+Detail is kept a little inside the edges so a tile repeats without a visible
+seam - the pipeline checks the edges rather than trusting them (see
+pipeline/validate). A tile's id and whether it blocks movement live in
+content/tiles/; this module only draws pixels.
 """
 
-from gen.palette import Canvas
+from gen.palette import Canvas, scatter
 
-SIZE = 16
+SIZE = 32
+EDGE = 2                       # keep detail this far in from every edge
 
 
-def _speckle(c, spots, key):
-    for x, y in spots:
-        c.set(x, y, key)
+def _blade(c, x, y, h, key):
+    """An upright tuft: a stroke with a lean at the tip."""
+    c.col(x, y, y + h - 1, key)
+    c.set(x + (1 if (x + y) % 2 else -1), y, key)
 
 
 def grass():
     c = Canvas(SIZE, SIZE)
     c.rect(0, 0, SIZE - 1, SIZE - 1, "GR")
-    _speckle(c, ((3, 4), (4, 4), (10, 2), (13, 7), (6, 11), (12, 13)), "GRD")
-    _speckle(c, ((7, 3), (2, 9), (11, 9), (5, 14), (14, 11)), "GRL")
+    rnd = scatter(0x6A55)
+    for _ in range(26):                      # dark blades, the undergrowth
+        _blade(c, EDGE + rnd(SIZE - EDGE * 2 - 2), EDGE + rnd(SIZE - EDGE * 2 - 3),
+               2 + rnd(2), "GRD")
+    for _ in range(18):                      # lit blades over the top
+        _blade(c, EDGE + rnd(SIZE - EDGE * 2 - 2), EDGE + rnd(SIZE - EDGE * 2 - 3),
+               2 + rnd(2), "GRL")
+    for _ in range(5):                       # bare patches, so it is not uniform
+        x, y = EDGE + rnd(SIZE - EDGE * 2 - 4), EDGE + rnd(SIZE - EDGE * 2 - 3)
+        c.rect(x, y, x + 2 + rnd(2), y + 1, "GRD")
     return c
 
 
 def grass_flower():
     c = grass()
-    for x, y in ((4, 6), (11, 5), (7, 12)):
-        c.set(x, y, "FL")
-        c.set(x, y - 1, "GRL")
+    for x, y in ((7, 11), (21, 8), (13, 23), (25, 19)):
+        c.col(x, y + 1, y + 3, "GRL")        # stem
+        c.rect(x - 1, y - 1, x + 1, y, "FL")  # a four-petal head
+        c.set(x, y - 2, "FL")
+        c.set(x, y, "GRD")                   # a dark eye in the middle
     return c
 
 
 def path():
     c = Canvas(SIZE, SIZE)
     c.rect(0, 0, SIZE - 1, SIZE - 1, "PT")
-    _speckle(c, ((2, 3), (9, 2), (5, 8), (12, 6), (7, 13), (13, 12)), "PTD")
-    _speckle(c, ((6, 5), (11, 9), (3, 11), (14, 3)), "PTL")
+    rnd = scatter(0x9C31)
+    for y in (9, 22):                        # two worn ruts, broken up
+        x = EDGE
+        while x < SIZE - EDGE:
+            run = 3 + rnd(5)
+            c.row(x, min(x + run, SIZE - EDGE - 1), y, "PTD")
+            x += run + 2 + rnd(3)
+    for _ in range(16):                      # pebbles: dark body, lit top-left
+        x, y = EDGE + rnd(SIZE - EDGE * 2 - 3), EDGE + rnd(SIZE - EDGE * 2 - 2)
+        c.rect(x, y, x + 1 + rnd(2), y + 1, "PTD")
+        c.set(x, y, "PTL")
+    for _ in range(22):                      # grit
+        c.set(EDGE + rnd(SIZE - EDGE * 2), EDGE + rnd(SIZE - EDGE * 2), "PTL")
     return c
 
 
 def water():
     c = Canvas(SIZE, SIZE)
     c.rect(0, 0, SIZE - 1, SIZE - 1, "WA")
-    # horizontal ripples, inset from the edges so tiling stays clean
-    for x0, x1, y in ((3, 7, 3), (9, 13, 6), (2, 5, 9), (8, 12, 12)):
-        c.row(x0, x1, y, "WAL")
-        c.row(x0 + 1, x1 - 1, y + 1, "WAD")
+    # Ripples as shallow arcs rather than straight dashes: a lit crest with its
+    # own shadow under it, which is what makes still water read as water.
+    for cx, cy, w in ((9, 6, 5), (22, 11, 6), (6, 18, 4), (19, 24, 6), (27, 4, 3)):
+        for i in range(-w, w + 1):
+            y = cy + (abs(i) + 1) // 3
+            c.set(cx + i, y, "WAL")
+            c.set(cx + i, y + 1, "WAD")
+    for x, y in ((14, 15), (25, 19), (4, 27), (17, 3)):
+        c.set(x, y, "WAL")                   # glints
     return c
 
 
 def stone():
     c = Canvas(SIZE, SIZE)
     c.rect(0, 0, SIZE - 1, SIZE - 1, "ST")
-    # brick courses, offset every other row, edges left flat
-    for y in (4, 10):
-        c.row(1, SIZE - 2, y, "STD")
-    for x, y0, y1 in ((8, 1, 3), (4, 5, 9), (12, 5, 9), (8, 11, 14)):
-        c.col(x, y0, y1, "STD")
-    _speckle(c, ((2, 2), (10, 7), (6, 12), (13, 13)), "STL")
+    rnd = scatter(0x51A7)
+    courses = (7, 15, 23, 31)
+    for i, y in enumerate(courses):          # the mortar between courses
+        c.row(0, SIZE - 1, y, "STD")
+        c.row(0, SIZE - 1, y - 1, "STL")     # each block lit along its top
+        offset = 0 if i % 2 else 8           # stagger the vertical joints
+        for x in range(offset, SIZE, 16):
+            c.col(x, y - 6, y - 1, "STD")
+    for _ in range(14):                      # pitting in the faces
+        c.set(1 + rnd(SIZE - 2), 1 + rnd(SIZE - 2), "STD")
+    for _ in range(8):
+        c.set(1 + rnd(SIZE - 2), 1 + rnd(SIZE - 2), "STL")
     return c
 
 

@@ -4,8 +4,8 @@
     "actors": {
       "image": "atlas/actors.png",
       "frame": [
-        32,
-        32
+        64,
+        64
       ],
       "cols": 6,
       "rows": 79,
@@ -14,8 +14,8 @@
     "tiles": {
       "image": "atlas/tiles.png",
       "frame": [
-        16,
-        16
+        32,
+        32
       ],
       "cols": 8,
       "rows": 1,
@@ -24,8 +24,8 @@
     "props": {
       "image": "atlas/props.png",
       "frame": [
-        32,
-        32
+        64,
+        64
       ],
       "cols": 8,
       "rows": 4,
@@ -34,8 +34,8 @@
     "props_big": {
       "image": "atlas/props_big.png",
       "frame": [
-        48,
-        48
+        96,
+        96
       ],
       "cols": 4,
       "rows": 1,
@@ -44,8 +44,8 @@
     "items": {
       "image": "atlas/items.png",
       "frame": [
-        16,
-        16
+        32,
+        32
       ],
       "cols": 8,
       "rows": 2,
@@ -54,8 +54,8 @@
     "fx": {
       "image": "atlas/fx.png",
       "frame": [
-        8,
-        8
+        16,
+        16
       ],
       "cols": 11,
       "rows": 1,
@@ -67,3776 +67,3776 @@
       "atlas": "actors",
       "index": 0,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.goat/walk/down/1": {
       "atlas": "actors",
       "index": 1,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.goat/walk/down/2": {
       "atlas": "actors",
       "index": 2,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.goat/walk/down/3": {
       "atlas": "actors",
       "index": 3,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.goat/idle/down/0": {
       "atlas": "actors",
       "index": 4,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.goat/idle/down/1": {
       "atlas": "actors",
       "index": 5,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.goat/graze/down/0": {
       "atlas": "actors",
       "index": 6,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.goat/graze/down/1": {
       "atlas": "actors",
       "index": 7,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.goat/walk/left/0": {
       "atlas": "actors",
       "index": 8,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.goat/walk/left/1": {
       "atlas": "actors",
       "index": 9,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.goat/walk/left/2": {
       "atlas": "actors",
       "index": 10,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.goat/walk/left/3": {
       "atlas": "actors",
       "index": 11,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.goat/idle/left/0": {
       "atlas": "actors",
       "index": 12,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.goat/idle/left/1": {
       "atlas": "actors",
       "index": 13,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.goat/graze/left/0": {
       "atlas": "actors",
       "index": 14,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.goat/graze/left/1": {
       "atlas": "actors",
       "index": 15,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.goat/walk/right/0": {
       "atlas": "actors",
       "index": 16,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.goat/walk/right/1": {
       "atlas": "actors",
       "index": 17,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.goat/walk/right/2": {
       "atlas": "actors",
       "index": 18,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.goat/walk/right/3": {
       "atlas": "actors",
       "index": 19,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.goat/idle/right/0": {
       "atlas": "actors",
       "index": 20,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.goat/idle/right/1": {
       "atlas": "actors",
       "index": 21,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.goat/graze/right/0": {
       "atlas": "actors",
       "index": 22,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.goat/graze/right/1": {
       "atlas": "actors",
       "index": 23,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.goat/walk/up/0": {
       "atlas": "actors",
       "index": 24,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.goat/walk/up/1": {
       "atlas": "actors",
       "index": 25,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.goat/walk/up/2": {
       "atlas": "actors",
       "index": 26,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.goat/walk/up/3": {
       "atlas": "actors",
       "index": 27,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.goat/idle/up/0": {
       "atlas": "actors",
       "index": 28,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.goat/idle/up/1": {
       "atlas": "actors",
       "index": 29,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.goat/graze/up/0": {
       "atlas": "actors",
       "index": 30,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.goat/graze/up/1": {
       "atlas": "actors",
       "index": 31,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero/walk/down/0": {
       "atlas": "actors",
       "index": 32,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero/walk/down/1": {
       "atlas": "actors",
       "index": 33,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero/walk/down/2": {
       "atlas": "actors",
       "index": 34,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero/walk/down/3": {
       "atlas": "actors",
       "index": 35,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero/idle/down/0": {
       "atlas": "actors",
       "index": 36,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero/idle/down/1": {
       "atlas": "actors",
       "index": 37,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero/gather/down/0": {
       "atlas": "actors",
       "index": 38,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero/gather/down/1": {
       "atlas": "actors",
       "index": 39,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero/gather/down/2": {
       "atlas": "actors",
       "index": 40,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero/walk/left/0": {
       "atlas": "actors",
       "index": 41,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero/walk/left/1": {
       "atlas": "actors",
       "index": 42,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero/walk/left/2": {
       "atlas": "actors",
       "index": 43,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero/walk/left/3": {
       "atlas": "actors",
       "index": 44,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero/idle/left/0": {
       "atlas": "actors",
       "index": 45,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero/idle/left/1": {
       "atlas": "actors",
       "index": 46,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero/gather/left/0": {
       "atlas": "actors",
       "index": 47,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero/gather/left/1": {
       "atlas": "actors",
       "index": 48,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero/gather/left/2": {
       "atlas": "actors",
       "index": 49,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero/walk/right/0": {
       "atlas": "actors",
       "index": 50,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero/walk/right/1": {
       "atlas": "actors",
       "index": 51,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero/walk/right/2": {
       "atlas": "actors",
       "index": 52,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero/walk/right/3": {
       "atlas": "actors",
       "index": 53,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero/idle/right/0": {
       "atlas": "actors",
       "index": 54,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero/idle/right/1": {
       "atlas": "actors",
       "index": 55,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero/gather/right/0": {
       "atlas": "actors",
       "index": 56,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero/gather/right/1": {
       "atlas": "actors",
       "index": 57,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero/gather/right/2": {
       "atlas": "actors",
       "index": 58,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero/walk/up/0": {
       "atlas": "actors",
       "index": 59,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero/walk/up/1": {
       "atlas": "actors",
       "index": 60,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero/walk/up/2": {
       "atlas": "actors",
       "index": 61,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero/walk/up/3": {
       "atlas": "actors",
       "index": 62,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero/idle/up/0": {
       "atlas": "actors",
       "index": 63,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero/idle/up/1": {
       "atlas": "actors",
       "index": 64,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero/gather/up/0": {
       "atlas": "actors",
       "index": 65,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero/gather/up/1": {
       "atlas": "actors",
       "index": 66,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero/gather/up/2": {
       "atlas": "actors",
       "index": 67,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_axe/walk/down/0": {
       "atlas": "actors",
       "index": 68,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_axe/walk/down/1": {
       "atlas": "actors",
       "index": 69,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_axe/walk/down/2": {
       "atlas": "actors",
       "index": 70,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_axe/walk/down/3": {
       "atlas": "actors",
       "index": 71,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_axe/idle/down/0": {
       "atlas": "actors",
       "index": 72,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_axe/idle/down/1": {
       "atlas": "actors",
       "index": 73,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_axe/gather/down/0": {
       "atlas": "actors",
       "index": 74,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_axe/gather/down/1": {
       "atlas": "actors",
       "index": 75,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_axe/gather/down/2": {
       "atlas": "actors",
       "index": 76,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_axe/slash/down/0": {
       "atlas": "actors",
       "index": 77,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_axe/slash/down/1": {
       "atlas": "actors",
       "index": 78,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_axe/slash/down/2": {
       "atlas": "actors",
       "index": 79,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_axe/slash/down/3": {
       "atlas": "actors",
       "index": 80,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_axe/walk/left/0": {
       "atlas": "actors",
       "index": 81,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_axe/walk/left/1": {
       "atlas": "actors",
       "index": 82,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_axe/walk/left/2": {
       "atlas": "actors",
       "index": 83,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_axe/walk/left/3": {
       "atlas": "actors",
       "index": 84,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_axe/idle/left/0": {
       "atlas": "actors",
       "index": 85,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_axe/idle/left/1": {
       "atlas": "actors",
       "index": 86,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_axe/gather/left/0": {
       "atlas": "actors",
       "index": 87,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_axe/gather/left/1": {
       "atlas": "actors",
       "index": 88,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_axe/gather/left/2": {
       "atlas": "actors",
       "index": 89,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_axe/slash/left/0": {
       "atlas": "actors",
       "index": 90,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_axe/slash/left/1": {
       "atlas": "actors",
       "index": 91,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_axe/slash/left/2": {
       "atlas": "actors",
       "index": 92,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_axe/slash/left/3": {
       "atlas": "actors",
       "index": 93,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_axe/walk/right/0": {
       "atlas": "actors",
       "index": 94,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_axe/walk/right/1": {
       "atlas": "actors",
       "index": 95,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_axe/walk/right/2": {
       "atlas": "actors",
       "index": 96,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_axe/walk/right/3": {
       "atlas": "actors",
       "index": 97,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_axe/idle/right/0": {
       "atlas": "actors",
       "index": 98,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_axe/idle/right/1": {
       "atlas": "actors",
       "index": 99,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_axe/gather/right/0": {
       "atlas": "actors",
       "index": 100,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_axe/gather/right/1": {
       "atlas": "actors",
       "index": 101,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_axe/gather/right/2": {
       "atlas": "actors",
       "index": 102,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_axe/slash/right/0": {
       "atlas": "actors",
       "index": 103,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_axe/slash/right/1": {
       "atlas": "actors",
       "index": 104,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_axe/slash/right/2": {
       "atlas": "actors",
       "index": 105,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_axe/slash/right/3": {
       "atlas": "actors",
       "index": 106,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_axe/walk/up/0": {
       "atlas": "actors",
       "index": 107,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_axe/walk/up/1": {
       "atlas": "actors",
       "index": 108,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_axe/walk/up/2": {
       "atlas": "actors",
       "index": 109,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_axe/walk/up/3": {
       "atlas": "actors",
       "index": 110,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_axe/idle/up/0": {
       "atlas": "actors",
       "index": 111,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_axe/idle/up/1": {
       "atlas": "actors",
       "index": 112,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_axe/gather/up/0": {
       "atlas": "actors",
       "index": 113,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_axe/gather/up/1": {
       "atlas": "actors",
       "index": 114,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_axe/gather/up/2": {
       "atlas": "actors",
       "index": 115,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_axe/slash/up/0": {
       "atlas": "actors",
       "index": 116,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_axe/slash/up/1": {
       "atlas": "actors",
       "index": 117,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_axe/slash/up/2": {
       "atlas": "actors",
       "index": 118,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_axe/slash/up/3": {
       "atlas": "actors",
       "index": 119,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_axe_mail/walk/down/0": {
       "atlas": "actors",
       "index": 120,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_axe_mail/walk/down/1": {
       "atlas": "actors",
       "index": 121,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_axe_mail/walk/down/2": {
       "atlas": "actors",
       "index": 122,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_axe_mail/walk/down/3": {
       "atlas": "actors",
       "index": 123,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_axe_mail/idle/down/0": {
       "atlas": "actors",
       "index": 124,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_axe_mail/idle/down/1": {
       "atlas": "actors",
       "index": 125,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_axe_mail/gather/down/0": {
       "atlas": "actors",
       "index": 126,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_axe_mail/gather/down/1": {
       "atlas": "actors",
       "index": 127,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_axe_mail/gather/down/2": {
       "atlas": "actors",
       "index": 128,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_axe_mail/slash/down/0": {
       "atlas": "actors",
       "index": 129,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_axe_mail/slash/down/1": {
       "atlas": "actors",
       "index": 130,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_axe_mail/slash/down/2": {
       "atlas": "actors",
       "index": 131,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_axe_mail/slash/down/3": {
       "atlas": "actors",
       "index": 132,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_axe_mail/walk/left/0": {
       "atlas": "actors",
       "index": 133,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_axe_mail/walk/left/1": {
       "atlas": "actors",
       "index": 134,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_axe_mail/walk/left/2": {
       "atlas": "actors",
       "index": 135,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_axe_mail/walk/left/3": {
       "atlas": "actors",
       "index": 136,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_axe_mail/idle/left/0": {
       "atlas": "actors",
       "index": 137,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_axe_mail/idle/left/1": {
       "atlas": "actors",
       "index": 138,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_axe_mail/gather/left/0": {
       "atlas": "actors",
       "index": 139,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_axe_mail/gather/left/1": {
       "atlas": "actors",
       "index": 140,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_axe_mail/gather/left/2": {
       "atlas": "actors",
       "index": 141,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_axe_mail/slash/left/0": {
       "atlas": "actors",
       "index": 142,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_axe_mail/slash/left/1": {
       "atlas": "actors",
       "index": 143,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_axe_mail/slash/left/2": {
       "atlas": "actors",
       "index": 144,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_axe_mail/slash/left/3": {
       "atlas": "actors",
       "index": 145,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_axe_mail/walk/right/0": {
       "atlas": "actors",
       "index": 146,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_axe_mail/walk/right/1": {
       "atlas": "actors",
       "index": 147,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_axe_mail/walk/right/2": {
       "atlas": "actors",
       "index": 148,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_axe_mail/walk/right/3": {
       "atlas": "actors",
       "index": 149,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_axe_mail/idle/right/0": {
       "atlas": "actors",
       "index": 150,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_axe_mail/idle/right/1": {
       "atlas": "actors",
       "index": 151,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_axe_mail/gather/right/0": {
       "atlas": "actors",
       "index": 152,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_axe_mail/gather/right/1": {
       "atlas": "actors",
       "index": 153,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_axe_mail/gather/right/2": {
       "atlas": "actors",
       "index": 154,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_axe_mail/slash/right/0": {
       "atlas": "actors",
       "index": 155,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_axe_mail/slash/right/1": {
       "atlas": "actors",
       "index": 156,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_axe_mail/slash/right/2": {
       "atlas": "actors",
       "index": 157,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_axe_mail/slash/right/3": {
       "atlas": "actors",
       "index": 158,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_axe_mail/walk/up/0": {
       "atlas": "actors",
       "index": 159,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_axe_mail/walk/up/1": {
       "atlas": "actors",
       "index": 160,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_axe_mail/walk/up/2": {
       "atlas": "actors",
       "index": 161,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_axe_mail/walk/up/3": {
       "atlas": "actors",
       "index": 162,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_axe_mail/idle/up/0": {
       "atlas": "actors",
       "index": 163,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_axe_mail/idle/up/1": {
       "atlas": "actors",
       "index": 164,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_axe_mail/gather/up/0": {
       "atlas": "actors",
       "index": 165,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_axe_mail/gather/up/1": {
       "atlas": "actors",
       "index": 166,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_axe_mail/gather/up/2": {
       "atlas": "actors",
       "index": 167,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_axe_mail/slash/up/0": {
       "atlas": "actors",
       "index": 168,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_axe_mail/slash/up/1": {
       "atlas": "actors",
       "index": 169,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_axe_mail/slash/up/2": {
       "atlas": "actors",
       "index": 170,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_axe_mail/slash/up/3": {
       "atlas": "actors",
       "index": 171,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_mail/walk/down/0": {
       "atlas": "actors",
       "index": 172,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_mail/walk/down/1": {
       "atlas": "actors",
       "index": 173,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_mail/walk/down/2": {
       "atlas": "actors",
       "index": 174,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_mail/walk/down/3": {
       "atlas": "actors",
       "index": 175,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_mail/idle/down/0": {
       "atlas": "actors",
       "index": 176,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_mail/idle/down/1": {
       "atlas": "actors",
       "index": 177,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_mail/gather/down/0": {
       "atlas": "actors",
       "index": 178,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_mail/gather/down/1": {
       "atlas": "actors",
       "index": 179,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_mail/gather/down/2": {
       "atlas": "actors",
       "index": 180,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_mail/walk/left/0": {
       "atlas": "actors",
       "index": 181,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_mail/walk/left/1": {
       "atlas": "actors",
       "index": 182,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_mail/walk/left/2": {
       "atlas": "actors",
       "index": 183,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_mail/walk/left/3": {
       "atlas": "actors",
       "index": 184,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_mail/idle/left/0": {
       "atlas": "actors",
       "index": 185,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_mail/idle/left/1": {
       "atlas": "actors",
       "index": 186,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_mail/gather/left/0": {
       "atlas": "actors",
       "index": 187,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_mail/gather/left/1": {
       "atlas": "actors",
       "index": 188,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_mail/gather/left/2": {
       "atlas": "actors",
       "index": 189,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_mail/walk/right/0": {
       "atlas": "actors",
       "index": 190,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_mail/walk/right/1": {
       "atlas": "actors",
       "index": 191,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_mail/walk/right/2": {
       "atlas": "actors",
       "index": 192,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_mail/walk/right/3": {
       "atlas": "actors",
       "index": 193,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_mail/idle/right/0": {
       "atlas": "actors",
       "index": 194,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_mail/idle/right/1": {
       "atlas": "actors",
       "index": 195,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_mail/gather/right/0": {
       "atlas": "actors",
       "index": 196,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_mail/gather/right/1": {
       "atlas": "actors",
       "index": 197,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_mail/gather/right/2": {
       "atlas": "actors",
       "index": 198,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_mail/walk/up/0": {
       "atlas": "actors",
       "index": 199,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_mail/walk/up/1": {
       "atlas": "actors",
       "index": 200,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_mail/walk/up/2": {
       "atlas": "actors",
       "index": 201,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_mail/walk/up/3": {
       "atlas": "actors",
       "index": 202,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_mail/idle/up/0": {
       "atlas": "actors",
       "index": 203,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_mail/idle/up/1": {
       "atlas": "actors",
       "index": 204,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_mail/gather/up/0": {
       "atlas": "actors",
       "index": 205,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_mail/gather/up/1": {
       "atlas": "actors",
       "index": 206,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_mail/gather/up/2": {
       "atlas": "actors",
       "index": 207,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_spear/walk/down/0": {
       "atlas": "actors",
       "index": 208,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_spear/walk/down/1": {
       "atlas": "actors",
       "index": 209,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_spear/walk/down/2": {
       "atlas": "actors",
       "index": 210,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_spear/walk/down/3": {
       "atlas": "actors",
       "index": 211,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_spear/idle/down/0": {
       "atlas": "actors",
       "index": 212,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_spear/idle/down/1": {
       "atlas": "actors",
       "index": 213,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_spear/gather/down/0": {
       "atlas": "actors",
       "index": 214,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_spear/gather/down/1": {
       "atlas": "actors",
       "index": 215,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_spear/gather/down/2": {
       "atlas": "actors",
       "index": 216,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_spear/slash/down/0": {
       "atlas": "actors",
       "index": 217,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_spear/slash/down/1": {
       "atlas": "actors",
       "index": 218,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_spear/slash/down/2": {
       "atlas": "actors",
       "index": 219,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_spear/slash/down/3": {
       "atlas": "actors",
       "index": 220,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_spear/walk/left/0": {
       "atlas": "actors",
       "index": 221,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_spear/walk/left/1": {
       "atlas": "actors",
       "index": 222,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_spear/walk/left/2": {
       "atlas": "actors",
       "index": 223,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_spear/walk/left/3": {
       "atlas": "actors",
       "index": 224,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_spear/idle/left/0": {
       "atlas": "actors",
       "index": 225,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_spear/idle/left/1": {
       "atlas": "actors",
       "index": 226,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_spear/gather/left/0": {
       "atlas": "actors",
       "index": 227,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_spear/gather/left/1": {
       "atlas": "actors",
       "index": 228,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_spear/gather/left/2": {
       "atlas": "actors",
       "index": 229,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_spear/slash/left/0": {
       "atlas": "actors",
       "index": 230,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_spear/slash/left/1": {
       "atlas": "actors",
       "index": 231,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_spear/slash/left/2": {
       "atlas": "actors",
       "index": 232,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_spear/slash/left/3": {
       "atlas": "actors",
       "index": 233,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_spear/walk/right/0": {
       "atlas": "actors",
       "index": 234,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_spear/walk/right/1": {
       "atlas": "actors",
       "index": 235,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_spear/walk/right/2": {
       "atlas": "actors",
       "index": 236,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_spear/walk/right/3": {
       "atlas": "actors",
       "index": 237,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_spear/idle/right/0": {
       "atlas": "actors",
       "index": 238,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_spear/idle/right/1": {
       "atlas": "actors",
       "index": 239,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_spear/gather/right/0": {
       "atlas": "actors",
       "index": 240,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_spear/gather/right/1": {
       "atlas": "actors",
       "index": 241,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_spear/gather/right/2": {
       "atlas": "actors",
       "index": 242,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_spear/slash/right/0": {
       "atlas": "actors",
       "index": 243,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_spear/slash/right/1": {
       "atlas": "actors",
       "index": 244,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_spear/slash/right/2": {
       "atlas": "actors",
       "index": 245,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_spear/slash/right/3": {
       "atlas": "actors",
       "index": 246,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_spear/walk/up/0": {
       "atlas": "actors",
       "index": 247,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_spear/walk/up/1": {
       "atlas": "actors",
       "index": 248,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_spear/walk/up/2": {
       "atlas": "actors",
       "index": 249,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_spear/walk/up/3": {
       "atlas": "actors",
       "index": 250,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_spear/idle/up/0": {
       "atlas": "actors",
       "index": 251,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_spear/idle/up/1": {
       "atlas": "actors",
       "index": 252,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_spear/gather/up/0": {
       "atlas": "actors",
       "index": 253,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_spear/gather/up/1": {
       "atlas": "actors",
       "index": 254,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_spear/gather/up/2": {
       "atlas": "actors",
       "index": 255,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_spear/slash/up/0": {
       "atlas": "actors",
       "index": 256,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_spear/slash/up/1": {
       "atlas": "actors",
       "index": 257,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_spear/slash/up/2": {
       "atlas": "actors",
       "index": 258,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_spear/slash/up/3": {
       "atlas": "actors",
       "index": 259,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_spear_mail/walk/down/0": {
       "atlas": "actors",
       "index": 260,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_spear_mail/walk/down/1": {
       "atlas": "actors",
       "index": 261,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_spear_mail/walk/down/2": {
       "atlas": "actors",
       "index": 262,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_spear_mail/walk/down/3": {
       "atlas": "actors",
       "index": 263,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_spear_mail/idle/down/0": {
       "atlas": "actors",
       "index": 264,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_spear_mail/idle/down/1": {
       "atlas": "actors",
       "index": 265,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_spear_mail/gather/down/0": {
       "atlas": "actors",
       "index": 266,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_spear_mail/gather/down/1": {
       "atlas": "actors",
       "index": 267,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_spear_mail/gather/down/2": {
       "atlas": "actors",
       "index": 268,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_spear_mail/slash/down/0": {
       "atlas": "actors",
       "index": 269,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_spear_mail/slash/down/1": {
       "atlas": "actors",
       "index": 270,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_spear_mail/slash/down/2": {
       "atlas": "actors",
       "index": 271,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_spear_mail/slash/down/3": {
       "atlas": "actors",
       "index": 272,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_spear_mail/walk/left/0": {
       "atlas": "actors",
       "index": 273,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_spear_mail/walk/left/1": {
       "atlas": "actors",
       "index": 274,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_spear_mail/walk/left/2": {
       "atlas": "actors",
       "index": 275,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_spear_mail/walk/left/3": {
       "atlas": "actors",
       "index": 276,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_spear_mail/idle/left/0": {
       "atlas": "actors",
       "index": 277,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_spear_mail/idle/left/1": {
       "atlas": "actors",
       "index": 278,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_spear_mail/gather/left/0": {
       "atlas": "actors",
       "index": 279,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_spear_mail/gather/left/1": {
       "atlas": "actors",
       "index": 280,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_spear_mail/gather/left/2": {
       "atlas": "actors",
       "index": 281,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_spear_mail/slash/left/0": {
       "atlas": "actors",
       "index": 282,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_spear_mail/slash/left/1": {
       "atlas": "actors",
       "index": 283,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_spear_mail/slash/left/2": {
       "atlas": "actors",
       "index": 284,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_spear_mail/slash/left/3": {
       "atlas": "actors",
       "index": 285,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_spear_mail/walk/right/0": {
       "atlas": "actors",
       "index": 286,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_spear_mail/walk/right/1": {
       "atlas": "actors",
       "index": 287,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_spear_mail/walk/right/2": {
       "atlas": "actors",
       "index": 288,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_spear_mail/walk/right/3": {
       "atlas": "actors",
       "index": 289,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_spear_mail/idle/right/0": {
       "atlas": "actors",
       "index": 290,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_spear_mail/idle/right/1": {
       "atlas": "actors",
       "index": 291,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_spear_mail/gather/right/0": {
       "atlas": "actors",
       "index": 292,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_spear_mail/gather/right/1": {
       "atlas": "actors",
       "index": 293,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_spear_mail/gather/right/2": {
       "atlas": "actors",
       "index": 294,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_spear_mail/slash/right/0": {
       "atlas": "actors",
       "index": 295,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_spear_mail/slash/right/1": {
       "atlas": "actors",
       "index": 296,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_spear_mail/slash/right/2": {
       "atlas": "actors",
       "index": 297,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_spear_mail/slash/right/3": {
       "atlas": "actors",
       "index": 298,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_spear_mail/walk/up/0": {
       "atlas": "actors",
       "index": 299,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_spear_mail/walk/up/1": {
       "atlas": "actors",
       "index": 300,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_spear_mail/walk/up/2": {
       "atlas": "actors",
       "index": 301,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_spear_mail/walk/up/3": {
       "atlas": "actors",
       "index": 302,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_spear_mail/idle/up/0": {
       "atlas": "actors",
       "index": 303,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_spear_mail/idle/up/1": {
       "atlas": "actors",
       "index": 304,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_spear_mail/gather/up/0": {
       "atlas": "actors",
       "index": 305,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_spear_mail/gather/up/1": {
       "atlas": "actors",
       "index": 306,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_spear_mail/gather/up/2": {
       "atlas": "actors",
       "index": 307,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_spear_mail/slash/up/0": {
       "atlas": "actors",
       "index": 308,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_spear_mail/slash/up/1": {
       "atlas": "actors",
       "index": 309,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_spear_mail/slash/up/2": {
       "atlas": "actors",
       "index": 310,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_spear_mail/slash/up/3": {
       "atlas": "actors",
       "index": 311,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_sword/walk/down/0": {
       "atlas": "actors",
       "index": 312,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_sword/walk/down/1": {
       "atlas": "actors",
       "index": 313,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_sword/walk/down/2": {
       "atlas": "actors",
       "index": 314,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_sword/walk/down/3": {
       "atlas": "actors",
       "index": 315,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_sword/idle/down/0": {
       "atlas": "actors",
       "index": 316,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_sword/idle/down/1": {
       "atlas": "actors",
       "index": 317,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_sword/gather/down/0": {
       "atlas": "actors",
       "index": 318,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_sword/gather/down/1": {
       "atlas": "actors",
       "index": 319,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_sword/gather/down/2": {
       "atlas": "actors",
       "index": 320,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_sword/slash/down/0": {
       "atlas": "actors",
       "index": 321,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_sword/slash/down/1": {
       "atlas": "actors",
       "index": 322,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_sword/slash/down/2": {
       "atlas": "actors",
       "index": 323,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_sword/slash/down/3": {
       "atlas": "actors",
       "index": 324,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_sword/walk/left/0": {
       "atlas": "actors",
       "index": 325,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_sword/walk/left/1": {
       "atlas": "actors",
       "index": 326,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_sword/walk/left/2": {
       "atlas": "actors",
       "index": 327,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_sword/walk/left/3": {
       "atlas": "actors",
       "index": 328,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_sword/idle/left/0": {
       "atlas": "actors",
       "index": 329,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_sword/idle/left/1": {
       "atlas": "actors",
       "index": 330,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_sword/gather/left/0": {
       "atlas": "actors",
       "index": 331,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_sword/gather/left/1": {
       "atlas": "actors",
       "index": 332,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_sword/gather/left/2": {
       "atlas": "actors",
       "index": 333,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_sword/slash/left/0": {
       "atlas": "actors",
       "index": 334,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_sword/slash/left/1": {
       "atlas": "actors",
       "index": 335,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_sword/slash/left/2": {
       "atlas": "actors",
       "index": 336,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_sword/slash/left/3": {
       "atlas": "actors",
       "index": 337,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_sword/walk/right/0": {
       "atlas": "actors",
       "index": 338,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_sword/walk/right/1": {
       "atlas": "actors",
       "index": 339,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_sword/walk/right/2": {
       "atlas": "actors",
       "index": 340,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_sword/walk/right/3": {
       "atlas": "actors",
       "index": 341,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_sword/idle/right/0": {
       "atlas": "actors",
       "index": 342,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_sword/idle/right/1": {
       "atlas": "actors",
       "index": 343,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_sword/gather/right/0": {
       "atlas": "actors",
       "index": 344,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_sword/gather/right/1": {
       "atlas": "actors",
       "index": 345,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_sword/gather/right/2": {
       "atlas": "actors",
       "index": 346,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_sword/slash/right/0": {
       "atlas": "actors",
       "index": 347,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_sword/slash/right/1": {
       "atlas": "actors",
       "index": 348,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_sword/slash/right/2": {
       "atlas": "actors",
       "index": 349,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_sword/slash/right/3": {
       "atlas": "actors",
       "index": 350,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_sword/walk/up/0": {
       "atlas": "actors",
       "index": 351,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_sword/walk/up/1": {
       "atlas": "actors",
       "index": 352,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_sword/walk/up/2": {
       "atlas": "actors",
       "index": 353,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_sword/walk/up/3": {
       "atlas": "actors",
       "index": 354,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_sword/idle/up/0": {
       "atlas": "actors",
       "index": 355,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_sword/idle/up/1": {
       "atlas": "actors",
       "index": 356,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_sword/gather/up/0": {
       "atlas": "actors",
       "index": 357,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_sword/gather/up/1": {
       "atlas": "actors",
       "index": 358,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_sword/gather/up/2": {
       "atlas": "actors",
       "index": 359,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_sword/slash/up/0": {
       "atlas": "actors",
       "index": 360,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_sword/slash/up/1": {
       "atlas": "actors",
       "index": 361,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_sword/slash/up/2": {
       "atlas": "actors",
       "index": 362,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_sword/slash/up/3": {
       "atlas": "actors",
       "index": 363,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_sword_mail/walk/down/0": {
       "atlas": "actors",
       "index": 364,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_sword_mail/walk/down/1": {
       "atlas": "actors",
       "index": 365,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_sword_mail/walk/down/2": {
       "atlas": "actors",
       "index": 366,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_sword_mail/walk/down/3": {
       "atlas": "actors",
       "index": 367,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_sword_mail/idle/down/0": {
       "atlas": "actors",
       "index": 368,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_sword_mail/idle/down/1": {
       "atlas": "actors",
       "index": 369,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_sword_mail/gather/down/0": {
       "atlas": "actors",
       "index": 370,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_sword_mail/gather/down/1": {
       "atlas": "actors",
       "index": 371,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_sword_mail/gather/down/2": {
       "atlas": "actors",
       "index": 372,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_sword_mail/slash/down/0": {
       "atlas": "actors",
       "index": 373,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_sword_mail/slash/down/1": {
       "atlas": "actors",
       "index": 374,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_sword_mail/slash/down/2": {
       "atlas": "actors",
       "index": 375,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_sword_mail/slash/down/3": {
       "atlas": "actors",
       "index": 376,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_sword_mail/walk/left/0": {
       "atlas": "actors",
       "index": 377,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_sword_mail/walk/left/1": {
       "atlas": "actors",
       "index": 378,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_sword_mail/walk/left/2": {
       "atlas": "actors",
       "index": 379,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_sword_mail/walk/left/3": {
       "atlas": "actors",
       "index": 380,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_sword_mail/idle/left/0": {
       "atlas": "actors",
       "index": 381,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_sword_mail/idle/left/1": {
       "atlas": "actors",
       "index": 382,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_sword_mail/gather/left/0": {
       "atlas": "actors",
       "index": 383,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_sword_mail/gather/left/1": {
       "atlas": "actors",
       "index": 384,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_sword_mail/gather/left/2": {
       "atlas": "actors",
       "index": 385,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_sword_mail/slash/left/0": {
       "atlas": "actors",
       "index": 386,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_sword_mail/slash/left/1": {
       "atlas": "actors",
       "index": 387,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_sword_mail/slash/left/2": {
       "atlas": "actors",
       "index": 388,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_sword_mail/slash/left/3": {
       "atlas": "actors",
       "index": 389,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_sword_mail/walk/right/0": {
       "atlas": "actors",
       "index": 390,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_sword_mail/walk/right/1": {
       "atlas": "actors",
       "index": 391,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_sword_mail/walk/right/2": {
       "atlas": "actors",
       "index": 392,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_sword_mail/walk/right/3": {
       "atlas": "actors",
       "index": 393,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_sword_mail/idle/right/0": {
       "atlas": "actors",
       "index": 394,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_sword_mail/idle/right/1": {
       "atlas": "actors",
       "index": 395,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_sword_mail/gather/right/0": {
       "atlas": "actors",
       "index": 396,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_sword_mail/gather/right/1": {
       "atlas": "actors",
       "index": 397,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_sword_mail/gather/right/2": {
       "atlas": "actors",
       "index": 398,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_sword_mail/slash/right/0": {
       "atlas": "actors",
       "index": 399,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_sword_mail/slash/right/1": {
       "atlas": "actors",
       "index": 400,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_sword_mail/slash/right/2": {
       "atlas": "actors",
       "index": 401,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_sword_mail/slash/right/3": {
       "atlas": "actors",
       "index": 402,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_sword_mail/walk/up/0": {
       "atlas": "actors",
       "index": 403,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_sword_mail/walk/up/1": {
       "atlas": "actors",
       "index": 404,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_sword_mail/walk/up/2": {
       "atlas": "actors",
       "index": 405,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_sword_mail/walk/up/3": {
       "atlas": "actors",
       "index": 406,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_sword_mail/idle/up/0": {
       "atlas": "actors",
       "index": 407,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_sword_mail/idle/up/1": {
       "atlas": "actors",
       "index": 408,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_sword_mail/gather/up/0": {
       "atlas": "actors",
       "index": 409,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_sword_mail/gather/up/1": {
       "atlas": "actors",
       "index": 410,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_sword_mail/gather/up/2": {
       "atlas": "actors",
       "index": 411,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_sword_mail/slash/up/0": {
       "atlas": "actors",
       "index": 412,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_sword_mail/slash/up/1": {
       "atlas": "actors",
       "index": 413,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_sword_mail/slash/up/2": {
       "atlas": "actors",
       "index": 414,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.hero_sword_mail/slash/up/3": {
       "atlas": "actors",
       "index": 415,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.sheep/walk/down/0": {
       "atlas": "actors",
       "index": 416,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.sheep/walk/down/1": {
       "atlas": "actors",
       "index": 417,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.sheep/walk/down/2": {
       "atlas": "actors",
       "index": 418,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.sheep/walk/down/3": {
       "atlas": "actors",
       "index": 419,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.sheep/idle/down/0": {
       "atlas": "actors",
       "index": 420,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.sheep/idle/down/1": {
       "atlas": "actors",
       "index": 421,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.sheep/graze/down/0": {
       "atlas": "actors",
       "index": 422,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.sheep/graze/down/1": {
       "atlas": "actors",
       "index": 423,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.sheep/walk/left/0": {
       "atlas": "actors",
       "index": 424,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.sheep/walk/left/1": {
       "atlas": "actors",
       "index": 425,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.sheep/walk/left/2": {
       "atlas": "actors",
       "index": 426,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.sheep/walk/left/3": {
       "atlas": "actors",
       "index": 427,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.sheep/idle/left/0": {
       "atlas": "actors",
       "index": 428,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.sheep/idle/left/1": {
       "atlas": "actors",
       "index": 429,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.sheep/graze/left/0": {
       "atlas": "actors",
       "index": 430,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.sheep/graze/left/1": {
       "atlas": "actors",
       "index": 431,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.sheep/walk/right/0": {
       "atlas": "actors",
       "index": 432,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.sheep/walk/right/1": {
       "atlas": "actors",
       "index": 433,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.sheep/walk/right/2": {
       "atlas": "actors",
       "index": 434,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.sheep/walk/right/3": {
       "atlas": "actors",
       "index": 435,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.sheep/idle/right/0": {
       "atlas": "actors",
       "index": 436,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.sheep/idle/right/1": {
       "atlas": "actors",
       "index": 437,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.sheep/graze/right/0": {
       "atlas": "actors",
       "index": 438,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.sheep/graze/right/1": {
       "atlas": "actors",
       "index": 439,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.sheep/walk/up/0": {
       "atlas": "actors",
       "index": 440,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.sheep/walk/up/1": {
       "atlas": "actors",
       "index": 441,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.sheep/walk/up/2": {
       "atlas": "actors",
       "index": 442,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.sheep/walk/up/3": {
       "atlas": "actors",
       "index": 443,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.sheep/idle/up/0": {
       "atlas": "actors",
       "index": 444,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.sheep/idle/up/1": {
       "atlas": "actors",
       "index": 445,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.sheep/graze/up/0": {
       "atlas": "actors",
       "index": 446,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.sheep/graze/up/1": {
       "atlas": "actors",
       "index": 447,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.smith/walk/down/0": {
       "atlas": "actors",
       "index": 448,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.smith/walk/down/1": {
       "atlas": "actors",
       "index": 449,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.smith/walk/down/2": {
       "atlas": "actors",
       "index": 450,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.smith/walk/down/3": {
       "atlas": "actors",
       "index": 451,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.smith/idle/down/0": {
       "atlas": "actors",
       "index": 452,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.smith/idle/down/1": {
       "atlas": "actors",
       "index": 453,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.smith/walk/left/0": {
       "atlas": "actors",
       "index": 454,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.smith/walk/left/1": {
       "atlas": "actors",
       "index": 455,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.smith/walk/left/2": {
       "atlas": "actors",
       "index": 456,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.smith/walk/left/3": {
       "atlas": "actors",
       "index": 457,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.smith/idle/left/0": {
       "atlas": "actors",
       "index": 458,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.smith/idle/left/1": {
       "atlas": "actors",
       "index": 459,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.smith/walk/right/0": {
       "atlas": "actors",
       "index": 460,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.smith/walk/right/1": {
       "atlas": "actors",
       "index": 461,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.smith/walk/right/2": {
       "atlas": "actors",
       "index": 462,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.smith/walk/right/3": {
       "atlas": "actors",
       "index": 463,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.smith/idle/right/0": {
       "atlas": "actors",
       "index": 464,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.smith/idle/right/1": {
       "atlas": "actors",
       "index": 465,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.smith/walk/up/0": {
       "atlas": "actors",
       "index": 466,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.smith/walk/up/1": {
       "atlas": "actors",
       "index": 467,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.smith/walk/up/2": {
       "atlas": "actors",
       "index": 468,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.smith/walk/up/3": {
       "atlas": "actors",
       "index": 469,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.smith/idle/up/0": {
       "atlas": "actors",
       "index": 470,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "actor.smith/idle/up/1": {
       "atlas": "actors",
       "index": 471,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "tile.grass": {
@@ -3883,472 +3883,472 @@
       "atlas": "props",
       "index": 0,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "prop.rock": {
       "atlas": "props",
       "index": 1,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "prop.sign": {
       "atlas": "props",
       "index": 2,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "prop.tree_pine": {
       "atlas": "props",
       "index": 3,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "prop.tree_oak": {
       "atlas": "props",
       "index": 4,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "prop.tree_dead": {
       "atlas": "props",
       "index": 5,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "prop.stump": {
       "atlas": "props",
       "index": 6,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "prop.log": {
       "atlas": "props",
       "index": 7,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "prop.boulder": {
       "atlas": "props",
       "index": 8,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "prop.cairn": {
       "atlas": "props",
       "index": 9,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "prop.mushroom": {
       "atlas": "props",
       "index": 10,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "prop.well": {
       "atlas": "props",
       "index": 11,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "prop.crate": {
       "atlas": "props",
       "index": 12,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "prop.barrel": {
       "atlas": "props",
       "index": 13,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "prop.sack": {
       "atlas": "props",
       "index": 14,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "prop.woodpile": {
       "atlas": "props",
       "index": 15,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "prop.anvil": {
       "atlas": "props",
       "index": 16,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "prop.lamp_post": {
       "atlas": "props",
       "index": 17,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "prop.signpost": {
       "atlas": "props",
       "index": 18,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "prop.statue": {
       "atlas": "props",
       "index": 19,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "prop.tombstone": {
       "atlas": "props",
       "index": 20,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "prop.bench": {
       "atlas": "props",
       "index": 21,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "prop.table": {
       "atlas": "props",
       "index": 22,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "prop.chest": {
       "atlas": "props",
       "index": 23,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "prop.beehive": {
       "atlas": "props",
       "index": 24,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "prop.scarecrow": {
       "atlas": "props",
       "index": 25,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "prop.campfire": {
       "atlas": "props",
       "index": 26,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "prop.trough": {
       "atlas": "props",
       "index": 27,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "prop.flower_pot": {
       "atlas": "props",
       "index": 28,
       "anchor": [
-        16,
-        29
+        32,
+        58
       ]
     },
     "prop.house": {
       "atlas": "props_big",
       "index": 0,
       "anchor": [
-        24,
-        45
+        48,
+        90
       ]
     },
     "prop.barn": {
       "atlas": "props_big",
       "index": 1,
       "anchor": [
-        24,
-        45
+        48,
+        90
       ]
     },
     "prop.tower": {
       "atlas": "props_big",
       "index": 2,
       "anchor": [
-        24,
-        45
+        48,
+        90
       ]
     },
     "prop.windmill": {
       "atlas": "props_big",
       "index": 3,
       "anchor": [
-        24,
-        45
+        48,
+        90
       ]
     },
     "item.apple": {
       "atlas": "items",
       "index": 0,
       "anchor": [
-        8,
-        14
+        16,
+        28
       ]
     },
     "item.berries": {
       "atlas": "items",
       "index": 1,
       "anchor": [
-        8,
-        14
+        16,
+        28
       ]
     },
     "item.wheat": {
       "atlas": "items",
       "index": 2,
       "anchor": [
-        8,
-        14
+        16,
+        28
       ]
     },
     "item.honey": {
       "atlas": "items",
       "index": 3,
       "anchor": [
-        8,
-        14
+        16,
+        28
       ]
     },
     "item.wool": {
       "atlas": "items",
       "index": 4,
       "anchor": [
-        8,
-        14
+        16,
+        28
       ]
     },
     "item.ore": {
       "atlas": "items",
       "index": 5,
       "anchor": [
-        8,
-        14
+        16,
+        28
       ]
     },
     "item.firewood": {
       "atlas": "items",
       "index": 6,
       "anchor": [
-        8,
-        14
+        16,
+        28
       ]
     },
     "item.fish": {
       "atlas": "items",
       "index": 7,
       "anchor": [
-        8,
-        14
+        16,
+        28
       ]
     },
     "item.coin": {
       "atlas": "items",
       "index": 8,
       "anchor": [
-        8,
-        14
+        16,
+        28
       ]
     },
     "item.key": {
       "atlas": "items",
       "index": 9,
       "anchor": [
-        8,
-        14
+        16,
+        28
       ]
     },
     "item.flower": {
       "atlas": "items",
       "index": 10,
       "anchor": [
-        8,
-        14
+        16,
+        28
       ]
     },
     "item.sword": {
       "atlas": "items",
       "index": 11,
       "anchor": [
-        8,
-        14
+        16,
+        28
       ]
     },
     "item.axe": {
       "atlas": "items",
       "index": 12,
       "anchor": [
-        8,
-        14
+        16,
+        28
       ]
     },
     "item.spear": {
       "atlas": "items",
       "index": 13,
       "anchor": [
-        8,
-        14
+        16,
+        28
       ]
     },
     "item.mail": {
       "atlas": "items",
       "index": 14,
       "anchor": [
-        8,
-        14
+        16,
+        28
       ]
     },
     "fx.0": {
       "atlas": "fx",
       "index": 0,
       "anchor": [
-        4,
-        4
+        8,
+        8
       ]
     },
     "fx.1": {
       "atlas": "fx",
       "index": 1,
       "anchor": [
-        4,
-        4
+        8,
+        8
       ]
     },
     "fx.2": {
       "atlas": "fx",
       "index": 2,
       "anchor": [
-        4,
-        4
+        8,
+        8
       ]
     },
     "fx.3": {
       "atlas": "fx",
       "index": 3,
       "anchor": [
-        4,
-        4
+        8,
+        8
       ]
     },
     "fx.4": {
       "atlas": "fx",
       "index": 4,
       "anchor": [
-        4,
-        4
+        8,
+        8
       ]
     },
     "fx.5": {
       "atlas": "fx",
       "index": 5,
       "anchor": [
-        4,
-        4
+        8,
+        8
       ]
     },
     "fx.6": {
       "atlas": "fx",
       "index": 6,
       "anchor": [
-        4,
-        4
+        8,
+        8
       ]
     },
     "fx.7": {
       "atlas": "fx",
       "index": 7,
       "anchor": [
-        4,
-        4
+        8,
+        8
       ]
     },
     "fx.8": {
       "atlas": "fx",
       "index": 8,
       "anchor": [
-        4,
-        4
+        8,
+        8
       ]
     },
     "fx.9": {
       "atlas": "fx",
       "index": 9,
       "anchor": [
-        4,
-        4
+        8,
+        8
       ]
     },
     "fx.spark": {
       "atlas": "fx",
       "index": 10,
       "anchor": [
-        4,
-        4
+        8,
+        8
       ]
     }
   },
@@ -7024,17 +7024,17 @@
     "map.riverside": {
       "id": "map.riverside",
       "name": "Riverside",
-      "tile_size": 16,
+      "tile_size": 32,
       "size": [
-        96,
-        72
+        30,
+        30
       ],
       "spawn": {
         "tile": [
-          31,
-          42
+          19,
+          3
         ],
-        "facing": "up"
+        "facing": "down"
       },
       "legend": {
         ".": "tile.grass",
@@ -7044,3291 +7044,1051 @@
         "#": "tile.stone"
       },
       "ground": [
-        "..............................pp................................................................",
-        "..............................pp................................................................",
-        "..............................pp................................................................",
-        "..............................pp................................................................",
-        "..............................pp......................................~.........................",
-        "........................,.....pp...............................~~~~~~~~~~~~~~~..................",
-        ".....................,,,,..,..pp.............................~~~~~~~~~~~~~~~~~~~................",
-        ".....................,,...,...pp...........................~~~~~~~~~~~~~~~~~~~~~~~..............",
-        "...................,,,,.,,,.,.pp..........................~~~~~~~~~~~~~~~~~~~~~~~~~.............",
-        "....................,..,,.,,,.pp.........................~~~~~~~~~~~~~~~~~~~~~~~~~~~............",
-        ".....................,,,..,...pp........................~~~~~~~~~~~~~~~~~~~~~~~~~~~~~...........",
-        "........................,.....pp........................~~~~~~~~~~~~~~~~~~~~~~~~~~~~~...........",
-        "..............................pp.......................~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~..........",
-        "..............................pp........................~~~~~~~~~~~~~~~~~~~~~~~~~~~~~...........",
-        "..............................pp........................~~~~~~~~~~~~~~~~~~~~~~~~~~~~~...........",
-        "..............................pp.......................~~~~~~~~~~~~~~~~~~~~~~~~~~~~~............",
-        "..............................pp......................~~~~~~~~~~~~~~~~~~~~~~~~~~~~~.............",
-        "..............................pp....................,..~~~~~~~~~~~~~~~~~~~~~~~~~~~..............",
-        "..............................pp.................,.,.,..~~~~~~~~~~~~~~~~~~~~~~~~................",
-        "..............................pp.................,,..,,,,~~~~~~~~~~~~~~~~~~~~~..................",
-        "..............................pp................,.,,.....,....~.....~~~~~.......................",
-        "..............................pp.................,,,,.,.,...........~~~~~.......................",
-        "..............................pp.................,,,,.,.............~~~~~.......................",
-        "..............................pp.....................................~~~~~......................",
-        "..............................pp.....................................~~~~~......................",
-        "..............................pp.....................................~~~~~......................",
-        "..............................pp.....................................~~~~~............,.........",
-        "..............................pp.....................................~~~~~.........,,...,,......",
-        "..............................pp.....................................~~~~~..........,,,.,.,.....",
-        "..............................pp.....................................~~~~~........,,.,,..,......",
-        "..............................pp............pp.....................~~~~~~~........,..,,,.,.,....",
-        "..............................pp............pp.....................~~~~~~~........,,,.....,.....",
-        "..............................pp............pp.....................~~~~~~~..........,,..,.,.....",
-        "..............................pp............pp.....................~~~~~~~..........,,...,......",
-        "..........................ppppppppppp.......pp.....................~~~~~~~............,.........",
-        "..........................ppppppppppp.......pp....................~~~~~~~.......................",
-        "....................ppppppppppppppppp.......pp....................~~~~~~~.......................",
-        "....................ppppppppppppppppp.......pp....................~~~~~~~.......................",
-        "pppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppp",
-        "pppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppp",
-        "..........................ppppppppppp............................~~~~~~~......p.................",
-        "..............,,..........ppppppppppp............................~~~~~~~......p.................",
-        ".............,,,...,......ppppppppppp...........................~~~~~~~.......p.................",
-        ".........,,,.,,...,,......ppppppppppp...........................~~~~~~~.........................",
-        "........,,,,.,..,...,.....ppppppppppp..........................~~~~~~~..........................",
-        "..........,..,,,,,,...........pp...............................~~~~~~~..........................",
-        "............,,,,.,,,..........pp..............................~~~~~~~...........................",
-        ".............,,,..............pp..............................~~~~~~~...........................",
-        "..............................pp..............................~~~~~~~...........................",
-        "........................#.....pp.............................~~~~~~~............................",
-        "................#....#######..pp.............................~~~~~###############...............",
-        "....................#########.pp............................~~~~~~#......p......#...............",
-        "...................###########pp............................~~~~~~#......p......#...............",
-        "....................########..pp...........................~~~~~~~#......p......#...............",
-        "...........#################..pp...........................~~~~~~~#......p......#...............",
-        ".........################.#...pp...........................~~~~~~~#......p......#...............",
-        ".......############.######....pp..........................~~~~~~~.#......p......#,..............",
-        "....#..##.################.#.#pp..........................~~~~~~~.#......p......#,..............",
-        "......##############.######...pp......,..................~~~~~~~..#......p......#.,.............",
-        "......#####################...pp..,,.,,..,,..............~~~~~~~..#......p......#,..............",
-        ".....#######################..pp,...,,,..,..............~~~~~~~...#......p......#...............",
-        "......#####################..#pp..,..,.,,,,,,...........~~~~~~~...#......p......#...............",
-        "......##############.######...pp..,,,,,,,,,,............~~~~~~~...#......p......#...............",
-        ".......####.##############..#.pp...,,,,,.,..,..........~~~~~~~....#......p......#...............",
-        ".......###################....pp...,,.,,,,..,..........~~~~~~~....#######p#######...............",
-        ".........##############.......pp..,.....,..............~~~~~~~...........p......................",
-        "........#...##########........pp.......................~~~~~~~...........p......................",
-        "................#.............pp......................~~~~~~~............p......................",
-        ".....................#........pp......................~~~~~~~...................................",
-        ".......................#......pp.....................~~~~~~~....................................",
-        "..............................pp.....................~~~~~~~....................................",
-        "..............................pp.....................~~~~~~~...................................."
+        "..............................",
+        "..............................",
+        "..............................",
+        ".....,.,.......,...pppp.......",
+        "..................pppppp......",
+        ".,.,.,..........pppppppppp....",
+        "...............pppp....pppp...",
+        ".............,.ppp......ppp...",
+        "..............ppp........pp...",
+        ".......,......pp.........ppp..",
+        "..............pp..........pp..",
+        ".....,.......ppp..........pp..",
+        ".............pp...........pp..",
+        "............ppp..........ppp..",
+        "............ppp.........ppp...",
+        "..........pppp.........ppp...,",
+        "..........ppp.........ppp.....",
+        ".........ppp..........ppp.....",
+        "........ppp............ppp....",
+        ".......ppp..............ppp...",
+        "...pppppp................ppp..",
+        "pppppppp.,.....,..........pppp",
+        "pppp#.................~~~..ppp",
+        "..#####,.....,......~~~~~~~..p",
+        ".######............~~~~~~~~~..",
+        "######.##..........~~~~~~~~~..",
+        ".####.##...........~~~~~~~~~..",
+        "..##.##.............~~~~~~~...",
+        "....#.................~~~.....",
+        ".............................."
       ],
       "entities": [
         {
-          "def": "prop.tree_oak",
-          "tile": [
-            4,
-            2
-          ]
-        },
-        {
-          "def": "prop.bush",
-          "tile": [
-            18,
-            2
-          ]
-        },
-        {
-          "def": "prop.tree_oak",
-          "tile": [
-            19,
-            2
-          ]
-        },
-        {
           "def": "prop.tree_pine",
           "tile": [
-            20,
-            2
+            8,
+            5
           ]
         },
         {
           "def": "prop.tree_pine",
           "tile": [
             3,
-            3
-          ]
-        },
-        {
-          "def": "prop.tree_pine",
-          "tile": [
-            5,
-            3
-          ]
-        },
-        {
-          "def": "prop.tree_oak",
-          "tile": [
-            11,
-            3
+            10
           ]
         },
         {
           "def": "prop.tree_pine",
           "tile": [
             2,
-            4
-          ]
-        },
-        {
-          "def": "prop.tree_pine",
-          "tile": [
-            5,
-            4
-          ]
-        },
-        {
-          "def": "prop.tree_pine",
-          "tile": [
-            10,
-            4
-          ]
-        },
-        {
-          "def": "prop.tree_pine",
-          "tile": [
-            11,
-            4
-          ]
-        },
-        {
-          "def": "item.apple",
-          "tile": [
-            12,
-            4
-          ]
-        },
-        {
-          "def": "prop.mushroom",
-          "tile": [
-            17,
-            4
-          ]
-        },
-        {
-          "def": "prop.tree_pine",
-          "tile": [
-            19,
-            4
-          ]
-        },
-        {
-          "def": "prop.tree_pine",
-          "tile": [
-            20,
-            4
-          ]
-        },
-        {
-          "def": "prop.tree_oak",
-          "tile": [
-            43,
-            4
-          ]
-        },
-        {
-          "def": "prop.tree_oak",
-          "tile": [
-            44,
-            4
-          ]
-        },
-        {
-          "def": "prop.tree_oak",
-          "tile": [
-            45,
-            4
-          ]
-        },
-        {
-          "def": "prop.bush",
-          "tile": [
-            66,
-            4
-          ]
-        },
-        {
-          "def": "prop.bush",
-          "tile": [
-            67,
-            4
-          ]
-        },
-        {
-          "def": "item.fish",
-          "tile": [
-            76,
-            4
-          ]
-        },
-        {
-          "def": "prop.tree_oak",
-          "tile": [
-            3,
             5
-          ]
-        },
-        {
-          "def": "prop.tree_oak",
-          "tile": [
-            4,
-            5
-          ]
-        },
-        {
-          "def": "prop.tree_oak",
-          "tile": [
-            9,
-            5
-          ]
-        },
-        {
-          "def": "prop.tree_pine",
-          "tile": [
-            13,
-            5
-          ]
-        },
-        {
-          "def": "prop.tree_pine",
-          "tile": [
-            18,
-            5
-          ]
-        },
-        {
-          "def": "prop.bush",
-          "tile": [
-            20,
-            5
-          ]
-        },
-        {
-          "def": "prop.tree_pine",
-          "tile": [
-            21,
-            5
-          ]
-        },
-        {
-          "def": "prop.tree_pine",
-          "tile": [
-            22,
-            5
-          ]
-        },
-        {
-          "def": "prop.mushroom",
-          "tile": [
-            44,
-            5
-          ]
-        },
-        {
-          "def": "prop.tree_pine",
-          "tile": [
-            45,
-            5
-          ]
-        },
-        {
-          "def": "prop.tree_pine",
-          "tile": [
-            57,
-            5
-          ]
-        },
-        {
-          "def": "prop.tree_pine",
-          "tile": [
-            10,
-            6
-          ]
-        },
-        {
-          "def": "prop.tree_pine",
-          "tile": [
-            11,
-            6
-          ]
-        },
-        {
-          "def": "prop.tree_oak",
-          "tile": [
-            19,
-            6
-          ]
-        },
-        {
-          "def": "prop.tree_pine",
-          "tile": [
-            20,
-            6
-          ]
-        },
-        {
-          "def": "prop.tree_oak",
-          "tile": [
-            21,
-            6
-          ]
-        },
-        {
-          "def": "prop.bush",
-          "tile": [
-            25,
-            6
-          ]
-        },
-        {
-          "def": "prop.tree_oak",
-          "tile": [
-            43,
-            6
-          ]
-        },
-        {
-          "def": "prop.tree_pine",
-          "tile": [
-            57,
-            6
-          ]
-        },
-        {
-          "def": "prop.tree_oak",
-          "tile": [
-            58,
-            6
-          ]
-        },
-        {
-          "def": "prop.tree_pine",
-          "tile": [
-            20,
-            7
-          ]
-        },
-        {
-          "def": "prop.bush",
-          "tile": [
-            24,
-            7
-          ]
-        },
-        {
-          "def": "prop.bush",
-          "tile": [
-            26,
-            7
-          ]
-        },
-        {
-          "def": "prop.tree_oak",
-          "tile": [
-            40,
-            7
-          ]
-        },
-        {
-          "def": "prop.mushroom",
-          "tile": [
-            43,
-            7
-          ]
-        },
-        {
-          "def": "prop.bush",
-          "tile": [
-            5,
-            8
-          ]
-        },
-        {
-          "def": "prop.bush",
-          "tile": [
-            23,
-            8
-          ]
-        },
-        {
-          "def": "prop.bush",
-          "tile": [
-            24,
-            8
-          ]
-        },
-        {
-          "def": "prop.tree_pine",
-          "tile": [
-            26,
-            8
-          ]
-        },
-        {
-          "def": "prop.cairn",
-          "tile": [
-            33,
-            8
-          ]
-        },
-        {
-          "def": "prop.tree_oak",
-          "tile": [
-            56,
-            8
-          ]
-        },
-        {
-          "def": "prop.bush",
-          "tile": [
-            6,
-            9
-          ]
-        },
-        {
-          "def": "prop.tree_oak",
-          "tile": [
-            10,
-            9
-          ]
-        },
-        {
-          "def": "prop.tree_oak",
-          "tile": [
-            12,
-            9
-          ]
-        },
-        {
-          "def": "prop.tree_oak",
-          "tile": [
-            39,
-            9
-          ]
-        },
-        {
-          "def": "prop.tree_oak",
-          "tile": [
-            41,
-            9
-          ]
-        },
-        {
-          "def": "prop.tree_oak",
-          "tile": [
-            42,
-            9
-          ]
-        },
-        {
-          "def": "prop.tree_pine",
-          "tile": [
-            10,
-            10
-          ]
-        },
-        {
-          "def": "prop.tree_pine",
-          "tile": [
-            11,
-            10
-          ]
-        },
-        {
-          "def": "prop.tree_pine",
-          "tile": [
-            12,
-            10
-          ]
-        },
-        {
-          "def": "prop.tree_oak",
-          "tile": [
-            40,
-            10
-          ]
-        },
-        {
-          "def": "prop.bush",
-          "tile": [
-            85,
-            10
-          ]
-        },
-        {
-          "def": "prop.tree_pine",
-          "tile": [
-            87,
-            10
-          ]
-        },
-        {
-          "def": "prop.tree_oak",
-          "tile": [
-            88,
-            10
-          ]
-        },
-        {
-          "def": "prop.tree_pine",
-          "tile": [
-            11,
-            11
-          ]
-        },
-        {
-          "def": "prop.tree_oak",
-          "tile": [
-            12,
-            11
-          ]
-        },
-        {
-          "def": "prop.tower",
-          "tile": [
-            33,
-            11
-          ]
-        },
-        {
-          "def": "prop.tree_oak",
-          "tile": [
-            40,
-            11
-          ]
-        },
-        {
-          "def": "prop.tree_oak",
-          "tile": [
-            51,
-            11
-          ]
-        },
-        {
-          "def": "prop.tree_pine",
-          "tile": [
-            85,
-            11
-          ]
-        },
-        {
-          "def": "prop.tree_oak",
-          "tile": [
-            86,
-            11
-          ]
-        },
-        {
-          "def": "prop.tree_oak",
-          "tile": [
-            88,
-            11
-          ]
-        },
-        {
-          "def": "prop.tree_dead",
-          "tile": [
-            9,
-            12
-          ]
-        },
-        {
-          "def": "prop.bush",
-          "tile": [
-            11,
-            12
-          ]
-        },
-        {
-          "def": "prop.tree_oak",
-          "tile": [
-            20,
-            12
-          ]
-        },
-        {
-          "def": "item.spear",
-          "tile": [
-            32,
-            12
-          ]
-        },
-        {
-          "def": "item.coin",
-          "tile": [
-            33,
-            12
-          ]
-        },
-        {
-          "def": "prop.tree_pine",
-          "tile": [
-            48,
-            12
-          ]
-        },
-        {
-          "def": "prop.tree_pine",
-          "tile": [
-            51,
-            12
-          ]
-        },
-        {
-          "def": "prop.tree_oak",
-          "tile": [
-            87,
-            12
-          ]
-        },
-        {
-          "def": "prop.tree_pine",
-          "tile": [
-            89,
-            12
-          ]
-        },
-        {
-          "def": "prop.tree_oak",
-          "tile": [
-            2,
-            13
-          ]
-        },
-        {
-          "def": "prop.bush",
-          "tile": [
-            6,
-            13
-          ]
-        },
-        {
-          "def": "item.berries",
-          "tile": [
-            11,
-            13
-          ]
-        },
-        {
-          "def": "prop.tree_pine",
-          "tile": [
-            19,
-            13
-          ]
-        },
-        {
-          "def": "prop.tree_oak",
-          "tile": [
-            20,
-            13
-          ]
-        },
-        {
-          "def": "prop.tree_pine",
-          "tile": [
-            85,
-            13
-          ]
-        },
-        {
-          "def": "prop.tree_oak",
-          "tile": [
-            86,
-            13
-          ]
-        },
-        {
-          "def": "prop.tree_pine",
-          "tile": [
-            88,
-            13
-          ]
-        },
-        {
-          "def": "prop.tree_oak",
-          "tile": [
-            18,
-            14
-          ]
-        },
-        {
-          "def": "prop.bush",
-          "tile": [
-            19,
-            14
-          ]
-        },
-        {
-          "def": "prop.tree_pine",
-          "tile": [
-            21,
-            14
-          ]
-        },
-        {
-          "def": "prop.tree_pine",
-          "tile": [
-            22,
-            14
-          ]
-        },
-        {
-          "def": "prop.cairn",
-          "tile": [
-            28,
-            14
-          ]
-        },
-        {
-          "def": "prop.tree_oak",
-          "tile": [
-            50,
-            14
-          ]
-        },
-        {
-          "def": "prop.tree_oak",
-          "tile": [
-            85,
-            14
-          ]
-        },
-        {
-          "def": "prop.tree_pine",
-          "tile": [
-            88,
-            14
           ]
         },
         {
           "def": "prop.tree_oak",
           "tile": [
             1,
-            15
+            3
           ]
         },
         {
           "def": "prop.tree_oak",
           "tile": [
-            2,
-            15
-          ]
-        },
-        {
-          "def": "prop.bush",
-          "tile": [
-            4,
-            15
-          ]
-        },
-        {
-          "def": "prop.tree_pine",
-          "tile": [
-            5,
-            15
+            6,
+            5
           ]
         },
         {
           "def": "prop.tree_oak",
           "tile": [
-            19,
-            15
-          ]
-        },
-        {
-          "def": "prop.bush",
-          "tile": [
-            20,
-            15
+            1,
+            1
           ]
         },
         {
           "def": "prop.tree_oak",
           "tile": [
-            21,
-            15
-          ]
-        },
-        {
-          "def": "prop.tree_pine",
-          "tile": [
-            47,
-            15
+            6,
+            1
           ]
         },
         {
           "def": "prop.tree_oak",
-          "tile": [
-            86,
-            15
-          ]
-        },
-        {
-          "def": "prop.tree_pine",
-          "tile": [
-            4,
-            16
-          ]
-        },
-        {
-          "def": "prop.tree_oak",
-          "tile": [
-            5,
-            16
-          ]
-        },
-        {
-          "def": "prop.tree_pine",
-          "tile": [
-            20,
-            16
-          ]
-        },
-        {
-          "def": "prop.mushroom",
-          "tile": [
-            21,
-            16
-          ]
-        },
-        {
-          "def": "prop.bush",
-          "tile": [
-            47,
-            16
-          ]
-        },
-        {
-          "def": "prop.tree_dead",
-          "tile": [
-            89,
-            16
-          ]
-        },
-        {
-          "def": "prop.bush",
-          "tile": [
-            4,
-            17
-          ]
-        },
-        {
-          "def": "prop.tree_pine",
-          "tile": [
-            46,
-            17
-          ]
-        },
-        {
-          "def": "item.berries",
-          "tile": [
-            4,
-            18
-          ]
-        },
-        {
-          "def": "prop.tree_pine",
-          "tile": [
-            10,
-            18
-          ]
-        },
-        {
-          "def": "prop.tree_oak",
-          "tile": [
-            15,
-            18
-          ]
-        },
-        {
-          "def": "prop.tree_pine",
-          "tile": [
-            17,
-            18
-          ]
-        },
-        {
-          "def": "prop.bush",
-          "tile": [
-            55,
-            18
-          ]
-        },
-        {
-          "def": "prop.rock",
-          "tile": [
-            80,
-            18
-          ]
-        },
-        {
-          "def": "prop.rock",
-          "tile": [
-            81,
-            18
-          ]
-        },
-        {
-          "def": "prop.tree_pine",
-          "tile": [
-            84,
-            18
-          ]
-        },
-        {
-          "def": "prop.bush",
           "tile": [
             8,
-            19
-          ]
-        },
-        {
-          "def": "prop.tree_oak",
-          "tile": [
-            9,
-            19
-          ]
-        },
-        {
-          "def": "prop.tree_pine",
-          "tile": [
-            11,
-            19
-          ]
-        },
-        {
-          "def": "prop.tree_pine",
-          "tile": [
-            12,
-            19
-          ]
-        },
-        {
-          "def": "prop.tree_pine",
-          "tile": [
-            14,
-            19
-          ]
-        },
-        {
-          "def": "prop.tree_pine",
-          "tile": [
-            17,
-            19
-          ]
-        },
-        {
-          "def": "prop.bush",
-          "tile": [
-            56,
-            19
-          ]
-        },
-        {
-          "def": "prop.bush",
-          "tile": [
-            78,
-            19
-          ]
-        },
-        {
-          "def": "prop.bush",
-          "tile": [
-            79,
-            19
-          ]
-        },
-        {
-          "def": "prop.boulder",
-          "tile": [
-            81,
-            19
-          ]
-        },
-        {
-          "def": "prop.tree_pine",
-          "tile": [
-            83,
-            19
-          ]
-        },
-        {
-          "def": "prop.tree_oak",
-          "tile": [
-            10,
-            20
-          ]
-        },
-        {
-          "def": "prop.tree_pine",
-          "tile": [
-            11,
-            20
-          ]
-        },
-        {
-          "def": "prop.tree_pine",
-          "tile": [
-            15,
-            20
-          ]
-        },
-        {
-          "def": "prop.tree_pine",
-          "tile": [
-            16,
-            20
-          ]
-        },
-        {
-          "def": "prop.tree_oak",
-          "tile": [
-            17,
-            20
-          ]
-        },
-        {
-          "def": "prop.cairn",
-          "tile": [
-            28,
-            20
-          ]
-        },
-        {
-          "def": "item.fish",
-          "tile": [
-            59,
-            20
-          ]
-        },
-        {
-          "def": "prop.bush",
-          "tile": [
-            73,
-            20
-          ]
-        },
-        {
-          "def": "prop.tree_oak",
-          "tile": [
-            82,
-            20
-          ]
-        },
-        {
-          "def": "prop.tree_oak",
-          "tile": [
-            85,
-            20
-          ]
-        },
-        {
-          "def": "prop.mushroom",
-          "tile": [
-            86,
-            20
+            9
           ]
         },
         {
           "def": "prop.tree_pine",
           "tile": [
             3,
-            21
+            7
+          ]
+        },
+        {
+          "def": "prop.tree_oak",
+          "tile": [
+            2,
+            6
+          ]
+        },
+        {
+          "def": "prop.tree_pine",
+          "tile": [
+            1,
+            10
+          ]
+        },
+        {
+          "def": "prop.tree_pine",
+          "tile": [
+            8,
+            2
+          ]
+        },
+        {
+          "def": "prop.tree_pine",
+          "tile": [
+            3,
+            11
+          ]
+        },
+        {
+          "def": "prop.tree_oak",
+          "tile": [
+            5,
+            6
+          ]
+        },
+        {
+          "def": "prop.tree_pine",
+          "tile": [
+            2,
+            9
+          ]
+        },
+        {
+          "def": "prop.tree_pine",
+          "tile": [
+            5,
+            8
           ]
         },
         {
           "def": "prop.tree_oak",
           "tile": [
             4,
-            21
+            3
           ]
         },
         {
           "def": "prop.tree_pine",
-          "tile": [
-            6,
-            21
-          ]
-        },
-        {
-          "def": "prop.tree_oak",
           "tile": [
             7,
-            21
+            4
           ]
         },
         {
           "def": "prop.tree_oak",
-          "tile": [
-            9,
-            21
-          ]
-        },
-        {
-          "def": "prop.bush",
-          "tile": [
-            11,
-            21
-          ]
-        },
-        {
-          "def": "prop.tree_pine",
-          "tile": [
-            12,
-            21
-          ]
-        },
-        {
-          "def": "prop.tree_oak",
-          "tile": [
-            16,
-            21
-          ]
-        },
-        {
-          "def": "prop.mushroom",
-          "tile": [
-            17,
-            21
-          ]
-        },
-        {
-          "def": "item.flower",
-          "tile": [
-            52,
-            21
-          ]
-        },
-        {
-          "def": "prop.bush",
-          "tile": [
-            67,
-            21
-          ]
-        },
-        {
-          "def": "prop.bush",
-          "tile": [
-            73,
-            21
-          ]
-        },
-        {
-          "def": "prop.tree_oak",
-          "tile": [
-            83,
-            21
-          ]
-        },
-        {
-          "def": "prop.tree_pine",
-          "tile": [
-            84,
-            21
-          ]
-        },
-        {
-          "def": "prop.tree_pine",
-          "tile": [
-            85,
-            21
-          ]
-        },
-        {
-          "def": "prop.bush",
-          "tile": [
-            4,
-            22
-          ]
-        },
-        {
-          "def": "prop.tree_oak",
-          "tile": [
-            8,
-            22
-          ]
-        },
-        {
-          "def": "prop.tree_oak",
-          "tile": [
-            9,
-            22
-          ]
-        },
-        {
-          "def": "prop.tree_dead",
-          "tile": [
-            17,
-            22
-          ]
-        },
-        {
-          "def": "prop.tree_oak",
-          "tile": [
-            19,
-            22
-          ]
-        },
-        {
-          "def": "prop.tree_pine",
-          "tile": [
-            37,
-            22
-          ]
-        },
-        {
-          "def": "prop.tree_pine",
-          "tile": [
-            84,
-            22
-          ]
-        },
-        {
-          "def": "prop.bush",
-          "tile": [
-            8,
-            23
-          ]
-        },
-        {
-          "def": "prop.bush",
-          "tile": [
-            9,
-            23
-          ]
-        },
-        {
-          "def": "prop.tree_pine",
-          "tile": [
-            10,
-            23
-          ]
-        },
-        {
-          "def": "prop.tree_pine",
-          "tile": [
-            11,
-            23
-          ]
-        },
-        {
-          "def": "prop.tree_oak",
-          "tile": [
-            12,
-            23
-          ]
-        },
-        {
-          "def": "item.apple",
-          "tile": [
-            17,
-            23
-          ]
-        },
-        {
-          "def": "prop.tree_oak",
-          "tile": [
-            18,
-            23
-          ]
-        },
-        {
-          "def": "prop.tree_pine",
-          "tile": [
-            19,
-            23
-          ]
-        },
-        {
-          "def": "prop.tree_pine",
-          "tile": [
-            20,
-            23
-          ]
-        },
-        {
-          "def": "prop.tree_oak",
-          "tile": [
-            21,
-            23
-          ]
-        },
-        {
-          "def": "prop.tree_oak",
-          "tile": [
-            35,
-            23
-          ]
-        },
-        {
-          "def": "prop.tree_pine",
-          "tile": [
-            53,
-            23
-          ]
-        },
-        {
-          "def": "prop.boulder",
-          "tile": [
-            65,
-            23
-          ]
-        },
-        {
-          "def": "prop.tree_dead",
           "tile": [
             6,
-            24
-          ]
-        },
-        {
-          "def": "prop.bush",
-          "tile": [
-            17,
-            24
+            10
           ]
         },
         {
           "def": "prop.tree_oak",
           "tile": [
-            18,
-            24
-          ]
-        },
-        {
-          "def": "prop.tree_pine",
-          "tile": [
-            19,
-            24
+            1,
+            4
           ]
         },
         {
           "def": "prop.tree_oak",
           "tile": [
-            21,
-            24
+            8,
+            8
           ]
         },
         {
           "def": "prop.tree_pine",
-          "tile": [
-            36,
-            24
-          ]
-        },
-        {
-          "def": "prop.tree_pine",
-          "tile": [
-            53,
-            24
-          ]
-        },
-        {
-          "def": "prop.rock",
-          "tile": [
-            64,
-            24
-          ]
-        },
-        {
-          "def": "prop.bush",
-          "tile": [
-            16,
-            25
-          ]
-        },
-        {
-          "def": "prop.tree_pine",
-          "tile": [
-            17,
-            25
-          ]
-        },
-        {
-          "def": "prop.tree_pine",
-          "tile": [
-            18,
-            25
-          ]
-        },
-        {
-          "def": "prop.bush",
-          "tile": [
-            36,
-            25
-          ]
-        },
-        {
-          "def": "prop.tree_pine",
-          "tile": [
-            52,
-            25
-          ]
-        },
-        {
-          "def": "prop.tree_pine",
-          "tile": [
-            53,
-            25
-          ]
-        },
-        {
-          "def": "prop.bush",
-          "tile": [
-            68,
-            25
-          ]
-        },
-        {
-          "def": "prop.tree_oak",
-          "tile": [
-            91,
-            25
-          ]
-        },
-        {
-          "def": "prop.tree_pine",
-          "tile": [
-            15,
-            26
-          ]
-        },
-        {
-          "def": "prop.bush",
-          "tile": [
-            16,
-            26
-          ]
-        },
-        {
-          "def": "prop.tree_pine",
-          "tile": [
-            17,
-            26
-          ]
-        },
-        {
-          "def": "prop.tree_pine",
-          "tile": [
-            19,
-            26
-          ]
-        },
-        {
-          "def": "prop.bush",
-          "tile": [
-            68,
-            26
-          ]
-        },
-        {
-          "def": "prop.tree_pine",
-          "tile": [
-            85,
-            26
-          ]
-        },
-        {
-          "def": "prop.tree_pine",
-          "tile": [
-            89,
-            26
-          ]
-        },
-        {
-          "def": "prop.tree_pine",
-          "tile": [
-            90,
-            26
-          ]
-        },
-        {
-          "def": "prop.tree_pine",
-          "tile": [
-            91,
-            26
-          ]
-        },
-        {
-          "def": "item.apple",
-          "tile": [
-            92,
-            26
-          ]
-        },
-        {
-          "def": "prop.bush",
-          "tile": [
-            3,
-            27
-          ]
-        },
-        {
-          "def": "prop.bush",
-          "tile": [
-            15,
-            27
-          ]
-        },
-        {
-          "def": "prop.bush",
-          "tile": [
-            17,
-            27
-          ]
-        },
-        {
-          "def": "prop.tree_pine",
-          "tile": [
-            19,
-            27
-          ]
-        },
-        {
-          "def": "prop.stump",
-          "tile": [
-            23,
-            27
-          ]
-        },
-        {
-          "def": "prop.log",
-          "tile": [
-            26,
-            27
-          ]
-        },
-        {
-          "def": "prop.bush",
-          "tile": [
-            68,
-            27
-          ]
-        },
-        {
-          "def": "prop.bush",
-          "tile": [
-            86,
-            27
-          ]
-        },
-        {
-          "def": "prop.tree_pine",
-          "tile": [
-            90,
-            27
-          ]
-        },
-        {
-          "def": "prop.tree_pine",
-          "tile": [
-            91,
-            27
-          ]
-        },
-        {
-          "def": "prop.tree_oak",
-          "tile": [
-            93,
-            27
-          ]
-        },
-        {
-          "def": "item.berries",
-          "tile": [
-            3,
-            28
-          ]
-        },
-        {
-          "def": "prop.tree_oak",
-          "tile": [
-            4,
-            28
-          ]
-        },
-        {
-          "def": "prop.tree_oak",
-          "tile": [
-            17,
-            28
-          ]
-        },
-        {
-          "def": "item.berries",
-          "tile": [
-            18,
-            28
-          ]
-        },
-        {
-          "def": "item.axe",
-          "tile": [
-            25,
-            28
-          ]
-        },
-        {
-          "def": "prop.sign",
-          "tile": [
-            29,
-            28
-          ]
-        },
-        {
-          "def": "prop.bush",
-          "tile": [
-            68,
-            28
-          ]
-        },
-        {
-          "def": "prop.tree_pine",
-          "tile": [
-            83,
-            28
-          ]
-        },
-        {
-          "def": "prop.tree_oak",
-          "tile": [
-            84,
-            28
-          ]
-        },
-        {
-          "def": "prop.bush",
-          "tile": [
-            87,
-            28
-          ]
-        },
-        {
-          "def": "prop.tree_pine",
-          "tile": [
-            88,
-            28
-          ]
-        },
-        {
-          "def": "prop.tree_oak",
-          "tile": [
-            90,
-            28
-          ]
-        },
-        {
-          "def": "prop.tree_pine",
-          "tile": [
-            92,
-            28
-          ]
-        },
-        {
-          "def": "prop.tree_oak",
-          "tile": [
-            93,
-            28
-          ]
-        },
-        {
-          "def": "prop.bush",
-          "tile": [
-            94,
-            28
-          ]
-        },
-        {
-          "def": "prop.tree_oak",
           "tile": [
             2,
-            29
+            8
+          ]
+        },
+        {
+          "def": "prop.bush",
+          "tile": [
+            10,
+            7
+          ]
+        },
+        {
+          "def": "prop.bush",
+          "tile": [
+            6,
+            7
+          ]
+        },
+        {
+          "def": "prop.bush",
+          "tile": [
+            4,
+            12
+          ]
+        },
+        {
+          "def": "prop.bush",
+          "tile": [
+            4,
+            6
+          ]
+        },
+        {
+          "def": "prop.bush",
+          "tile": [
+            0,
+            1
+          ]
+        },
+        {
+          "def": "prop.bush",
+          "tile": [
+            0,
+            4
+          ]
+        },
+        {
+          "def": "prop.bush",
+          "tile": [
+            4,
+            5
           ]
         },
         {
           "def": "prop.bush",
           "tile": [
             5,
-            29
+            3
           ]
         },
         {
-          "def": "prop.tree_oak",
+          "def": "prop.bush",
+          "tile": [
+            5,
+            1
+          ]
+        },
+        {
+          "def": "prop.bush",
+          "tile": [
+            9,
+            8
+          ]
+        },
+        {
+          "def": "prop.bush",
+          "tile": [
+            10,
+            10
+          ]
+        },
+        {
+          "def": "prop.bush",
+          "tile": [
+            1,
+            6
+          ]
+        },
+        {
+          "def": "prop.bush",
+          "tile": [
+            1,
+            7
+          ]
+        },
+        {
+          "def": "prop.bush",
+          "tile": [
+            3,
+            4
+          ]
+        },
+        {
+          "def": "prop.bush",
+          "tile": [
+            9,
+            3
+          ]
+        },
+        {
+          "def": "prop.bush",
+          "tile": [
+            3,
+            13
+          ]
+        },
+        {
+          "def": "prop.bush",
+          "tile": [
+            3,
+            6
+          ]
+        },
+        {
+          "def": "prop.bush",
+          "tile": [
+            3,
+            9
+          ]
+        },
+        {
+          "def": "prop.bush",
+          "tile": [
+            0,
+            11
+          ]
+        },
+        {
+          "def": "prop.bush",
+          "tile": [
+            3,
+            8
+          ]
+        },
+        {
+          "def": "prop.bush",
+          "tile": [
+            7,
+            12
+          ]
+        },
+        {
+          "def": "prop.bush",
+          "tile": [
+            6,
+            8
+          ]
+        },
+        {
+          "def": "prop.bush",
+          "tile": [
+            1,
+            2
+          ]
+        },
+        {
+          "def": "prop.bush",
+          "tile": [
+            7,
+            6
+          ]
+        },
+        {
+          "def": "prop.bush",
+          "tile": [
+            7,
+            8
+          ]
+        },
+        {
+          "def": "prop.bush",
+          "tile": [
+            22,
+            11
+          ]
+        },
+        {
+          "def": "prop.bush",
           "tile": [
             16,
+            19
+          ]
+        },
+        {
+          "def": "prop.bush",
+          "tile": [
+            24,
             29
           ]
         },
         {
-          "def": "prop.log",
+          "def": "prop.bush",
+          "tile": [
+            4,
+            11
+          ]
+        },
+        {
+          "def": "prop.bush",
+          "tile": [
+            28,
+            5
+          ]
+        },
+        {
+          "def": "prop.bush",
+          "tile": [
+            20,
+            7
+          ]
+        },
+        {
+          "def": "prop.bush",
+          "tile": [
+            16,
+            25
+          ]
+        },
+        {
+          "def": "prop.bush",
+          "tile": [
+            2,
+            3
+          ]
+        },
+        {
+          "def": "prop.bush",
+          "tile": [
+            12,
+            17
+          ]
+        },
+        {
+          "def": "prop.bush",
+          "tile": [
+            0,
+            29
+          ]
+        },
+        {
+          "def": "prop.bush",
+          "tile": [
+            2,
+            19
+          ]
+        },
+        {
+          "def": "prop.bush",
+          "tile": [
+            6,
+            9
+          ]
+        },
+        {
+          "def": "prop.bush",
+          "tile": [
+            28,
+            11
+          ]
+        },
+        {
+          "def": "prop.bush",
+          "tile": [
+            18,
+            15
+          ]
+        },
+        {
+          "def": "prop.bush",
+          "tile": [
+            28,
+            7
+          ]
+        },
+        {
+          "def": "prop.bush",
+          "tile": [
+            16,
+            27
+          ]
+        },
+        {
+          "def": "prop.bush",
           "tile": [
             22,
             29
           ]
         },
         {
-          "def": "prop.woodpile",
+          "def": "prop.bush",
+          "tile": [
+            20,
+            29
+          ]
+        },
+        {
+          "def": "prop.bush",
+          "tile": [
+            4,
+            27
+          ]
+        },
+        {
+          "def": "prop.bush",
           "tile": [
             24,
-            29
+            1
           ]
         },
         {
-          "def": "item.firewood",
+          "def": "prop.bush",
           "tile": [
-            25,
-            29
+            4,
+            15
           ]
         },
         {
-          "def": "prop.tree_oak",
+          "def": "prop.bush",
           "tile": [
-            41,
-            29
-          ]
-        },
-        {
-          "def": "prop.tree_pine",
-          "tile": [
-            85,
-            29
-          ]
-        },
-        {
-          "def": "prop.tree_pine",
-          "tile": [
-            90,
-            29
-          ]
-        },
-        {
-          "def": "prop.tree_oak",
-          "tile": [
-            92,
+            14,
             29
           ]
         },
         {
           "def": "prop.bush",
           "tile": [
-            2,
-            30
-          ]
-        },
-        {
-          "def": "item.firewood",
-          "tile": [
-            23,
-            30
-          ]
-        },
-        {
-          "def": "prop.campfire",
-          "tile": [
-            26,
-            30
+            14,
+            17
           ]
         },
         {
           "def": "prop.bush",
           "tile": [
-            59,
-            30
+            24,
+            3
           ]
         },
         {
           "def": "prop.bush",
-          "tile": [
-            85,
-            30
-          ]
-        },
-        {
-          "def": "item.flower",
-          "tile": [
-            87,
-            30
-          ]
-        },
-        {
-          "def": "prop.tree_oak",
-          "tile": [
-            90,
-            30
-          ]
-        },
-        {
-          "def": "prop.tree_oak",
-          "tile": [
-            91,
-            30
-          ]
-        },
-        {
-          "def": "prop.tree_pine",
-          "tile": [
-            92,
-            30
-          ]
-        },
-        {
-          "def": "prop.stump",
-          "tile": [
-            25,
-            31
-          ]
-        },
-        {
-          "def": "prop.bush",
-          "tile": [
-            56,
-            31
-          ]
-        },
-        {
-          "def": "prop.tree_pine",
-          "tile": [
-            58,
-            31
-          ]
-        },
-        {
-          "def": "prop.bush",
-          "tile": [
-            57,
-            32
-          ]
-        },
-        {
-          "def": "prop.house",
-          "tile": [
-            21,
-            33
-          ]
-        },
-        {
-          "def": "prop.flower_pot",
-          "tile": [
-            23,
-            33
-          ]
-        },
-        {
-          "def": "prop.house",
-          "tile": [
-            41,
-            33
-          ]
-        },
-        {
-          "def": "prop.barn",
-          "tile": [
-            47,
-            33
-          ]
-        },
-        {
-          "def": "prop.bush",
-          "tile": [
-            74,
-            33
-          ]
-        },
-        {
-          "def": "prop.tree_oak",
-          "tile": [
-            79,
-            33
-          ]
-        },
-        {
-          "def": "prop.tree_oak",
-          "tile": [
-            80,
-            33
-          ]
-        },
-        {
-          "def": "prop.tree_pine",
           "tile": [
             10,
-            34
-          ]
-        },
-        {
-          "def": "prop.lamp_post",
-          "tile": [
-            26,
-            34
-          ]
-        },
-        {
-          "def": "prop.crate",
-          "tile": [
-            27,
-            34
-          ]
-        },
-        {
-          "def": "prop.barrel",
-          "tile": [
-            29,
-            34
-          ]
-        },
-        {
-          "def": "prop.lamp_post",
-          "tile": [
-            36,
-            34
-          ]
-        },
-        {
-          "def": "prop.tree_oak",
-          "tile": [
-            66,
-            34
+            29
           ]
         },
         {
           "def": "prop.bush",
-          "tile": [
-            74,
-            34
-          ]
-        },
-        {
-          "def": "prop.tree_oak",
-          "tile": [
-            7,
-            35
-          ]
-        },
-        {
-          "def": "prop.tree_oak",
-          "tile": [
-            11,
-            35
-          ]
-        },
-        {
-          "def": "prop.table",
-          "tile": [
-            26,
-            35
-          ]
-        },
-        {
-          "def": "prop.crate",
-          "tile": [
-            27,
-            35
-          ]
-        },
-        {
-          "def": "prop.barrel",
           "tile": [
             28,
-            35
-          ]
-        },
-        {
-          "def": "prop.sack",
-          "tile": [
-            29,
-            35
-          ]
-        },
-        {
-          "def": "prop.anvil",
-          "tile": [
-            33,
-            35
-          ]
-        },
-        {
-          "def": "prop.woodpile",
-          "tile": [
-            34,
-            35
-          ]
-        },
-        {
-          "def": "prop.crate",
-          "tile": [
-            46,
-            35
-          ]
-        },
-        {
-          "def": "prop.chest",
-          "tile": [
-            47,
-            35
-          ]
-        },
-        {
-          "def": "prop.barrel",
-          "tile": [
-            48,
-            35
+            23
           ]
         },
         {
           "def": "prop.bush",
-          "tile": [
-            65,
-            35
-          ]
-        },
-        {
-          "def": "prop.bush",
-          "tile": [
-            73,
-            35
-          ]
-        },
-        {
-          "def": "prop.tree_pine",
-          "tile": [
-            78,
-            35
-          ]
-        },
-        {
-          "def": "prop.tree_oak",
-          "tile": [
-            89,
-            35
-          ]
-        },
-        {
-          "def": "prop.tree_oak",
-          "tile": [
-            9,
-            36
-          ]
-        },
-        {
-          "def": "npc.arne",
-          "tile": [
-            33,
-            36
-          ]
-        },
-        {
-          "def": "item.sword",
-          "tile": [
-            34,
-            36
-          ]
-        },
-        {
-          "def": "prop.trough",
-          "tile": [
-            35,
-            36
-          ]
-        },
-        {
-          "def": "item.coin",
-          "tile": [
-            47,
-            36
-          ]
-        },
-        {
-          "def": "prop.bush",
-          "tile": [
-            65,
-            36
-          ]
-        },
-        {
-          "def": "prop.tree_pine",
-          "tile": [
-            90,
-            36
-          ]
-        },
-        {
-          "def": "prop.signpost",
-          "tile": [
-            32,
-            37
-          ]
-        },
-        {
-          "def": "item.coin",
-          "tile": [
-            65,
-            39
-          ]
-        },
-        {
-          "def": "item.fish",
-          "tile": [
-            64,
-            40
-          ]
-        },
-        {
-          "def": "npc.sheep",
-          "tile": [
-            14,
-            41
-          ]
-        },
-        {
-          "def": "prop.bush",
-          "tile": [
-            62,
-            41
-          ]
-        },
-        {
-          "def": "npc.sheep",
-          "tile": [
-            16,
-            42
-          ]
-        },
-        {
-          "def": "prop.statue",
-          "tile": [
-            28,
-            42
-          ]
-        },
-        {
-          "def": "prop.well",
-          "tile": [
-            33,
-            42
-          ]
-        },
-        {
-          "def": "prop.bench",
-          "tile": [
-            35,
-            42
-          ]
-        },
-        {
-          "def": "prop.bush",
-          "tile": [
-            63,
-            42
-          ]
-        },
-        {
-          "def": "item.wool",
-          "tile": [
-            12,
-            43
-          ]
-        },
-        {
-          "def": "prop.beehive",
-          "tile": [
-            13,
-            43
-          ]
-        },
-        {
-          "def": "prop.beehive",
-          "tile": [
-            15,
-            43
-          ]
-        },
-        {
-          "def": "prop.beehive",
-          "tile": [
-            17,
-            43
-          ]
-        },
-        {
-          "def": "prop.bench",
-          "tile": [
-            27,
-            43
-          ]
-        },
-        {
-          "def": "prop.bench",
-          "tile": [
-            29,
-            43
-          ]
-        },
-        {
-          "def": "prop.bush",
-          "tile": [
-            63,
-            43
-          ]
-        },
-        {
-          "def": "item.honey",
-          "tile": [
-            14,
-            44
-          ]
-        },
-        {
-          "def": "item.honey",
           "tile": [
             18,
-            44
+            21
           ]
         },
         {
-          "def": "prop.tree_oak",
+          "def": "prop.rock",
           "tile": [
-            24,
-            44
+            11,
+            18
           ]
         },
         {
-          "def": "prop.lamp_post",
+          "def": "prop.cairn",
           "tile": [
-            26,
-            44
+            7,
+            22
           ]
         },
         {
-          "def": "item.mail",
+          "def": "prop.cairn",
           "tile": [
-            30,
-            44
+            7,
+            27
           ]
         },
         {
-          "def": "prop.lamp_post",
+          "def": "prop.cairn",
           "tile": [
-            36,
-            44
+            11,
+            22
           ]
         },
         {
-          "def": "prop.tree_oak",
+          "def": "prop.cairn",
           "tile": [
-            45,
-            44
+            6,
+            28
           ]
         },
         {
-          "def": "prop.windmill",
+          "def": "prop.rock",
           "tile": [
-            78,
-            44
+            7,
+            18
           ]
         },
         {
-          "def": "prop.sack",
+          "def": "prop.cairn",
           "tile": [
-            80,
-            44
+            11,
+            24
           ]
         },
         {
-          "def": "npc.sheep",
+          "def": "prop.boulder",
           "tile": [
-            15,
-            45
+            2,
+            28
           ]
         },
         {
-          "def": "prop.tree_oak",
+          "def": "prop.cairn",
           "tile": [
-            56,
-            45
+            5,
+            19
           ]
         },
         {
-          "def": "prop.trough",
+          "def": "prop.boulder",
           "tile": [
-            73,
-            45
+            8,
+            28
           ]
         },
         {
-          "def": "prop.crate",
+          "def": "prop.boulder",
           "tile": [
-            77,
-            45
+            10,
+            25
           ]
         },
         {
-          "def": "prop.sack",
+          "def": "prop.cairn",
           "tile": [
-            80,
-            45
+            8,
+            26
           ]
         },
         {
-          "def": "item.flower",
+          "def": "prop.boulder",
+          "tile": [
+            22,
+            1
+          ]
+        },
+        {
+          "def": "prop.boulder",
+          "tile": [
+            4,
+            1
+          ]
+        },
+        {
+          "def": "prop.boulder",
+          "tile": [
+            16,
+            23
+          ]
+        },
+        {
+          "def": "prop.boulder",
+          "tile": [
+            2,
+            11
+          ]
+        },
+        {
+          "def": "prop.boulder",
           "tile": [
             12,
-            46
+            29
           ]
         },
         {
-          "def": "prop.bush",
+          "def": "prop.boulder",
           "tile": [
-            55,
-            46
+            0,
+            9
           ]
         },
         {
-          "def": "prop.tree_oak",
-          "tile": [
-            56,
-            46
-          ]
-        },
-        {
-          "def": "prop.tree_oak",
-          "tile": [
-            57,
-            46
-          ]
-        },
-        {
-          "def": "npc.sheep",
-          "tile": [
-            72,
-            46
-          ]
-        },
-        {
-          "def": "npc.sheep",
-          "tile": [
-            74,
-            46
-          ]
-        },
-        {
-          "def": "item.wheat",
-          "tile": [
-            76,
-            46
-          ]
-        },
-        {
-          "def": "item.wheat",
-          "tile": [
-            81,
-            46
-          ]
-        },
-        {
-          "def": "prop.tree_pine",
-          "tile": [
-            85,
-            46
-          ]
-        },
-        {
-          "def": "prop.house",
-          "tile": [
-            21,
-            47
-          ]
-        },
-        {
-          "def": "npc.goat",
-          "tile": [
-            26,
-            47
-          ]
-        },
-        {
-          "def": "prop.flower_pot",
-          "tile": [
-            39,
-            47
-          ]
-        },
-        {
-          "def": "prop.house",
-          "tile": [
-            41,
-            47
-          ]
-        },
-        {
-          "def": "prop.tree_oak",
-          "tile": [
-            54,
-            47
-          ]
-        },
-        {
-          "def": "prop.bush",
-          "tile": [
-            55,
-            47
-          ]
-        },
-        {
-          "def": "prop.bush",
-          "tile": [
-            56,
-            47
-          ]
-        },
-        {
-          "def": "prop.tree_oak",
-          "tile": [
-            58,
-            47
-          ]
-        },
-        {
-          "def": "prop.rock",
-          "tile": [
-            61,
-            47
-          ]
-        },
-        {
-          "def": "npc.sheep",
-          "tile": [
-            71,
-            47
-          ]
-        },
-        {
-          "def": "npc.sheep",
-          "tile": [
-            75,
-            47
-          ]
-        },
-        {
-          "def": "prop.tree_pine",
-          "tile": [
-            84,
-            47
-          ]
-        },
-        {
-          "def": "prop.tree_oak",
-          "tile": [
-            85,
-            47
-          ]
-        },
-        {
-          "def": "npc.goat",
-          "tile": [
-            28,
-            48
-          ]
-        },
-        {
-          "def": "prop.tree_oak",
-          "tile": [
-            55,
-            48
-          ]
-        },
-        {
-          "def": "prop.tree_oak",
-          "tile": [
-            57,
-            48
-          ]
-        },
-        {
-          "def": "prop.rock",
-          "tile": [
-            58,
-            48
-          ]
-        },
-        {
-          "def": "prop.rock",
-          "tile": [
-            61,
-            48
-          ]
-        },
-        {
-          "def": "item.wool",
-          "tile": [
-            70,
-            48
-          ]
-        },
-        {
-          "def": "npc.sheep",
-          "tile": [
-            73,
-            48
-          ]
-        },
-        {
-          "def": "prop.tree_pine",
-          "tile": [
-            84,
-            48
-          ]
-        },
-        {
-          "def": "prop.rock",
-          "tile": [
-            15,
-            49
-          ]
-        },
-        {
-          "def": "item.ore",
-          "tile": [
-            27,
-            49
-          ]
-        },
-        {
-          "def": "npc.sheep",
-          "tile": [
-            72,
-            49
-          ]
-        },
-        {
-          "def": "item.wool",
-          "tile": [
-            76,
-            49
-          ]
-        },
-        {
-          "def": "prop.rock",
+          "def": "prop.boulder",
           "tile": [
             14,
-            51
+            5
+          ]
+        },
+        {
+          "def": "prop.boulder",
+          "tile": [
+            6,
+            17
+          ]
+        },
+        {
+          "def": "prop.boulder",
+          "tile": [
+            4,
+            29
+          ]
+        },
+        {
+          "def": "prop.boulder",
+          "tile": [
+            6,
+            15
+          ]
+        },
+        {
+          "def": "prop.boulder",
+          "tile": [
+            6,
+            13
+          ]
+        },
+        {
+          "def": "prop.boulder",
+          "tile": [
+            8,
+            21
+          ]
+        },
+        {
+          "def": "prop.boulder",
+          "tile": [
+            10,
+            23
           ]
         },
         {
           "def": "prop.boulder",
           "tile": [
             18,
-            51
+            3
           ]
         },
         {
-          "def": "item.ore",
+          "def": "prop.boulder",
           "tile": [
-            19,
-            51
+            20,
+            21
           ]
         },
         {
-          "def": "item.ore",
+          "def": "prop.boulder",
           "tile": [
-            72,
-            51
+            16,
+            11
           ]
         },
         {
-          "def": "prop.bush",
+          "def": "prop.boulder",
           "tile": [
-            89,
-            51
+            28,
+            3
           ]
         },
         {
-          "def": "prop.rock",
+          "def": "prop.boulder",
           "tile": [
-            9,
-            52
+            8,
+            11
           ]
         },
         {
-          "def": "prop.rock",
+          "def": "prop.boulder",
           "tile": [
-            11,
-            52
+            16,
+            17
           ]
         },
         {
-          "def": "prop.bush",
+          "def": "prop.boulder",
           "tile": [
-            86,
-            52
+            28,
+            29
           ]
         },
         {
-          "def": "prop.tree_pine",
+          "def": "prop.boulder",
           "tile": [
-            88,
-            52
+            6,
+            25
           ]
         },
         {
-          "def": "prop.tree_pine",
+          "def": "prop.boulder",
           "tile": [
-            89,
-            52
+            14,
+            15
           ]
         },
         {
-          "def": "prop.tombstone",
+          "def": "prop.log",
           "tile": [
-            69,
-            53
+            18,
+            23
           ]
         },
         {
-          "def": "prop.tombstone",
+          "def": "prop.log",
           "tile": [
-            71,
-            53
+            1,
+            0
           ]
         },
         {
-          "def": "prop.tombstone",
+          "def": "prop.log",
           "tile": [
-            77,
-            53
+            13,
+            16
           ]
         },
         {
-          "def": "prop.tree_oak",
+          "def": "prop.stump",
           "tile": [
-            86,
-            53
+            13,
+            26
           ]
         },
         {
           "def": "prop.mushroom",
           "tile": [
-            87,
-            53
+            14,
+            1
           ]
         },
         {
-          "def": "prop.tree_oak",
+          "def": "prop.log",
           "tile": [
-            89,
-            53
+            25,
+            22
           ]
         },
         {
-          "def": "prop.rock",
+          "def": "prop.log",
           "tile": [
-            7,
-            54
+            13,
+            0
           ]
         },
         {
-          "def": "prop.bush",
+          "def": "prop.mushroom",
           "tile": [
-            58,
-            54
+            24,
+            13
           ]
         },
         {
-          "def": "prop.tree_oak",
+          "def": "prop.stump",
           "tile": [
-            86,
-            54
+            11,
+            6
           ]
         },
         {
-          "def": "prop.tree_oak",
+          "def": "prop.log",
           "tile": [
-            87,
-            54
+            15,
+            20
           ]
         },
         {
-          "def": "prop.tree_pine",
+          "def": "prop.log",
           "tile": [
-            89,
-            54
+            12,
+            23
           ]
         },
         {
-          "def": "prop.tree_oak",
+          "def": "prop.stump",
           "tile": [
-            90,
-            54
+            11,
+            14
           ]
         },
         {
-          "def": "prop.bush",
+          "def": "prop.stump",
           "tile": [
-            58,
-            55
+            20,
+            13
+          ]
+        },
+        {
+          "def": "prop.stump",
+          "tile": [
+            18,
+            7
+          ]
+        },
+        {
+          "def": "prop.stump",
+          "tile": [
+            11,
+            12
+          ]
+        },
+        {
+          "def": "prop.signpost",
+          "tile": [
+            8,
+            20
+          ]
+        },
+        {
+          "def": "prop.well",
+          "tile": [
+            21,
+            5
+          ]
+        },
+        {
+          "def": "prop.campfire",
+          "tile": [
+            11,
+            15
+          ]
+        },
+        {
+          "def": "prop.woodpile",
+          "tile": [
+            12,
+            15
+          ]
+        },
+        {
+          "def": "npc.sheep",
+          "tile": [
+            2,
+            17
+          ]
+        },
+        {
+          "def": "npc.sheep",
+          "tile": [
+            17,
+            0
+          ]
+        },
+        {
+          "def": "npc.goat",
+          "tile": [
+            26,
+            5
+          ]
+        },
+        {
+          "def": "npc.sheep",
+          "tile": [
+            11,
+            0
+          ]
+        },
+        {
+          "def": "npc.sheep",
+          "tile": [
+            8,
+            15
+          ]
+        },
+        {
+          "def": "npc.sheep",
+          "tile": [
+            13,
+            8
+          ]
+        },
+        {
+          "def": "npc.sheep",
+          "tile": [
+            18,
+            13
+          ]
+        },
+        {
+          "def": "npc.sheep",
+          "tile": [
+            29,
+            0
+          ]
+        },
+        {
+          "def": "npc.goat",
+          "tile": [
+            26,
+            3
+          ]
+        },
+        {
+          "def": "npc.arne",
+          "tile": [
+            22,
+            6
+          ]
+        },
+        {
+          "def": "item.sword",
+          "tile": [
+            14,
+            21
           ]
         },
         {
           "def": "item.apple",
           "tile": [
-            86,
-            55
+            5,
+            12
           ]
         },
         {
-          "def": "prop.bush",
+          "def": "item.mail",
           "tile": [
-            44,
-            56
+            26,
+            14
           ]
         },
         {
-          "def": "prop.tombstone",
+          "def": "item.berries",
           "tile": [
-            69,
-            56
+            8,
+            16
           ]
         },
         {
-          "def": "prop.tombstone",
+          "def": "item.firewood",
           "tile": [
-            71,
-            56
-          ]
-        },
-        {
-          "def": "prop.tombstone",
-          "tile": [
-            75,
-            56
-          ]
-        },
-        {
-          "def": "prop.tombstone",
-          "tile": [
-            77,
-            56
-          ]
-        },
-        {
-          "def": "item.coin",
-          "tile": [
-            78,
-            56
-          ]
-        },
-        {
-          "def": "prop.tree_oak",
-          "tile": [
-            88,
-            56
-          ]
-        },
-        {
-          "def": "prop.tree_oak",
-          "tile": [
-            39,
-            57
-          ]
-        },
-        {
-          "def": "prop.tree_pine",
-          "tile": [
-            43,
-            57
-          ]
-        },
-        {
-          "def": "prop.tree_oak",
-          "tile": [
-            45,
-            57
-          ]
-        },
-        {
-          "def": "prop.bush",
-          "tile": [
-            65,
-            57
-          ]
-        },
-        {
-          "def": "prop.tree_oak",
-          "tile": [
-            40,
-            58
-          ]
-        },
-        {
-          "def": "prop.bush",
-          "tile": [
-            43,
-            58
-          ]
-        },
-        {
-          "def": "prop.tree_oak",
-          "tile": [
-            44,
-            58
-          ]
-        },
-        {
-          "def": "prop.tree_pine",
-          "tile": [
-            46,
-            58
-          ]
-        },
-        {
-          "def": "prop.tree_pine",
-          "tile": [
-            37,
-            59
-          ]
-        },
-        {
-          "def": "prop.tree_oak",
-          "tile": [
-            40,
-            59
-          ]
-        },
-        {
-          "def": "prop.tree_pine",
-          "tile": [
-            41,
-            59
-          ]
-        },
-        {
-          "def": "prop.tree_oak",
-          "tile": [
-            44,
-            59
+            12,
+            13
           ]
         },
         {
           "def": "item.ore",
           "tile": [
-            67,
-            59
-          ]
-        },
-        {
-          "def": "prop.tombstone",
-          "tile": [
-            69,
-            59
-          ]
-        },
-        {
-          "def": "prop.tombstone",
-          "tile": [
-            75,
-            59
-          ]
-        },
-        {
-          "def": "prop.tombstone",
-          "tile": [
-            77,
-            59
-          ]
-        },
-        {
-          "def": "prop.tree_oak",
-          "tile": [
-            38,
-            60
+            6,
+            22
           ]
         },
         {
           "def": "item.wheat",
           "tile": [
-            39,
-            60
-          ]
-        },
-        {
-          "def": "item.apple",
-          "tile": [
-            40,
-            60
+            22,
+            19
           ]
         },
         {
           "def": "item.coin",
           "tile": [
-            73,
-            60
-          ]
-        },
-        {
-          "def": "prop.bush",
-          "tile": [
-            88,
-            60
-          ]
-        },
-        {
-          "def": "prop.scarecrow",
-          "tile": [
-            40,
-            61
-          ]
-        },
-        {
-          "def": "prop.tree_dead",
-          "tile": [
-            78,
-            61
-          ]
-        },
-        {
-          "def": "prop.tree_pine",
-          "tile": [
-            85,
-            61
-          ]
-        },
-        {
-          "def": "prop.tree_oak",
-          "tile": [
-            86,
-            61
-          ]
-        },
-        {
-          "def": "prop.tree_pine",
-          "tile": [
-            87,
-            61
-          ]
-        },
-        {
-          "def": "prop.tree_oak",
-          "tile": [
-            88,
-            61
-          ]
-        },
-        {
-          "def": "item.wheat",
-          "tile": [
-            41,
-            62
-          ]
-        },
-        {
-          "def": "prop.rock",
-          "tile": [
-            64,
-            62
-          ]
-        },
-        {
-          "def": "prop.bench",
-          "tile": [
-            69,
-            62
-          ]
-        },
-        {
-          "def": "item.flower",
-          "tile": [
-            37,
-            63
-          ]
-        },
-        {
-          "def": "prop.tree_dead",
-          "tile": [
-            41,
-            63
-          ]
-        },
-        {
-          "def": "prop.tree_pine",
-          "tile": [
-            42,
-            63
-          ]
-        },
-        {
-          "def": "prop.tree_oak",
-          "tile": [
-            43,
-            63
-          ]
-        },
-        {
-          "def": "prop.bush",
-          "tile": [
-            44,
-            63
-          ]
-        },
-        {
-          "def": "prop.rock",
-          "tile": [
-            65,
-            63
-          ]
-        },
-        {
-          "def": "prop.bush",
-          "tile": [
-            87,
-            63
-          ]
-        },
-        {
-          "def": "prop.tree_oak",
-          "tile": [
-            42,
-            64
-          ]
-        },
-        {
-          "def": "prop.bush",
-          "tile": [
-            43,
-            64
-          ]
-        },
-        {
-          "def": "prop.tree_oak",
-          "tile": [
-            44,
-            64
-          ]
-        },
-        {
-          "def": "prop.tree_pine",
-          "tile": [
-            45,
-            64
-          ]
-        },
-        {
-          "def": "prop.tree_pine",
-          "tile": [
-            53,
-            64
-          ]
-        },
-        {
-          "def": "prop.tree_pine",
-          "tile": [
-            54,
-            64
-          ]
-        },
-        {
-          "def": "prop.rock",
-          "tile": [
-            7,
-            65
-          ]
-        },
-        {
-          "def": "prop.rock",
-          "tile": [
-            8,
-            65
-          ]
-        },
-        {
-          "def": "prop.rock",
-          "tile": [
-            24,
-            65
-          ]
-        },
-        {
-          "def": "prop.bush",
-          "tile": [
-            41,
-            65
-          ]
-        },
-        {
-          "def": "prop.tree_oak",
-          "tile": [
-            42,
-            65
-          ]
-        },
-        {
-          "def": "prop.tree_oak",
-          "tile": [
-            46,
-            65
-          ]
-        },
-        {
-          "def": "prop.tree_oak",
-          "tile": [
-            47,
-            65
-          ]
-        },
-        {
-          "def": "prop.bush",
-          "tile": [
-            49,
-            65
-          ]
-        },
-        {
-          "def": "prop.tree_oak",
-          "tile": [
-            52,
-            65
-          ]
-        },
-        {
-          "def": "prop.tree_oak",
-          "tile": [
-            54,
-            65
-          ]
-        },
-        {
-          "def": "prop.rock",
-          "tile": [
-            63,
-            65
-          ]
-        },
-        {
-          "def": "prop.rock",
-          "tile": [
-            23,
-            66
-          ]
-        },
-        {
-          "def": "prop.tree_oak",
-          "tile": [
-            43,
-            66
-          ]
-        },
-        {
-          "def": "item.apple",
-          "tile": [
-            47,
-            66
-          ]
-        },
-        {
-          "def": "prop.rock",
-          "tile": [
-            64,
-            66
-          ]
-        },
-        {
-          "def": "prop.lamp_post",
-          "tile": [
-            72,
-            66
-          ]
-        },
-        {
-          "def": "prop.rock",
-          "tile": [
             10,
-            67
-          ]
-        },
-        {
-          "def": "prop.tree_oak",
-          "tile": [
-            42,
-            67
-          ]
-        },
-        {
-          "def": "prop.tree_oak",
-          "tile": [
-            43,
-            67
-          ]
-        },
-        {
-          "def": "prop.tree_oak",
-          "tile": [
-            49,
-            67
-          ]
-        },
-        {
-          "def": "prop.tree_pine",
-          "tile": [
-            53,
-            67
-          ]
-        },
-        {
-          "def": "prop.rock",
-          "tile": [
-            8,
-            68
-          ]
-        },
-        {
-          "def": "prop.rock",
-          "tile": [
-            23,
-            68
-          ]
-        },
-        {
-          "def": "prop.tree_oak",
-          "tile": [
-            44,
-            68
-          ]
-        },
-        {
-          "def": "prop.bush",
-          "tile": [
-            48,
-            68
-          ]
-        },
-        {
-          "def": "prop.tree_pine",
-          "tile": [
-            49,
-            68
-          ]
-        },
-        {
-          "def": "prop.tree_pine",
-          "tile": [
-            49,
-            69
-          ]
-        },
-        {
-          "def": "prop.bush",
-          "tile": [
-            52,
-            69
-          ]
-        },
-        {
-          "def": "prop.bush",
-          "tile": [
-            52,
-            70
+            20
           ]
         }
       ]

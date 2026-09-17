@@ -20,6 +20,10 @@ PALETTE = {
     "BT":  ((0x7d, 0x51, 0x2f, 255), "boots"),
     "BTS": ((0x55, 0x34, 0x1d, 255), "boots shade"),
     "EY":  ((0x24, 0x1a, 0x2e, 255), "eye"),
+    "EW":  ((0xf4, 0xef, 0xe4, 255), "eye white"),
+    "HRD": ((0x3f, 0x27, 0x18, 255), "hair dark"),
+    "PNL": ((0x52, 0x76, 0xb0, 255), "pants light"),
+    "BTL": ((0x9a, 0x68, 0x40, 255), "boots light"),
     "SH":  ((0x24, 0x1a, 0x2e, 90),  "ground shadow"),
     # scenery
     "GR":  ((0x4e, 0x7a, 0x3a, 255), "grass"),
@@ -97,6 +101,38 @@ def resolve(variant="hero"):
     out = {k: rgba for k, (rgba, _n) in PALETTE.items()}
     out.update(VARIANTS[variant])
     return out
+
+
+def upscale(c, factor=2):
+    """Blow a canvas up by a whole factor, pixel for pixel.
+
+    This is a migration crutch, not a change of resolution: the art gains no
+    detail, it only gets blockier. Anything still drawn through here is waiting
+    to be redrawn at the new scale, which is why it is explicit at each call
+    site rather than applied quietly to everything.
+    """
+    out = Canvas(c.w * factor, c.h * factor)
+    for y in range(c.h):
+        for x in range(c.w):
+            k = c.px[y][x]
+            if k is None:
+                continue
+            for dy in range(factor):
+                for dx in range(factor):
+                    out.px[y * factor + dy][x * factor + dx] = k
+    return out
+
+
+def scatter(seed):
+    """A tiny deterministic generator, so texture can be dense without being
+    typed out pixel by pixel - and identical on every machine, every run."""
+    state = seed & 0x7fffffff
+
+    def nxt(n):
+        nonlocal state
+        state = (state * 1103515245 + 12345) & 0x7fffffff
+        return state % n
+    return nxt
 
 
 class Canvas:

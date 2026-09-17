@@ -13,8 +13,13 @@ tile. Art and collision are authored separately on purpose, so a bush can have
 a canopy wider than the tile it stands on.
 """
 
-from gen.actor import FRAME, GROUND_Y
-from gen.palette import Canvas
+from gen.palette import Canvas, scatter, upscale
+
+# Props are still drawn at the old scale and blown up in tools/build.py on the
+# way into the atlas. They are next in line to be redrawn natively at 64x64;
+# until then these stay pinned here rather than following actor.FRAME.
+FRAME = 32
+GROUND_Y = 29
 
 BASE_Y = GROUND_Y - 1          # last opaque row, matching the actor's boots
 
@@ -617,11 +622,235 @@ BIG_PROPS = {
 BIG_PROP_ORDER = list(BIG_PROPS)
 
 
+
+
+# ============================================================================
+# Redrawn at the 2x standard.
+#
+# Drawn on a 64x64 canvas with the base on NEW_BASE, the same ground line the
+# actors stand on. Everything in PROPS not listed in NATIVE is still at the old
+# 32x32 drawing scale and is blown up in build_props() on the way out, so
+# NATIVE is the honest record of what has actually been redrawn.
+# ============================================================================
+NEW = 64
+NEW_BASE = 57                  # last opaque row, matching the actor's boots
+
+
+def _form(c, key, light, dark):
+    """Give a flat mass volume.
+
+    _shade only recolours the 1px rim, which leaves a big shape reading as a
+    flat sticker. This judges each pixel by where it sits inside the shape's
+    own bounds and lights the upper-left of the mass, shading the lower-right,
+    so a canopy or a boulder turns instead of just being outlined.
+    """
+    pts = [(x, y) for y in range(c.h) for x in range(c.w) if c.px[y][x] == key]
+    if not pts:
+        return
+    xs = [q[0] for q in pts]
+    ys = [q[1] for q in pts]
+    w = max(1, max(xs) - min(xs))
+    h = max(1, max(ys) - min(ys))
+    for x, y in pts:
+        d = (x - min(xs)) / w + (y - min(ys)) / h
+        if d < 0.62:
+            c.set(x, y, light)
+        elif d > 1.34:
+            c.set(x, y, dark)
+
+
+def _leaves(c, x0, y0, x1, y1, seed, key, light, dark):
+    """Clumps of foliage over a mass: pairs of pixels, fixed per prop so the
+    canopy never shimmers between frames."""
+    rnd = scatter(seed)
+    for _ in range(90):
+        x = x0 + rnd(max(1, x1 - x0 - 1))
+        y = y0 + rnd(max(1, y1 - y0 - 1))
+        if c.get(x, y) != key:
+            continue
+        k = light if rnd(2) else dark
+        c.set(x, y, k)
+        c.set(x + 1, y, k)
+
+
+def bush64():
+    c = Canvas(NEW, NEW)
+    _blob(c, 33, (5, 9, 12, 15, 17, 18, 19, 19, 20, 20, 20, 20, 19, 19,
+                  18, 17, 15, 13, 10), "BU", cx=31)
+    _form(c, "BU", "BUL", "BUD")                  # volume first
+    _leaves(c, 12, 34, 50, 51, 0x81B3, "BU", "BUL", "BUD")   # then the texture
+    _shade(c, "BU", "BUL", "BUD")                 # then the rim
+    for x in (18, 25, 33, 41):                    # notch the crown into leaves
+        c.set(x, 33, None)
+        c.set(x + 1, 33, None)
+    return c.outline()
+
+
+def tree_oak64():
+    c = Canvas(NEW, NEW)
+    c.rect(27, 18, 36, NEW_BASE, "WD")            # runs up behind the crown
+    c.row(24, 39, 54, "WD")                       # roots flare into the ground
+    c.row(21, 42, NEW_BASE, "WD")
+    for y in range(34, 54, 5):                    # bark
+        c.rect(30, y, 31, y + 2, "WDD")
+    _shade(c, "WD", "WDL", "WDD")
+    _blob(c, 3, (4, 8, 12, 15, 18, 20, 21, 22, 23, 23, 24, 24, 23, 23,
+                 22, 21, 19, 17, 14, 10, 6), "BU", cx=31)
+    _form(c, "BU", "BUL", "BUD")
+    _leaves(c, 9, 4, 54, 23, 0x4F21, "BU", "BUL", "BUD")
+    _shade(c, "BU", "BUL", "BUD")
+    for x, y in ((17, 14), (46, 17), (25, 5), (39, 21), (30, 10)):
+        c.set(x, y, None)                         # sky through the leaves
+        c.set(x + 1, y, None)
+    return c.outline()
+
+
+def tree_pine64():
+    c = Canvas(NEW, NEW)
+    c.rect(29, 44, 34, NEW_BASE, "WD")
+    _shade(c, "WD", "WDL", "WDD")
+    for y0, y1, w0, w1 in ((4, 20, 2, 11), (16, 34, 4, 16), (30, 48, 6, 21)):
+        _taper(c, y0, y1, w0, w1, "BU", cx=31)    # three overlapping skirts
+    _form(c, "BU", "BUL", "BUD")
+    _leaves(c, 12, 6, 50, 47, 0x2D77, "BU", "BUL", "BUD")
+    for y, w in ((20, 11), (34, 16), (48, 21)):   # a dark line under each skirt
+        c.row(31 - w, 32 + w, y, "BUD")
+    _shade(c, "BU", "BUL", "BUD")
+    return c.outline()
+
+
+def tree_dead64():
+    c = Canvas(NEW, NEW)
+    c.rect(27, 14, 36, NEW_BASE, "WDD")
+    c.row(24, 39, 54, "WDD")
+    c.row(21, 42, NEW_BASE, "WDD")
+    for i in range(12):                           # a branch reaching left
+        c.rect(26 - i, 28 - i, 27 - i, 29 - i, "WDD")
+    for i in range(9):                            # and one right, higher up
+        c.rect(36 + i, 24 - i, 37 + i, 25 - i, "WDD")
+    for i in range(6):
+        c.rect(36 + i, 40 - i, 37 + i, 41 - i, "WDD")
+    _shade(c, "WDD", "WD", "WDD")
+    for y in range(18, 54, 7):                    # splits in the dead wood
+        c.col(31, y, y + 2, "WDD")
+    return c.outline()
+
+
+def stump64():
+    c = Canvas(NEW, NEW)
+    c.rect(20, 40, 43, NEW_BASE, "WD")            # the bole
+    for x in range(22, 44, 5):                    # bark grooves down the sides
+        c.col(x, 44, 56, "WDD")
+    _shade(c, "WD", "WDL", "WDD")
+    _blob(c, 34, (8, 10, 11, 12, 12, 11, 10, 8), "WDL", cx=31)   # the cut face
+    _blob(c, 36, (6, 7, 8, 8, 7, 5), "WD", cx=31)                # growth rings
+    _blob(c, 38, (3, 4, 4, 3), "WDL", cx=31)
+    c.set(31, 39, "WDD")
+    c.set(32, 40, "WDD")
+    return c.outline()
+
+
+def log64():
+    c = Canvas(NEW, NEW)
+    c.rect(9, 41, 55, 55, "WD")                   # the barrel of the trunk
+    c.row(11, 53, 40, "WD")                       # rounded top and bottom
+    c.row(11, 53, 56, "WD")
+    c.row(10, 54, 41, "WDL")                      # lit along the upper curve
+    c.row(11, 53, 40, "WDL")
+    c.row(10, 54, 55, "WDD")                      # shaded underneath
+    c.row(11, 53, 56, "WDD")
+    for x in range(22, 50, 9):                    # bark grain follows the curve
+        c.rect(x, 46, x + 4, 47, "WDD")
+        c.rect(x + 3, 50, x + 7, 51, "WDD")
+    _blob(c, 40, (8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8), "WDD",
+          cx=13)                                  # the sawn end, facing us
+    _blob(c, 42, (6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6), "WDL", cx=13)
+    _blob(c, 45, (3, 3, 3, 3, 3, 3, 3), "WD", cx=13)
+    c.set(13, 48, "WDD")
+    return c.outline()
+
+
+def boulder64():
+    c = Canvas(NEW, NEW)
+    _blob(c, 22, (7, 13, 17, 20, 21, 22, 22, 23, 23, 23, 23, 23, 23,
+                  22, 22, 21, 20, 18, 16), "ST", cx=31)
+    _form(c, "ST", "STL", "STD")
+    _shade(c, "ST", "STL", "STD")
+    for x, y in ((30, 33), (34, 38), (25, 42), (41, 31)):
+        c.rect(x, y, x + 3, y + 1, "STD")         # cracks, inside the mass
+    for x, y in ((22, 30), (27, 27), (36, 29)):
+        c.rect(x, y, x + 4, y + 1, "STL")         # a lit facet up top
+    return c.outline()
+
+
+def rock64():
+    c = Canvas(NEW, NEW)
+    _blob(c, 38, (5, 9, 12, 13, 14, 14, 14, 13, 12, 10), "ST", cx=31)
+    _form(c, "ST", "STL", "STD")
+    _shade(c, "ST", "STL", "STD")
+    c.rect(29, 44, 32, 45, "STD")                 # one crack
+    c.rect(25, 41, 28, 42, "STL")
+    return c.outline()
+
+
+def cairn64():
+    c = Canvas(NEW, NEW)
+    for y0, widths in ((46, (14, 16, 16, 15, 13)),
+                       (37, (10, 12, 12, 11, 9)),
+                       (29, (7, 9, 9, 8, 6)),
+                       (22, (4, 6, 6, 5, 4))):
+        _blob(c, y0, widths, "ST", cx=31)         # rounded stones, not blocks
+    _form(c, "ST", "STL", "STD")
+    _shade(c, "ST", "STL", "STD")
+    return c.outline()
+
+
+def mushroom64():
+    c = Canvas(NEW, NEW)
+    c.rect(28, 38, 35, NEW_BASE, "CL")            # stem
+    c.row(25, 38, NEW_BASE, "CL")                 # flaring into the leaf litter
+    c.row(24, 39, 56, "CL")
+    _shade(c, "CL", "CL", "CLD")
+    _blob(c, 28, (4, 8, 11, 13, 14, 14, 14, 13, 11, 8), "RF", cx=31)
+    _form(c, "RF", "RFL", "RFD")
+    _shade(c, "RF", "RFL", "RFD")
+    for x, y in ((22, 34), (39, 32), (31, 29), (26, 31), (36, 36)):
+        c.rect(x, y, x + 2, y + 1, "CL")          # spots
+    c.row(21, 42, 38, "CLD")                      # the gills under the cap
+    return c.outline()
+
+
+NATIVE = {
+    "prop.bush": bush64,
+    "prop.tree_oak": tree_oak64,
+    "prop.tree_pine": tree_pine64,
+    "prop.tree_dead": tree_dead64,
+    "prop.stump": stump64,
+    "prop.log": log64,
+    "prop.boulder": boulder64,
+    "prop.rock": rock64,
+    "prop.cairn": cairn64,
+    "prop.mushroom": mushroom64,
+}
+
+
 def build_props():
-    """[(id, Canvas), ...] in a stable order - the order is the atlas index."""
-    return [(pid, PROPS[pid]()) for pid in PROP_ORDER]
+    """[(id, Canvas), ...] in a stable order - the order is the atlas index.
+
+    Redrawn props come out at 64x64 as drawn; the rest are still at 32x32 and
+    are blown up here, so every entry leaves at the 2x standard whether or not
+    it has been redrawn yet.
+    """
+    out = []
+    for pid in PROP_ORDER:
+        if pid in NATIVE:
+            out.append((pid, NATIVE[pid]()))
+        else:
+            out.append((pid, upscale(PROPS[pid]())))
+    return out
 
 
 def build_big_props():
-    """The 48x48 structures, same contract, their own atlas."""
-    return [(pid, BIG_PROPS[pid]()) for pid in BIG_PROP_ORDER]
+    """The structures, same contract, their own atlas. Still at the old drawing
+    scale, so blown up to the 2x standard on the way out."""
+    return [(pid, upscale(BIG_PROPS[pid]())) for pid in BIG_PROP_ORDER]
