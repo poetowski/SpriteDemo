@@ -49,7 +49,7 @@ The rule: `tools/` and `content/` are truth. Everything in `build/` and
 content/*.json  +  tools/gen/*.py
         │  generate
 build/atlas/*.png  ·  build/manifest.json  ·  build/aseprite/*.aseprite
-        │  validate   ← 21 gates, all must pass
+        │  validate   ← 26 gates, all must pass
 game/art-embed.js  →  game/index.html + main.js  →  game/page.html
 ```
 
@@ -77,6 +77,7 @@ failure points at an authored file, never at generated output:
 | `map-overlap` | two solid things claiming the same tile |
 | `map-spawn` | a spawn in water, or inside a wall |
 | `map-exit` | a way to another map that lands nowhere real, or lands on the way back |
+| `actor-hostile` | a creature that attacks with a number missing, or that would drop the chase as it started |
 | `dialogue-exists` | an NPC pointing at dialogue that does not exist |
 | `dialogue-shape` | a conversation with no start, or a node that says nothing |
 | `dialogue-links` | a reply pointing at a node that is not there, or writing nobody can reach |

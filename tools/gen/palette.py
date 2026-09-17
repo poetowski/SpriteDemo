@@ -101,6 +101,17 @@ VARIANTS = {
         "AFS": (0x4c, 0x38, 0x22, 255),
         "AH":  (0x39, 0x2c, 0x22, 255),
     },
+    "boar": {
+        # Dark all through, so it reads as a shape coming at you through trees
+        # rather than as livestock. The tusks keep the default ivory: they are
+        # the one bright thing on it, and the only warning you get.
+        "AB":  (0x4a, 0x3a, 0x2e, 255),
+        "ABS": (0x33, 0x27, 0x1f, 255),
+        "ABL": (0x63, 0x4f, 0x3e, 255),
+        "AF":  (0x2e, 0x24, 0x1d, 255),
+        "AFS": (0x20, 0x19, 0x14, 255),
+        "AH":  (0x1d, 0x17, 0x12, 255),
+    },
 }
 
 

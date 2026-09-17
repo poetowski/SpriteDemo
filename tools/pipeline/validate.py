@@ -87,6 +87,31 @@ def run(content, man, tile_canvases=None):
         if len(anchors) != 1:
             _fail("actor-anchor",
                   f"{cid}: frames disagree on the anchor: {sorted(anchors)}")
+    # A hostile actor runs at the player and hurts them, so every number that
+    # decides how it feels is required and has to be sane. A "sight" larger
+    # than "lose" would make it give up the instant it noticed you, and a
+    # "reach" it cannot close would make it harmless while looking dangerous -
+    # both read as the boar being broken rather than as tuning.
+    for cid, defn in content["actors"].items():
+        h = defn.get("hostile")
+        if not h:
+            continue
+        for field in ("sight", "lose", "charge_speed", "damage", "reach",
+                      "cooldown_ms", "leash"):
+            v = h.get(field)
+            if not isinstance(v, (int, float)) or v <= 0:
+                _fail("actor-hostile", f"{defn['_file']}: hostile.{field} must "
+                                       f"be a positive number, not {v!r}")
+        if h["lose"] < h["sight"]:
+            _fail("actor-hostile", f"{defn['_file']}: hostile.lose ({h['lose']}) "
+                                   f"is inside hostile.sight ({h['sight']}), so "
+                                   f"it would drop the chase as it started it")
+        if not defn.get("wander"):
+            _fail("actor-hostile", f"{defn['_file']}: a hostile actor needs "
+                                   f"\"wander\" too - chasing is a mode it "
+                                   f"drops into, and it has to have something "
+                                   f"to drop back to")
+    passed.append("actor-hostile")
     passed.append("actor-states")
     passed.append("actor-complete")
     passed.append("actor-anchor")

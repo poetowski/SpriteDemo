@@ -314,6 +314,77 @@ const BOOTED = () => !!(window.game && window.game.scene
     }
   }
 
+  if (flag('--boar')) {
+    // Stand in front of a hostile and do nothing. Two things have to be true
+    // and neither is obvious from the code: it has to notice and close the
+    // distance, and reaching the hero has to actually cost hp. A creature that
+    // charges and cannot land a hit looks far worse than one that never moves.
+    const before = await page.evaluate(() => {
+      const s = window.game.scene.scenes[0];
+      const w = s.wanderers.find((a) => a.def.hostile);
+      if (!w) return null;
+      const p = s.tileCentre(...w.tile);
+      // West of it, not east: a charging boar shoves the hero, and east of
+      // this one is the seam - the test kept being pushed onto the next map.
+      s.hero.setPosition(p.x - s.ts * 2.5, p.y);       // just inside its sight
+      s.cameras.main.centerOn(s.hero.x, s.hero.y);
+      s.invuln = 0;
+      return { def: w.def.sprite, hp: s.hp,
+               gap: Phaser.Math.Distance.Between(s.hero.x, s.hero.y,
+                                                 w.sprite.x, w.sprite.y) };
+    });
+    if (before) {
+      await page.waitForTimeout(2600);
+      const after = await page.evaluate(() => {
+        const s = window.game.scene.scenes[0];
+        const w = s.wanderers.find((a) => a.def.hostile);
+        if (!w) return { gone: s.mapId };               // shoved off the map
+        return { hp: s.hp, chasing: !!w.chasing,
+                 gap: Phaser.Math.Distance.Between(s.hero.x, s.hero.y,
+                                                   w.sprite.x, w.sprite.y) };
+      });
+      checks.push([`the ${before.def.split('.')[1]} noticed and closed in`,
+        !after.gone && after.chasing && after.gap < before.gap,
+        after.gone ? `hero ended up on ${after.gone}`
+                   : `${before.gap.toFixed(0)}px -> ${after.gap.toFixed(0)}px`]);
+      checks.push(['and goring the hero costs hp',
+        !after.gone && after.hp < before.hp,
+        after.gone ? 'n/a' : `${before.hp} -> ${after.hp}`]);
+
+      // Now walk away. It must break off rather than follow across the map,
+      // go home at its own pace, and end up wandering again - a hostile that
+      // gives up but then stands where it stopped is a statue, not an animal.
+      // Right out of its world, not just to the map's spawn: the spawn is
+      // inside this one's "lose" radius, so it kept chasing until the leash
+      // stopped it and the check was really timing the walk back from there.
+      await page.evaluate(() => {
+        const s = window.game.scene.scenes[0];
+        const w = s.wanderers.find((a) => a.def.hostile);
+        const far = s.tileCentre(w.home[0] < 10 ? s.map.size[0] - 2 : 1,
+                                 w.home[1] < 10 ? s.map.size[1] - 2 : 1);
+        s.hero.body.reset(far.x, far.y);
+      });
+      await page.waitForTimeout(7000);   // it walks home at its own slow speed
+      const home = await page.evaluate(() => {
+        const s = window.game.scene.scenes[0];
+        const w = s.wanderers.find((a) => a.def.hostile);
+        if (!w) return { gone: s.mapId };
+        const h = s.tileCentre(...w.home);
+        return { chasing: !!w.chasing, returning: !!w.returning, state: w.state,
+                 fromHome: Phaser.Math.Distance.Between(w.sprite.x, w.sprite.y,
+                                                        h.x, h.y) };
+      });
+      checks.push(['it breaks off rather than following',
+        !home.gone && !home.chasing, home.gone ? 'n/a' : `chasing=${home.chasing}`]);
+      checks.push(['and settles back to wandering, not frozen',
+        !home.gone && !home.returning && !home.chasing,
+        home.gone ? 'n/a'
+                  : `${home.fromHome.toFixed(0)}px from home, ${home.state}`]);
+    } else {
+      checks.push(['a hostile exists to be charged by', false, 'none on this map']);
+    }
+  }
+
   let shotTaken = false;
   if (SLASH) {
     await page.keyboard.press('Space');

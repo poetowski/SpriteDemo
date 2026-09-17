@@ -1,0 +1,35 @@
+{
+  "id": "npc.boar",
+  "sprite": "actor.boar",
+  "rig": "quadruped",
+  "name": "Boar",
+  "states": [
+    "walk",
+    "idle",
+    "graze"
+  ],
+  "speed": 18,
+  "blocks": true,
+  "facing": "down",
+  "wander": {
+    "radius": 3,
+    "idle_ms": [
+      700,
+      1800
+    ],
+    "graze_ms": [
+      1800,
+      4000
+    ],
+    "graze_chance": 0.5
+  },
+  "hostile": {
+    "sight": 68,
+    "lose": 132,
+    "charge_speed": 62,
+    "damage": 4,
+    "reach": 18,
+    "cooldown_ms": 1100,
+    "leash": 80
+  }
+}

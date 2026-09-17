@@ -176,6 +176,7 @@ class World extends Phaser.Scene {
     this.flags = new Set();               // what conversations remember
     this.busy = false;                    // a one-shot animation owns the hero
     this.pending = null;                  // the pickup a gather will collect
+    this.invuln = 0;                      // ms of grace after taking a hit
 
     // --- what came across the map edge with us -----------------------------
     // Crossing restarts the scene, which would otherwise hand the player a
@@ -415,9 +416,118 @@ class World extends Phaser.Scene {
     w.timer = rand(cfg.idle_ms);
   }
 
+  /** A hostile animal, while it can see you. Returns false when it cannot, and
+   *  the caller falls back to ordinary wandering - so "hostile" is a mode a
+   *  wanderer drops into and out of, not a second kind of creature with its
+   *  own movement code to keep in step with this one.
+   *
+   *  It chases by heading straight at the hero rather than tile by tile: a
+   *  charge that stopped to line itself up with the grid would be a patrol.
+   *  Losing sight is a wider radius than gaining it, or the boar flickers in
+   *  and out of the chase at exactly the distance you stand at. */
+  /** Set an animal's velocity without letting it walk into a wall. Anything
+   *  that moves freely rather than tile by tile needs this: its body is
+   *  immovable, so the physics will not stop it, and the first thing a player
+   *  would see of the whole chase is a boar coming out of the rock. Each axis
+   *  is tested on its own, which also makes it slide along an obstacle rather
+   *  than sticking to it. */
+  driveAvoidingWalls(w, vx, vy) {
+    const look = this.ts * 0.6;
+    const solid = (px, py) => !this.isWalkable(Math.floor(px / this.ts),
+                                               Math.floor(py / this.ts));
+    if (vx && solid(w.sprite.x + Math.sign(vx) * look, w.sprite.y)) vx = 0;
+    if (vy && solid(w.sprite.x, w.sprite.y + Math.sign(vy) * look)) vy = 0;
+    w.sprite.body.setVelocity(vx, vy);
+  }
+
+  stepHostile(w, dt) {
+    const cfg = w.def.hostile;
+    if (!cfg) return false;
+    const home = this.tileCentre(w.home[0], w.home[1]);
+
+    // Going home. It has broken off and walks back at its own speed, not the
+    // charge: the whole point of a leash is that you can get away, and a boar
+    // that jogged home at charging speed would still be on top of you. It does
+    // not notice the hero again until it is back, so leading it away and then
+    // standing next to it cannot keep it out indefinitely.
+    if (w.returning) {
+      const hx = home.x - w.sprite.x;
+      const hy = home.y - w.sprite.y;
+      const d = Math.hypot(hx, hy);
+      // Home, or as near as it is going to get. The second case matters: it
+      // walks back in a straight line and can wedge on a trunk it went round
+      // on the way out, and an animal pushing into a tree for ever is worse
+      // than one that settles for where it stands.
+      if (d < (w.homeBest === undefined ? Infinity : w.homeBest) - 1) {
+        w.homeBest = d;
+        w.stuck = 0;
+      } else {
+        w.stuck = (w.stuck || 0) + dt;
+      }
+      if (d <= Math.max(2, (w.def.speed * dt) / 1000) || w.stuck > 2500) {
+        const at = w.stuck > 2500 ? { x: w.sprite.x, y: w.sprite.y } : home;
+        w.sprite.body.reset(at.x, at.y);
+        w.returning = false;
+        w.homeBest = undefined;
+        w.stuck = 0;
+        w.tile = [Math.floor(at.x / this.ts), Math.floor(at.y / this.ts)];
+        this.pickWanderAction(w);
+        return false;                                 // back to plain wandering
+      }
+      w.state = 'walk';
+      w.facing = Math.abs(hx) > Math.abs(hy)
+        ? (hx < 0 ? 'left' : 'right') : (hy < 0 ? 'up' : 'down');
+      this.driveAvoidingWalls(w, (hx / d) * w.def.speed, (hy / d) * w.def.speed);
+      return true;
+    }
+
+    const dx = this.hero.x - w.sprite.x;
+    const dy = this.hero.y - w.sprite.y;
+    const dist = Math.hypot(dx, dy);
+    // It hunts its own patch, not the whole map: once it has been drawn
+    // `leash` away from where it lives it breaks off, whatever it can see.
+    const strayed = Math.hypot(w.sprite.x - home.x, w.sprite.y - home.y) > cfg.leash;
+    const sees = dist <= (w.chasing ? cfg.lose : cfg.sight) && this.invuln <= 1200;
+    if (!sees || strayed) {
+      if (!w.chasing) return false;                   // it was only ever grazing
+      w.chasing = false;
+      w.returning = true;
+      w.homeBest = undefined;
+      w.stuck = 0;
+      return true;                                    // walks home from here
+    }
+    w.chasing = true;
+    w.state = 'walk';
+    w.facing = Math.abs(dx) > Math.abs(dy)
+      ? (dx < 0 ? 'left' : 'right') : (dy < 0 ? 'up' : 'down');
+    if (dist > 0.5) {
+      this.driveAvoidingWalls(w, (dx / dist) * cfg.charge_speed,
+                              (dy / dist) * cfg.charge_speed);
+    }
+    // "reach" is centre to centre. Both bodies are solid, so the collider
+    // holds those centres about 14px apart side on - a reach below that can
+    // never land a hit however close the animal gets, which is the one number
+    // here that is easy to set to something quietly impossible.
+    w.gore = Math.max(0, (w.gore || 0) - dt);
+    if (dist <= cfg.reach && w.gore <= 0) {
+      w.gore = cfg.cooldown_ms;
+      this.hurt(cfg.damage);
+    }
+    return true;
+  }
+
   stepWanderers(dt) {
+    this.invuln = Math.max(0, (this.invuln || 0) - dt);
     for (const w of this.wanderers) {
       const body = w.sprite.body;
+      if (this.stepHostile(w, dt)) {
+        const want = `${w.def.sprite}/walk/${w.facing}`;
+        if (!w.sprite.anims.currentAnim || w.sprite.anims.currentAnim.key !== want) {
+          w.sprite.play(want, true);
+        }
+        w.sprite.setDepth(w.sprite.y + 0.5);
+        continue;
+      }
       if (w.state === 'walk') {
         const dx = w.goalX - w.sprite.x;
         const dy = w.goalY - w.sprite.y;
@@ -700,13 +810,20 @@ class World extends Phaser.Scene {
     return Math.max(1, Math.round(base * (0.8 + Math.random() * 0.4)));
   }
 
-  /** The number drifts up off the thing that was hit and fades, with a few
-   *  sparks thrown out round it. Digits are sprites from the fx atlas, so
-   *  they are pixels of the same size as everything else, not blurred text. */
+  /** A hit the hero landed: roll it, take the xp, and show it. */
   floatDamage(target) {
     const n = this.rollDamage();
     this.addXp(n);
     this.hits = (this.hits || 0) + 1;
+    this.showDamage(target, n);
+  }
+
+  /** The number drifts up off the thing that was hit and fades, with a few
+   *  sparks thrown out round it. Digits are sprites from the fx atlas, so
+   *  they are pixels of the same size as everything else, not blurred text.
+   *  Separate from the roll above because damage now goes both ways, and a
+   *  boar goring the hero should not award the hero xp for being gored. */
+  showDamage(target, n) {
     const scale = 2;                                  // 3x5 glyphs are too shy at 1x
     const advance = 5 * scale;                        // outlined glyph is 5 wide
     const digits = [...String(n)];
@@ -728,6 +845,36 @@ class World extends Phaser.Scene {
                         y: y0 + 4 + Math.sin(a) * r - 6, alpha: 0, scale: 0.5,
                         duration: 320 + Math.random() * 200, ease: 'Quad.out',
                         onComplete: () => s.destroy() });
+    }
+  }
+
+  /** Damage coming the other way. Armour is subtracted but never all of it:
+   *  a hit that lands should always cost something, or a well-armoured player
+   *  cannot tell whether the boar reached them. */
+  hurt(n) {
+    if (this.invuln > 0) return;
+    const taken = Math.max(1, n - this.armorWorn());
+    this.hp = Math.max(0, this.hp - taken);
+    this.invuln = 900;                     // long enough to back out of reach
+    this.showDamage(this.hero, taken);
+    this.flinch(this.hero, true);
+    this.cameras.main.shake(120, 0.006);
+    if (this.hp <= 0) this.blackOut();
+    this.pushSheet();
+  }
+
+  /** Nothing in this sandbox kills you. Running out of hp puts you back where
+   *  the map started you, whole - which keeps a wandering boar a hazard to
+   *  respect rather than a way to lose an hour of picking things up. */
+  blackOut() {
+    this.hp = this.hpMax;
+    this.invuln = 1400;
+    const back = this.map.spawn.tile;
+    const p = this.tileCentre(back[0], back[1]);
+    this.hero.body.reset(p.x, p.y);
+    this.cameras.main.flash(260, 0, 0, 0);
+    for (const w of this.wanderers) {
+      if (w.chasing) { w.chasing = false; w.returning = true; }
     }
   }
 

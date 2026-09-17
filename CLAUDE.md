@@ -39,7 +39,7 @@ node tools/shot.cjs --map    # 3. and shoot the whole world
                              # 4. publish game/page.html (below)
 ```
 
-1. **Build.** All 25 gates must pass. A gate failure names an authored file -
+1. **Build.** All 26 gates must pass. A gate failure names an authored file -
    fix that file, never the generated output. Needs Pillow.
 
 2. **Screenshot.** `tools/shot.cjs` loads `game/index.html` in a headless
@@ -62,6 +62,7 @@ node tools/shot.cjs --map    # 3. and shoot the whole world
    node tools/shot.cjs --map                # the whole world in one frame
    node tools/shot.cjs --on map.wilderness2 # start on another map, not the default
    node tools/shot.cjs --cross              # walk out of the map, check the bag arrives
+   node tools/shot.cjs --on map.wilderness3 --boar   # stand still, get charged
    ```
 
 3. **Publish.** `game/page.html` is the whole game in one file. Publish it with
@@ -197,7 +198,7 @@ tools/art.py           the art pipeline: draws everything -> assets/
 tools/build.py         the game build: assets/ + content/ -> build/ + game/
 tools/editor.py        serves the map editor in editor/
 tools/cdp.cjs          drives an installed Chrome when Playwright is absent
-tools/pipeline/        aseprite I/O, atlas packing, autotile, manifest, the 25 gates
+tools/pipeline/        aseprite I/O, atlas packing, autotile, manifest, the 26 gates
 assets/                COMMITTED art library: atlases, atlases.json, .aseprite
 build/                 DERIVED, gitignored - manifest, screenshots
 content/               AUTHORED json - actors, props, tiles, dialogue, maps
@@ -228,6 +229,43 @@ never leave the tile it spawned on. Because two immovable bodies do not push
 each other apart, solid animals also reserve the tile they are heading for, so
 a pair of sheep cannot walk into one spot and fuse. `node tools/shot.cjs
 --bump` walks the hero into one and checks it is stopped.
+
+**Something that attacks you** is the same file plus a `hostile` block, and
+chasing is a mode a wanderer drops into rather than a second kind of creature:
+
+```json
+"hostile": { "sight": 68, "lose": 132, "leash": 80, "charge_speed": 62,
+             "damage": 4, "reach": 18, "cooldown_ms": 1100 }
+```
+
+**`leash` is the one that keeps it an animal rather than a missile.** It is the
+furthest the creature will get from where it spawned; past that it breaks off
+whatever it can see, walks home *at its own `speed` rather than the charge* -
+being chased across the whole map is not a fight, it is a nuisance, and a boar
+that jogged home at charging speed would still be on top of you - and then goes
+back to wandering like any sheep. It does not notice you again until it is home,
+so you cannot lead it away and pin it. If it wedges on a tree on the way back it
+settles where it stands after a couple of seconds rather than pushing into the
+trunk for ever.
+
+`lose` is wider than `sight` on purpose: equal, and the animal flickers in and
+out of the chase at exactly the distance you happen to be standing at. **`reach`
+is centre to centre, and both bodies are solid** - the collider holds those
+centres about 14px apart side on, so a reach below that can never land a hit
+however close the animal gets. It is the one number here that is easy to set to
+something quietly impossible. A charge heads straight at the hero rather than
+tile by tile, and tests each axis against `isWalkable` first, because the body
+is immovable and nothing else would stop it coming through the rock.
+
+The `actor-hostile` gate requires every field, positive, with `lose` outside
+`sight` and a `wander` block to fall back to. `node tools/shot.cjs --on
+map.wilderness3 --boar` stands in front of one and checks all four things: it
+notices, it closes, it costs hp, and it goes home and settles.
+
+Damage to the hero goes through `hurt()`, which subtracts armour but never all
+of it, and running out of hp is not death: `blackOut()` puts you back at the
+map's spawn whole, which keeps a boar a hazard to respect rather than a way to
+lose an hour of picking things up.
 
 **An item** is a 16x16 icon function in `tools/gen/items.py` (added to
 `ITEMS`), a file in `content/items/` with `kind` `material`, `weapon` or

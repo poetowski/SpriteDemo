@@ -18,9 +18,13 @@ FACINGS = ["down", "left", "right", "up"]
 FOOT_Y = 28                    # last hoof row
 LEG_TOP = 23
 
+# Flags are read with .get, so adding one to a new species leaves the others
+# alone rather than needing a False written into every entry.
 SPECIES = {
     "sheep": {"wool": True, "horns": False, "beard": False},
     "goat": {"wool": False, "horns": True, "beard": True},
+    "boar": {"wool": False, "horns": False, "beard": False,
+             "bristles": True, "tusks": True},
 }
 
 
@@ -44,6 +48,10 @@ def _side_body(c, bob, shape):
         for x in (10, 13, 16, 19):
             c.set(x, top - 1, "ABL")
         c.set(8, top + 1, "ABL")
+    if shape.get("bristles"):                   # a raised ridge along the back,
+        for x in range(9, 21, 2):               # which is what makes a boar
+            c.set(x, top - 1, "AFS")            # read as bristling and not fat
+        c.set(21, top, "AFS")
     c.rect(6, 19 + bob, 7, 21 + bob, "ABS")     # tail
     if not shape["wool"]:
         c.rect(6, 19 + bob, 7, 20 + bob, "AF")  # goats have a thin dark tail
@@ -65,6 +73,10 @@ def _side_head(c, bob, shape, down=0):
         c.set(24, hy - 2, "HNS")
     if shape["beard"]:
         c.rect(24, hy + 6, 25, hy + 7, "AFS")
+    if shape.get("tusks"):                      # curving up clear of the muzzle
+        c.set(26, hy + 4, "HN")
+        c.set(27, hy + 3, "HN")
+        c.set(27, hy + 2, "HNS")
 
 
 def draw_side(shape, pose):
@@ -95,6 +107,9 @@ def draw_front(shape, pose):
     if shape["wool"]:
         for x in (11, 14, 17, 20):
             c.set(x, 14 + bob, "ABL")
+    if shape.get("bristles"):
+        for x in range(11, 21, 2):
+            c.set(x, 14 + bob, "AFS")
 
     hy = 18 + bob + down
     if shape["horns"]:                                  # above the head, so they
@@ -109,6 +124,11 @@ def draw_front(shape, pose):
     c.set(18, hy + 2, "OL")
     if shape["beard"]:
         c.rect(15, hy + 7, 16, hy + 8, "AFS")
+    if shape.get("tusks"):                              # one either side of the
+        c.set(13, hy + 6, "HN")                         # muzzle, seen head-on,
+        c.set(13, hy + 7, "HNS")                        # which is the view you
+        c.set(18, hy + 6, "HN")                         # get when it charges
+        c.set(18, hy + 7, "HNS")
     return c.outline()
 
 
@@ -124,6 +144,9 @@ def draw_back(shape, pose):
     if shape["wool"]:
         for x in (11, 14, 17, 20):
             c.set(x, 14 + bob, "ABL")
+    if shape.get("bristles"):
+        for x in range(11, 21, 2):
+            c.set(x, 14 + bob, "AFS")
     c.rect(15, 16 + bob, 16, 20 + bob, "ABS")           # tail
     if not shape["wool"]:
         c.rect(15, 15 + bob, 16, 19 + bob, "AF")
