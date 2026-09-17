@@ -12,7 +12,7 @@
  */
 
 const M = ART.manifest;
-const MAP_ID = 'map.riverside';
+const MAP_ID = 'map.shieling';
 const VIEW_W = 320;
 const VIEW_H = 240;
 

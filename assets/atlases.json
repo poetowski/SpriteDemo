@@ -46,8 +46,8 @@
     48
    ],
    "cols": 4,
-   "rows": 1,
-   "count": 4
+   "rows": 2,
+   "count": 5
   },
   "items": {
    "image": "atlases/items.png",
@@ -9098,6 +9098,14 @@
   "prop.windmill": {
    "atlas": "props_big",
    "index": 3,
+   "anchor": [
+    24,
+    45
+   ]
+  },
+  "prop.shed": {
+   "atlas": "props_big",
+   "index": 4,
    "anchor": [
     24,
     45

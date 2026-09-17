@@ -575,6 +575,50 @@ def windmill():
     return c.outline()
 
 
+def shed():
+    """A shieling: the hut kept up on the high ground, built out of what was
+    lying next to it. Drystone to head height, a steep plank roof above that,
+    and stones laid along the boards - which is the detail that says weather,
+    because nobody weights a roof anywhere the wind does not lift it."""
+    c = Canvas(BIG_FRAME, BIG_FRAME)
+    c.rect(7, 24, 40, BIG_BASE_Y, "ST")                 # drystone walls
+    for i, y in enumerate(range(27, BIG_BASE_Y, 4)):    # rough courses, with
+        c.row(7, 40, y, "STD")                          # the joints staggered
+        for x in range(10 + (i % 2) * 4, 40, 8):        # so no two line up
+            c.col(x, y - 3, y - 1, "STD")
+    _shade(c, "ST", "STL", "STD")
+
+    _taper(c, 8, 25, 1, 20, "WD", cx=23)                # a steep roof, laid
+    _shade(c, "WD", "WDL", "WDD")                       # over the walls so the
+    for y in range(11, 26, 3):                          # rain clears them
+        for x in range(BIG_FRAME):
+            if c.get(x, y) == "WD":
+                c.set(x, y, "WDD")                      # the boards
+    for y, x in ((13, 19), (13, 27), (17, 14), (17, 32), (21, 9), (21, 37)):
+        c.set(x, y, "STL")                              # and the stones that
+        c.set(x + 1, y, "ST")                           # hold them down
+        c.set(x, y + 1, "STD")
+
+    c.rect(19, 32, 28, BIG_BASE_Y, "STD")               # a dressed surround
+    c.row(19, 28, 32, "STL")                            # under a lit lintel
+    c.rect(20, 33, 27, BIG_BASE_Y, "WD")                # the door
+    c.col(20, 33, BIG_BASE_Y, "WDL")
+    c.col(27, 33, BIG_BASE_Y, "WDD")
+    for x in range(22, 27, 2):
+        c.col(x, 34, BIG_BASE_Y, "WDD")                 # its boards
+    c.set(25, 39, "MTL")                                # and the latch
+
+    c.rect(10, 28, 16, 34, "STD")                       # one small window,
+    c.rect(11, 29, 15, 33, "FIL")                       # lit from inside
+    c.col(13, 29, 33, "WDD")
+    c.row(11, 15, 31, "WDD")
+
+    c.rect(33, 11, 35, 21, "MT")                        # a stovepipe, standing
+    c.col(35, 11, 21, "MTD")                            # clear of the ridge
+    c.rect(32, 9, 36, 11, "MTL")
+    return c.outline()
+
+
 PROPS = {
     "prop.bush": bush,
     "prop.rock": rock,
@@ -613,6 +657,7 @@ BIG_PROPS = {
     "prop.barn": barn,
     "prop.tower": tower,
     "prop.windmill": windmill,
+    "prop.shed": shed,
 }
 BIG_PROP_ORDER = list(BIG_PROPS)
 

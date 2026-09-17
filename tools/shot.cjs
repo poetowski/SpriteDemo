@@ -99,7 +99,10 @@ const BOOTED = () => !!(window.game && window.game.scene
   const snapshot = () => page.evaluate(() => {
     const s = window.game.scene.scenes[0];
     const m = window.ART.manifest;
-    const map = m.maps['map.riverside'];
+    // The map the scene actually loaded, not a name written down here: with
+    // the id hardcoded, pointing the game at another map left these checks
+    // comparing one map's manifest against another map's scene.
+    const map = s.map;
     const cur = s.hero.anims.currentAnim ? s.hero.anims.currentAnim.key : '';
     return {
       size: map.size,
