@@ -71,12 +71,28 @@ def build_atlases(sprite_rigs, content):
         defn = content["tiles"].get(tid)
         if defn is None:
             continue                      # drawn but not defined: not shipped
-        entry = {"base": [], "masks": {}}
+        entry = {"base": [], "masks": {}, "anim": {}}
+        phases = tiles_gen.ANIMATED.get(tid, 1)
+
+        def add_frames(key, draw, entry=entry, phases=phases):
+            """The base frame, then every further phase as its own frame;
+            the engine cycles the sequence recorded under the base index."""
+            first_canvas = draw(0)
+            first = tiles.add(key, [first_canvas], (0, 0))
+            tile_canvases[key] = first_canvas
+            if phases > 1:
+                seq = [first]
+                for ph in range(1, phases):
+                    cp = draw(ph)
+                    seq.append(tiles.add(f"{key}/f{ph}", [cp], (0, 0)))
+                    tile_canvases[f"{key}/f{ph}"] = cp
+                entry["anim"][first] = seq
+            return first
+
         for v in range(tiles_gen.VARIANTS.get(tid, 1)):
             key = tid if v == 0 else f"{tid}/v{v}"
-            canvas = tiles_gen.BASE[tid](v)
-            entry["base"].append(tiles.add(key, [canvas], (0, 0)))
-            tile_canvases[key] = canvas
+            entry["base"].append(
+                add_frames(key, lambda ph, v=v: tiles_gen.frame(tid, v, ph)))
         if defn.get("blend"):
             if tid not in tiles_gen.STYLE:
                 sys.exit(f"[tile-blend] {defn['_file']}: blend is set but "
@@ -85,9 +101,8 @@ def build_atlases(sprite_rigs, content):
                 if mask == tiles_gen.FULL:
                     continue
                 key = f"{tid}/m{mask}"
-                canvas = tiles_gen.blend(tid, mask)
-                entry["masks"][mask] = tiles.add(key, [canvas], (0, 0))
-                tile_canvases[key] = canvas
+                entry["masks"][mask] = add_frames(
+                    key, lambda ph, m=mask: tiles_gen.blend(tid, m, ph))
         tile_index[tid] = entry
 
     # ART SCALE. Rigs redrawn natively at the 2x standard pass their canvases
@@ -268,8 +283,12 @@ def assemble():
              for mid, m in content["maps"].items()}
     blocking = sorted(i for tid, e in tile_index.items()
                       if not content["tiles"][tid].get("walkable", True)
-                      for i in list(e["base"]) + list(e["masks"].values()))
+                      for i in list(e["base"]) + list(e["masks"].values())
+                      + [j for seq in e["anim"].values() for j in seq])
     tileset = {"blocking": blocking,
+               "animated": {str(i): seq for e in tile_index.values()
+                            for i, seq in e["anim"].items()},
+               "anim_ms": tiles_gen.ANIM_MS,
                "variants": {tid: e["base"] for tid, e in tile_index.items()},
                "transitions": {tid: len(e["masks"]) for tid, e in tile_index.items()
                                if e["masks"]}}

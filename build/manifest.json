@@ -18,8 +18,8 @@
         32
       ],
       "cols": 16,
-      "rows": 13,
-      "count": 195
+      "rows": 19,
+      "count": 291
     },
     "props": {
       "image": "atlas/props.png",
@@ -4647,7 +4647,7 @@
         0
       ]
     },
-    "tile.water/v1": {
+    "tile.water/f1": {
       "atlas": "tiles",
       "index": 101,
       "anchor": [
@@ -4655,7 +4655,7 @@
         0
       ]
     },
-    "tile.water/m0": {
+    "tile.water/f2": {
       "atlas": "tiles",
       "index": 102,
       "anchor": [
@@ -4663,7 +4663,7 @@
         0
       ]
     },
-    "tile.water/m1": {
+    "tile.water/v1": {
       "atlas": "tiles",
       "index": 103,
       "anchor": [
@@ -4671,7 +4671,7 @@
         0
       ]
     },
-    "tile.water/m4": {
+    "tile.water/v1/f1": {
       "atlas": "tiles",
       "index": 104,
       "anchor": [
@@ -4679,7 +4679,7 @@
         0
       ]
     },
-    "tile.water/m5": {
+    "tile.water/v1/f2": {
       "atlas": "tiles",
       "index": 105,
       "anchor": [
@@ -4687,7 +4687,7 @@
         0
       ]
     },
-    "tile.water/m7": {
+    "tile.water/m0": {
       "atlas": "tiles",
       "index": 106,
       "anchor": [
@@ -4695,7 +4695,7 @@
         0
       ]
     },
-    "tile.water/m16": {
+    "tile.water/m0/f1": {
       "atlas": "tiles",
       "index": 107,
       "anchor": [
@@ -4703,7 +4703,7 @@
         0
       ]
     },
-    "tile.water/m17": {
+    "tile.water/m0/f2": {
       "atlas": "tiles",
       "index": 108,
       "anchor": [
@@ -4711,7 +4711,7 @@
         0
       ]
     },
-    "tile.water/m20": {
+    "tile.water/m1": {
       "atlas": "tiles",
       "index": 109,
       "anchor": [
@@ -4719,7 +4719,7 @@
         0
       ]
     },
-    "tile.water/m21": {
+    "tile.water/m1/f1": {
       "atlas": "tiles",
       "index": 110,
       "anchor": [
@@ -4727,7 +4727,7 @@
         0
       ]
     },
-    "tile.water/m23": {
+    "tile.water/m1/f2": {
       "atlas": "tiles",
       "index": 111,
       "anchor": [
@@ -4735,7 +4735,7 @@
         0
       ]
     },
-    "tile.water/m28": {
+    "tile.water/m4": {
       "atlas": "tiles",
       "index": 112,
       "anchor": [
@@ -4743,7 +4743,7 @@
         0
       ]
     },
-    "tile.water/m29": {
+    "tile.water/m4/f1": {
       "atlas": "tiles",
       "index": 113,
       "anchor": [
@@ -4751,7 +4751,7 @@
         0
       ]
     },
-    "tile.water/m31": {
+    "tile.water/m4/f2": {
       "atlas": "tiles",
       "index": 114,
       "anchor": [
@@ -4759,7 +4759,7 @@
         0
       ]
     },
-    "tile.water/m64": {
+    "tile.water/m5": {
       "atlas": "tiles",
       "index": 115,
       "anchor": [
@@ -4767,7 +4767,7 @@
         0
       ]
     },
-    "tile.water/m65": {
+    "tile.water/m5/f1": {
       "atlas": "tiles",
       "index": 116,
       "anchor": [
@@ -4775,7 +4775,7 @@
         0
       ]
     },
-    "tile.water/m68": {
+    "tile.water/m5/f2": {
       "atlas": "tiles",
       "index": 117,
       "anchor": [
@@ -4783,7 +4783,7 @@
         0
       ]
     },
-    "tile.water/m69": {
+    "tile.water/m7": {
       "atlas": "tiles",
       "index": 118,
       "anchor": [
@@ -4791,7 +4791,7 @@
         0
       ]
     },
-    "tile.water/m71": {
+    "tile.water/m7/f1": {
       "atlas": "tiles",
       "index": 119,
       "anchor": [
@@ -4799,7 +4799,7 @@
         0
       ]
     },
-    "tile.water/m80": {
+    "tile.water/m7/f2": {
       "atlas": "tiles",
       "index": 120,
       "anchor": [
@@ -4807,7 +4807,7 @@
         0
       ]
     },
-    "tile.water/m81": {
+    "tile.water/m16": {
       "atlas": "tiles",
       "index": 121,
       "anchor": [
@@ -4815,7 +4815,7 @@
         0
       ]
     },
-    "tile.water/m84": {
+    "tile.water/m16/f1": {
       "atlas": "tiles",
       "index": 122,
       "anchor": [
@@ -4823,7 +4823,7 @@
         0
       ]
     },
-    "tile.water/m85": {
+    "tile.water/m16/f2": {
       "atlas": "tiles",
       "index": 123,
       "anchor": [
@@ -4831,7 +4831,7 @@
         0
       ]
     },
-    "tile.water/m87": {
+    "tile.water/m17": {
       "atlas": "tiles",
       "index": 124,
       "anchor": [
@@ -4839,7 +4839,7 @@
         0
       ]
     },
-    "tile.water/m92": {
+    "tile.water/m17/f1": {
       "atlas": "tiles",
       "index": 125,
       "anchor": [
@@ -4847,7 +4847,7 @@
         0
       ]
     },
-    "tile.water/m93": {
+    "tile.water/m17/f2": {
       "atlas": "tiles",
       "index": 126,
       "anchor": [
@@ -4855,7 +4855,7 @@
         0
       ]
     },
-    "tile.water/m95": {
+    "tile.water/m20": {
       "atlas": "tiles",
       "index": 127,
       "anchor": [
@@ -4863,7 +4863,7 @@
         0
       ]
     },
-    "tile.water/m112": {
+    "tile.water/m20/f1": {
       "atlas": "tiles",
       "index": 128,
       "anchor": [
@@ -4871,7 +4871,7 @@
         0
       ]
     },
-    "tile.water/m113": {
+    "tile.water/m20/f2": {
       "atlas": "tiles",
       "index": 129,
       "anchor": [
@@ -4879,7 +4879,7 @@
         0
       ]
     },
-    "tile.water/m116": {
+    "tile.water/m21": {
       "atlas": "tiles",
       "index": 130,
       "anchor": [
@@ -4887,7 +4887,7 @@
         0
       ]
     },
-    "tile.water/m117": {
+    "tile.water/m21/f1": {
       "atlas": "tiles",
       "index": 131,
       "anchor": [
@@ -4895,7 +4895,7 @@
         0
       ]
     },
-    "tile.water/m119": {
+    "tile.water/m21/f2": {
       "atlas": "tiles",
       "index": 132,
       "anchor": [
@@ -4903,7 +4903,7 @@
         0
       ]
     },
-    "tile.water/m124": {
+    "tile.water/m23": {
       "atlas": "tiles",
       "index": 133,
       "anchor": [
@@ -4911,7 +4911,7 @@
         0
       ]
     },
-    "tile.water/m125": {
+    "tile.water/m23/f1": {
       "atlas": "tiles",
       "index": 134,
       "anchor": [
@@ -4919,7 +4919,7 @@
         0
       ]
     },
-    "tile.water/m127": {
+    "tile.water/m23/f2": {
       "atlas": "tiles",
       "index": 135,
       "anchor": [
@@ -4927,7 +4927,7 @@
         0
       ]
     },
-    "tile.water/m193": {
+    "tile.water/m28": {
       "atlas": "tiles",
       "index": 136,
       "anchor": [
@@ -4935,7 +4935,7 @@
         0
       ]
     },
-    "tile.water/m197": {
+    "tile.water/m28/f1": {
       "atlas": "tiles",
       "index": 137,
       "anchor": [
@@ -4943,7 +4943,7 @@
         0
       ]
     },
-    "tile.water/m199": {
+    "tile.water/m28/f2": {
       "atlas": "tiles",
       "index": 138,
       "anchor": [
@@ -4951,7 +4951,7 @@
         0
       ]
     },
-    "tile.water/m209": {
+    "tile.water/m29": {
       "atlas": "tiles",
       "index": 139,
       "anchor": [
@@ -4959,7 +4959,7 @@
         0
       ]
     },
-    "tile.water/m213": {
+    "tile.water/m29/f1": {
       "atlas": "tiles",
       "index": 140,
       "anchor": [
@@ -4967,7 +4967,7 @@
         0
       ]
     },
-    "tile.water/m215": {
+    "tile.water/m29/f2": {
       "atlas": "tiles",
       "index": 141,
       "anchor": [
@@ -4975,7 +4975,7 @@
         0
       ]
     },
-    "tile.water/m221": {
+    "tile.water/m31": {
       "atlas": "tiles",
       "index": 142,
       "anchor": [
@@ -4983,7 +4983,7 @@
         0
       ]
     },
-    "tile.water/m223": {
+    "tile.water/m31/f1": {
       "atlas": "tiles",
       "index": 143,
       "anchor": [
@@ -4991,7 +4991,7 @@
         0
       ]
     },
-    "tile.water/m241": {
+    "tile.water/m31/f2": {
       "atlas": "tiles",
       "index": 144,
       "anchor": [
@@ -4999,7 +4999,7 @@
         0
       ]
     },
-    "tile.water/m245": {
+    "tile.water/m64": {
       "atlas": "tiles",
       "index": 145,
       "anchor": [
@@ -5007,7 +5007,7 @@
         0
       ]
     },
-    "tile.water/m247": {
+    "tile.water/m64/f1": {
       "atlas": "tiles",
       "index": 146,
       "anchor": [
@@ -5015,7 +5015,7 @@
         0
       ]
     },
-    "tile.water/m253": {
+    "tile.water/m64/f2": {
       "atlas": "tiles",
       "index": 147,
       "anchor": [
@@ -5023,7 +5023,7 @@
         0
       ]
     },
-    "tile.stone": {
+    "tile.water/m65": {
       "atlas": "tiles",
       "index": 148,
       "anchor": [
@@ -5031,7 +5031,7 @@
         0
       ]
     },
-    "tile.stone/m0": {
+    "tile.water/m65/f1": {
       "atlas": "tiles",
       "index": 149,
       "anchor": [
@@ -5039,7 +5039,7 @@
         0
       ]
     },
-    "tile.stone/m1": {
+    "tile.water/m65/f2": {
       "atlas": "tiles",
       "index": 150,
       "anchor": [
@@ -5047,7 +5047,7 @@
         0
       ]
     },
-    "tile.stone/m4": {
+    "tile.water/m68": {
       "atlas": "tiles",
       "index": 151,
       "anchor": [
@@ -5055,7 +5055,7 @@
         0
       ]
     },
-    "tile.stone/m5": {
+    "tile.water/m68/f1": {
       "atlas": "tiles",
       "index": 152,
       "anchor": [
@@ -5063,7 +5063,7 @@
         0
       ]
     },
-    "tile.stone/m7": {
+    "tile.water/m68/f2": {
       "atlas": "tiles",
       "index": 153,
       "anchor": [
@@ -5071,7 +5071,7 @@
         0
       ]
     },
-    "tile.stone/m16": {
+    "tile.water/m69": {
       "atlas": "tiles",
       "index": 154,
       "anchor": [
@@ -5079,7 +5079,7 @@
         0
       ]
     },
-    "tile.stone/m17": {
+    "tile.water/m69/f1": {
       "atlas": "tiles",
       "index": 155,
       "anchor": [
@@ -5087,7 +5087,7 @@
         0
       ]
     },
-    "tile.stone/m20": {
+    "tile.water/m69/f2": {
       "atlas": "tiles",
       "index": 156,
       "anchor": [
@@ -5095,7 +5095,7 @@
         0
       ]
     },
-    "tile.stone/m21": {
+    "tile.water/m71": {
       "atlas": "tiles",
       "index": 157,
       "anchor": [
@@ -5103,7 +5103,7 @@
         0
       ]
     },
-    "tile.stone/m23": {
+    "tile.water/m71/f1": {
       "atlas": "tiles",
       "index": 158,
       "anchor": [
@@ -5111,7 +5111,7 @@
         0
       ]
     },
-    "tile.stone/m28": {
+    "tile.water/m71/f2": {
       "atlas": "tiles",
       "index": 159,
       "anchor": [
@@ -5119,7 +5119,7 @@
         0
       ]
     },
-    "tile.stone/m29": {
+    "tile.water/m80": {
       "atlas": "tiles",
       "index": 160,
       "anchor": [
@@ -5127,7 +5127,7 @@
         0
       ]
     },
-    "tile.stone/m31": {
+    "tile.water/m80/f1": {
       "atlas": "tiles",
       "index": 161,
       "anchor": [
@@ -5135,7 +5135,7 @@
         0
       ]
     },
-    "tile.stone/m64": {
+    "tile.water/m80/f2": {
       "atlas": "tiles",
       "index": 162,
       "anchor": [
@@ -5143,7 +5143,7 @@
         0
       ]
     },
-    "tile.stone/m65": {
+    "tile.water/m81": {
       "atlas": "tiles",
       "index": 163,
       "anchor": [
@@ -5151,7 +5151,7 @@
         0
       ]
     },
-    "tile.stone/m68": {
+    "tile.water/m81/f1": {
       "atlas": "tiles",
       "index": 164,
       "anchor": [
@@ -5159,7 +5159,7 @@
         0
       ]
     },
-    "tile.stone/m69": {
+    "tile.water/m81/f2": {
       "atlas": "tiles",
       "index": 165,
       "anchor": [
@@ -5167,7 +5167,7 @@
         0
       ]
     },
-    "tile.stone/m71": {
+    "tile.water/m84": {
       "atlas": "tiles",
       "index": 166,
       "anchor": [
@@ -5175,7 +5175,7 @@
         0
       ]
     },
-    "tile.stone/m80": {
+    "tile.water/m84/f1": {
       "atlas": "tiles",
       "index": 167,
       "anchor": [
@@ -5183,7 +5183,7 @@
         0
       ]
     },
-    "tile.stone/m81": {
+    "tile.water/m84/f2": {
       "atlas": "tiles",
       "index": 168,
       "anchor": [
@@ -5191,7 +5191,7 @@
         0
       ]
     },
-    "tile.stone/m84": {
+    "tile.water/m85": {
       "atlas": "tiles",
       "index": 169,
       "anchor": [
@@ -5199,7 +5199,7 @@
         0
       ]
     },
-    "tile.stone/m85": {
+    "tile.water/m85/f1": {
       "atlas": "tiles",
       "index": 170,
       "anchor": [
@@ -5207,7 +5207,7 @@
         0
       ]
     },
-    "tile.stone/m87": {
+    "tile.water/m85/f2": {
       "atlas": "tiles",
       "index": 171,
       "anchor": [
@@ -5215,7 +5215,7 @@
         0
       ]
     },
-    "tile.stone/m92": {
+    "tile.water/m87": {
       "atlas": "tiles",
       "index": 172,
       "anchor": [
@@ -5223,7 +5223,7 @@
         0
       ]
     },
-    "tile.stone/m93": {
+    "tile.water/m87/f1": {
       "atlas": "tiles",
       "index": 173,
       "anchor": [
@@ -5231,7 +5231,7 @@
         0
       ]
     },
-    "tile.stone/m95": {
+    "tile.water/m87/f2": {
       "atlas": "tiles",
       "index": 174,
       "anchor": [
@@ -5239,7 +5239,7 @@
         0
       ]
     },
-    "tile.stone/m112": {
+    "tile.water/m92": {
       "atlas": "tiles",
       "index": 175,
       "anchor": [
@@ -5247,7 +5247,7 @@
         0
       ]
     },
-    "tile.stone/m113": {
+    "tile.water/m92/f1": {
       "atlas": "tiles",
       "index": 176,
       "anchor": [
@@ -5255,7 +5255,7 @@
         0
       ]
     },
-    "tile.stone/m116": {
+    "tile.water/m92/f2": {
       "atlas": "tiles",
       "index": 177,
       "anchor": [
@@ -5263,7 +5263,7 @@
         0
       ]
     },
-    "tile.stone/m117": {
+    "tile.water/m93": {
       "atlas": "tiles",
       "index": 178,
       "anchor": [
@@ -5271,7 +5271,7 @@
         0
       ]
     },
-    "tile.stone/m119": {
+    "tile.water/m93/f1": {
       "atlas": "tiles",
       "index": 179,
       "anchor": [
@@ -5279,7 +5279,7 @@
         0
       ]
     },
-    "tile.stone/m124": {
+    "tile.water/m93/f2": {
       "atlas": "tiles",
       "index": 180,
       "anchor": [
@@ -5287,7 +5287,7 @@
         0
       ]
     },
-    "tile.stone/m125": {
+    "tile.water/m95": {
       "atlas": "tiles",
       "index": 181,
       "anchor": [
@@ -5295,7 +5295,7 @@
         0
       ]
     },
-    "tile.stone/m127": {
+    "tile.water/m95/f1": {
       "atlas": "tiles",
       "index": 182,
       "anchor": [
@@ -5303,7 +5303,7 @@
         0
       ]
     },
-    "tile.stone/m193": {
+    "tile.water/m95/f2": {
       "atlas": "tiles",
       "index": 183,
       "anchor": [
@@ -5311,7 +5311,7 @@
         0
       ]
     },
-    "tile.stone/m197": {
+    "tile.water/m112": {
       "atlas": "tiles",
       "index": 184,
       "anchor": [
@@ -5319,7 +5319,7 @@
         0
       ]
     },
-    "tile.stone/m199": {
+    "tile.water/m112/f1": {
       "atlas": "tiles",
       "index": 185,
       "anchor": [
@@ -5327,7 +5327,7 @@
         0
       ]
     },
-    "tile.stone/m209": {
+    "tile.water/m112/f2": {
       "atlas": "tiles",
       "index": 186,
       "anchor": [
@@ -5335,7 +5335,7 @@
         0
       ]
     },
-    "tile.stone/m213": {
+    "tile.water/m113": {
       "atlas": "tiles",
       "index": 187,
       "anchor": [
@@ -5343,7 +5343,7 @@
         0
       ]
     },
-    "tile.stone/m215": {
+    "tile.water/m113/f1": {
       "atlas": "tiles",
       "index": 188,
       "anchor": [
@@ -5351,7 +5351,7 @@
         0
       ]
     },
-    "tile.stone/m221": {
+    "tile.water/m113/f2": {
       "atlas": "tiles",
       "index": 189,
       "anchor": [
@@ -5359,7 +5359,7 @@
         0
       ]
     },
-    "tile.stone/m223": {
+    "tile.water/m116": {
       "atlas": "tiles",
       "index": 190,
       "anchor": [
@@ -5367,7 +5367,7 @@
         0
       ]
     },
-    "tile.stone/m241": {
+    "tile.water/m116/f1": {
       "atlas": "tiles",
       "index": 191,
       "anchor": [
@@ -5375,7 +5375,7 @@
         0
       ]
     },
-    "tile.stone/m245": {
+    "tile.water/m116/f2": {
       "atlas": "tiles",
       "index": 192,
       "anchor": [
@@ -5383,7 +5383,7 @@
         0
       ]
     },
-    "tile.stone/m247": {
+    "tile.water/m117": {
       "atlas": "tiles",
       "index": 193,
       "anchor": [
@@ -5391,9 +5391,777 @@
         0
       ]
     },
-    "tile.stone/m253": {
+    "tile.water/m117/f1": {
       "atlas": "tiles",
       "index": 194,
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    "tile.water/m117/f2": {
+      "atlas": "tiles",
+      "index": 195,
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    "tile.water/m119": {
+      "atlas": "tiles",
+      "index": 196,
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    "tile.water/m119/f1": {
+      "atlas": "tiles",
+      "index": 197,
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    "tile.water/m119/f2": {
+      "atlas": "tiles",
+      "index": 198,
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    "tile.water/m124": {
+      "atlas": "tiles",
+      "index": 199,
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    "tile.water/m124/f1": {
+      "atlas": "tiles",
+      "index": 200,
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    "tile.water/m124/f2": {
+      "atlas": "tiles",
+      "index": 201,
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    "tile.water/m125": {
+      "atlas": "tiles",
+      "index": 202,
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    "tile.water/m125/f1": {
+      "atlas": "tiles",
+      "index": 203,
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    "tile.water/m125/f2": {
+      "atlas": "tiles",
+      "index": 204,
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    "tile.water/m127": {
+      "atlas": "tiles",
+      "index": 205,
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    "tile.water/m127/f1": {
+      "atlas": "tiles",
+      "index": 206,
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    "tile.water/m127/f2": {
+      "atlas": "tiles",
+      "index": 207,
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    "tile.water/m193": {
+      "atlas": "tiles",
+      "index": 208,
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    "tile.water/m193/f1": {
+      "atlas": "tiles",
+      "index": 209,
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    "tile.water/m193/f2": {
+      "atlas": "tiles",
+      "index": 210,
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    "tile.water/m197": {
+      "atlas": "tiles",
+      "index": 211,
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    "tile.water/m197/f1": {
+      "atlas": "tiles",
+      "index": 212,
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    "tile.water/m197/f2": {
+      "atlas": "tiles",
+      "index": 213,
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    "tile.water/m199": {
+      "atlas": "tiles",
+      "index": 214,
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    "tile.water/m199/f1": {
+      "atlas": "tiles",
+      "index": 215,
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    "tile.water/m199/f2": {
+      "atlas": "tiles",
+      "index": 216,
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    "tile.water/m209": {
+      "atlas": "tiles",
+      "index": 217,
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    "tile.water/m209/f1": {
+      "atlas": "tiles",
+      "index": 218,
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    "tile.water/m209/f2": {
+      "atlas": "tiles",
+      "index": 219,
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    "tile.water/m213": {
+      "atlas": "tiles",
+      "index": 220,
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    "tile.water/m213/f1": {
+      "atlas": "tiles",
+      "index": 221,
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    "tile.water/m213/f2": {
+      "atlas": "tiles",
+      "index": 222,
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    "tile.water/m215": {
+      "atlas": "tiles",
+      "index": 223,
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    "tile.water/m215/f1": {
+      "atlas": "tiles",
+      "index": 224,
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    "tile.water/m215/f2": {
+      "atlas": "tiles",
+      "index": 225,
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    "tile.water/m221": {
+      "atlas": "tiles",
+      "index": 226,
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    "tile.water/m221/f1": {
+      "atlas": "tiles",
+      "index": 227,
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    "tile.water/m221/f2": {
+      "atlas": "tiles",
+      "index": 228,
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    "tile.water/m223": {
+      "atlas": "tiles",
+      "index": 229,
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    "tile.water/m223/f1": {
+      "atlas": "tiles",
+      "index": 230,
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    "tile.water/m223/f2": {
+      "atlas": "tiles",
+      "index": 231,
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    "tile.water/m241": {
+      "atlas": "tiles",
+      "index": 232,
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    "tile.water/m241/f1": {
+      "atlas": "tiles",
+      "index": 233,
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    "tile.water/m241/f2": {
+      "atlas": "tiles",
+      "index": 234,
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    "tile.water/m245": {
+      "atlas": "tiles",
+      "index": 235,
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    "tile.water/m245/f1": {
+      "atlas": "tiles",
+      "index": 236,
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    "tile.water/m245/f2": {
+      "atlas": "tiles",
+      "index": 237,
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    "tile.water/m247": {
+      "atlas": "tiles",
+      "index": 238,
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    "tile.water/m247/f1": {
+      "atlas": "tiles",
+      "index": 239,
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    "tile.water/m247/f2": {
+      "atlas": "tiles",
+      "index": 240,
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    "tile.water/m253": {
+      "atlas": "tiles",
+      "index": 241,
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    "tile.water/m253/f1": {
+      "atlas": "tiles",
+      "index": 242,
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    "tile.water/m253/f2": {
+      "atlas": "tiles",
+      "index": 243,
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    "tile.stone": {
+      "atlas": "tiles",
+      "index": 244,
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    "tile.stone/m0": {
+      "atlas": "tiles",
+      "index": 245,
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    "tile.stone/m1": {
+      "atlas": "tiles",
+      "index": 246,
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    "tile.stone/m4": {
+      "atlas": "tiles",
+      "index": 247,
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    "tile.stone/m5": {
+      "atlas": "tiles",
+      "index": 248,
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    "tile.stone/m7": {
+      "atlas": "tiles",
+      "index": 249,
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    "tile.stone/m16": {
+      "atlas": "tiles",
+      "index": 250,
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    "tile.stone/m17": {
+      "atlas": "tiles",
+      "index": 251,
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    "tile.stone/m20": {
+      "atlas": "tiles",
+      "index": 252,
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    "tile.stone/m21": {
+      "atlas": "tiles",
+      "index": 253,
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    "tile.stone/m23": {
+      "atlas": "tiles",
+      "index": 254,
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    "tile.stone/m28": {
+      "atlas": "tiles",
+      "index": 255,
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    "tile.stone/m29": {
+      "atlas": "tiles",
+      "index": 256,
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    "tile.stone/m31": {
+      "atlas": "tiles",
+      "index": 257,
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    "tile.stone/m64": {
+      "atlas": "tiles",
+      "index": 258,
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    "tile.stone/m65": {
+      "atlas": "tiles",
+      "index": 259,
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    "tile.stone/m68": {
+      "atlas": "tiles",
+      "index": 260,
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    "tile.stone/m69": {
+      "atlas": "tiles",
+      "index": 261,
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    "tile.stone/m71": {
+      "atlas": "tiles",
+      "index": 262,
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    "tile.stone/m80": {
+      "atlas": "tiles",
+      "index": 263,
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    "tile.stone/m81": {
+      "atlas": "tiles",
+      "index": 264,
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    "tile.stone/m84": {
+      "atlas": "tiles",
+      "index": 265,
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    "tile.stone/m85": {
+      "atlas": "tiles",
+      "index": 266,
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    "tile.stone/m87": {
+      "atlas": "tiles",
+      "index": 267,
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    "tile.stone/m92": {
+      "atlas": "tiles",
+      "index": 268,
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    "tile.stone/m93": {
+      "atlas": "tiles",
+      "index": 269,
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    "tile.stone/m95": {
+      "atlas": "tiles",
+      "index": 270,
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    "tile.stone/m112": {
+      "atlas": "tiles",
+      "index": 271,
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    "tile.stone/m113": {
+      "atlas": "tiles",
+      "index": 272,
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    "tile.stone/m116": {
+      "atlas": "tiles",
+      "index": 273,
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    "tile.stone/m117": {
+      "atlas": "tiles",
+      "index": 274,
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    "tile.stone/m119": {
+      "atlas": "tiles",
+      "index": 275,
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    "tile.stone/m124": {
+      "atlas": "tiles",
+      "index": 276,
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    "tile.stone/m125": {
+      "atlas": "tiles",
+      "index": 277,
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    "tile.stone/m127": {
+      "atlas": "tiles",
+      "index": 278,
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    "tile.stone/m193": {
+      "atlas": "tiles",
+      "index": 279,
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    "tile.stone/m197": {
+      "atlas": "tiles",
+      "index": 280,
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    "tile.stone/m199": {
+      "atlas": "tiles",
+      "index": 281,
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    "tile.stone/m209": {
+      "atlas": "tiles",
+      "index": 282,
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    "tile.stone/m213": {
+      "atlas": "tiles",
+      "index": 283,
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    "tile.stone/m215": {
+      "atlas": "tiles",
+      "index": 284,
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    "tile.stone/m221": {
+      "atlas": "tiles",
+      "index": 285,
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    "tile.stone/m223": {
+      "atlas": "tiles",
+      "index": 286,
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    "tile.stone/m241": {
+      "atlas": "tiles",
+      "index": 287,
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    "tile.stone/m245": {
+      "atlas": "tiles",
+      "index": 288,
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    "tile.stone/m247": {
+      "atlas": "tiles",
+      "index": 289,
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    "tile.stone/m253": {
+      "atlas": "tiles",
+      "index": 290,
       "anchor": [
         0,
         0
@@ -7460,12 +8228,12 @@
       ]
     },
     "tile.stone": {
-      "index": 148,
+      "index": 244,
       "walkable": false,
       "material": "stone",
       "family": "tile.stone",
       "variants": [
-        148
+        244
       ]
     },
     "tile.water": {
@@ -7475,7 +8243,7 @@
       "family": "tile.water",
       "variants": [
         100,
-        101
+        103
       ]
     }
   },
@@ -8585,101 +9353,488 @@
   "tileset": {
     "blocking": [
       100,
+      100,
       101,
       102,
+      103,
       103,
       104,
       105,
       106,
+      106,
       107,
       108,
+      109,
       109,
       110,
       111,
       112,
+      112,
       113,
       114,
+      115,
       115,
       116,
       117,
       118,
+      118,
       119,
       120,
+      121,
       121,
       122,
       123,
       124,
+      124,
       125,
       126,
+      127,
       127,
       128,
       129,
       130,
+      130,
       131,
       132,
+      133,
       133,
       134,
       135,
       136,
+      136,
       137,
       138,
+      139,
       139,
       140,
       141,
       142,
+      142,
       143,
       144,
+      145,
       145,
       146,
       147,
       148,
+      148,
       149,
       150,
+      151,
       151,
       152,
       153,
       154,
+      154,
       155,
       156,
+      157,
       157,
       158,
       159,
       160,
+      160,
       161,
       162,
+      163,
       163,
       164,
       165,
       166,
+      166,
       167,
       168,
+      169,
       169,
       170,
       171,
       172,
+      172,
       173,
       174,
+      175,
       175,
       176,
       177,
       178,
+      178,
       179,
       180,
+      181,
       181,
       182,
       183,
       184,
+      184,
       185,
       186,
+      187,
       187,
       188,
       189,
       190,
+      190,
       191,
       192,
       193,
-      194
+      193,
+      194,
+      195,
+      196,
+      196,
+      197,
+      198,
+      199,
+      199,
+      200,
+      201,
+      202,
+      202,
+      203,
+      204,
+      205,
+      205,
+      206,
+      207,
+      208,
+      208,
+      209,
+      210,
+      211,
+      211,
+      212,
+      213,
+      214,
+      214,
+      215,
+      216,
+      217,
+      217,
+      218,
+      219,
+      220,
+      220,
+      221,
+      222,
+      223,
+      223,
+      224,
+      225,
+      226,
+      226,
+      227,
+      228,
+      229,
+      229,
+      230,
+      231,
+      232,
+      232,
+      233,
+      234,
+      235,
+      235,
+      236,
+      237,
+      238,
+      238,
+      239,
+      240,
+      241,
+      241,
+      242,
+      243,
+      244,
+      245,
+      246,
+      247,
+      248,
+      249,
+      250,
+      251,
+      252,
+      253,
+      254,
+      255,
+      256,
+      257,
+      258,
+      259,
+      260,
+      261,
+      262,
+      263,
+      264,
+      265,
+      266,
+      267,
+      268,
+      269,
+      270,
+      271,
+      272,
+      273,
+      274,
+      275,
+      276,
+      277,
+      278,
+      279,
+      280,
+      281,
+      282,
+      283,
+      284,
+      285,
+      286,
+      287,
+      288,
+      289,
+      290
     ],
+    "animated": {
+      "100": [
+        100,
+        101,
+        102
+      ],
+      "103": [
+        103,
+        104,
+        105
+      ],
+      "106": [
+        106,
+        107,
+        108
+      ],
+      "109": [
+        109,
+        110,
+        111
+      ],
+      "112": [
+        112,
+        113,
+        114
+      ],
+      "115": [
+        115,
+        116,
+        117
+      ],
+      "118": [
+        118,
+        119,
+        120
+      ],
+      "121": [
+        121,
+        122,
+        123
+      ],
+      "124": [
+        124,
+        125,
+        126
+      ],
+      "127": [
+        127,
+        128,
+        129
+      ],
+      "130": [
+        130,
+        131,
+        132
+      ],
+      "133": [
+        133,
+        134,
+        135
+      ],
+      "136": [
+        136,
+        137,
+        138
+      ],
+      "139": [
+        139,
+        140,
+        141
+      ],
+      "142": [
+        142,
+        143,
+        144
+      ],
+      "145": [
+        145,
+        146,
+        147
+      ],
+      "148": [
+        148,
+        149,
+        150
+      ],
+      "151": [
+        151,
+        152,
+        153
+      ],
+      "154": [
+        154,
+        155,
+        156
+      ],
+      "157": [
+        157,
+        158,
+        159
+      ],
+      "160": [
+        160,
+        161,
+        162
+      ],
+      "163": [
+        163,
+        164,
+        165
+      ],
+      "166": [
+        166,
+        167,
+        168
+      ],
+      "169": [
+        169,
+        170,
+        171
+      ],
+      "172": [
+        172,
+        173,
+        174
+      ],
+      "175": [
+        175,
+        176,
+        177
+      ],
+      "178": [
+        178,
+        179,
+        180
+      ],
+      "181": [
+        181,
+        182,
+        183
+      ],
+      "184": [
+        184,
+        185,
+        186
+      ],
+      "187": [
+        187,
+        188,
+        189
+      ],
+      "190": [
+        190,
+        191,
+        192
+      ],
+      "193": [
+        193,
+        194,
+        195
+      ],
+      "196": [
+        196,
+        197,
+        198
+      ],
+      "199": [
+        199,
+        200,
+        201
+      ],
+      "202": [
+        202,
+        203,
+        204
+      ],
+      "205": [
+        205,
+        206,
+        207
+      ],
+      "208": [
+        208,
+        209,
+        210
+      ],
+      "211": [
+        211,
+        212,
+        213
+      ],
+      "214": [
+        214,
+        215,
+        216
+      ],
+      "217": [
+        217,
+        218,
+        219
+      ],
+      "220": [
+        220,
+        221,
+        222
+      ],
+      "223": [
+        223,
+        224,
+        225
+      ],
+      "226": [
+        226,
+        227,
+        228
+      ],
+      "229": [
+        229,
+        230,
+        231
+      ],
+      "232": [
+        232,
+        233,
+        234
+      ],
+      "235": [
+        235,
+        236,
+        237
+      ],
+      "238": [
+        238,
+        239,
+        240
+      ],
+      "241": [
+        241,
+        242,
+        243
+      ]
+    },
+    "anim_ms": 420,
     "variants": {
       "tile.grass": [
         0,
@@ -8701,10 +9856,10 @@
       ],
       "tile.water": [
         100,
-        101
+        103
       ],
       "tile.stone": [
-        148
+        244
       ]
     },
     "transitions": {
@@ -10512,7 +11667,7 @@
           43,
           43,
           41,
-          154,
+          250,
           56,
           69,
           69,
@@ -10530,9 +11685,9 @@
           2,
           5,
           4,
-          112,
-          133,
-          128,
+          136,
+          199,
+          184,
           4,
           5,
           11,
@@ -10542,11 +11697,11 @@
         [
           2,
           0,
-          159,
-          180,
-          181,
-          180,
-          175,
+          255,
+          276,
+          277,
+          276,
+          271,
           2,
           2,
           0,
@@ -10560,25 +11715,25 @@
           1,
           2,
           5,
-          112,
-          133,
-          135,
-          101,
-          147,
-          133,
-          128,
+          136,
+          199,
+          205,
+          103,
+          241,
+          199,
+          184,
           5,
           2,
           11
         ],
         [
           2,
-          159,
-          182,
-          148,
-          148,
-          193,
-          183,
+          255,
+          278,
+          244,
+          244,
+          289,
+          279,
           0,
           0,
           2,
@@ -10591,28 +11746,28 @@
           1,
           0,
           0,
-          112,
-          135,
+          136,
+          205,
           100,
-          101,
+          103,
           100,
-          101,
+          103,
           100,
-          147,
-          128,
+          241,
+          184,
           5,
           4
         ],
         [
-          164,
-          174,
-          148,
-          148,
-          193,
-          183,
+          260,
+          270,
+          244,
+          244,
+          289,
+          279,
           0,
-          156,
-          162,
+          252,
+          258,
           1,
           2,
           0,
@@ -10623,27 +11778,27 @@
           1,
           0,
           4,
-          114,
+          142,
           100,
-          101,
+          103,
           100,
-          101,
+          103,
           100,
-          101,
+          103,
           100,
-          144,
+          232,
           4,
           5
         ],
         [
           0,
-          153,
-          190,
-          193,
-          183,
+          249,
+          286,
+          289,
+          279,
           0,
-          156,
-          163,
+          252,
+          259,
           0,
           0,
           1,
@@ -10655,26 +11810,26 @@
           0,
           1,
           1,
-          106,
-          143,
+          118,
+          229,
           100,
-          101,
+          103,
           100,
-          101,
+          103,
           100,
-          146,
-          136,
+          238,
+          208,
           5,
           4
         ],
         [
           0,
           2,
-          153,
-          183,
+          249,
+          279,
           0,
-          151,
-          163,
+          247,
+          259,
           2,
           0,
           2,
@@ -10688,13 +11843,13 @@
           3,
           1,
           5,
-          106,
-          138,
-          143,
-          101,
-          146,
-          138,
-          136,
+          118,
+          214,
+          229,
+          103,
+          238,
+          214,
+          208,
           5,
           0,
           0
@@ -10704,7 +11859,7 @@
           2,
           2,
           0,
-          149,
+          245,
           0,
           2,
           1,
@@ -10722,9 +11877,9 @@
           4,
           5,
           4,
-          106,
-          138,
-          136,
+          118,
+          214,
+          208,
           4,
           5,
           1,

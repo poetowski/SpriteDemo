@@ -87,6 +87,31 @@ class World extends Phaser.Scene {
       Object.values(M.tiles).filter((t) => !t.walkable).map((t) => t.index);
     layer.setCollision(blocking);
 
+    // Animated ground. The build drew the water in phases and listed each
+    // base index's frame sequence; cycling them is all the engine has to know.
+    const animated = (M.tileset && M.tileset.animated) || {};
+    this.animatedTiles = [];
+    for (let y = 0; y < rows; y++) {
+      for (let x = 0; x < cols; x++) {
+        const frames = animated[grid[y][x]];
+        if (frames) this.animatedTiles.push({ x, y, frames, solid: blocking.includes(frames[0]) });
+      }
+    }
+    this.tilePhase = 0;
+    if (this.animatedTiles.length) {
+      this.time.addEvent({
+        delay: (M.tileset && M.tileset.anim_ms) || 420,
+        loop: true,
+        callback: () => {
+          this.tilePhase += 1;
+          for (const t of this.animatedTiles) {
+            const tile = layer.putTileAt(t.frames[this.tilePhase % t.frames.length], t.x, t.y, false);
+            if (tile) tile.setCollision(t.solid);
+          }
+        },
+      });
+    }
+
     const worldW = cols * this.ts;
     const worldH = rows * this.ts;
     this.physics.world.setBounds(0, 0, worldW, worldH);

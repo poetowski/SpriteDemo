@@ -110,6 +110,16 @@ Ground is authored as plain terrain and drawn with variation and edges:
   the manifest (`maps[id].grid`, `tileset.blocking`) and the `map-grid` gate
   checks it. A new terrain needs a base drawing, an edge style in
   `tiles.STYLE` if it blends, and a content file - never a hand-placed edge.
+- **Animated ground.** `tiles.ANIMATED` names tiles drawn in phases (water:
+  three). The build emits every phase of every variant and transition as its
+  own frame and lists each base index's sequence in `tileset.animated`; the
+  scene cycles them every `tileset.anim_ms` with `putTileAt`, re-asserting
+  collision. Anything that must not flicker between phases (sand, wear) is
+  decided by a per-row rng seeded from the mask, not the phase.
+- **Edges know their direction.** `depth()` returns which open edge placed the
+  boundary, so a style can treat downhill differently: stone's south-facing
+  edge is a cliff face with a lit lip and a shadow on the grass below, and a
+  path is worn darkest on its bends.
 - Base textures wrap: place detail with `_put`, and it continues across the
   seam instead of being kept away from the edges.
 
