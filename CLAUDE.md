@@ -255,7 +255,7 @@ no engine change, like everything else here:
 
 ```json
 "exits": [{ "tiles":  [[0, 18], [0, 19]], "to": "map.wilderness2",
-            "spawns": [[30, 30], [30, 31]], "facing": "left" }]
+            "spawns": [[18, 18], [18, 19]], "facing": "left" }]
 ```
 
 `tiles` are the doorway. A door into a building gives one `spawn` and everyone
@@ -264,10 +264,13 @@ paired by position - **step off the west edge at a given height and come out at
 the same height on the east edge of the next map.** That is what makes a seam
 read as more country rather than as a door, and it is worth the extra data:
 funnelling a ten-tile edge through a single arrival tile is exactly what made
-the first version feel wrong. Wilderness I and II are joined along a band ten
-tiles deep measured *up from the bottom of each*, so their bottom rows align
-even though one map is 20 tall and the other 32. Arrivals sit one tile inside
-the far edge, never on the far map's own doorway column. The
+the first version feel wrong. Wilderness I and II are both 20x20 and joined
+along the bottom ten rows, so the crossing is row for row. Pair the band by
+distance *up from the bottom* rather than by row number, and two maps of
+different heights join just as cleanly. Arrivals sit one tile inside the far
+edge, never on the far map's own doorway column - and remember an arrival tile
+belongs to the map you land on while being named by the map you left, so it is
+easy to build something on top of one. The
 crossing **restarts the scene**, so anything the player must keep - bag, gear,
 level, xp, flags - is carried across explicitly in `checkExit()`; a field added
 to the scene and not to that list is silently lost at the map edge. Write the
