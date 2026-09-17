@@ -20,33 +20,37 @@
     "d": "tile.dirt",
     "p": "tile.path",
     "~": "tile.water",
-    "#": "tile.stone"
+    "#": "tile.stone",
+    "a": "tile.leaves",
+    "c": "tile.gravel",
+    "e": "tile.wood_floor",
+    "b": "tile.shallow"
   },
   "ground": [
     ".t............................",
-    ".........t.....,..............",
-    ".t....t..t....................",
-    "ttt...tt.t...,.....pppp.......",
-    "t..t.tt..t........pppppp......",
-    "....tt..tt......pppppppppp....",
-    ".tt............pppp....pppp...",
-    ".ttt.t.........ppp...,..ppp...",
-    ".t..ttt.......ppp........pp...",
-    "......ttt.....pp.......,.ppp..",
+    ".........t.....,........dd....",
+    ".t....t..t..............d.....",
+    "ttt...tt.t...,.....pppp.d.....",
+    "t..t.tt..t......aaaappppd.....",
+    "....tt..tt....aaaaapppppdp....",
+    ".tt............aapp....pppp...",
+    ".ttt.t.........app...,..ppp...",
+    ".t..ttt....bbbbbbb.......pp...",
+    "......ttt..bbbbb.......,.ppp..",
     "..tt.t.t.t....pp..........pp..",
     ".t...t.t.....ppp..........pp..",
     ".....t.t.....pp...........pp..",
     ".ttt........ppp....,.....ppp..",
     "...tt......dpppp........ppp...",
     ".....,....ppppppp,.....ppp....",
-    "..........ppppppp.....ppp.....",
-    ".........ppp..........ppp....,",
-    "........ppp............ppp....",
-    ".......ppp..............ppp,..",
-    "...ppppppd...............ppp..",
-    "ppppppppdd...........tttttpppp",
-    "pppp#ddddd..........tt~~~ttppp",
-    "..#####............t~~~~~~~t.p",
+    "..........pppeeep.....ppp.....",
+    ".........pppeeee....ccppp....,",
+    "........ppp.ee....cc...ppp....",
+    ".......ppaaa.....cc.....ppp,..",
+    "...ppppppd.a.....c.......ppp..",
+    "ppppppppdd.......c...tttttpppp",
+    "pppp#ddddd......cc..tt~~~ttppp",
+    "..#####........cc..~~~~~~~~t.p",
     ".######............~~~~~~~~~tt",
     "######.##.........t~~~~~~~~~tt",
     ".####.##...........~~~~~~~~~tt",
@@ -842,13 +846,6 @@
     {
       "def": "prop.log",
       "tile": [
-        13,
-        4
-      ]
-    },
-    {
-      "def": "prop.log",
-      "tile": [
         18,
         3
       ]
@@ -1085,13 +1082,6 @@
       ]
     },
     {
-      "def": "prop.windmill",
-      "tile": [
-        12,
-        10
-      ]
-    },
-    {
       "def": "prop.barn",
       "tile": [
         15,
@@ -1110,6 +1100,76 @@
       "tile": [
         24,
         3
+      ]
+    },
+    {
+      "def": "prop.beehive",
+      "tile": [
+        18,
+        20
+      ]
+    },
+    {
+      "def": "prop.barn",
+      "tile": [
+        18,
+        18
+      ]
+    },
+    {
+      "def": "prop.barn",
+      "tile": [
+        21,
+        18
+      ]
+    },
+    {
+      "def": "prop.flower_pot",
+      "tile": [
+        16,
+        19
+      ]
+    },
+    {
+      "def": "prop.flower_pot",
+      "tile": [
+        1,
+        22
+      ]
+    },
+    {
+      "def": "prop.flower_pot",
+      "tile": [
+        2,
+        22
+      ]
+    },
+    {
+      "def": "prop.house",
+      "tile": [
+        14,
+        26
+      ]
+    },
+    {
+      "def": "prop.campfire",
+      "tile": [
+        11,
+        21
+      ]
+    },
+    {
+      "def": "prop.barrel",
+      "tile": [
+        11,
+        4
+      ]
+    },
+    {
+      "def": "prop.tower",
+      "tile": [
+        12,
+        7
       ]
     }
   ]
