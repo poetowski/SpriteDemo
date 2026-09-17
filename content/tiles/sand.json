@@ -1,0 +1,7 @@
+{
+  "id": "tile.sand",
+  "sprite": "tile.sand",
+  "walkable": true,
+  "material": "sand",
+  "blend": true
+}

@@ -138,6 +138,10 @@ def build_atlases(sprite_rigs, content):
             entry["base"].append(
                 add_frames(key, lambda ph, v=v: tiles_gen.frame(tid, v, ph)))
         if defn.get("blend"):
+            under = defn.get("blend_over", tiles_gen.BLEND_OVER)
+            if under not in tiles_gen.BASE:
+                sys.exit(f"[tile-blend] {defn['_file']}: blend_over names "
+                         f"{under!r}, which has no drawing")
             if tid not in tiles_gen.STYLE:
                 sys.exit(f"[tile-blend] {defn['_file']}: blend is set but "
                          f"tools/gen/tiles.py has no edge style for {tid!r}")
@@ -145,7 +149,8 @@ def build_atlases(sprite_rigs, content):
                 if mask == tiles_gen.FULL:
                     continue
                 entry["masks"][mask] = add_frames(
-                    f"{tid}/m{mask}", lambda ph, m=mask: tiles_gen.blend(tid, m, ph))
+                    f"{tid}/m{mask}",
+                    lambda ph, m=mask: tiles_gen.blend(tid, m, ph, under))
         tile_index[tid] = entry
 
     props = Atlas("props", actor.FRAME, actor.FRAME, 8)

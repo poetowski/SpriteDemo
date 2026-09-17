@@ -74,6 +74,7 @@ function dropScratch() {
     ts: state.map.tile_size,
     zoom: state.zoom,
     tiles: document.querySelectorAll('#pal-terrain .swatch').length,
+    definedTiles: Object.keys(state.M.tiles).length,
     objects: document.querySelectorAll('#pal-objects .swatch').length,
     entities: state.map.entities.length,
     solidSwatches: document.querySelectorAll('#pal-objects .swatch.solid').length,
@@ -83,7 +84,9 @@ function dropScratch() {
   check('map opened and canvas sized',
         boot.canvas[0] === w * boot.ts * boot.zoom && boot.canvas[1] === h * boot.ts * boot.zoom,
         `${boot.canvas} for ${w}x${h} at ${boot.ts}px x${boot.zoom}`);
-  check('terrain palette built', boot.tiles === 7, `${boot.tiles} swatches`);
+  check('terrain palette offers every defined terrain',
+        boot.tiles === boot.definedTiles && boot.tiles > 0,
+        `${boot.tiles} swatches for ${boot.definedTiles} terrains`);
   check('object palette built', boot.objects > 40, `${boot.objects} swatches`);
   check('solid and ground objects both offered',
         boot.solidSwatches > 0 && boot.groundSwatches > 0,

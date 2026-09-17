@@ -1,0 +1,8 @@
+{
+  "id": "tile.shallow",
+  "sprite": "tile.shallow",
+  "walkable": true,
+  "material": "water",
+  "blend": true,
+  "blend_over": "tile.sand"
+}

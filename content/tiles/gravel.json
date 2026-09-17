@@ -1,0 +1,7 @@
+{
+  "id": "tile.gravel",
+  "sprite": "tile.gravel",
+  "walkable": true,
+  "material": "gravel",
+  "blend": true
+}

@@ -1,0 +1,6 @@
+{
+  "id": "tile.wood_floor",
+  "sprite": "tile.wood_floor",
+  "walkable": true,
+  "material": "wood"
+}

@@ -190,24 +190,156 @@ def stone(seed=0, phase=0):
     return c
 
 
+def sand(seed=0, phase=0):
+    """Dry sand: fine grain, the odd shell or pebble."""
+    c = Canvas(SIZE, SIZE)
+    c.rect(0, 0, SIZE - 1, SIZE - 1, "SA")
+    rnd = scatter(0x5A9D + seed * 331)
+    for _ in range(2):
+        _patch(c, rnd, rnd(SIZE), rnd(SIZE), 6, 4, "SAD", 5 + rnd(4))
+    for _ in range(14):
+        _put(c, rnd(SIZE), rnd(SIZE), "SAL")
+    for _ in range(8):
+        _put(c, rnd(SIZE), rnd(SIZE), "SAD")
+    for _ in range(2):                            # a shell, two pixels of it
+        x, y = rnd(SIZE), rnd(SIZE)
+        _put(c, x, y, "EW")
+        _put(c, x + 1, y, "SAD")
+    return c
+
+
+def gravel(seed=0, phase=0):
+    """A made road: small stones rolled into the dirt."""
+    c = Canvas(SIZE, SIZE)
+    c.rect(0, 0, SIZE - 1, SIZE - 1, "PTD")
+    rnd = scatter(0x67A1 + seed * 457)
+    for _ in range(22):                           # stones, lit on top
+        x, y = rnd(SIZE), rnd(SIZE)
+        _put(c, x, y, "STL")
+        _put(c, x + 1, y, "ST")
+        _put(c, x, y + 1, "STD")
+    for _ in range(10):
+        _put(c, rnd(SIZE), rnd(SIZE), "PT")       # dust between them
+    return c
+
+
+def cobble(seed=0, phase=0):
+    """Village paving: rounded setts in staggered courses."""
+    c = Canvas(SIZE, SIZE)
+    c.rect(0, 0, SIZE - 1, SIZE - 1, "STD")
+    rnd = scatter(0x3C0B + seed * 613)
+    for row, y in enumerate((0, 4, 8, 12)):
+        off = (row % 2) * 2
+        for x in range(off, SIZE + off, 4):
+            for dy in range(3):                   # a 3x3 sett, lit top-left
+                for dx in range(3):
+                    _put(c, x + dx, y + dy, "ST")
+            _put(c, x, y, "STL")
+            _put(c, x + 1, y, "STL")
+            _put(c, x + 2, y + 2, "STD")
+            if rnd(4) == 0:
+                _put(c, x + 1, y + 1, "STD")      # a worn one
+    return c
+
+
+def field(seed=0, phase=0):
+    """Ploughed earth: furrows with stubble left between them."""
+    c = Canvas(SIZE, SIZE)
+    c.rect(0, 0, SIZE - 1, SIZE - 1, "DR")
+    rnd = scatter(0x11E7 + seed * 179)
+    for y in range(0, SIZE, 4):                   # the furrows themselves
+        c.row(0, SIZE - 1, y, "DRD")
+        c.row(0, SIZE - 1, (y + 1) % SIZE, "DRL")
+    for _ in range(10):                           # stubble on the ridges
+        x, y = rnd(SIZE), rnd(SIZE)
+        if y % 4 in (2, 3):
+            _put(c, x, y, "TH")
+    for _ in range(6):
+        _put(c, rnd(SIZE), rnd(SIZE), "DRD")      # clods
+    return c
+
+
+def leaves(seed=0, phase=0):
+    """Forest floor: leaf litter over dark earth, where a canopy shades it."""
+    c = Canvas(SIZE, SIZE)
+    c.rect(0, 0, SIZE - 1, SIZE - 1, "LFD")
+    rnd = scatter(0x9E11 + seed * 743)
+    for _ in range(18):                           # fallen leaves, two pixels
+        x, y = rnd(SIZE), rnd(SIZE)
+        key = ("LF", "RFD", "GRX")[rnd(3)]
+        _put(c, x, y, key)
+        _put(c, x + 1, y, key)
+    for _ in range(8):
+        _put(c, rnd(SIZE), rnd(SIZE), "LF")
+    for _ in range(4):                            # a twig
+        x, y = rnd(SIZE), rnd(SIZE)
+        _put(c, x, y, "WDD")
+        _put(c, x + 1, y + 1, "WDD")
+    return c
+
+
+def shallow(seed=0, phase=0):
+    """Water you can wade: the bed shows through, and it moves."""
+    c = Canvas(SIZE, SIZE)
+    c.rect(0, 0, SIZE - 1, SIZE - 1, "WAL")
+    rnd = scatter(0x2B4F + seed * 521)
+    for _ in range(10):                           # sand and stones underneath
+        _put(c, rnd(SIZE), rnd(SIZE), "SA")
+    for _ in range(4):
+        _put(c, rnd(SIZE), rnd(SIZE), "SAD")
+    for i in range(3):                            # ripples travelling across
+        ax, ay = rnd(SIZE), rnd(SIZE)
+        for k in range(-2, 3):
+            _put(c, ax + k + phase, ay + (1 if abs(k) == 2 else 0), "WA")
+    for i in range(3):
+        if (i + phase) % 2 == 0:
+            _put(c, rnd(SIZE), rnd(SIZE), "EW")
+    return c
+
+
+def wood_floor(seed=0, phase=0):
+    """Planks, for anywhere with a roof. No transitions: a floor has walls."""
+    c = Canvas(SIZE, SIZE)
+    c.rect(0, 0, SIZE - 1, SIZE - 1, "WD")
+    rnd = scatter(0x7D00 + seed * 293)
+    for y in range(0, SIZE, 5):                   # the boards
+        c.row(0, SIZE - 1, y, "WDD")
+        c.row(0, SIZE - 1, (y + 1) % SIZE, "WDL")
+    for _ in range(4):                            # end joints, staggered
+        x, y = rnd(SIZE), (rnd(3) * 5 + 2) % SIZE
+        for dy in range(3):
+            _put(c, x, y + dy, "WDD")
+    for _ in range(8):                            # grain
+        _put(c, rnd(SIZE), rnd(SIZE), "WDD")
+    return c
+
+
 BASE = {
     "tile.grass": grass,
     "tile.grass_flower": grass_flower,
     "tile.grass_tall": grass_tall,
+    "tile.leaves": leaves,
     "tile.path": path,
+    "tile.gravel": gravel,
     "tile.dirt": dirt,
-    "tile.water": water,
+    "tile.field": field,
+    "tile.sand": sand,
+    "tile.cobble": cobble,
     "tile.stone": stone,
+    "tile.wood_floor": wood_floor,
+    "tile.shallow": shallow,
+    "tile.water": water,
 }
 TILE_ORDER = list(BASE)
 
 # How many seeded variants of each base to draw. A cell picks one by position,
 # so the field changes without anyone having authored it.
-VARIANTS = {"tile.grass": 3, "tile.grass_tall": 2, "tile.water": 2}
+VARIANTS = {"tile.grass": 3, "tile.grass_tall": 2, "tile.water": 2,
+            "tile.sand": 2, "tile.leaves": 2, "tile.wood_floor": 2}
 
 # Tiles drawn in several phases. The art pipeline emits every phase as its own
 # frame and the engine cycles them; the base frame is what the map resolves to.
-ANIMATED = {"tile.water": 3}
+ANIMATED = {"tile.water": 3, "tile.shallow": 2}
 ANIM_MS = 420
 
 
@@ -312,18 +444,64 @@ def _edge_stone(d, which, x, y, over, under, rnd, phase):
     return over
 
 
+def _edge_soft(d, which, x, y, over, under, rnd, edge):
+    """A boundary that crumbles rather than cuts: the outermost pixels are
+    dithered between the two, which is what sand, leaf litter and gravel do
+    where they meet turf."""
+    if d < -0.8:
+        return under
+    if d < 0.8:
+        return over if (x * 3 + y * 5) % 4 == 0 else under
+    if d < 2:
+        return edge if rnd(2) else over
+    return over
+
+
+def _edge_kerb(d, which, x, y, over, under, rnd, edge):
+    """A laid surface: a hard line, because someone put a kerb there."""
+    if d < 0:
+        return under
+    if d < 1:
+        return edge
+    return over
+
+
+def _edge_shallow(d, which, x, y, over, under, rnd, phase):
+    """A shoal, not a pond: the water thins into the bed it lies on rather
+    than breaking against a shore, so there is no foam line and no sand strip -
+    the strip would be sand drawn on sand and read as a painted border."""
+    if d < 0:
+        return under
+    if d < 1.6:                                   # the bed showing through
+        return under if (x * 3 + y * 5 + phase) % 3 else over
+    if d < 2.6:
+        return over if (x + y + phase) % 2 else "SA"
+    return over
+
+
 STYLE = {
     "tile.water": _edge_water,
+    "tile.shallow": _edge_shallow,
     "tile.path": lambda d, w, x, y, o, u, r, p: _edge_trodden(d, w, x, y, o, u, r, "PTD", "PTL"),
     "tile.dirt": lambda d, w, x, y, o, u, r, p: _edge_trodden(d, w, x, y, o, u, r, "DRD", "DRL"),
+    "tile.gravel": lambda d, w, x, y, o, u, r, p: _edge_soft(d, w, x, y, o, u, r, "STD"),
+    "tile.sand": lambda d, w, x, y, o, u, r, p: _edge_soft(d, w, x, y, o, u, r, "SAD"),
+    "tile.leaves": lambda d, w, x, y, o, u, r, p: _edge_soft(d, w, x, y, o, u, r, "LFD"),
+    "tile.field": lambda d, w, x, y, o, u, r, p: _edge_trodden(d, w, x, y, o, u, r, "DRD", "TH"),
+    "tile.cobble": lambda d, w, x, y, o, u, r, p: _edge_kerb(d, w, x, y, o, u, r, "STD"),
     "tile.stone": _edge_stone,
 }
 
 
-def blend(tid, mask, phase=0):
-    """The tile for `tid` with this neighbour arrangement, carved out of grass."""
+BLEND_OVER = "tile.grass"      # what a terrain carves out of, unless it says
+
+
+def blend(tid, mask, phase=0, under_tid=BLEND_OVER):
+    """The tile for `tid` with this neighbour arrangement, carved out of the
+    terrain it sits on - grass for most things, but a field is cut out of bare
+    earth and a shoal out of sand, which is what those edges look like."""
     over = frame(tid, 0, phase)
-    under = grass(sum(map(ord, tid)) % 3)
+    under = BASE[under_tid](sum(map(ord, tid)) % VARIANTS.get(under_tid, 1))
     style = STYLE[tid]
     c = Canvas(SIZE, SIZE)
     for y in range(SIZE):
