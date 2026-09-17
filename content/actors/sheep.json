@@ -9,7 +9,7 @@
     "graze"
   ],
   "speed": 16,
-  "blocks": false,
+  "blocks": true,
   "facing": "down",
   "interact": "dlg.sheep_baa",
   "wander": {

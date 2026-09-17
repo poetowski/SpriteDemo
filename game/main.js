@@ -116,6 +116,8 @@ class World extends Phaser.Scene {
 
     // --- entities from the map's placement list --------------------------
     this.solid = this.physics.add.staticGroup();
+    this.livestock = [];                  // solid things that move: see spawn()
+    this.penned = new Set();              // tiles solid animals have claimed
     this.interactables = [];
     this.wanderers = [];
     this.pickups = [];
@@ -164,6 +166,7 @@ class World extends Phaser.Scene {
 
     this.physics.add.collider(this.hero, layer);
     this.physics.add.collider(this.hero, this.solid);
+    this.physics.add.collider(this.hero, this.livestock);
     this.cameras.main.startFollow(this.hero, true, 0.16, 0.16);
 
     // --- input ------------------------------------------------------------
@@ -243,7 +246,9 @@ class World extends Phaser.Scene {
       this.interactables.push(pick);
       return sprite;
     }
-    if (def.blocks) {
+    if (def.blocks && !def.wander) {
+      // Static things claim their tiles once. Something that walks needs a
+      // body that travels with it instead - see below.
       for (const [dx, dy] of footprintOf(def)) {
         const q = this.tileCentre(tx + dx, ty + dy);
         const body = this.add.zone(q.x, q.y, this.ts, this.ts);
@@ -260,6 +265,20 @@ class World extends Phaser.Scene {
       this.interactables.push({ id: defId, def, sprite });
     }
     if (def.wander) {
+      // Wanderers are moved by their body rather than by setting x/y, so the
+      // body goes where the animal goes. A solid one is immovable: the player
+      // is pushed out of it, and the animal carries on grazing regardless.
+      this.physics.add.existing(sprite);
+      sprite.body.setSize(16, 8).setOffset(8, 21);   // feet, not the frame
+      sprite.body.setImmovable(!!def.blocks);
+      if (def.blocks) {
+        // Two immovable bodies do not push each other apart, so without a
+        // claim on the tile a pair of sheep would walk into one spot and stay
+        // there as one four-legged smear. They reserve where they stand and
+        // where they are heading instead.
+        this.livestock.push(sprite);
+        this.penned.add(`${tx},${ty}`);
+      }
       this.wanderers.push({
         def, sprite, home: [tx, ty], tile: [tx, ty],
         facing: def.facing || 'down', state: 'idle', timer: 0,
@@ -303,7 +322,12 @@ class World extends Phaser.Scene {
       if (Math.abs(nx - w.home[0]) > cfg.radius) continue;   // stay near home
       if (Math.abs(ny - w.home[1]) > cfg.radius) continue;
       if (!this.isWalkable(nx, ny)) continue;
+      if (w.def.blocks && this.penned.has(`${nx},${ny}`)) continue;   // taken
       const c = this.tileCentre(nx, ny);
+      if (w.def.blocks) {
+        this.penned.delete(`${w.tile[0]},${w.tile[1]}`);
+        this.penned.add(`${nx},${ny}`);
+      }
       w.tile = [nx, ny];
       w.goalX = c.x;
       w.goalY = c.y;
@@ -317,20 +341,21 @@ class World extends Phaser.Scene {
 
   stepWanderers(dt) {
     for (const w of this.wanderers) {
+      const body = w.sprite.body;
       if (w.state === 'walk') {
         const dx = w.goalX - w.sprite.x;
         const dy = w.goalY - w.sprite.y;
         const dist = Math.hypot(dx, dy);
-        const step = (w.def.speed * (w.bolt || 1) * dt) / 1000;
-        if (dist <= step || dist === 0) {
-          w.sprite.setPosition(w.goalX, w.goalY);
+        const speed = w.def.speed * (w.bolt || 1);
+        if (dist <= Math.max(1, (speed * dt) / 1000)) {
+          body.reset(w.goalX, w.goalY);      // land on the tile and stop dead
           w.bolt = 0;
           this.pickWanderAction(w);
         } else {
-          w.sprite.x += (dx / dist) * step;
-          w.sprite.y += (dy / dist) * step;
+          body.setVelocity((dx / dist) * speed, (dy / dist) * speed);
         }
       } else {
+        body.setVelocity(0, 0);
         w.timer -= dt;
         if (w.timer <= 0) this.pickWanderAction(w);
       }

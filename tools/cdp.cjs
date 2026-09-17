@@ -75,7 +75,11 @@ class Page {
   constructor(send, events) {
     this.send = send;
     this.events = events;
-    this.keyboard = { press: (k) => this.press(k) };
+    this.keyboard = {
+      press: (k) => this.press(k),
+      down: (k) => this.key('keyDown', k),      // held, for walking into things
+      up: (k) => this.key('keyUp', k),
+    };
   }
 
   on(event, cb) {
@@ -112,13 +116,18 @@ class Page {
 
   waitForTimeout(ms) { return sleep(ms); }
 
-  async press(name) {
+  async key(type, name) {
     const k = keyOf(name);
-    const base = { key: k.key, code: k.code,
-                   windowsVirtualKeyCode: k.vk, nativeVirtualKeyCode: k.vk };
-    await this.send('Input.dispatchKeyEvent', { type: 'keyDown', ...base });
+    await this.send('Input.dispatchKeyEvent', {
+      type, key: k.key, code: k.code,
+      windowsVirtualKeyCode: k.vk, nativeVirtualKeyCode: k.vk,
+    });
+  }
+
+  async press(name) {
+    await this.key('keyDown', name);
     await sleep(40);
-    await this.send('Input.dispatchKeyEvent', { type: 'keyUp', ...base });
+    await this.key('keyUp', name);
   }
 
   locator(selector) {

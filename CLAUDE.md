@@ -218,6 +218,15 @@ body on each.
 (`biped` / `quadruped`), `states`, `speed`, `blocks`, `interact` and `wander`
 settings are all content. No JS changes.
 
+`blocks` means something different for something that walks. A static thing
+gets a still body on each footprint tile and its tiles go into the blocked set
+once. A `wander`er gets a single immovable body that travels with it, and
+claims no tile in that set - it would be standing on its own wall and could
+never leave the tile it spawned on. Because two immovable bodies do not push
+each other apart, solid animals also reserve the tile they are heading for, so
+a pair of sheep cannot walk into one spot and fuse. `node tools/shot.cjs
+--bump` walks the hero into one and checks it is stopped.
+
 **An item** is a 16x16 icon function in `tools/gen/items.py` (added to
 `ITEMS`), a file in `content/items/` with `kind` `material`, `weapon` or
 `armor`, and a line in the map. A weapon also carries a positive integer

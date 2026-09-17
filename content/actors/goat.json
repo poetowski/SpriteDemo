@@ -9,7 +9,7 @@
     "graze"
   ],
   "speed": 20,
-  "blocks": false,
+  "blocks": true,
   "facing": "down",
   "interact": "dlg.goat_bleat",
   "wander": {

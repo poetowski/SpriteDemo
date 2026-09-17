@@ -6,6 +6,7 @@
  *   node tools/shot.cjs --talk --tile 37,37      walk up to someone and press E
  *   node tools/shot.cjs --gather --tile 34,37    stand by an item, press E, check the bag
  *   node tools/shot.cjs --give item.sword --slash   arm the hero and swing
+ *   node tools/shot.cjs --bump                   walk into an animal, check it blocks
  *   node tools/shot.cjs --out /tmp/a.png --wait 1500
  *
  * It loads game/index.html (vendored Phaser - no network), so what is captured
@@ -218,6 +219,36 @@ const BOOTED = () => !!(window.game && window.game.scene
     const moved = await page.evaluate(() => window.game.scene.scenes[0].cursor);
     checks.push(['cursor moves in the bag', moved === 1, `cursor=${moved}`]);
   }
+  if (flag('--bump')) {
+    // Walk the hero into a standing animal and check it is stopped. A solid
+    // thing that moves is the one kind of collision a static body cannot do,
+    // so it is worth proving rather than assuming.
+    const setup = await page.evaluate(() => {
+      const s = window.game.scene.scenes[0];
+      const w = s.wanderers.find((a) => a.def.blocks);
+      if (!w) return null;
+      w.state = 'idle';                       // hold still for the experiment
+      w.timer = 99999;
+      w.sprite.body.setVelocity(0, 0);
+      s.hero.setPosition(w.sprite.x - s.ts * 1.5, w.sprite.y);
+      return { def: w.def.sprite, gap: w.sprite.x - s.hero.x };
+    });
+    if (setup) {
+      await page.keyboard.down('ArrowRight');
+      await page.waitForTimeout(900);
+      await page.keyboard.up('ArrowRight');
+      const after = await page.evaluate(() => {
+        const s = window.game.scene.scenes[0];
+        const w = s.wanderers.find((a) => a.def.blocks);
+        return { gap: w.sprite.x - s.hero.x, heroX: s.hero.x, animalX: w.sprite.x };
+      });
+      checks.push([`walking into a ${setup.def.split('.')[1]} is blocked`,
+        after.gap > 8, `gap closed from ${setup.gap.toFixed(1)} to ${after.gap.toFixed(1)}`]);
+    } else {
+      checks.push(['a solid animal exists to walk into', false, 'none are blocks:true']);
+    }
+  }
+
   let shotTaken = false;
   if (SLASH) {
     await page.keyboard.press('Space');
