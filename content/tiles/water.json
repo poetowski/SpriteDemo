@@ -2,5 +2,6 @@
   "id": "tile.water",
   "sprite": "tile.water",
   "walkable": false,
-  "material": "water"
+  "material": "water",
+  "blend": true
 }

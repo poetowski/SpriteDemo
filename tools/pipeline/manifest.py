@@ -28,7 +28,7 @@ def load_content(root):
     return out
 
 
-def build(content, atlases, sprites, anims):
+def build(content, atlases, sprites, anims, tileset=None, grids=None):
     """Assemble the manifest dict the engine consumes."""
     tiles = {}
     for i, (tid, defn) in enumerate(sorted(content["tiles"].items())):
@@ -37,7 +37,15 @@ def build(content, atlases, sprites, anims):
             "index": rec["index"],
             "walkable": bool(defn.get("walkable", True)),
             "material": defn.get("material", "none"),
+            "family": defn.get("family", tid),
+            "variants": (tileset or {}).get("variants", {}).get(tid, [rec["index"]]),
         }
+    maps = {}
+    for mid, defn in content["maps"].items():
+        entry = _strip(defn)
+        if grids and mid in grids:
+            entry["grid"] = grids[mid]        # resolved by pipeline/autotile
+        maps[mid] = entry
     return {
         "manifest_version": 1,
         "atlases": {a.name: a.meta() for a in atlases},
@@ -48,7 +56,8 @@ def build(content, atlases, sprites, anims):
         "actors": {k: _strip(v) for k, v in content["actors"].items()},
         "items": {k: _strip(v) for k, v in content["items"].items()},
         "dialogue": {k: _strip(v) for k, v in content["dialogue"].items()},
-        "maps": {k: _strip(v) for k, v in content["maps"].items()},
+        "tileset": tileset or {},
+        "maps": maps,
     }
 
 

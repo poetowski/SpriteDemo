@@ -74,15 +74,17 @@ class World extends Phaser.Scene {
     }
 
     // --- ground ---------------------------------------------------------
-    const grid = map.ground.map((row) =>
+    // The build resolves each cell to a variant or a transition tile; the
+    // legend fallback keeps an unresolved map drawable.
+    const grid = map.grid || map.ground.map((row) =>
       [...row].map((ch) => M.tiles[map.legend[ch]].index));
     const tilemap = this.make.tilemap({
       data: grid, tileWidth: this.ts, tileHeight: this.ts,
     });
     const layer = tilemap.createLayer(0, tilemap.addTilesetImage('tileset'), 0, 0);
     layer.setDepth(-1000);
-    const blocking = Object.values(M.tiles)
-      .filter((t) => !t.walkable).map((t) => t.index);
+    const blocking = (M.tileset && M.tileset.blocking) ||
+      Object.values(M.tiles).filter((t) => !t.walkable).map((t) => t.index);
     layer.setCollision(blocking);
 
     const worldW = cols * this.ts;

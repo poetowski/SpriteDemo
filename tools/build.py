@@ -30,7 +30,7 @@ from gen import (actor, animal, fx as fx_gen, items as items_gen,  # noqa: E402
                  props as props_gen, tiles as tiles_gen)
 from gen.palette import PALETTE, VARIANTS, resolve                   # noqa: E402
 import make_page                                                     # noqa: E402
-from pipeline import aseprite, manifest as manifest_mod, validate    # noqa: E402
+from pipeline import aseprite, autotile, manifest as manifest_mod, validate  # noqa: E402
 from pipeline.atlas import Atlas                                     # noqa: E402
 
 BUILD = os.path.join(ROOT, "build")
@@ -44,7 +44,7 @@ RIGS = {"biped": actor, "quadruped": animal}
 
 
 # ------------------------------------------------------------- generation ---
-def build_atlases(sprite_rigs):
+def build_atlases(sprite_rigs, content):
     """sprite_rigs: {sprite_key: (rig_name, variant)}."""
     actors = Atlas("actors", actor.FRAME, actor.FRAME, 6)
     anims = {}
@@ -61,11 +61,34 @@ def build_atlases(sprite_rigs):
                                     "loop": loops})
             anims[base]["frames"].append(idx)
 
-    tiles = Atlas("tiles", tiles_gen.SIZE, tiles_gen.SIZE, 8)
+    # Tiles: every base in each of its seeded variants, then - for tiles the
+    # content marks `blend` - the 47 transition arrangements, so the map can be
+    # authored as plain terrain and the edges resolved by pipeline/autotile.
+    tiles = Atlas("tiles", tiles_gen.SIZE, tiles_gen.SIZE, 16)
     tile_canvases = {}
-    for tid, canvas in tiles_gen.build_tiles():
-        tiles.add(tid, [canvas], (0, 0))
-        tile_canvases[tid] = canvas
+    tile_index = {}                       # tid -> {"base": [...], "masks": {...}}
+    for tid in tiles_gen.TILE_ORDER:
+        defn = content["tiles"].get(tid)
+        if defn is None:
+            continue                      # drawn but not defined: not shipped
+        entry = {"base": [], "masks": {}}
+        for v in range(tiles_gen.VARIANTS.get(tid, 1)):
+            key = tid if v == 0 else f"{tid}/v{v}"
+            canvas = tiles_gen.BASE[tid](v)
+            entry["base"].append(tiles.add(key, [canvas], (0, 0)))
+            tile_canvases[key] = canvas
+        if defn.get("blend"):
+            if tid not in tiles_gen.STYLE:
+                sys.exit(f"[tile-blend] {defn['_file']}: blend is set but "
+                         f"tools/gen/tiles.py has no edge style for {tid!r}")
+            for mask in tiles_gen.ALL_MASKS:
+                if mask == tiles_gen.FULL:
+                    continue
+                key = f"{tid}/m{mask}"
+                canvas = tiles_gen.blend(tid, mask)
+                entry["masks"][mask] = tiles.add(key, [canvas], (0, 0))
+                tile_canvases[key] = canvas
+        tile_index[tid] = entry
 
     # ART SCALE. Rigs redrawn natively at the 2x standard pass their canvases
     # through untouched; the ones still waiting are blown up here, in one
@@ -105,7 +128,7 @@ def build_atlases(sprite_rigs):
     sprites = {}
     for a in sheets:
         sprites.update(a.sprites())
-    return (sheets, sprites, anims, tile_canvases,
+    return (tile_index, sheets, sprites, anims, tile_canvases,
             {"props": prop_canvases, "props_big": big_canvases,
              "items": item_canvases, "fx": fx_canvases}, by_sprite)
 
@@ -232,9 +255,26 @@ def assemble():
                 key = d["sprite"] + (f"_{held}" if held else "") + (f"_{worn}" if worn else "")
                 sprite_rigs[key] = (rig_name, variant, d.get("states"), held, worn)
                 d["looks"][f"{wid}|{aid}"] = key
-    sheets, sprites, anims, tile_canvases, prop_canvases, by_sprite = \
-        build_atlases(sprite_rigs)
-    man = manifest_mod.build(content, sheets, sprites, anims)
+    tile_index, sheets, sprites, anims, tile_canvases, prop_canvases, by_sprite = \
+        build_atlases(sprite_rigs, content)
+
+    def lookup(tid, x, y, mask):
+        entry = tile_index[tid]
+        if mask != tiles_gen.FULL and entry["masks"]:
+            return entry["masks"][mask]
+        return entry["base"][autotile.pick_variant(x, y, len(entry["base"]))]
+
+    grids = {mid: autotile.resolve(m, content["tiles"], lookup)
+             for mid, m in content["maps"].items()}
+    blocking = sorted(i for tid, e in tile_index.items()
+                      if not content["tiles"][tid].get("walkable", True)
+                      for i in list(e["base"]) + list(e["masks"].values()))
+    tileset = {"blocking": blocking,
+               "variants": {tid: e["base"] for tid, e in tile_index.items()},
+               "transitions": {tid: len(e["masks"]) for tid, e in tile_index.items()
+                               if e["masks"]}}
+    man = manifest_mod.build(content, sheets, sprites, anims,
+                             tileset=tileset, grids=grids)
     return content, sprite_rigs, sheets, man, tile_canvases, prop_canvases, by_sprite
 
 

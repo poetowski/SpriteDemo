@@ -176,6 +176,21 @@ def run(content, man, tile_canvases):
     passed.append("map-overlap")
     passed.append("map-spawn")
 
+    # 6a - the resolved grid: rectangular, and every index a real tile
+    count = man["atlases"]["tiles"]["count"]
+    for mid, m in man["maps"].items():
+        grid = m.get("grid")
+        if grid is None:
+            _fail("map-grid", f"{mid}: no resolved grid")
+        w, h = m["size"]
+        if len(grid) != h or any(len(r) != w for r in grid):
+            _fail("map-grid", f"{mid}: grid is not {w}x{h}")
+        for row in grid:
+            for i in row:
+                if not (0 <= i < count):
+                    _fail("map-grid", f"{mid}: tile index {i} outside the atlas")
+    passed.append("map-grid")
+
     # 6b - a playable actor carries a whole stat block, or the sheet shows
     #      blanks that only surface when someone presses C.
     for cid, defn in content["actors"].items():
