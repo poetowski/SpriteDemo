@@ -196,9 +196,18 @@ class World extends Phaser.Scene {
     // they lead, and where you come in at the other end. Arriving next to the
     // way back must not throw you straight through it, so exits stay locked
     // until the hero has stepped clear of every one of them.
+    //
+    // A doorway one tile wide sends everyone to the same "spawn". A doorway a
+    // whole edge wide pairs each of its tiles with its own arrival in
+    // "spawns", so walking west off one map comes out at the matching row of
+    // the next - cross at the same height you left at, and the seam between
+    // two maps stops feeling like a door and starts feeling like more country.
     this.exits = new Map();
     for (const ex of map.exits || []) {
-      for (const t of ex.tiles) this.exits.set(`${t[0]},${t[1]}`, ex);
+      ex.tiles.forEach((t, i) => {
+        const spawn = (ex.spawns && ex.spawns[i]) || ex.spawn;
+        this.exits.set(`${t[0]},${t[1]}`, { to: ex.to, spawn, facing: ex.facing });
+      });
     }
     this.exitLocked = true;
     this.travelling = false;

@@ -254,20 +254,36 @@ it is - the gates can only check branches they understand.
 no engine change, like everything else here:
 
 ```json
-"exits": [{ "tiles": [[0, 19], [1, 19]], "to": "map.wilderness2",
-            "spawn": [30, 30], "facing": "left" }]
+"exits": [{ "tiles":  [[0, 18], [0, 19]], "to": "map.wilderness2",
+            "spawns": [[30, 30], [30, 31]], "facing": "left" }]
 ```
 
-`tiles` are the doorway, `spawn` is where you come in on the other side. The
+`tiles` are the doorway. A door into a building gives one `spawn` and everyone
+arrives there; an edge between two maps gives `spawns`, one per doorway tile,
+paired by position - **step off the west edge at a given height and come out at
+the same height on the east edge of the next map.** That is what makes a seam
+read as more country rather than as a door, and it is worth the extra data:
+funnelling a ten-tile edge through a single arrival tile is exactly what made
+the first version feel wrong. Wilderness I and II are joined along a band ten
+tiles deep measured *up from the bottom of each*, so their bottom rows align
+even though one map is 20 tall and the other 32. Arrivals sit one tile inside
+the far edge, never on the far map's own doorway column. The
 crossing **restarts the scene**, so anything the player must keep - bag, gear,
 level, xp, flags - is carried across explicitly in `checkExit()`; a field added
 to the scene and not to that list is silently lost at the map edge. Write the
 way back as an `exits` entry on the other map. Two rules the `map-exit` gate
-enforces, both of which are bugs you would otherwise find by playing: an
-arrival tile has to be standable (in bounds, walkable, not inside a solid), and
-it must not itself be an exit - landing on the way back bounces the player
-straight through it, which looks like the two maps flickering. `node
-tools/shot.cjs --cross` walks it for real and checks the bag arrives too.
+enforces on *every* arrival, both of which are bugs you would otherwise find by
+playing: an arrival tile has to be standable (in bounds, walkable, not inside a
+solid), and it must not itself be an exit - landing on the way back bounces the
+player straight through it, which looks like the two maps flickering. `node
+tools/shot.cjs --cross` walks it for real, crossing at the middle of the band
+where an off-by-one in the pairing would show, and checks the bag arrived and
+the height was kept.
+
+**Draw the road up to the seam, not into the corner.** A track that runs out
+through the very corner tile reads as having nowhere left to go; ending it a
+couple of rows short, at the height the other map's road meets its own edge,
+is what makes the two halves look like one road.
 
 **A map** is ASCII rows plus a legend. Roads must stay clear - scenery placed on
 a path tile can wall off the only route across the world.

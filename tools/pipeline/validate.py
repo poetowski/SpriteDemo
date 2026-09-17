@@ -207,19 +207,30 @@ def run(content, man, tile_canvases=None):
                 why = _standable(m, mid, tx, ty)
                 if why:
                     _fail("map-exit", f"{where}: doorway tile [{tx}, {ty}] is {why}")
-            spawn = ex.get("spawn")
-            if not spawn:
-                _fail("map-exit", f"{where} says where it goes but not where "
-                                  f"you come in (\"spawn\")")
-            why = _standable(dest, dest_id, spawn[0], spawn[1])
-            if why:
-                _fail("map-exit", f"{where}: arrives at {spawn} on {dest_id}, "
-                                  f"which is {why}")
+            # One arrival for the whole doorway, or one per tile. An edge-wide
+            # crossing uses the second so the player keeps their place along
+            # the edge, and then every one of those arrivals has to be checked:
+            # it is the row nobody walks through in testing that is off the map.
+            spawns = ex.get("spawns")
+            if spawns is None:
+                if not ex.get("spawn"):
+                    _fail("map-exit", f"{where} says where it goes but not "
+                                      f"where you come in (\"spawn\")")
+                spawns = [ex["spawn"]] * len(tiles)
+            elif len(spawns) != len(tiles):
+                _fail("map-exit", f"{where} has {len(tiles)} doorway tiles but "
+                                  f"{len(spawns)} arrivals; they pair up by "
+                                  f"position, so there must be one each")
             back = {tuple(t) for b in (dest.get("exits") or []) for t in b["tiles"]}
-            if tuple(spawn) in back:
-                _fail("map-exit", f"{where}: arrives at {spawn} on {dest_id}, "
-                                  f"which is itself an exit - the player would "
-                                  f"be sent straight back")
+            for door, spawn in zip(tiles, spawns):
+                why = _standable(dest, dest_id, spawn[0], spawn[1])
+                if why:
+                    _fail("map-exit", f"{where}: {door} arrives at {spawn} on "
+                                      f"{dest_id}, which is {why}")
+                if tuple(spawn) in back:
+                    _fail("map-exit", f"{where}: {door} arrives at {spawn} on "
+                                      f"{dest_id}, which is itself an exit - "
+                                      f"the player would be sent straight back")
     passed.append("map-exit")
 
     # 6a - the resolved grid: rectangular, and every index a real tile

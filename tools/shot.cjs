@@ -280,10 +280,15 @@ const BOOTED = () => !!(window.game && window.game.scene
       const s = window.game.scene.scenes[0];
       const ex = (s.map.exits || [])[0];
       if (!ex) return null;
+      // Cross in the middle of the band rather than at an end: an off-by-one
+      // in the pairing shows up there and nowhere else.
+      const door = ex.tiles[Math.floor(ex.tiles.length / 2)];
       s.addItem('item.axe');
-      s.hero.setPosition(...Object.values(s.tileCentre(ex.tiles[0][0], ex.tiles[0][1])));
+      const p = s.tileCentre(door[0], door[1]);
+      s.hero.setPosition(p.x, p.y);
       s.exitLocked = false;                   // as if we had walked onto it
-      return { from: s.mapId, to: ex.to, bag: s.inventory.filter(Boolean).length };
+      return { from: s.mapId, to: ex.to, bag: s.inventory.filter(Boolean).length,
+               door, up: s.map.size[1] - 1 - door[1] };
     });
     if (before) {
       await page.waitForFunction(
@@ -291,14 +296,18 @@ const BOOTED = () => !!(window.game && window.game.scene
         before.to, { timeout: 10000 }).catch(() => {});
       const after = await page.evaluate(() => {
         const s = window.game.scene.scenes[0];
-        return { map: s.mapId, bag: s.inventory.filter(Boolean).length,
-                 tile: s.heroTile(), onExit: !!s.exits.get(s.heroTile().join(',')) };
+        const t = s.heroTile();
+        return { map: s.mapId, bag: s.inventory.filter(Boolean).length, tile: t,
+                 up: s.map.size[1] - 1 - t[1], onExit: !!s.exits.get(t.join(',')) };
       });
       checks.push([`${before.from} leads to ${before.to}`,
         after.map === before.to, after.map]);
       checks.push(['the bag came across',
         after.bag === before.bag, `${before.bag} -> ${after.bag}`]);
-      checks.push(['and you do not land on the way back',
+      checks.push(['you come out level with where you left',
+        after.up === before.up,
+        `${before.up} up from the bottom -> ${after.up}`]);
+      checks.push(['and not on the way back',
         !after.onExit, `arrived at ${after.tile}`]);
     } else {
       checks.push(['the map has an exit to cross', false, 'none authored']);
