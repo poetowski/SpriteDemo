@@ -7,6 +7,7 @@
  *   node tools/shot.cjs --gather --tile 34,37    stand by an item, press E, check the bag
  *   node tools/shot.cjs --give item.sword --slash   arm the hero and swing
  *   node tools/shot.cjs --bump                   walk into an animal, check it blocks
+ *   node tools/shot.cjs --spawn npc.troll        put one next to the hero and look
  *   node tools/shot.cjs --out /tmp/a.png --wait 1500
  *
  * It loads game/index.html (vendored Phaser - no network), so what is captured
@@ -45,6 +46,10 @@ const MID = flag('--mid');                // with --slash: photograph the moment
 const CHOOSE = args.includes('--choose')  // with --talk: take the nth reply (1-based)
   ? Number(value('--choose', '1')) - 1 : null;
 const TILE = value('--tile', null);
+// Something the maps do not carry yet. New art is drawn before it is placed,
+// and a creature nobody has put down anywhere still has to be looked at in
+// the real game rather than on a contact sheet.
+const SPAWN = value('--spawn', null);
 const ON = value('--on', null);           // start on a map other than the default
 const WAIT = Number(value('--wait', MAP_MODE ? 1200 : 900));
 const OUT = path.resolve(ROOT, value('--out', MAP_MODE ? 'build/map.png' : 'build/shot.png'));
@@ -112,6 +117,32 @@ const BOOTED = () => !!(window.game && window.game.scene
   if (GIVE) {
     await page.evaluate((id) => window.game.scene.scenes[0].addItem(id), GIVE);
   }
+  let spawnedAt = null;
+  if (SPAWN) {
+    // The first spot near the hero that the thing actually fits on, footprint
+    // and all - the same question the editor asks before it lets you place it.
+    // Nothing is returned but the tile: handing back what spawn() returns asks
+    // the browser to serialise the whole scene graph.
+    spawnedAt = await page.evaluate((id) => {
+      const s = window.game.scene.scenes[0];
+      const m = window.ART.manifest;
+      const def = m.actors[id] || m.props[id] || m.items[id];
+      if (!def) return null;
+      const fp = (def.footprint && def.footprint.length) ? def.footprint : [[0, 0]];
+      const [hx, hy] = s.heroTile();
+      for (const [dx, dy] of [[3, 0], [-4, 0], [0, 3], [0, -3], [3, 3],
+                              [-4, 3], [5, 0], [0, 5], [-4, -3]]) {
+        const tx = hx + dx;
+        const ty = hy + dy;
+        if (fp.every(([ox, oy]) => s.isWalkable(tx + ox, ty + oy)
+                                && !s.penned.has(`${tx + ox},${ty + oy}`))) {
+          s.spawn(id, tx, ty);
+          return [tx, ty];
+        }
+      }
+      return null;
+    }, SPAWN);
+  }
 
   await page.waitForTimeout(WAIT);
 
@@ -172,8 +203,9 @@ const BOOTED = () => !!(window.game && window.game.scene
     ['no console errors', problems.length === 0, problems.join(' | ')],
     ['world matches the map', report.worldBounds[0] === cols * report.tileSize
       && report.worldBounds[1] === rows * report.tileSize, JSON.stringify(report.worldBounds)],
-    ['every entity spawned', report.sprites === report.entities + 1,
-      `${report.sprites} sprites vs ${report.entities} entities + hero`],
+    ['every entity spawned', report.sprites === report.entities + 1 + (SPAWN ? 1 : 0),
+      `${report.sprites} sprites vs ${report.entities} entities + hero`
+      + (SPAWN ? ` + ${SPAWN}` : '')],
     ['every item lying in the world', report.pickups === report.itemEntities,
       `${report.pickups} pickups vs ${report.itemEntities} placed`],
     ['collision tiles claimed', report.blocked >= report.staticBlockers,
@@ -187,6 +219,10 @@ const BOOTED = () => !!(window.game && window.game.scene
       && report.heroSprite !== 'actor.hero';
     checks.push(['gear equipped and drawn on the hero', on,
       `weapon=${report.weapon} armor=${report.armor} sprite=${report.heroSprite}`]);
+  }
+  if (SPAWN) {
+    checks.push([`${SPAWN} stands next to the hero`, !!spawnedAt,
+      'no room near the hero, or no such definition']);
   }
 
   if (TALK) {
@@ -399,7 +435,16 @@ const BOOTED = () => !!(window.game && window.game.scene
       s.hero.body.reset(p.x - s.ts * 2.5, p.y);        // just inside its sight
       s.cameras.main.centerOn(s.hero.x, s.hero.y);
       s.invuln = 0;
+      // What it plays while it closes in, sampled rather than read once at the
+      // end: a creature with an attack state has to be seen throwing the blow,
+      // and the swing is over long before the checks below run.
+      window.__seen = new Set();
+      s.time.addEvent({ delay: 60, loop: true, callback: () => {
+        const a = w.sprite.anims.currentAnim;
+        if (a) window.__seen.add(a.key);
+      } });
       return { def: w.def.sprite, hp: s.hp,
+               attack: (w.def.states || []).includes('attack'),
                gap: Phaser.Math.Distance.Between(s.hero.x, s.hero.y,
                                                  w.sprite.x, w.sprite.y) };
     });
@@ -420,6 +465,11 @@ const BOOTED = () => !!(window.game && window.game.scene
       checks.push(['and goring the hero costs hp',
         !after.gone && after.hp < before.hp,
         after.gone ? 'n/a' : `${before.hp} -> ${after.hp}`]);
+      if (before.attack) {
+        const seen = await page.evaluate(() => [...(window.__seen || [])]);
+        checks.push(['and the blow is thrown, not just dealt',
+          seen.some((k) => k.includes('/attack/')), seen.join(' ') || 'nothing played']);
+      }
 
       // Now walk away. It must break off rather than follow across the map,
       // go home at its own pace, and end up wandering again - a hostile that

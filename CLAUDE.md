@@ -63,6 +63,7 @@ node tools/shot.cjs --map    # 3. and shoot the whole world
    node tools/shot.cjs --on map.wilderness2 # start on another map, not the default
    node tools/shot.cjs --cross              # walk out of the map, check the bag arrives
    node tools/shot.cjs --on map.wilderness3 --boar   # stand still, get charged
+   node tools/shot.cjs --spawn npc.troll     # something no map carries yet
    ```
 
 3. **Publish.** `game/page.html` is the whole game in one file. Publish it with
@@ -176,6 +177,7 @@ editor in a headless browser and checks all of the above
 |---|---|---|---|
 | `tiles` | 16x16 | - | `gen/tiles.py` |
 | `actors` | 32x32 | `(16, 29)` | `gen/actor.py`, `gen/animal.py` |
+| `actors_huge` | 64x64 | `(24, 61)` | `gen/giant.py` |
 | `props` | 32x32 | `(16, 29)` | `gen/props.py` |
 | `props_big` | 48x48 | `(24, 45)` | `gen/props.py` structures |
 | `items` | 16x16 | `(8, 14)` | `gen/items.py` |
@@ -249,6 +251,7 @@ Ground is authored as plain terrain and drawn with variation and edges:
 tools/gen/palette.py   the one palette; a character variant is a key remap
 tools/gen/actor.py     the biped rig      (32x32 frame, anchor [16, 29])
 tools/gen/animal.py    the quadruped rig  (same frame, same contract)
+tools/gen/giant.py     the giant rig      (64x64 frame, anchor [24, 61])
 tools/gen/props.py     props 32x32, structures 48x48 (anchor [24, 45])
 tools/gen/tiles.py     16x16 ground tiles, variants and the blob transitions
 tools/art.py           the art pipeline: draws everything -> assets/
@@ -287,8 +290,26 @@ walkable ground. Nothing else needs wiring: the editor loads whatever atlases
 the manifest lists, and `art-scale` accepts a new one at any multiple of 16.
 
 **An NPC** is a file in `content/actors/` plus a line in the map. Its `rig`
-(`biped` / `quadruped`), `states`, `speed`, `blocks`, `interact` and `wander`
-settings are all content. No JS changes.
+(`biped` / `quadruped` / `giant`), `states`, `speed`, `blocks`, `interact` and
+`wander` settings are all content. No JS changes.
+
+**A monster bigger than a person** uses the `giant` rig - 48px tall and 32
+wide, drawn in a 64x64 frame on its own sheet, because a creature three tiles
+tall does not fit in the frame the people and the livestock share. A rig names
+the sheet it belongs on (`ATLAS`, `COLS`) and `art.py` makes one sheet per
+actor frame size, so a fourth rig at a fourth size is two constants and an
+entry in `RIGS`. The anchor sits at a tile centre (x=24) like the 64x64 props,
+so the art covers tile offsets 0 and +1 and the definition says so with
+`"footprint": [[0, 0], [1, 0]]`. Nothing else needs wiring: the editor loads
+whatever atlases the manifest lists, the engine reads the frame size and anchor
+off the atlas, and a wanderer's collision body is derived from its footprint -
+`npc.troll` is two tiles of body, not the sheep's one.
+
+**Something that swings rather than just touching you** declares an `attack`
+state, which the rig draws and the engine plays when a hostile lands a blow;
+it plants its feet for as long as the swing runs. An actor without one still
+hurts on contact, which is what the boar does. The animation is content: no
+list of creatures that punch exists anywhere in the engine.
 
 **Putting the hero somewhere, in a test:** `body.reset(x, y)`, never
 `sprite.setPosition(x, y)`. A dynamic Arcade body writes its own position back

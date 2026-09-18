@@ -10,6 +10,7 @@ PALETTE = {
     "OL":  ((0x24, 0x1a, 0x2e, 255), "outline"),
     "SK":  ((0xf2, 0xc2, 0x92, 255), "skin"),
     "SKS": ((0xcc, 0x94, 0x64, 255), "skin shade"),
+    "SKL": ((0xff, 0xdd, 0xb4, 255), "skin light"),
     "HR":  ((0x5c, 0x3a, 0x24, 255), "hair"),
     "HRL": ((0x82, 0x55, 0x35, 255), "hair light"),
     "TU":  ((0x4f, 0xa5, 0x55, 255), "tunic"),
@@ -77,6 +78,10 @@ PALETTE = {
     "AH":  ((0x4a, 0x41, 0x3a, 255), "animal hoof"),
     "HN":  ((0xcd, 0xbb, 0x96, 255), "horn"),
     "HNS": ((0xa3, 0x90, 0x6d, 255), "horn shade"),
+    # Gas, and the only translucent colours besides the ground shadow: a cloud
+    # you cannot see the grass through is a balloon, not a smell.
+    "GS":  ((0xc8, 0xbe, 0x3a, 165), "gas"),
+    "GSL": ((0xe9, 0xe1, 0x7c, 120), "gas light"),
 }
 
 # Palette swaps. The frames are identical pixels; only the lookup changes, so a
@@ -111,6 +116,21 @@ VARIANTS = {
         "AF":  (0x2e, 0x24, 0x1d, 255),
         "AFS": (0x20, 0x19, 0x14, 255),
         "AH":  (0x1d, 0x17, 0x12, 255),
+    },
+    "troll": {
+        # Woodland colours: moss and bark, so a troll standing still among the
+        # trees is nearly one of them until it moves. The gas keys are left
+        # alone - the yellow is the only thing on him that is not the wood.
+        "SK":  (0x5a, 0x73, 0x38, 255),   # mossy hide
+        "SKS": (0x3c, 0x51, 0x25, 255),
+        "SKL": (0x7a, 0x93, 0x4e, 255),
+        "TU":  (0x66, 0x47, 0x29, 255),   # a hide slung round the waist
+        "TUS": (0x46, 0x2f, 0x1a, 255),
+        "TUL": (0x8a, 0x64, 0x3c, 255),
+        "BT":  (0x2b, 0x23, 0x1a, 255),   # near-black: straps, nails, the maw
+        "BTS": (0x1a, 0x15, 0x10, 255),
+        "HN":  (0xb5, 0xa6, 0x7c, 255),   # tusks, grubbier than a goat's horn
+        "HNS": (0x8d, 0x7f, 0x5c, 255),
     },
 }
 

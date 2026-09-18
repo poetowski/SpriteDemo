@@ -98,6 +98,9 @@ function dropScratch() {
     entities: state.map.entities.length,
     solidSwatches: document.querySelectorAll('#pal-objects .swatch.solid').length,
     groundSwatches: document.querySelectorAll('#pal-objects .swatch.ground').length,
+    actors: Object.keys(state.M.actors).length,
+    actorSwatches: [...document.querySelectorAll('#pal-objects .swatch')]
+      .filter((el) => state.M.actors[el.dataset.id]).length,
   }));
   const [w, h] = boot.size;
   check('map opened and canvas sized',
@@ -107,6 +110,11 @@ function dropScratch() {
         boot.tiles === boot.definedTiles && boot.tiles > 0,
         `${boot.tiles} swatches for ${boot.definedTiles} terrains`);
   check('object palette built', boot.objects > 40, `${boot.objects} swatches`);
+  // A creature that is drawn and defined but missing from the palette cannot
+  // be placed at all, and nothing else in the build would say so.
+  check('every actor is offered in the palette',
+        boot.actorSwatches === boot.actors && boot.actors > 0,
+        `${boot.actorSwatches} swatches for ${boot.actors} actors`);
   check('solid and ground objects both offered',
         boot.solidSwatches > 0 && boot.groundSwatches > 0,
         `${boot.solidSwatches} solid, ${boot.groundSwatches} walkable`);

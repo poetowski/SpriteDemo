@@ -97,12 +97,14 @@ silhouette, not drawn.
 so `VARIANTS` in `tools/gen/palette.py` turns one rig into many characters —
 Arne the smith is the hero's frames with a rust apron and grey hair.
 
-**Two rigs, one contract.** `tools/gen/actor.py` is the biped; `animal.py` is
-the quadruped (walk, idle and a head-down `graze`). Both use a 32×32 frame, the
-same ground line and the same `build_frames()` shape, so the atlas, the anchors
-and the depth sorting treat them identically. A goat is the sheep rig with horns,
-a beard, a smooth back and a tan palette — which species an actor uses is a
-`"rig"` field in `content/`, not a pipeline change.
+**Three rigs, one contract.** `tools/gen/actor.py` is the biped; `animal.py` is
+the quadruped (walk, idle and a head-down `graze`); `giant.py` is the monster —
+three tiles tall, two wide, with a slow `attack` its own frames draw. All three
+share the same ground line, the same anchor rule and the same `build_frames()`
+shape, so the atlas, the anchors and the depth sorting treat them identically.
+A goat is the sheep rig with horns, a beard, a smooth back and a tan palette —
+which species an actor uses is a `"rig"` field in `content/`, not a pipeline
+change.
 
 **Anchors, not offsets.** Every sprite exports the pixel that sits on a map tile
 (`[16, 29]` — between the feet). The game sets sprite origin from it, so art of
@@ -110,6 +112,8 @@ any size lines up and sorting by `sprite.y` is correct depth sorting. That is
 what lets structures use a bigger frame: cottages, the barn, the tower and the
 windmill are drawn 48×48 on their own atlas with anchor `[24, 45]`, and the
 scene needs no special case for them — it reads the frame size off the atlas.
+The troll is the same trick applied to something that walks: 64×64 on a sheet
+of its own, anchored at `[24, 61]` so it stands on two tiles.
 
 **Light comes from the silhouette too.** `_shade()` in `tools/gen/props.py`
 lights the pixels of a mass that face up-left and shades the ones that face

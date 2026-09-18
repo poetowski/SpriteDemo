@@ -1,0 +1,45 @@
+{
+  "id": "npc.troll",
+  "sprite": "actor.troll",
+  "rig": "giant",
+  "name": "Troll",
+  "states": [
+    "walk",
+    "idle",
+    "attack"
+  ],
+  "speed": 11,
+  "blocks": true,
+  "facing": "down",
+  "footprint": [
+    [
+      0,
+      0
+    ],
+    [
+      1,
+      0
+    ]
+  ],
+  "wander": {
+    "radius": 3,
+    "idle_ms": [
+      1800,
+      4200
+    ],
+    "graze_ms": [
+      2000,
+      4000
+    ],
+    "graze_chance": 0
+  },
+  "hostile": {
+    "sight": 74,
+    "lose": 150,
+    "charge_speed": 34,
+    "damage": 7,
+    "reach": 26,
+    "cooldown_ms": 2200,
+    "leash": 96
+  }
+}

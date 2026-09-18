@@ -34,6 +34,20 @@ function footprintOf(def) {
   return def.footprint && def.footprint.length ? def.footprint : [[0, 0]];
 }
 
+/** The feet box for something that walks: as wide as its own footprint and
+ *  centred on it, resting on the anchor row. A wanderer claims no tile in the
+ *  blocked set - it carries its body with it - so this box is the whole of it,
+ *  and a troll standing on two tiles needs two tiles of body. Derived, so the
+ *  engine still knows nothing about what any particular creature is. */
+function feetBody(sprite, def, anchor, ts) {
+  const xs = footprintOf(def).map(([dx]) => dx);
+  const lo = Math.min(...xs);
+  const hi = Math.max(...xs);
+  const w = ts * (hi - lo + 1);
+  const cx = anchor[0] + (ts * (lo + hi)) / 2;   // the anchor is tile lo, not
+  sprite.body.setSize(w, 8).setOffset(cx - w / 2, anchor[1] - 8);  // the middle
+}
+
 const DIR = { up: [0, -1], down: [0, 1], left: [-1, 0], right: [1, 0] };
 const BAG_COLS = 4;
 const BAG_SLOTS = BAG_COLS * 4;
@@ -346,7 +360,7 @@ class World extends Phaser.Scene {
       // body goes where the animal goes. A solid one is immovable: the player
       // is pushed out of it, and the animal carries on grazing regardless.
       this.physics.add.existing(sprite);
-      sprite.body.setSize(16, 8).setOffset(8, 21);   // feet, not the frame
+      feetBody(sprite, def, rec.anchor, this.ts);    // feet, not the frame
       sprite.body.setImmovable(!!def.blocks);
       if (def.blocks) {
         // Two immovable bodies do not push each other apart, so without a
@@ -354,7 +368,7 @@ class World extends Phaser.Scene {
         // there as one four-legged smear. They reserve where they stand and
         // where they are heading instead.
         this.livestock.push(sprite);
-        this.penned.add(`${tx},${ty}`);
+        for (const [dx, dy] of footprintOf(def)) this.penned.add(`${tx + dx},${ty + dy}`);
       }
       this.wanderers.push({
         def, sprite, home: [tx, ty], tile: [tx, ty],
@@ -370,6 +384,29 @@ class World extends Phaser.Scene {
     if (tx < 0 || ty < 0 || tx >= cols || ty >= rows) return false;
     if (!M.tiles[this.map.legend[this.map.ground[ty][tx]]].walkable) return false;
     return !this.blocked.has(`${tx},${ty}`);
+  }
+
+  /** The tiles a wanderer would stand on with its anchor tile at (tx, ty). */
+  cellsAt(w, tx, ty) {
+    return footprintOf(w.def).map(([dx, dy]) => `${tx + dx},${ty + dy}`);
+  }
+
+  /** Whether it may: every tile it would cover has to be walkable, and none
+   *  of them may be spoken for by another solid animal. Its own tiles are not
+   *  in its way, which matters the moment something stands on more than one. */
+  canStandAt(w, tx, ty) {
+    const cells = this.cellsAt(w, tx, ty);
+    if (cells.some((k) => !this.isWalkable(...k.split(',').map(Number)))) return false;
+    if (!w.def.blocks) return true;
+    const own = new Set(this.cellsAt(w, w.tile[0], w.tile[1]));
+    return !cells.some((k) => !own.has(k) && this.penned.has(k));
+  }
+
+  /** Move its claim from where it stands to where it is going. */
+  claim(w, tx, ty) {
+    if (!w.def.blocks) return;
+    for (const k of this.cellsAt(w, w.tile[0], w.tile[1])) this.penned.delete(k);
+    for (const k of this.cellsAt(w, tx, ty)) this.penned.add(k);
   }
 
   /** Pick what an animal does next: graze, stand, or step to a neighbour tile. */
@@ -398,13 +435,9 @@ class World extends Phaser.Scene {
       const ny = w.tile[1] + dy;
       if (Math.abs(nx - w.home[0]) > cfg.radius) continue;   // stay near home
       if (Math.abs(ny - w.home[1]) > cfg.radius) continue;
-      if (!this.isWalkable(nx, ny)) continue;
-      if (w.def.blocks && this.penned.has(`${nx},${ny}`)) continue;   // taken
+      if (!this.canStandAt(w, nx, ny)) continue;
       const c = this.tileCentre(nx, ny);
-      if (w.def.blocks) {
-        this.penned.delete(`${w.tile[0]},${w.tile[1]}`);
-        this.penned.add(`${nx},${ny}`);
-      }
+      this.claim(w, nx, ny);
       w.tile = [nx, ny];
       w.goalX = c.x;
       w.goalY = c.y;
@@ -481,6 +514,16 @@ class World extends Phaser.Scene {
       return true;
     }
 
+    // A blow in progress owns the creature until it has finished throwing it.
+    // Something this slow has to plant its feet to hit you - that pause is
+    // what makes a troll's punch a thing you can see coming and walk out of,
+    // rather than damage that simply happens as it touches you.
+    w.swing = Math.max(0, (w.swing || 0) - dt);
+    if (w.swing > 0) {
+      w.sprite.body.setVelocity(0, 0);
+      return true;
+    }
+
     const dx = this.hero.x - w.sprite.x;
     const dy = this.hero.y - w.sprite.y;
     const dist = Math.hypot(dx, dy);
@@ -511,9 +554,17 @@ class World extends Phaser.Scene {
     w.gore = Math.max(0, (w.gore || 0) - dt);
     if (dist <= cfg.reach && w.gore <= 0) {
       w.gore = cfg.cooldown_ms;
+      w.swing = this.swingMs(w);
       this.hurt(cfg.damage);
     }
     return true;
+  }
+
+  /** How long a creature's attack animation runs, or 0 if it has none: an
+   *  animal that only gores is the boar, and it goes on walking into you. */
+  swingMs(w) {
+    const a = M.anims[`${w.def.sprite}/attack/${w.facing}`];
+    return a ? a.ms * a.frames.length : 0;
   }
 
   stepWanderers(dt) {
@@ -521,7 +572,7 @@ class World extends Phaser.Scene {
     for (const w of this.wanderers) {
       const body = w.sprite.body;
       if (this.stepHostile(w, dt)) {
-        const want = `${w.def.sprite}/walk/${w.facing}`;
+        const want = `${w.def.sprite}/${w.swing > 0 ? 'attack' : 'walk'}/${w.facing}`;
         if (!w.sprite.anims.currentAnim || w.sprite.anims.currentAnim.key !== want) {
           w.sprite.play(want, true);
         }
@@ -896,9 +947,10 @@ class World extends Phaser.Scene {
       const ny = w.tile[1] + dir[1] * n;
       if (Math.abs(nx - w.home[0]) > cfg.radius + 2) continue;
       if (Math.abs(ny - w.home[1]) > cfg.radius + 2) continue;
-      if (!this.isWalkable(nx, ny)) continue;
+      if (!this.canStandAt(w, nx, ny)) continue;
       const c = this.tileCentre(nx, ny);
-      w.tile = [nx, ny];
+      this.claim(w, nx, ny);              // a bolt is still a step: it has to
+      w.tile = [nx, ny];                  // take its claim with it
       w.goalX = c.x;
       w.goalY = c.y;
       w.facing = facingOf(dir);

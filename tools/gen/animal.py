@@ -13,6 +13,8 @@ from gen.palette import Canvas
 FRAME = 32
 GROUND_Y = 29
 ANCHOR = (16, GROUND_Y)
+ATLAS = "actors"               # the same frame size, so the same sheet
+COLS = 6
 FACINGS = ["down", "left", "right", "up"]
 
 FOOT_Y = 28                    # last hoof row

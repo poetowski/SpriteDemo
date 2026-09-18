@@ -28,7 +28,7 @@ def run(content, man, tile_canvases=None):
     # 0 - the art scale standard. Every atlas is drawn at 2x; a rig that drifts
     #     back to the old size, or a new atlas added at the wrong one, fails
     #     here rather than looking subtly chunky in the game.
-    STANDARD = {"actors": 32, "tiles": 16, "props": 32,
+    STANDARD = {"actors": 32, "actors_huge": 64, "tiles": 16, "props": 32,
                 "props_big": 48, "props_huge": 64, "items": 16, "fx": 8}
     for name, meta in man["atlases"].items():
         w, h = meta["frame"]

@@ -22,6 +22,8 @@ from gen.palette import Canvas
 FRAME = 32
 GROUND_Y = 29                 # the row a sprite's feet stand on
 ANCHOR = (16, GROUND_Y)
+ATLAS = "actors"              # the sheet this rig's frames are packed into
+COLS = 6
 
 FACINGS = ["down", "left", "right", "up"]
 

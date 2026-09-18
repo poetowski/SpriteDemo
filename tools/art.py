@@ -36,8 +36,8 @@ TOOLS = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(TOOLS)
 sys.path.insert(0, TOOLS)
 
-from gen import (actor, animal, fx as fx_gen, items as items_gen,  # noqa: E402
-                 props as props_gen, tiles as tiles_gen)
+from gen import (actor, animal, fx as fx_gen, giant,              # noqa: E402
+                 items as items_gen, props as props_gen, tiles as tiles_gen)
 from gen.palette import PALETTE, VARIANTS, resolve                   # noqa: E402
 from pipeline import aseprite                                        # noqa: E402
 from pipeline.atlas import Atlas                                     # noqa: E402
@@ -46,9 +46,12 @@ from pipeline.manifest import load_content                           # noqa: E40
 ASSETS = os.path.join(ROOT, "assets")
 TAG_COLOR = (0x4f, 0xa5, 0x55)
 
-# Rigs are interchangeable: same frame size, same anchor rule, same build_frames
-# shape. Adding a species is a content field, not a pipeline change.
-RIGS = {"biped": actor, "quadruped": animal}
+# Rigs are interchangeable: same anchor rule, same build_frames shape. Adding a
+# species is a content field, not a pipeline change. A rig names the sheet it
+# belongs on, so a rig too big for the 32x32 frame gets a sheet of its own
+# rather than padding every hero frame out to the size of the largest thing in
+# the game.
+RIGS = {"biped": actor, "quadruped": animal, "giant": giant}
 
 
 # ------------------------------------------------------------ what to draw ---
@@ -92,18 +95,25 @@ def sprite_rigs_from(content):
 
 # ------------------------------------------------------------- generation ---
 def build_atlases(sprite_rigs, content):
-    actors = Atlas("actors", actor.FRAME, actor.FRAME, 6)
+    # One sheet per actor frame size, made when the first sprite needs it: a
+    # 64px giant on the 32px sheet would mean padding every frame in the game
+    # to 64, and the sheet is loaded as a grid of one frame size.
+    actor_sheets = {}
     anims = {}
     by_sprite = {}
     for sprite_key, (rig_name, variant, states, held, worn) in sorted(sprite_rigs.items()):
         rig = RIGS[rig_name]
+        sheet = actor_sheets.get(rig.ATLAS)
+        if sheet is None:
+            sheet = actor_sheets[rig.ATLAS] = Atlas(rig.ATLAS, rig.FRAME,
+                                                    rig.FRAME, rig.COLS)
         pal = resolve(variant)
         frames = rig.build_frames(variant, states, held, worn)
         by_sprite[sprite_key] = (rig_name, variant, frames)
         for state, facing, i, cel, shadow, ms, loops in frames:
             base = f"{sprite_key}/{state}/{facing}"
-            idx = actors.add(f"{base}/{i}", [shadow, cel], rig.ANCHOR, ms, pal)
-            anims.setdefault(base, {"atlas": "actors", "frames": [], "ms": ms,
+            idx = sheet.add(f"{base}/{i}", [shadow, cel], rig.ANCHOR, ms, pal)
+            anims.setdefault(base, {"atlas": sheet.name, "frames": [], "ms": ms,
                                     "loop": loops})
             anims[base]["frames"].append(idx)
 
@@ -184,7 +194,7 @@ def build_atlases(sprite_rigs, content):
         fx.add(gid, [canvas], fx_gen.ANCHOR)
         fx_canvases[gid] = canvas
 
-    sheets = [actors, tiles, props, big, huge, items, fx]
+    sheets = [*actor_sheets.values(), tiles, props, big, huge, items, fx]
     sprites = {}
     for a in sheets:
         sprites.update(a.sprites())
@@ -283,7 +293,8 @@ def library(sheets, sprites, anims, tile_index, looks):
     return {
         "art_version": 1,
         "standard": {"tile": tiles_gen.SIZE, "actor": actor.FRAME,
-                     "prop": actor.FRAME, "structure": props_gen.BIG_FRAME,
+                     "giant": giant.FRAME, "prop": actor.FRAME,
+                     "structure": props_gen.BIG_FRAME,
                      "item": items_gen.SIZE, "fx": fx_gen.SIZE},
         "atlases": {a.name: {**a.meta(), "image": f"atlases/{a.name}.png"}
                     for a in sheets},
