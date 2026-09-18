@@ -326,7 +326,16 @@ class World extends Phaser.Scene {
 
     const sprite = this.add.sprite(p.x, p.y, rec.atlas, rec.index).setOrigin(ox, oy);
     sprite.setDepth(p.y);
-    if (isActor) sprite.play(`${def.sprite}/idle/${def.facing || 'down'}`);
+    if (isActor) {
+      sprite.play(`${def.sprite}/idle/${def.facing || 'down'}`);
+    } else if (M.anims[def.sprite]) {
+      // A prop that moves of its own accord - a fire, a sail, the bees. Each
+      // one starts at a different point in the cycle, keyed off its tile:
+      // a row of campfires flickering in step reads as one object repeated
+      // rather than as several things burning.
+      sprite.play(def.sprite);
+      sprite.anims.setProgress((((tx * 7 + ty * 13) % 16) + 0.5) / 16);
+    }
 
     if (isItem) {
       // Lying on the ground, with a slow bob so it reads as something to take.

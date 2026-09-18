@@ -61,6 +61,11 @@
   .swatch.solid span::before { content: "■ "; color: var(--bad); }
   .swatch.ground span::before { content: "● "; color: var(--accent); }
   .swatch.gather span::before { content: "◆ "; color: #e0c341; }
+  /* An animated thing gets a mark of its own, after the name rather than
+     before it, so it stacks with solid/walkable/gatherable instead of
+     replacing them: a campfire is both solid and animated. */
+  .swatch.anim span::after { content: " ▶"; color: #6cc0e0; }
+  .swatch.anim canvas { outline: 1px dashed #35617a; outline-offset: 1px; }
   .swatch.gather { border-color: #6a5c28; }
   .legend { color: var(--muted); font-size: 11px; line-height: 1.6; }
   .legend b { color: var(--ink); font-weight: 500; }
@@ -160,6 +165,7 @@
     <span style="color:var(--bad)">&#9632;</span> solid &nbsp;
     <span style="color:var(--accent)">&#9679;</span> walkable scenery<br>
     <span style="color:#e0c341">&#9670;</span> gatherable - goes in the bag; ringed on the map<br>
+    <span style="color:#6cc0e0">&#9654;</span> animated - moves on its own in game<br>
     <span style="color:#6cc0e0">&#9632;</span> gate mouth, arrowed the way you leave<br>
     <span style="color:#6cc0e0">&#9671;</span> dashed: where you arrive from elsewhere
   </div>

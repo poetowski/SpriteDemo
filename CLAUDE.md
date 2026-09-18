@@ -287,6 +287,22 @@ three-by-two structure. The gates check every footprint tile is real ground and
 that no two solid things claim the same tile; `game/main.js` puts one static
 body on each.
 
+**A prop that moves** names itself in `ANIMATED` (or `ANIMATED_BIG`) in
+`tools/gen/props.py` with a frame count and a frame time, and its draw function
+takes `phase`. The first frame keeps the plain id as its atlas key, so the
+editor palette, the `sprite-exists` gate and anything else that only wants a
+picture of the thing are unaffected; the rest are added after and named by an
+animation the engine already knows how to create. In game each instance starts
+at a different point in the cycle, keyed off its tile - a row of campfires
+flickering in step reads as one object repeated rather than as several things
+burning. The palette marks them, from the animations that exist rather than
+from a second list that could drift.
+
+Six move: campfire, hearth, lamp_post, beehive, trough and windmill. Everything
+else is still on purpose - the trees, bushes and flowers are the most numerous
+props in the game, so animating them multiplies the sheet and pulls the eye to
+the background, and a table has no reason to move by itself.
+
 **A prop bigger than a building** goes in the 64x64 class: a function in
 `tools/gen/props.py` added to `HUGE_PROPS`, and a file in `content/props/`.
 Four tiles wide. An even tile count has no middle tile, so the anchor cannot

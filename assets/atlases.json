@@ -47,8 +47,8 @@
     32
    ],
    "cols": 8,
-   "rows": 5,
-   "count": 35
+   "rows": 7,
+   "count": 49
   },
   "props_big": {
    "image": "atlases/props_big.png",
@@ -58,7 +58,7 @@
    ],
    "cols": 4,
    "rows": 2,
-   "count": 5
+   "count": 8
   },
   "props_huge": {
    "image": "atlases/props_huge.png",
@@ -9764,7 +9764,7 @@
     29
    ]
   },
-  "prop.signpost": {
+  "prop.lamp_post/1": {
    "atlas": "props",
    "index": 18,
    "anchor": [
@@ -9772,7 +9772,7 @@
     29
    ]
   },
-  "prop.statue": {
+  "prop.lamp_post/2": {
    "atlas": "props",
    "index": 19,
    "anchor": [
@@ -9780,7 +9780,7 @@
     29
    ]
   },
-  "prop.tombstone": {
+  "prop.lamp_post/3": {
    "atlas": "props",
    "index": 20,
    "anchor": [
@@ -9788,7 +9788,7 @@
     29
    ]
   },
-  "prop.bench": {
+  "prop.signpost": {
    "atlas": "props",
    "index": 21,
    "anchor": [
@@ -9796,7 +9796,7 @@
     29
    ]
   },
-  "prop.table": {
+  "prop.statue": {
    "atlas": "props",
    "index": 22,
    "anchor": [
@@ -9804,7 +9804,7 @@
     29
    ]
   },
-  "prop.chest": {
+  "prop.tombstone": {
    "atlas": "props",
    "index": 23,
    "anchor": [
@@ -9812,7 +9812,7 @@
     29
    ]
   },
-  "prop.beehive": {
+  "prop.bench": {
    "atlas": "props",
    "index": 24,
    "anchor": [
@@ -9820,7 +9820,7 @@
     29
    ]
   },
-  "prop.scarecrow": {
+  "prop.table": {
    "atlas": "props",
    "index": 25,
    "anchor": [
@@ -9828,7 +9828,7 @@
     29
    ]
   },
-  "prop.campfire": {
+  "prop.chest": {
    "atlas": "props",
    "index": 26,
    "anchor": [
@@ -9836,7 +9836,7 @@
     29
    ]
   },
-  "prop.trough": {
+  "prop.beehive": {
    "atlas": "props",
    "index": 27,
    "anchor": [
@@ -9844,7 +9844,7 @@
     29
    ]
   },
-  "prop.flower_pot": {
+  "prop.beehive/1": {
    "atlas": "props",
    "index": 28,
    "anchor": [
@@ -9852,7 +9852,7 @@
     29
    ]
   },
-  "prop.flowers": {
+  "prop.beehive/2": {
    "atlas": "props",
    "index": 29,
    "anchor": [
@@ -9860,7 +9860,7 @@
     29
    ]
   },
-  "prop.workbench": {
+  "prop.beehive/3": {
    "atlas": "props",
    "index": 30,
    "anchor": [
@@ -9868,7 +9868,7 @@
     29
    ]
   },
-  "prop.shelf": {
+  "prop.scarecrow": {
    "atlas": "props",
    "index": 31,
    "anchor": [
@@ -9876,7 +9876,7 @@
     29
    ]
   },
-  "prop.hearth": {
+  "prop.campfire": {
    "atlas": "props",
    "index": 32,
    "anchor": [
@@ -9884,7 +9884,7 @@
     29
    ]
   },
-  "prop.weapon_rack": {
+  "prop.campfire/1": {
    "atlas": "props",
    "index": 33,
    "anchor": [
@@ -9892,9 +9892,121 @@
     29
    ]
   },
-  "prop.bed_straw": {
+  "prop.campfire/2": {
    "atlas": "props",
    "index": 34,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "prop.campfire/3": {
+   "atlas": "props",
+   "index": 35,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "prop.trough": {
+   "atlas": "props",
+   "index": 36,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "prop.trough/1": {
+   "atlas": "props",
+   "index": 37,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "prop.trough/2": {
+   "atlas": "props",
+   "index": 38,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "prop.flower_pot": {
+   "atlas": "props",
+   "index": 39,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "prop.flowers": {
+   "atlas": "props",
+   "index": 40,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "prop.workbench": {
+   "atlas": "props",
+   "index": 41,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "prop.shelf": {
+   "atlas": "props",
+   "index": 42,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "prop.hearth": {
+   "atlas": "props",
+   "index": 43,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "prop.hearth/1": {
+   "atlas": "props",
+   "index": 44,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "prop.hearth/2": {
+   "atlas": "props",
+   "index": 45,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "prop.hearth/3": {
+   "atlas": "props",
+   "index": 46,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "prop.weapon_rack": {
+   "atlas": "props",
+   "index": 47,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "prop.bed_straw": {
+   "atlas": "props",
+   "index": 48,
    "anchor": [
     16,
     29
@@ -9932,9 +10044,33 @@
     45
    ]
   },
-  "prop.shed": {
+  "prop.windmill/1": {
    "atlas": "props_big",
    "index": 4,
+   "anchor": [
+    24,
+    45
+   ]
+  },
+  "prop.windmill/2": {
+   "atlas": "props_big",
+   "index": 5,
+   "anchor": [
+    24,
+    45
+   ]
+  },
+  "prop.windmill/3": {
+   "atlas": "props_big",
+   "index": 6,
+   "anchor": [
+    24,
+    45
+   ]
+  },
+  "prop.shed": {
+   "atlas": "props_big",
+   "index": 7,
    "anchor": [
     24,
     45
@@ -11953,6 +12089,71 @@
    ],
    "ms": 136,
    "loop": false
+  },
+  "prop.lamp_post": {
+   "atlas": "props",
+   "frames": [
+    17,
+    18,
+    19,
+    20
+   ],
+   "ms": 210,
+   "loop": true
+  },
+  "prop.beehive": {
+   "atlas": "props",
+   "frames": [
+    27,
+    28,
+    29,
+    30
+   ],
+   "ms": 170,
+   "loop": true
+  },
+  "prop.campfire": {
+   "atlas": "props",
+   "frames": [
+    32,
+    33,
+    34,
+    35
+   ],
+   "ms": 130,
+   "loop": true
+  },
+  "prop.trough": {
+   "atlas": "props",
+   "frames": [
+    36,
+    37,
+    38
+   ],
+   "ms": 430,
+   "loop": true
+  },
+  "prop.hearth": {
+   "atlas": "props",
+   "frames": [
+    43,
+    44,
+    45,
+    46
+   ],
+   "ms": 260,
+   "loop": true
+  },
+  "prop.windmill": {
+   "atlas": "props_big",
+   "frames": [
+    3,
+    4,
+    5,
+    6
+   ],
+   "ms": 150,
+   "loop": true
   }
  },
  "tiles": {

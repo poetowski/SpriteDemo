@@ -437,6 +437,29 @@ function dropScratch() {
   check('every object in the palette draws something', drawn.blank.length === 0,
         drawn.blank.join(', ') || `atlases: ${drawn.atlases.join(', ')}`);
 
+  // Animated objects carry a mark. The palette is where you choose what to
+  // place, so "does this move?" has to be answerable there - and the mark has
+  // to come from the animations that exist rather than from a second list
+  // that can drift out of step with them.
+  const moving = await page.evaluate(() => ({
+    marked: [...document.querySelectorAll('#pal-objects .swatch.anim')]
+      .map((e) => e.dataset.id).sort(),
+    animated: Object.keys(window.editor.M.anims).filter((k) => k.startsWith('prop.')).sort(),
+    stacked: [...document.querySelectorAll('#pal-objects .swatch.anim')]
+      .filter((e) => e.classList.contains('solid') || e.classList.contains('ground')
+                  || e.classList.contains('gather')).length,
+    frames: [...document.querySelectorAll('#pal-objects .swatch.anim span')]
+      .every((e) => /animated - \d+ frames/.test(e.title)),
+  }));
+  check('every animated object is marked, and only those',
+        JSON.stringify(moving.marked) === JSON.stringify(moving.animated)
+          && moving.animated.length > 0,
+        `${moving.marked.length} marked, ${moving.animated.length} animated`);
+  check('the mark stacks with solid rather than replacing it',
+        moving.stacked === moving.marked.length,
+        `${moving.stacked} of ${moving.marked.length} keep their other mark`);
+  check('and it says how many frames', moving.frames, 'titles carry the count');
+
   // --- interiors ------------------------------------------------------------
   // A room entered through a door is not next to the map it is entered from,
   // so the atlas must not place it on the grid as though it were - it gets a

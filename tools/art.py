@@ -163,18 +163,34 @@ def build_atlases(sprite_rigs, content):
                     lambda ph, m=mask: tiles_gen.blend(tid, m, ph, under))
         tile_index[tid] = entry
 
+    # Props. Most are one frame; the few that move get the rest of theirs
+    # added after, and an animation naming them. The first frame keeps the
+    # plain id as its key, so everything that only wants a picture of the
+    # thing - the editor palette, the sprite-exists gate - is unaffected.
+    def add_props(sheet, table, anchor, animated):
+        canvases = {}
+        for pid in table:
+            frames = props_gen.prop_frames(pid, table)
+            idx = sheet.add(pid, [frames[0]], anchor)
+            canvases[pid] = frames[0]
+            if len(frames) == 1:
+                continue
+            indices = [idx]
+            for ph, cel in enumerate(frames[1:], start=1):
+                indices.append(sheet.add(f"{pid}/{ph}", [cel], anchor))
+                canvases[f"{pid}/{ph}"] = cel
+            anims[pid] = {"atlas": sheet.name, "frames": indices,
+                          "ms": animated[pid][1], "loop": True}
+        return canvases
+
     props = Atlas("props", actor.FRAME, actor.FRAME, 8)
-    prop_canvases = {}
-    for pid, canvas in props_gen.build_props():
-        props.add(pid, [canvas], actor.ANCHOR)
-        prop_canvases[pid] = canvas
+    prop_canvases = add_props(props, props_gen.PROPS, actor.ANCHOR,
+                              props_gen.ANIMATED)
 
     big = Atlas("props_big", props_gen.BIG_FRAME, props_gen.BIG_FRAME, 4)
-    big_canvases = {}
     big_anchor = props_gen.BIG_ANCHOR
-    for pid, canvas in props_gen.build_big_props():
-        big.add(pid, [canvas], big_anchor)
-        big_canvases[pid] = canvas
+    big_canvases = add_props(big, props_gen.BIG_PROPS, big_anchor,
+                             props_gen.ANIMATED_BIG)
 
     huge = Atlas("props_huge", props_gen.HUGE_FRAME, props_gen.HUGE_FRAME, 2)
     huge_canvases = {}

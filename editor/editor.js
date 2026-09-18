@@ -179,6 +179,12 @@ function blocksOf(id) {
   return !!(d && d.blocks);
 }
 
+/** How many frames this thing is drawn in. One means it does not move. */
+function framesOf(id) {
+  const a = state.M.anims && state.M.anims[id];
+  return a ? a.frames.length : 1;
+}
+
 /** Whether placing this puts something the player can pick up on the ground.
  *  The game decides this by where the definition comes from - an item becomes
  *  a pickup, a prop or an actor never does, however much it looks like loot -
@@ -440,8 +446,10 @@ function buildPalettes() {
       // Three states, not two: solid, walkable scenery, or something that
       // leaves the ground and goes in the bag.
       const gather = gatherableOf(id);
+      const frames = framesOf(id);
       const el = document.createElement("div");
-      el.className = "swatch " + (gather ? "gather" : blocksOf(id) ? "solid" : "ground");
+      el.className = "swatch " + (gather ? "gather" : blocksOf(id) ? "solid" : "ground")
+                   + (frames > 1 ? " anim" : "");
       el.append(swatchCanvas(spriteFor(id), 48));
       const label = document.createElement("span");
       label.textContent = id.split(".")[1];
@@ -449,6 +457,7 @@ function buildPalettes() {
       label.title = `${id} (${kind}, `
         + (gather ? `gatherable${d && d.kind ? " " + d.kind : ""}`
                   : blocksOf(id) ? "solid" : "walkable")
+        + (frames > 1 ? `, animated - ${frames} frames` : "")
         + ")";
       el.append(label);
       el.onclick = () => { state.object = id; setTool("place"); markSelection(); };
@@ -1431,7 +1440,7 @@ Object.assign(window, {
   snapshot, undo, save, setTool, showTab, render,
   setView, loadWorld, layoutWorld, renderWorld, worldNotes, edgeOf, arrivalsOf,
   componentsOf, mapAtWorld, worldPointOf, worldScale,
-  gatesOf, gateFor, refreshWorld, gatherableOf, blocksOf, interiorsOf,
+  gatesOf, gateFor, refreshWorld, gatherableOf, blocksOf, interiorsOf, framesOf,
 });
 
 boot().catch((e) => message(String(e.message || e), true));

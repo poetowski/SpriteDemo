@@ -14,6 +14,8 @@ tile. Art and collision are authored separately on purpose, so a bush can have
 a canopy wider than the tile it stands on.
 """
 
+import math
+
 from gen.actor import FRAME, GROUND_Y
 from gen.palette import Canvas
 
@@ -318,7 +320,15 @@ def anvil():
     return c.outline()
 
 
-def lamp_post():
+LAMP_WICK = [
+    ((15, 8), (16, 8)),
+    ((15, 7), (16, 8)),
+    ((16, 7), (15, 8)),
+    ((14, 8), (16, 8)),      # distinct: phases 2 and 3 were the same two pixels
+]
+
+
+def lamp_post(phase=0):
     c = Canvas(FRAME, FRAME)
     _post(c, 15, 10, BASE_Y)
     c.rect(13, BASE_Y - 1, 18, BASE_Y, "STD")   # a stone base
@@ -326,10 +336,13 @@ def lamp_post():
     c.rect(12, 10, 19, 11, "MTD")        # and the tray
     c.col(12, 5, 10, "MTD")
     c.col(19, 5, 10, "MTD")
+    # The pane is lit the same every frame; it is the wick inside it that
+    # moves, which is all a lantern needs - a lamp whose whole glass pulses
+    # reads as a warning light.
     c.rect(13, 6, 18, 9, "FIL")          # the lit pane
     c.rect(14, 7, 17, 9, "FI")
-    c.set(15, 8, "FID")
-    c.set(16, 8, "FID")
+    for x, y in LAMP_WICK[phase % len(LAMP_WICK)]:
+        c.set(x, y, "FID")
     return c.outline()
 
 
@@ -413,7 +426,18 @@ def chest():
     return c.outline()
 
 
-def beehive():
+# Bees, two per frame, going round the skep. Drawn after the outline: a bee
+# is one pixel, and the outline pass would wrap each into a three-by-three
+# lump and turn the swarm into a set of dice.
+BEES = [
+    ((4, 12), (26, 17)),
+    ((6, 8), (24, 21)),
+    ((10, 5), (27, 13)),
+    ((3, 16), (22, 7)),
+]
+
+
+def beehive(phase=0):
     c = Canvas(FRAME, FRAME)
     _blob(c, 13, (3, 5, 6, 7, 8, 8, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9), "TH")
     c.rect(0, BASE_Y + 1, FRAME - 1, FRAME - 1, None)
@@ -421,7 +445,11 @@ def beehive():
     for y in (16, 20, 24):               # the coils of the skep
         c.row(7, 24, y, "THD")
     c.rect(14, 25, 17, BASE_Y, "OL")     # the entrance
-    return c.outline()
+    c.outline()
+    for x, y in BEES[phase % len(BEES)]:
+        c.set(x, y, "OL")
+        c.set(x + 1, y, "FIL")           # a body and the light on its back
+    return c
 
 
 def scarecrow():
@@ -444,7 +472,18 @@ def scarecrow():
     return c.outline()
 
 
-def campfire():
+# A flame per phase: the stones and the logs do not move, so only the fire is
+# written out four times. Uneven on purpose - a flame that breathes in and out
+# on a regular count reads as a pulse rather than as burning.
+CAMPFIRE_FLAME = [
+    (12, (1, 2, 3, 4, 4, 5, 5, 5, 5, 4, 3), (14, 18, 17, 23), (15, 14)),
+    (13, (1, 2, 3, 3, 4, 5, 5, 5, 4, 4), (14, 19, 17, 23), (17, 13)),
+    (11, (1, 1, 2, 3, 4, 4, 5, 5, 5, 5, 4, 3), (13, 18, 16, 22), (13, 11)),
+    (12, (1, 2, 2, 3, 4, 5, 5, 4, 5, 4, 3), (15, 18, 18, 23), (16, 15)),
+]
+
+
+def campfire(phase=0):
     def stone(x, y):
         c.rect(x, y, x + 3, y + 2, "ST")
         c.row(x, x + 3, y, "STL")
@@ -458,22 +497,30 @@ def campfire():
         c.set(9 + i, 26 - i // 3, "WD")
         c.set(23 - i, 27 - i // 3, "WDD")
         c.set(22 - i, 26 - i // 3, "WDL")
-    _blob(c, 12, (1, 2, 3, 4, 4, 5, 5, 5, 5, 4, 3), "FI")
+    top, widths, heart, spark = CAMPFIRE_FLAME[phase % len(CAMPFIRE_FLAME)]
+    _blob(c, top, widths, "FI")
     _shade(c, "FI", "FIL", "FID")
-    c.rect(14, 18, 17, 23, "FIL")        # the hot heart of it
-    c.set(15, 15, "FIL")
+    c.rect(*heart, "FIL")                # the hot heart of it
     for x, y in ((4, 23), (24, 23), (8, 26), (14, 27), (20, 26)):
         stone(x, y)                      # and these in front of it
     c.rect(0, BASE_Y + 1, FRAME - 1, FRAME - 1, None)
-    return c.outline()
+    c.outline()
+    c.set(spark[0], spark[1], "FIL")     # a spark, after the outline so it
+    return c                             # stays a speck instead of a blob
 
 
-def trough():
+TROUGH_RIPPLE = [(8, 14), (13, 19), (17, 23)]
+
+
+def trough(phase=0):
     c = Canvas(FRAME, FRAME)
     c.rect(4, 19, 27, BASE_Y, "WD")
     c.rect(6, 20, 25, 23, "WA")          # water, sitting below the rim
     c.row(6, 25, 20, "WAL")
-    c.row(8, 14, 22, "WAD")
+    # One dark band drifting along the surface. Slow: standing water in a
+    # trough should barely move, and a fast ripple makes it look like a stream.
+    _r0, _r1 = TROUGH_RIPPLE[phase % len(TROUGH_RIPPLE)]
+    c.row(_r0, _r1, 22, "WAD")
     c.row(4, 27, 19, "WDL")
     c.row(4, 27, BASE_Y, "WDD")
     c.col(27, 19, BASE_Y, "WDD")
@@ -600,7 +647,7 @@ def tower():
     return c.outline()
 
 
-def windmill():
+def windmill(phase=0):
     c = Canvas(BIG_FRAME, BIG_FRAME)
     _taper(c, 14, BIG_BASE_Y, 5, 11, "CL", cx=23)       # the tapered tower
     _shade(c, "CL", "CL", "CLD")
@@ -611,13 +658,26 @@ def windmill():
     c.rect(20, 34, 27, BIG_BASE_Y, "WD")                # door
     c.col(27, 34, BIG_BASE_Y, "WDD")
     c.row(20, 27, 34, "WDD")
-    for i in range(11):                                 # four sails, as a saltire
-        for dx, dy in ((-1, -1), (1, -1), (-1, 1), (1, 1)):
-            x = 23 + dx * (i + 2)
-            y = 12 + dy * (i + 2)
-            c.set(x, y, "WD")
-            c.set(x + dx, y, "TH")
-            c.set(x, y + dy, "TH")
+    # Four sails on a turning hub. Four arms are 90 degrees apart, so a quarter
+    # turn is a whole visual cycle and the frames step 22.5 degrees - any more
+    # and it flicks between poses instead of turning.
+    for k in range(4):
+        a = math.radians(45 + k * 90 + phase * 22.5)
+        ux, uy = math.cos(a), math.sin(a)
+        px, py = -uy, ux                                # across the spar
+        # Stepped in halves, or a diagonal at 22.5 degrees comes out as a
+        # dotted line with gaps in it; and the cloth hangs on one side of the
+        # spar rather than both, which is what a sail does and what stops the
+        # arm reading as a scribble when it turns.
+        i = 2.0
+        while i <= 11.0:
+            c.set(round(23 + ux * i), round(12 + uy * i), "WD")
+            i += 0.5
+        i = 3.5
+        while i <= 11.0:
+            for w in (1, 2):
+                c.set(round(23 + ux * i + px * w), round(12 + uy * i + py * w), "TH")
+            i += 0.5
     c.rect(22, 11, 25, 14, "WDD")                       # the hub
     return c.outline()
 
@@ -805,7 +865,15 @@ def shelf():
     return c.outline()
 
 
-def hearth():
+HEARTH_EMBERS = [
+    ((13, 16, 18), ((15, 23),)),
+    ((12, 15, 19), ((16, 22), (14, 23))),
+    ((14, 17), ((15, 22),)),
+    ((13, 17, 19), ((16, 23),)),
+]
+
+
+def hearth(phase=0):
     """A stone hearth with the fire banked down in it. The only light source
     in the room, so the embers are the brightest thing on the sprite."""
     c = Canvas(FRAME, FRAME)
@@ -819,9 +887,15 @@ def hearth():
     c.row(9, 22, 16, "STL")                       # a lintel over it
     c.rect(11, 25, 20, 27, "FID")                 # embers on the hearthstone
     c.rect(12, 26, 19, 27, "FI")
-    for x in (13, 16, 18):
+    # Which embers are bright, and how far the flame licks up. Banked down, so
+    # it glows and shifts rather than burning like the campfire outside.
+    bright, lick = HEARTH_EMBERS[phase % len(HEARTH_EMBERS)]
+    for x in bright:
         c.set(x, 25, "FIL")
         c.set(x, 24, "FID")
+    for x, y in lick:
+        c.set(x, y, "FI")
+        c.set(x, y - 1, "FID")
     c.rect(10, 22, 12, 24, "WDD")                 # a log not yet burnt
     c.rect(19, 23, 21, 24, "WDD")
     return c.outline()
@@ -904,6 +978,28 @@ PROPS = {
     "prop.bed_straw": bed_straw,
 }
 PROP_ORDER = list(PROPS)
+
+# Which props move, and how long a frame lasts. Everything else is still on
+# purpose: the trees, bushes and flowers are the most numerous things in the
+# game, so animating them multiplies the sheet and draws the eye to the
+# background, and a table has no reason to move by itself.
+ANIMATED = {
+    "prop.campfire": (4, 130),      # flames, quick
+    "prop.hearth": (4, 260),        # banked down, so slower
+    "prop.lamp_post": (4, 210),
+    "prop.beehive": (4, 170),
+    "prop.trough": (3, 430),        # standing water barely moves
+}
+ANIMATED_BIG = {
+    "prop.windmill": (4, 150),
+}
+
+
+def prop_frames(pid, table=None):
+    """Every frame of a prop, first frame first. One frame for most of them."""
+    fns = table if table is not None else PROPS
+    n = (ANIMATED.get(pid) or ANIMATED_BIG.get(pid) or (1, 0))[0]
+    return [fns[pid](phase=p) if n > 1 else fns[pid]() for p in range(n)]
 
 BIG_PROPS = {
     "prop.house": house,
