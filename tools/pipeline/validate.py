@@ -29,7 +29,7 @@ def run(content, man, tile_canvases=None):
     #     back to the old size, or a new atlas added at the wrong one, fails
     #     here rather than looking subtly chunky in the game.
     STANDARD = {"actors": 32, "tiles": 16, "props": 32,
-                "props_big": 48, "items": 16, "fx": 8}
+                "props_big": 48, "props_huge": 64, "items": 16, "fx": 8}
     for name, meta in man["atlases"].items():
         w, h = meta["frame"]
         if w != h:
@@ -207,6 +207,24 @@ def run(content, man, tile_canvases=None):
     #        must not put you down on the way back: arriving on the return exit
     #        bounces the player through it again the moment they move, which
     #        looks like the two maps flickering rather than like a bug.
+    # An edge-wide doorway is a seam between two maps, and the direction you
+    # walk to reach it is the direction you are still walking when you arrive.
+    # A doorway inland - a cave mouth, a stair - is exempt: there is no edge to
+    # infer a direction from, so whatever it says goes.
+    edge_facing = {"west": "left", "east": "right", "north": "up", "south": "down"}
+
+    def _edge_of(mm, tiles_):
+        w_, h_ = mm["size"]
+        if all(t[0] == 0 for t in tiles_):
+            return "west"
+        if all(t[0] == w_ - 1 for t in tiles_):
+            return "east"
+        if all(t[1] == 0 for t in tiles_):
+            return "north"
+        if all(t[1] == h_ - 1 for t in tiles_):
+            return "south"
+        return None
+
     def _standable(mm, mid_, tx, ty):
         w_, h_ = mm["size"]
         if not (0 <= tx < w_ and 0 <= ty < h_):
@@ -246,6 +264,12 @@ def run(content, man, tile_canvases=None):
                 _fail("map-exit", f"{where} has {len(tiles)} doorway tiles but "
                                   f"{len(spawns)} arrivals; they pair up by "
                                   f"position, so there must be one each")
+            edge = _edge_of(m, tiles)
+            if edge and ex.get("facing") and ex["facing"] != edge_facing[edge]:
+                _fail("map-exit", f"{where} leaves by the {edge} edge, so the "
+                                  f"player is walking {edge_facing[edge]} - but "
+                                  f"arrives on {dest_id} facing {ex['facing']!r}, "
+                                  f"spun round on the spot")
             back = {tuple(t) for b in (dest.get("exits") or []) for t in b["tiles"]}
             for door, spawn in zip(tiles, spawns):
                 why = _standable(dest, dest_id, spawn[0], spawn[1])

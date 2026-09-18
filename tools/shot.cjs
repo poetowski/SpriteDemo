@@ -84,7 +84,13 @@ const BOOTED = () => !!(window.game && window.game.scene
   if (ON) {
     // Crossing a map edge restarts the scene, so starting somewhere else is
     // the same operation the game itself performs.
-    await page.evaluate((id) => window.game.scene.scenes[0].scene.restart({ map: id }), ON);
+    // Braced deliberately: restart() hands back Phaser's scene plugin, and
+    // returning that asks the browser to serialise the whole scene graph -
+    // which fails with "object reference chain is too long" and takes --on
+    // with it. Nothing here needs the return value.
+    await page.evaluate((id) => {
+      window.game.scene.scenes[0].scene.restart({ map: id });
+    }, ON);
     await page.waitForFunction(
       (id) => window.game.scene.scenes[0].mapId === id && !!window.game.scene.scenes[0].hero,
       ON, { timeout: 20000 });
@@ -252,7 +258,10 @@ const BOOTED = () => !!(window.game && window.game.scene
       w.state = 'idle';                       // hold still for the experiment
       w.timer = 99999;
       w.sprite.body.setVelocity(0, 0);
-      s.hero.setPosition(w.sprite.x - s.ts * 1.5, w.sprite.y);
+      // body.reset, not setPosition: a dynamic body writes its own position
+      // back over the sprite, so setPosition alone snaps straight back and
+      // the hero never actually stands where the test put them.
+      s.hero.body.reset(w.sprite.x - s.ts * 1.5, w.sprite.y);
       return { def: w.def.sprite, gap: w.sprite.x - s.hero.x };
     });
     if (setup) {
@@ -262,10 +271,16 @@ const BOOTED = () => !!(window.game && window.game.scene
       const after = await page.evaluate(() => {
         const s = window.game.scene.scenes[0];
         const w = s.wanderers.find((a) => a.def.blocks);
-        return { gap: w.sprite.x - s.hero.x, heroX: s.hero.x, animalX: w.sprite.x };
+        return { gap: w.sprite.x - s.hero.x, heroX: s.hero.x, animalX: w.sprite.x,
+                 touching: !!s.hero.body.touching.right };
       });
+      // Two things, because either alone can pass for the wrong reason: the
+      // hero is in contact with the animal, and did not pass through it. A
+      // hero that never moved would satisfy the second on its own.
       checks.push([`walking into a ${setup.def.split('.')[1]} is blocked`,
-        after.gap > 8, `gap closed from ${setup.gap.toFixed(1)} to ${after.gap.toFixed(1)}`]);
+        after.touching && after.gap > 8,
+        `gap ${setup.gap.toFixed(1)} -> ${after.gap.toFixed(1)}, `
+        + `touching: ${after.touching}`]);
     } else {
       checks.push(['a solid animal exists to walk into', false, 'none are blocks:true']);
     }
@@ -285,10 +300,18 @@ const BOOTED = () => !!(window.game && window.game.scene
       const door = ex.tiles[Math.floor(ex.tiles.length / 2)];
       s.addItem('item.axe');
       const p = s.tileCentre(door[0], door[1]);
-      s.hero.setPosition(p.x, p.y);
+      s.hero.body.reset(p.x, p.y);
       s.exitLocked = false;                   // as if we had walked onto it
+      // Which way you must have been walking to step onto that tile. Reaching
+      // an edge-wide doorway means walking at that edge, and that is the way
+      // you should still be looking on the far side.
+      const [cols, rows] = s.map.size;
+      const way = ex.tiles.every((t) => t[0] === 0) ? 'left'
+                : ex.tiles.every((t) => t[0] === cols - 1) ? 'right'
+                : ex.tiles.every((t) => t[1] === 0) ? 'up'
+                : ex.tiles.every((t) => t[1] === rows - 1) ? 'down' : null;
       return { from: s.mapId, to: ex.to, bag: s.inventory.filter(Boolean).length,
-               door, up: s.map.size[1] - 1 - door[1] };
+               door, way };
     });
     if (before) {
       await page.waitForFunction(
@@ -298,17 +321,26 @@ const BOOTED = () => !!(window.game && window.game.scene
         const s = window.game.scene.scenes[0];
         const t = s.heroTile();
         return { map: s.mapId, bag: s.inventory.filter(Boolean).length, tile: t,
-                 up: s.map.size[1] - 1 - t[1], onExit: !!s.exits.get(t.join(',')) };
+                 facing: s.facing, onExit: !!s.exits.get(t.join(',')) };
       });
       checks.push([`${before.from} leads to ${before.to}`,
         after.map === before.to, after.map]);
       checks.push(['the bag came across',
         after.bag === before.bag, `${before.bag} -> ${after.bag}`]);
-      checks.push(['you come out level with where you left',
-        after.up === before.up,
-        `${before.up} up from the bottom -> ${after.up}`]);
+      // Which coordinate is preserved depends on the edge: cross a side edge
+      // and you keep your row, cross a top or bottom edge and you keep your
+      // column. Measuring the row either way passed for as long as every gate
+      // in the game ran east to west.
+      const along = (before.way === 'left' || before.way === 'right') ? 1 : 0;
+      checks.push([`you come out level with where you left`,
+        !before.way || after.tile[along] === before.door[along],
+        `left ${before.door} going ${before.way}, arrived ${after.tile} `
+        + `(${along ? 'row' : 'column'} must match)`]);
       checks.push(['and not on the way back',
         !after.onExit, `arrived at ${after.tile}`]);
+      checks.push(['still facing the way you were walking',
+        !before.way || after.facing === before.way,
+        `walked ${before.way}, arrived facing ${after.facing}`]);
     } else {
       checks.push(['the map has an exit to cross', false, 'none authored']);
     }
@@ -326,7 +358,7 @@ const BOOTED = () => !!(window.game && window.game.scene
       const p = s.tileCentre(...w.tile);
       // West of it, not east: a charging boar shoves the hero, and east of
       // this one is the seam - the test kept being pushed onto the next map.
-      s.hero.setPosition(p.x - s.ts * 2.5, p.y);       // just inside its sight
+      s.hero.body.reset(p.x - s.ts * 2.5, p.y);        // just inside its sight
       s.cameras.main.centerOn(s.hero.x, s.hero.y);
       s.invuln = 0;
       return { def: w.def.sprite, hp: s.hp,
