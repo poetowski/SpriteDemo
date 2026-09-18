@@ -12,6 +12,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { execFileSync } = require('child_process');
 
 const ROOT = path.dirname(__dirname);
 const URL = process.env.EDITOR_URL || 'http://127.0.0.1:8765/';
@@ -46,7 +47,20 @@ function makeScratch() {
   madeScratch = true;
 }
 function dropScratch() {
-  if (madeScratch && fs.existsSync(scratch)) fs.unlinkSync(scratch);
+  if (!madeScratch) return;
+  if (fs.existsSync(scratch)) fs.unlinkSync(scratch);
+  // And put the build back. The test asks the server to build while its
+  // scratch map exists, which bakes that map into game/art-embed.js and
+  // game/page.html - so a run that only deleted the file left the generated
+  // game carrying a map that is not in content any more. It got committed
+  // once. Rebuilding here means the test leaves the tree as it found it.
+  try {
+    execFileSync(process.env.PYTHON || 'python', [path.join(ROOT, 'tools', 'build.py')],
+                 { cwd: ROOT, stdio: 'pipe' });
+  } catch (e) {
+    console.error('could not rebuild after the scratch map was removed:',
+                  (e.stdout || e.message || '').toString().slice(-300));
+  }
 }
 
 (async () => {
