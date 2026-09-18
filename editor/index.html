@@ -60,11 +60,42 @@
   .swatch span { font-size: 10px; color: var(--muted); text-align: center; word-break: break-all; }
   .swatch.solid span::before { content: "■ "; color: var(--bad); }
   .swatch.ground span::before { content: "● "; color: var(--accent); }
+  .swatch.gather span::before { content: "◆ "; color: #e0c341; }
+  .swatch.gather { border-color: #6a5c28; }
   .legend { color: var(--muted); font-size: 11px; line-height: 1.6; }
   .legend b { color: var(--ink); font-weight: 500; }
 
   .main { grid-area: main; overflow: auto; background: #0e1015; position: relative; }
   #view { image-rendering: pixelated; display: block; cursor: crosshair; }
+  #world { image-rendering: pixelated; display: block; cursor: pointer; }
+  #view[hidden], #world[hidden] { display: none; }
+
+  .views { display: flex; gap: 4px; margin-left: auto; }
+  .mapline { display: flex; flex-direction: column; gap: 2px; padding: 6px 7px;
+             background: var(--panel2); border: 1px solid var(--line);
+             border-left-width: 3px; border-radius: 3px; cursor: pointer; }
+  .mapline:hover { border-color: var(--muted); }
+  .mapline.on { border-color: var(--accent); background: #26362a; }
+  .mapline b { font-weight: 600; }
+  .mapline span { color: var(--muted); font-size: 11px; }
+  .mapline.orphan { border-left-color: var(--warn); }
+  .mapline.linked { border-left-color: var(--accent); }
+  .notes { display: flex; flex-direction: column; gap: 5px; }
+  .gate { display: flex; flex-direction: column; gap: 2px; padding: 5px 7px; cursor: pointer;
+          background: var(--panel2); border: 1px solid var(--line);
+          border-left: 3px solid var(--muted); border-radius: 3px; }
+  .gate:hover { border-color: var(--muted); }
+  .gate b { display: flex; align-items: center; gap: 6px; font-weight: 600; }
+  .gate b i { font-style: normal; color: #11141c; font-size: 10px; font-weight: 700;
+              width: 15px; height: 15px; border-radius: 50%; text-align: center;
+              line-height: 15px; flex: none; }
+  .gate span { color: var(--muted); font-size: 11px; }
+  .gate.oneway b::after { content: "one way"; color: var(--warn); font-size: 10px;
+                          font-weight: 400; letter-spacing: .06em; }
+  .note { padding: 5px 7px; border-radius: 3px; font-size: 11px; line-height: 1.5;
+          background: #2a2320; border-left: 3px solid var(--warn); color: #e7d9c4; }
+  .note.info { background: #1e2530; border-left-color: var(--muted); color: var(--muted); }
+  .note b { color: var(--ink); font-weight: 600; }
 
   .status { grid-area: status; display: flex; flex-wrap: wrap; gap: 8px 18px; padding: 6px 12px;
             background: var(--panel); border-top: 1px solid var(--line); color: var(--muted); }
@@ -81,6 +112,7 @@
 <div class="bar">
   <h1>Map editor <span>&middot; paints terrain, places objects, saves to content/maps/</span></h1>
   <label>map <select id="mapSel"></select></label>
+  <label>name <input id="mapName" type="text" size="14" title="What this place is called in game"></label>
   <label>size <input id="mapW" type="number" min="8" max="200"> &times; <input id="mapH" type="number" min="8" max="200">
     <button id="resize" title="Resize (pads with grass, crops from the bottom-right)">apply</button></label>
   <div class="tools">
@@ -96,6 +128,10 @@
   <button id="save" class="primary" title="Ctrl+S">save</button>
   <button id="build" class="warn" title="save, then run tools/build.py">save + build</button>
   <a id="play" href="/game/index.html" target="_blank"><button>open game</button></a>
+  <div class="views">
+    <button id="v-map" class="on" title="Edit one map">map</button>
+    <button id="v-world" title="See how the maps join up">world</button>
+  </div>
 </div>
 
 <div class="side">
@@ -105,7 +141,15 @@
   </div>
   <div id="pal-terrain" class="palette"></div>
   <div id="pal-objects" hidden></div>
-  <div class="legend">
+  <div id="side-world" class="group" hidden>
+    <h2>the world</h2>
+    <div id="world-maps" class="group"></div>
+    <h2>gates</h2>
+    <div id="world-gates" class="notes"></div>
+    <h2>what to look at</h2>
+    <div id="world-notes" class="notes"></div>
+  </div>
+  <div id="legend-map" class="legend">
     <b>paint</b> drag to paint terrain; edges resolve live<br>
     <b>place</b> click to put the selected object down<br>
     <b>erase</b> click an object to remove it<br>
@@ -113,17 +157,29 @@
     <b>right-click</b> erases an object in any tool<br>
     <b>alt-click</b> picks up the terrain or object under the cursor<br>
     <span style="color:var(--bad)">&#9632;</span> solid &nbsp;
-    <span style="color:var(--accent)">&#9679;</span> ground object (walkable)
+    <span style="color:var(--accent)">&#9679;</span> walkable scenery<br>
+    <span style="color:#e0c341">&#9670;</span> gatherable - goes in the bag; ringed on the map<br>
+    <span style="color:#6cc0e0">&#9632;</span> gate mouth, arrowed the way you leave<br>
+    <span style="color:#6cc0e0">&#9671;</span> dashed: where you arrive from elsewhere
+  </div>
+  <div id="legend-world" class="legend" hidden>
+    Maps are placed where their doorways say they join, so this is the world
+    as the player walks it.<br>
+    <b>click a map</b> to open it<br>
+    Each gate has a colour and a number: the filled band is a mouth, the arrow
+    runs to where it puts you down, and a dashed arrow is a one-way trip.<br>
+    <span style="color:var(--accent)">&#9679;</span> where a fresh game starts
   </div>
 </div>
 
-<div class="main"><canvas id="view"></canvas></div>
+<div class="main"><canvas id="view"></canvas><canvas id="world" hidden></canvas></div>
 
 <div class="status">
   <span>tile <b id="st-tile">-</b></span>
   <span>terrain <b id="st-terrain">-</b></span>
   <span>objects <b id="st-objects">-</b></span>
   <span>entities <b id="st-count">-</b></span>
+  <span id="st-world"></span>
   <span id="msg"></span>
   <pre id="log"></pre>
 </div>

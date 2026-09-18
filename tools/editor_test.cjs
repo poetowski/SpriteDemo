@@ -258,6 +258,236 @@ function dropScratch() {
     fs.readFileSync(path.join(MAPS, f), 'utf-8') !== otherBefore[f]);
   check('and left it untouched', stillClean.length === 0, stillClean.join(', '));
 
+  // --- the world view -------------------------------------------------------
+  // The doorways are what make a world out of separate maps, so the checks
+  // are about the join: that saving keeps it, and that the atlas puts the
+  // maps where the doorways say they belong.
+
+  // Opening a map with doorways and pressing save must not drop them. It did:
+  // save() named the fields it wrote, `exits` was not among them, and no gate
+  // treats a missing exits list as an error - so the world came apart quietly.
+  // fetch is stubbed so this proves the body without writing a real map.
+  const kept = await page.evaluate(async () => {
+    await window.loadWorld();
+    const withExits = window.editor.world.entries.find((e) => (e.map.exits || []).length);
+    if (!withExits) return { skipped: true };
+    await window.openMap(withExits.name);
+    const before = JSON.parse(JSON.stringify(window.editor.map.exits));
+    const real = window.fetch;
+    let sent = null;
+    window.fetch = (url, opts) => {
+      if (String(url).startsWith('/api/save')) {
+        sent = JSON.parse(opts.body);
+        return Promise.resolve({ json: () => Promise.resolve({ ok: true, path: 'dry-run' }) });
+      }
+      return real(url, opts);
+    };
+    try { await window.save(); } finally { window.fetch = real; }
+    return { name: withExits.name, before, sent: sent && sent.exits };
+  });
+  check('saving a map keeps its doorways', !kept.skipped
+    && JSON.stringify(kept.sent) === JSON.stringify(kept.before),
+    `${kept.name}: ${JSON.stringify(kept.sent) === undefined ? 'dropped' : 'kept'}`);
+
+  const world = await page.evaluate(async () => {
+    await window.setView('world');
+    const cv = document.getElementById('world');
+    const placed = [...window.editor.layout.placed].map(([id, p]) => ({
+      id, name: p.name, ox: p.ox, oy: p.oy, w: p.map.size[0], h: p.map.size[1],
+      label: p.map.name,
+    }));
+    return {
+      canvas: [cv.width, cv.height],
+      hidden: cv.hidden,
+      viewHidden: document.getElementById('view').hidden,
+      placed,
+      groups: window.editor.layout.groups,
+      maps: window.editor.world.entries.length,
+      lines: document.querySelectorAll('#world-maps .mapline').length,
+      orphans: document.querySelectorAll('#world-maps .mapline.orphan').length,
+      notes: [...document.querySelectorAll('#world-notes .note')].map((n) => n.textContent),
+    };
+  });
+  check('the world view draws', !world.hidden && world.viewHidden
+    && world.canvas[0] > 40 && world.canvas[1] > 40, world.canvas.join('x'));
+  check('every map is on the atlas', world.placed.length === world.maps
+    && world.lines === world.maps, `${world.placed.length} of ${world.maps}`);
+
+  // The wildernesses join west-to-east, so each should sit exactly one map
+  // width from its neighbour with the crossing rows lined up - that is the
+  // whole claim the atlas makes, and it is arithmetic, not a look.
+  const by = Object.fromEntries(world.placed.map((p) => [p.id, p]));
+  const w1 = by['map.wilderness1'];
+  const w2 = by['map.wilderness2'];
+  if (w1 && w2) {
+    check('maps sit against the edge they join',
+          w2.ox + w2.w === w1.ox, `w2 ends at ${w2.ox + w2.w}, w1 starts at ${w1.ox}`);
+    const rows = await page.evaluate(() => {
+      const { byId } = window.editor.world;
+      const ex = byId.get('map.wilderness1').map.exits.find((e) => e.to === 'map.wilderness2');
+      const p1 = window.editor.layout.placed.get('map.wilderness1');
+      const p2 = window.editor.layout.placed.get('map.wilderness2');
+      return ex.tiles.map((t, i) => [p1.oy + t[1], p2.oy + window.arrivalsOf(ex)[i][1]]);
+    });
+    check('the crossing rows line up', rows.every(([a, b]) => a === b),
+          rows.filter(([a, b]) => a !== b).map((r) => r.join('!=')).join(' ') || 'all aligned');
+  } else {
+    check('the wildernesses are on the atlas', false, Object.keys(by).join(', '));
+  }
+
+  // Nothing may be drawn on top of anything else, or the atlas lies about
+  // where a place is.
+  const overlaps = [];
+  for (let i = 0; i < world.placed.length; i++) {
+    for (let j = i + 1; j < world.placed.length; j++) {
+      const a = world.placed[i];
+      const b = world.placed[j];
+      if (a.ox < b.ox + b.w && b.ox < a.ox + a.w
+          && a.oy < b.oy + b.h && b.oy < a.oy + a.h) overlaps.push(`${a.id}/${b.id}`);
+    }
+  }
+  check('no two maps overlap on the atlas', overlaps.length === 0, overlaps.join(', '));
+
+  // A map nothing can reach is the failure this view exists to make obvious.
+  check('a map nothing reaches is called out', world.orphans > 0
+    && world.notes.some((t) => /joins nothing/.test(t)),
+    `${world.orphans} orphan lines`);
+
+  // Clicking a map on the atlas opens it.
+  const jumped = await page.evaluate(async () => {
+    const target = [...window.editor.layout.placed].find(
+      ([id]) => id !== (window.editor.map && window.editor.map.id));
+    if (!target) return null;
+    const [id, p] = target;
+    const hit = window.mapAtWorld(...window.worldPointOf(id));
+    if (!hit) return { found: false };
+    await window.openMap(hit.name);
+    await window.setView('map');
+    return { found: true, wanted: p.name, got: window.editor.mapName,
+             view: window.editor.view };
+  });
+  check('clicking a map on the atlas opens it', jumped && jumped.found
+    && jumped.got === jumped.wanted && jumped.view === 'map',
+    jumped ? `${jumped.wanted} -> ${jumped.got}` : 'nothing to click');
+
+  // The name is content the editor could not previously set at all.
+  const named = await page.evaluate(async (m) => {
+    await window.openMap(m);
+    const field = document.getElementById('mapName');
+    const shown = field.value;
+    field.value = 'Renamed By Test';
+    field.dispatchEvent(new Event('input'));
+    const held = window.editor.map.name;
+    field.value = shown;
+    field.dispatchEvent(new Event('input'));
+    return { shown, held, restored: window.editor.map.name };
+  }, MAP);
+  check('the map name is shown and editable', named.shown === 'Scratch'
+    && named.held === 'Renamed By Test' && named.restored === 'Scratch',
+    `${named.shown} -> ${named.held} -> ${named.restored}`);
+
+  const stillCleanAfterWorld = otherMaps.filter((f) =>
+    fs.readFileSync(path.join(MAPS, f), 'utf-8') !== otherBefore[f]);
+  check('the world view wrote nothing', stillCleanAfterWorld.length === 0,
+        stillCleanAfterWorld.join(', '));
+
+  // Every definition must actually draw. The editor loads whatever atlases the
+  // manifest lists, so a new sheet needs no wiring - but if one failed to
+  // load, its swatches would be blank rather than missing, and a blank swatch
+  // is easy to scroll past. Counting painted pixels catches that.
+  const drawn = await page.evaluate(() => {
+    const blank = [];
+    for (const el of document.querySelectorAll('#pal-objects .swatch')) {
+      const cv = el.querySelector('canvas');
+      if (!cv) { blank.push(el.dataset.id + ' (no canvas)'); continue; }
+      const px = cv.getContext('2d').getImageData(0, 0, cv.width, cv.height).data;
+      let on = 0;
+      for (let i = 3; i < px.length; i += 4) if (px[i] > 0) on++;
+      if (on < 8) blank.push(`${el.dataset.id} (${on}px)`);
+    }
+    return { blank, atlases: Object.keys(window.editor.images).sort() };
+  });
+  check('every object in the palette draws something', drawn.blank.length === 0,
+        drawn.blank.join(', ') || `atlases: ${drawn.atlases.join(', ')}`);
+
+  // --- gates ----------------------------------------------------------------
+  // A gate is the pair of mouths, not one exit, so the checks are about the
+  // pairing: that the two sides are found to belong together, that a
+  // reciprocal pair is not counted twice, and that every mouth carries the
+  // number the panel lists it under.
+  const gates = await page.evaluate(async () => {
+    await window.setView('world');
+    const gs = window.editor.gates.map((g) => ({
+      n: g.n, from: g.from, to: g.to, edge: g.edge, oneWay: g.oneWay,
+      colour: g.colour, partner: g.partner ? g.partner.id : null,
+      tiles: g.ex.tiles.length,
+    }));
+    return {
+      gates: gs,
+      rows: document.querySelectorAll('#world-gates .gate').length,
+      exits: [...window.editor.world.byId.values()]
+        .reduce((n, e) => n + (e.map.exits || []).length, 0),
+      lookup: window.gateFor('map.wilderness1', 0) === window.gateFor('map.wilderness2', 0),
+    };
+  });
+  const twoWay = gates.gates.filter((g) => !g.oneWay);
+  check('both mouths of a gate are one gate',
+        gates.gates.length + twoWay.length === gates.exits,
+        `${gates.exits} exits -> ${gates.gates.length} gates (${twoWay.length} two-way)`);
+  check('a gate is listed once per pair', gates.rows === gates.gates.length,
+        `${gates.rows} rows, ${gates.gates.length} gates`);
+  check('both sides of a gate share its number and colour', gates.lookup,
+        'wilderness1#0 and wilderness2#0 resolve to the same gate');
+  check('every gate knows which edge it leaves by',
+        gates.gates.every((g) => g.edge || g.oneWay),
+        gates.gates.map((g) => `${g.n}:${g.edge}`).join(' '));
+
+  // --- the rotation when crossing ------------------------------------------
+  // Walking off an edge and arriving spun round is the bug this catches. The
+  // editor reports it and the build now refuses it, so both are checked.
+  const spun = await page.evaluate(() => {
+    const want = { west: 'left', east: 'right', north: 'up', south: 'down' };
+    const wrong = [];
+    for (const { map } of window.editor.world.byId.values()) {
+      (map.exits || []).forEach((ex, i) => {
+        const edge = window.edgeOf(map, ex.tiles);
+        if (edge && ex.facing && ex.facing !== want[edge]) {
+          wrong.push(`${map.id}#${i} ${edge} -> ${ex.facing}`);
+        }
+      });
+    }
+    return wrong;
+  });
+  check('no crossing leaves the player turned around', spun.length === 0, spun.join(', '));
+
+  // --- gatherable things versus scenery ------------------------------------
+  // The game makes something a pickup because its definition is an item, not
+  // because of a flag - so the editor must agree with that, not guess.
+  const loot = await page.evaluate(() => {
+    const ids = Object.keys(window.editor.M.items);
+    const props = Object.keys(window.editor.M.props);
+    return {
+      itemsAllGatherable: ids.every((id) => window.gatherableOf(id)),
+      propsNoneGatherable: props.every((id) => !window.gatherableOf(id)),
+      gatherSwatches: document.querySelectorAll('#pal-objects .swatch.gather').length,
+      drawnItems: ids.filter((id) => window.spriteFor && true).length,
+      solidAndGather: [...document.querySelectorAll('#pal-objects .swatch.gather')]
+        .filter((el) => el.classList.contains('solid')
+                     || el.classList.contains('ground')).length,
+      titles: [...document.querySelectorAll('#pal-objects .swatch.gather span')]
+        .slice(0, 2).map((el) => el.title),
+    };
+  });
+  check('every item is gatherable and no prop is',
+        loot.itemsAllGatherable && loot.propsNoneGatherable,
+        `items ${loot.itemsAllGatherable}, props ${loot.propsNoneGatherable}`);
+  check('gatherable things are marked in the palette', loot.gatherSwatches > 0,
+        `${loot.gatherSwatches} swatches`);
+  check('a swatch is gatherable or scenery, never both', loot.solidAndGather === 0,
+        `${loot.solidAndGather} wearing two marks`);
+  check('the mark says what it is', loot.titles.every((t) => /gatherable/.test(t)),
+        loot.titles.join(' | '));
+
   check('no console errors', problems.length === 0, problems.join(' | '));
 
   const shot = process.env.EDITOR_SHOT;
