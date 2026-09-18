@@ -20,7 +20,8 @@
     "a": "tile.leaves",
     "~": "tile.water",
     "s": "tile.shallow",
-    "d": "tile.sand"
+    "d": "tile.sand",
+    "c": "tile.gravel"
   },
   "ground": [
     ".t.tt.dddddda...a...",
@@ -36,13 +37,13 @@
     "....dss~~~~ssdddddd.",
     "..t.adssssssddsssssd",
     "a.a...ddddddads~~~sd",
-    "a..a....aa.ads~~~~~s",
-    "a.aa...a...ads~~~~~s",
-    "aa..a.aa..a..ds~~~sd",
-    ".....aaaaaaa.dsssssd",
-    "..aa..a.aaa.aaddddd.",
-    "a.a.a....aa..a.aa.a.",
-    "aaa.a.a.a......aaa.a"
+    "a..a....aaccds~~~~~s",
+    "a.aa...a..ccds~~~~~s",
+    "aa..a.aa..cc.ds~~~sd",
+    ".....aaaaacc.dsssssd",
+    "..aa..a.aaccaaddddd.",
+    "a.a.a....acc.a.aa.a.",
+    "aaa.a.a.a.cc...aaa.a"
   ],
   "entities": [
     {
@@ -560,6 +561,20 @@
       "def": "npc.sheep",
       "tile": [
         15,
+        17
+      ]
+    },
+    {
+      "def": "prop.cairn",
+      "tile": [
+        9,
+        17
+      ]
+    },
+    {
+      "def": "prop.cairn",
+      "tile": [
+        12,
         17
       ]
     }

@@ -20,26 +20,26 @@
     "c": "tile.gravel"
   },
   "ground": [
-    "aaaaaaaaaaaaaaaaaaaa",
-    "aaaaaaaaaaaaaaaaaaaa",
-    "aaaaaaaaaaaaaaaaaaaa",
-    "aaaaaaaaaaaaaaaaaaaa",
-    "aaaattaaaataaaattaaa",
-    "taattttaatttaattttat",
-    "tttt..tttt.tttt..ttt",
-    ".tt....tt...tt....t.",
-    "....................",
-    "ccc...........aaa...",
-    "cccccccaa......at...",
-    "..ccccccc......ttt..",
+    "aaaaaaaaaaccaaaaaaaa",
+    "aaaaaaaaaaccaaaaaaaa",
+    "aaaaaaaaaaccaaaaaaaa",
+    "aaaaaaaaaaccaaaaaaaa",
+    "aaaattaaaaccaaattaaa",
+    "taattttaatccaattttat",
+    "tttt..tttcctttt..ttt",
+    ".tt....ttcc.tt....t.",
+    ".........cc.........",
+    "ccc......cc...aaa...",
+    "cccccccaacc....at...",
+    "..ccccccccc....ttt..",
     "......ccccc...ttttt.",
     "........ccccc..ttt..",
     "..........ccccc.t...",
-    "...t........cccccc..",
-    ".ttttt........cccccc",
-    "ttttttt.....t....ccc",
-    ".ttttt...ttttttt....",
-    "...t........t......."
+    "...t......cccccccc..",
+    ".ttttt....cc..cccccc",
+    "ttttttt...cct....ccc",
+    ".ttttt...tcctttt....",
+    "...t......cct......."
   ],
   "entities": [
     {
@@ -94,7 +94,7 @@
     {
       "def": "prop.log",
       "tile": [
-        11,
+        12,
         8
       ]
     },
@@ -164,15 +164,15 @@
     {
       "def": "prop.tree_pine",
       "tile": [
-        11,
-        2
+        8,
+        3
       ]
     },
     {
       "def": "prop.tree_pine",
       "tile": [
-        12,
-        2
+        13,
+        3
       ]
     },
     {
@@ -325,7 +325,7 @@
     {
       "def": "npc.sheep",
       "tile": [
-        10,
+        7,
         15
       ]
     },
@@ -339,8 +339,8 @@
     {
       "def": "npc.sheep",
       "tile": [
-        11,
-        17
+        8,
+        16
       ]
     },
     {
@@ -362,6 +362,34 @@
       "tile": [
         4,
         9
+      ]
+    },
+    {
+      "def": "prop.cairn",
+      "tile": [
+        9,
+        2
+      ]
+    },
+    {
+      "def": "prop.cairn",
+      "tile": [
+        12,
+        2
+      ]
+    },
+    {
+      "def": "prop.cairn",
+      "tile": [
+        9,
+        17
+      ]
+    },
+    {
+      "def": "prop.cairn",
+      "tile": [
+        12,
+        17
       ]
     }
   ],

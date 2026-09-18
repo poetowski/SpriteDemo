@@ -24,15 +24,15 @@
     "s": "tile.shallow"
   },
   "ground": [
-    ".cc...c.......ct.tt...,...t.d....c.....ccc........t.....aaa.",
-    "ccccc.c..ccc....d.c.,d..dt....t..cc.d,cc.ccc.d...t......aaaa",
-    "..d.cd.cccscccc...aaa...t........t..t....dd.c.tt..d......a..",
-    "......ccssssscc.,aaa.a....,t.....t..aa.da.ddd.....cccc.a.a.a",
-    "...ccccs~~~~~sccaaa.a.a.,....,.ctcc...aaaa..c...ccssssc.aa..",
-    "..cd.ccs~~~~~ssscaaa.aac......,....a.a.aaad..ttcsss~~scaa.a.",
-    "cccc.css~~~~~~~sca.a..a.......t.......aaaa,...,cs~~~~sccaaa.",
-    ".....css~~~~~~~~sca...,..c..,...t...a...at....tcs~~~sscd..t.",
-    "c....cs~~~~~~~~~sc..a.....t,......t.c.aa....d..cs~~~scct..,c",
+    ".cc...c.......ct.tt...,...t...cc.......ccc........cc....aaa.",
+    "ccccc.c..ccc....d.c.,d..dt....cc..c.d,cc.ccc.d...tcc....aaaa",
+    "..d.cd.cccscccc...aaa...t.....cc.t..t....dd.c.tt..cc.....a..",
+    "......ccssssscc.,aaa.a....,t..cc.t..aa.da.ddd.....cccc.a.a.a",
+    "...ccccs~~~~~sccaaa.a.a.,....,cctcc...aaaa..c...ccssssc.aa..",
+    "..cd.ccs~~~~~ssscaaa.aac.....cc....a.a.aaad..ttcsss~~scaa.a.",
+    "cccc.css~~~~~~~sca.a..a......cc.......aaaa,...,cs~~~~sccaaa.",
+    ".....css~~~~~~~~sca...,..c..,cc.t...a...at....tcs~~~sscd..t.",
+    "c....cs~~~~~~~~~sc..a.....t,.cc...t.c.aa....d..cs~~~scct..,c",
     ".....cs~~~ss~~~sct...........ccccccc..t..c....ccsssssc....t.",
     ".....ccsssscssscctt.t.c..tdccssssssscc.ttc......ccccca.t....",
     ".....acccccccccc......t...css~~s~~~ssc.c..c.d....cta.a..t..,",
@@ -518,7 +518,7 @@
     {
       "def": "prop.tree_dead",
       "tile": [
-        30,
+        28,
         6
       ]
     },
@@ -555,6 +555,34 @@
       "tile": [
         25,
         16
+      ]
+    },
+    {
+      "def": "prop.cairn",
+      "tile": [
+        29,
+        2
+      ]
+    },
+    {
+      "def": "prop.cairn",
+      "tile": [
+        32,
+        2
+      ]
+    },
+    {
+      "def": "prop.cairn",
+      "tile": [
+        49,
+        2
+      ]
+    },
+    {
+      "def": "prop.cairn",
+      "tile": [
+        52,
+        2
       ]
     }
   ],
