@@ -11,6 +11,14 @@ PALETTE = {
     "SK":  ((0xf2, 0xc2, 0x92, 255), "skin"),
     "SKS": ((0xcc, 0x94, 0x64, 255), "skin shade"),
     "SKL": ((0xff, 0xdd, 0xb4, 255), "skin light"),
+    # A fourth tone and some detail keys, for the giant rig: three tones over a
+    # mass that size leaves it flat, and a monster wants things on it that a
+    # person does not.
+    "SKD": ((0x8a, 0x5c, 0x38, 255), "skin deep"),
+    "MS":  ((0x86, 0x96, 0x6a, 255), "lichen"),
+    "WR":  ((0x8a, 0x84, 0x4e, 255), "wart"),
+    "MW":  ((0x4a, 0x1e, 0x1e, 255), "maw"),
+    "IR":  ((0xe8, 0xb4, 0x3c, 255), "iris"),
     "HR":  ((0x5c, 0x3a, 0x24, 255), "hair"),
     "HRL": ((0x82, 0x55, 0x35, 255), "hair light"),
     "TU":  ((0x4f, 0xa5, 0x55, 255), "tunic"),
@@ -121,9 +129,19 @@ VARIANTS = {
         # Woodland colours: moss and bark, so a troll standing still among the
         # trees is nearly one of them until it moves. The gas keys are left
         # alone - the yellow is the only thing on him that is not the wood.
-        "SK":  (0x5a, 0x73, 0x38, 255),   # mossy hide
-        "SKS": (0x3c, 0x51, 0x25, 255),
-        "SKL": (0x7a, 0x93, 0x4e, 255),
+        # Grass is luma 103 and the old hide was 104, so he was the exact
+        # brightness of the ground he stood on and the whole silhouette
+        # dissolved into it. The ramp now runs well under and well over the
+        # grass instead, which is what makes the shape read at all - the
+        # woodland colouring survives in the hue, not in the value.
+        "SK":  (0x4a, 0x5a, 0x3a, 255),   # hide, darker than the turf
+        "SKS": (0x33, 0x40, 0x28, 255),
+        "SKL": (0x6e, 0x82, 0x52, 255),
+        "SKD": (0x22, 0x2b, 0x1c, 255),   # the deepest folds
+        "MS":  (0x8c, 0x9c, 0x6e, 255),   # lichen, growing on him
+        "WR":  (0x7e, 0x7a, 0x46, 255),   # warts
+        "MW":  (0x3a, 0x16, 0x18, 255),   # the inside of the maw
+        "IR":  (0xd8, 0xa8, 0x34, 255),   # small amber eyes
         "TU":  (0x66, 0x47, 0x29, 255),   # a hide slung round the waist
         "TUS": (0x46, 0x2f, 0x1a, 255),
         "TUL": (0x8a, 0x64, 0x3c, 255),

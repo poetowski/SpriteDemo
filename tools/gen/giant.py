@@ -53,26 +53,25 @@ TORSO = [9, 10, 11, 11, 12, 12, 12, 12, 12, 12, 12, 12,
 # huge rather than the head as small.
 HEAD = [4, 6, 7, 7, 8, 8, 8, 8, 8, 8, 7, 6, 4]
 
-# Gas, per frame of a state: clouds that rise and thin as the cycle runs. The
-# phase is the frame index, so a troll standing still still stinks.
-GAS_FRONT = [
-    [(11, 50, 4), (52, 46, 3), (17, 35, 2)],
-    [(10, 45, 3), (53, 41, 2), (15, 30, 2), (48, 54, 4)],
-    [(12, 39, 2), (51, 36, 2), (9, 52, 4)],
-    [(9, 33, 2), (54, 50, 4), (14, 44, 3)],
-]
-GAS_SIDE = [                   # behind him, which is the way he came
-    [(12, 49, 4), (5, 41, 3), (19, 32, 2)],
-    [(10, 43, 3), (4, 34, 2), (16, 52, 4)],
-    [(13, 37, 2), (6, 48, 4), (8, 28, 2)],
-    [(9, 45, 3), (14, 33, 2), (3, 39, 3)],
-]
-GAS_BACK = [                   # face to face with the source of it
-    [(18, 52, 4), (46, 48, 3), (31, 55, 3)],
-    [(15, 46, 3), (49, 43, 2), (25, 38, 2)],
-    [(20, 40, 2), (44, 36, 2), (33, 48, 4)],
-    [(14, 37, 2), (50, 52, 4), (27, 44, 3)],
-]
+# Gas, as a continuous function of where the cycle has got to rather than a
+# list of positions per frame. Each puff has a vent, a drift and a birth
+# offset; at any phase it is somewhere along its own rise. Listing positions
+# per frame meant every puff teleported between frames unless the positions
+# happened to line up, and most of them did not - so adding frames made the
+# smell longer rather than smoother. This way a puff moves a fraction of its
+# arc per frame, and more frames make the motion finer.
+#
+# (sx, sy, drift, birth) - birth staggers them so one is always leaving.
+GAS_VENTS = {
+    "front": [(16, 53, -1.0, 0.00), (46, 53, 1.0, 0.28),
+              (19, 51, -0.5, 0.55), (43, 50, 0.6, 0.78)],
+    "side":  [(15, 51, -1.0, 0.00), (12, 53, -0.7, 0.26),
+              (17, 48, -1.3, 0.52), (13, 46, -0.9, 0.76)],
+    "back":  [(21, 55, -0.8, 0.00), (42, 55, 0.8, 0.30),
+              (31, 56, 0.1, 0.58), (26, 53, -0.3, 0.80)],
+}
+GAS_RISE = 21.0                # px a puff climbs over its life
+GAS_LIFE = 0.88               # of the cycle; the rest is the gap before the next
 
 
 # --------------------------------------------------------------- helpers ---
@@ -141,9 +140,11 @@ def _fist(c, cx, cy, r, edge="SKS"):
         c.set(x, cy + 1, "SKS")
 
 
-def _puff(c, cx, cy, r):
+def _puff(c, cx, cy, r, pale=False):
     """One cloud of gas: overlapping lobes, painted only where nothing else
-    is. A single disc reads as a bubble; a lumpy one reads as a smell."""
+    is. A single disc reads as a bubble; a lumpy one reads as a smell. `pale`
+    drops the solid core, which is how an old puff thins out instead of
+    vanishing between one frame and the next."""
     for ox, oy, rr in ((0, 0, r), (-r, 1, r - 1), (r - 1, -2, r - 2),
                        (1, r - 1, r - 2)):
         if rr <= 0:
@@ -153,12 +154,45 @@ def _puff(c, cx, cy, r):
                 d = (x - cx - ox) ** 2 + (y - cy - oy) ** 2
                 if d > rr * rr or c.get(x, y) is not None:
                     continue
-                c.set(x, y, "GSL" if d <= max(0, rr - 2) ** 2 else "GS")
+                if pale:
+                    c.set(x, y, "GSL")
+                else:
+                    c.set(x, y, "GSL" if d <= max(0, rr - 2) ** 2 else "GS")
 
 
-def _gas(c, table, phase):
-    for cx, cy, r in table[phase % len(table)]:
-        _puff(c, cx, cy, r)
+def _gas(c, view, t):
+    """Draw the gas at cycle position t (0..1). Continuous in t, so the same
+    vents at a finer phase step simply look smoother."""
+    for sx, sy, drift, birth in GAS_VENTS[view]:
+        age = (t - birth) % 1.0
+        if age > GAS_LIFE:
+            continue                                  # dispersed, not yet back
+        a = age / GAS_LIFE
+        x = round(sx + drift * a * 16)
+        y = round(sy - a * GAS_RISE)
+        r = round(2 + a * 1.9)                        # spreads, but stays a puff
+        _puff(c, x, y, r, pale=a > 0.55)               # it thins as it climbs
+
+
+def _wart(c, x, y, big=False):
+    """A lump on the hide. Painted only over hide, so a wart can never end up
+    hanging in the air beside him."""
+    for dx, dy in ((0, 0), (1, 0), (0, 1), (1, 1)) if big else ((0, 0), (1, 0)):
+        if c.get(x + dx, y + dy) in ("SK", "SKL", "SKS"):
+            c.set(x + dx, y + dy, "WR")
+    if c.get(x, y + (2 if big else 1)) in ("SK", "SKL", "SKS"):
+        c.set(x, y + (2 if big else 1), "SKD")         # the shadow it casts
+
+
+def _lichen(c, cx, cy, r):
+    """A patch of lichen growing on him - the one thing on the troll that is
+    lighter than the grass, and the reason he reads as old rather than green."""
+    for y in range(cy - r, cy + r + 1):
+        for x in range(cx - r, cx + r + 1):
+            d = (x - cx) ** 2 + (y - cy) ** 2
+            if d > r * r or c.get(x, y) not in ("SK", "SKL", "SKS"):
+                continue
+            c.set(x, y, "MS" if d < max(1, r - 1) ** 2 else "SKL")
 
 
 # ------------------------------------------------------------- front view ---
@@ -169,10 +203,18 @@ def _legs_front(c, bob, leg):
     for x0, x1, lift, out in ((20, 29, lift_l, -2), (34, 43, lift_r, 2)):
         foot = FOOT_Y - lift
         c.rect(x0, HIP_Y + bob, x1, foot - 3, "SK")
+        # A knee, and a shin lit down its front: a plain column reads as a
+        # post, and he has two of them holding up the heaviest thing on screen.
+        _lobe(c, (x0 + x1) // 2, HIP_Y + bob + 6, 4, "SKL", only="SK")
+        c.row(x0, x1, HIP_Y + bob + 8, "SKS")
+        c.col(x0, HIP_Y + bob, foot - 3, "SKS")
+        c.col(x1, HIP_Y + bob, foot - 3, "SKS")
         fx0, fx1 = (x0 + out, x1) if out < 0 else (x0, x1 + out)
         c.rect(fx0, foot - 2, fx1, foot, "SK")       # the foot turns out
-        for i in range(3):
-            c.set(fx0 + 1 + i * 3, foot, "BT")       # toenails
+        c.row(fx0, fx1, foot - 2, "SKL")             # lit across the instep
+        for i in range(3):                           # claws, not toenails
+            c.set(fx0 + 1 + i * 3, foot, "BT")
+            c.set(fx0 + 1 + i * 3, foot - 1, "SKD")
 
 
 def _torso_front(c, bob):
@@ -181,10 +223,27 @@ def _torso_front(c, bob):
         _lobe(c, 19 if side < 0 else 44, 29 + bob, 6, "SK")   # meet the arms
     _lobe(c, 24, 35 + bob, 10, "SKL", only="SK")     # the gut catches the light
     _lobe(c, 39, 41 + bob, 8, "SKS", only="SK")      # and falls away under it
-    c.row(25, 38, 31 + bob, "SKS")                   # the crease under a chest
-    c.row(27, 36, 32 + bob, "SKS")                   # that rests on the gut
+
+    # A chest that sits on the gut: two slabs with a shadow under each, and a
+    # collarbone over them. Without these the whole front is one green field
+    # and nothing says where the ribs stop and the belly starts.
+    for cx in (26, 37):
+        _lobe(c, cx, 29 + bob, 4, "SKL", only="SK")  # the slab itself
+        for i, w in enumerate((4, 3)):               # and a crease under it,
+            c.row(cx - w, cx + w, 32 + i + bob, "SKS")   # an arc, not a ring
+    c.row(24, 39, 26 + bob, "SKS")                   # collarbone
+    c.row(25, 38, 32 + bob, "SKS")                   # the crease under a chest
+    c.row(27, 36, 33 + bob, "SKD")                   # that rests on the gut
+    for y in (40, 43):                               # folds across the gut
+        c.row(26 + (y - 40), 37 - (y - 40), y + bob, "SKS")
     c.rect(31, 38 + bob, 32, 39 + bob, "SKS")        # navel
-    c.set(31, 39 + bob, "OL")
+    c.set(31, 39 + bob, "SKD")
+
+    _lichen(c, 20, 27 + bob, 4)                      # growing where he cannot
+    _lichen(c, 43, 31 + bob, 3)                      # reach to scratch
+    for x, y, big in ((21, 33, True), (41, 36, False), (25, 42, False),
+                      (36, 28, False), (18, 30, False)):
+        _wart(c, x, y + bob, big)
 
 
 def _skirt_front(c, bob):
@@ -229,7 +288,15 @@ def _arm_front(c, side, bob, swing, punch, back=False):
     seam = x0 + (4 if side < 0 else 0)               # the side against the gut
     c.rect(x0, top, x0 + 4, top + 9, "SK")
     c.rect(x0 + lean, top + 9, x0 + 4 + lean, top + 15, "SK")
+    # A bicep where the arm is thickest and a shadow where it thins into the
+    # forearm, so it is an arm rather than a pipe with a ball on the end.
+    _lobe(c, x0 + 2, top + 4, 3, "SKL", only="SK")
+    c.row(x0, x0 + 4, top + 9, "SKS")
     _lobe(c, x0 + 2 + lean, top + 17, 3, "SK")       # the fist, hanging low
+    _lobe(c, x0 + 1 + lean, top + 16, 2, "SKL", only="SK")
+    for i in range(3):                               # knuckles, and claws
+        c.set(x0 + lean + i * 2, top + 19, "SKD")
+        c.set(x0 + lean + i * 2, top + 20, "BT")
     # Where the arm lies against the gut there is nothing between them but a
     # change of green, so the seam is drawn as outline: at this size a shade
     # colour is not enough to tell an arm from the belly behind it.
@@ -239,23 +306,59 @@ def _arm_front(c, side, bob, swing, punch, back=False):
 
 
 def _head_front(c, bob, shape):
+    """The face is the whole character of him, and at three tiles tall there
+    is room for one: a brow you can read the mood off, eyes under it, a broad
+    nose and a jaw that shuts badly."""
     t = HEAD_TOP + bob
     _rows(c, t, HEAD, "SK")
-    c.rect(22, t + 4, 23, t + 6, "SK")               # ears, small on a big skull
-    c.rect(40, t + 4, 41, t + 6, "SK")
-    _lobe(c, 28, t + 3, 4, "SKL", only="SK")         # light on a bald crown
-    c.row(24, 39, t + 4, "SKS")                      # brow ridge, jutting
-    c.rect(26, t + 5, 27, t + 6, "OL")               # small eyes under it
-    c.rect(36, t + 5, 37, t + 6, "OL")
-    c.rect(30, t + 6, 33, t + 8, "SKS")              # snout
-    c.set(30, t + 8, "OL")
-    c.set(33, t + 8, "OL")
-    c.row(26, 37, t + 9, "OL")                       # the maw
-    c.row(27, 36, t + 10, "OL")
+    # Ears: tapered to a point rather than squared off, or they read as the
+    # cheek flaps of a helmet.
+    for x0, x1, d in ((20, 23, -1), (40, 43, 1)):
+        c.rect(x0 + (1 if d < 0 else 0), t + 4, x1 - (0 if d < 0 else 1), t + 7, "SK")
+        c.rect(x0, t + 5, x1, t + 6, "SK")
+        c.set(x0 if d < 0 else x1, t + 5, "SKL")
+        c.set(x0 + (2 if d < 0 else 1), t + 6, "SKS")
+    _lobe(c, 29, t + 2, 3, "SKL", only="SK")         # light on a bald crown
+
+    # The brow is a ridge over the eyes, not a band across the whole skull -
+    # full width with a hard dark edge under it reads as the rim of a helmet.
+    c.row(25, 38, t + 4, "SKS")
+    c.row(26, 30, t + 5, "SKD")
+    c.row(33, 37, t + 5, "SKD")
+    c.set(31, t + 4, "SK")                           # a gap where the brows meet
+    c.set(32, t + 4, "SK")
+    for cx in (27, 36):                              # sockets
+        _lobe(c, cx, t + 6, 2, "SKD", only="SK")
+    c.rect(26, t + 6, 28, t + 6, "IR")               # small amber eyes,
+    c.rect(35, t + 6, 37, t + 6, "IR")               # deep under the brow
+    c.set(27, t + 6, "OL")
+    c.set(36, t + 6, "OL")
+    c.set(25, t + 6, "SKD")
+    c.set(38, t + 6, "SKD")
+
+    c.rect(30, t + 6, 33, t + 8, "SK")               # a broad flat nose
+    c.row(29, 34, t + 8, "SKS")
+    c.set(30, t + 8, "SKD")                          # nostrils
+    c.set(33, t + 8, "SKD")
+
+    c.row(25, 38, t + 9, "SKS")                      # the jaw, undershot
+    c.row(26, 37, t + 10, "MW")                      # and the maw inside it
+    c.row(27, 36, t + 11, "SKS")
+    c.set(29, t + 10, "HN")                          # lower teeth
+    c.set(34, t + 10, "HN")
     if shape.get("tusks"):
-        for x in (28, 34):
-            c.rect(x, t + 8, x + 1, t + 9, "HN")
-            c.set(x + 1, t + 9, "HNS")
+        # Up out of the lower jaw and past the lip, which is what makes the
+        # bite read as a bite rather than as a dark line across his face.
+        for x, d in ((27, -1), (36, 1)):
+            c.rect(x, t + 9, x + 1, t + 11, "HN")
+            c.set(x + (0 if d < 0 else 1), t + 8, "HN")
+            c.set(x + (1 if d < 0 else 0), t + 10, "HNS")
+
+    _wart(c, 24, t + 2)                              # a lumpy brow
+    _wart(c, 38, t + 3)
+    _lichen(c, 40, t + 1, 2)
+    for i in range(3):                               # an old scar over one eye
+        c.set(25 + i, t + 3 - i, "SKD")
 
 
 def draw_front(shape, pose):
@@ -270,7 +373,7 @@ def draw_front(shape, pose):
     _shade(c, "SK", "SKL", "SKS")
     c.outline()
     if shape.get("gas"):
-        _gas(c, GAS_FRONT, pose.get("phase", 0))
+        _gas(c, "front", pose.get("t", 0.0))
     return c
 
 
@@ -288,7 +391,17 @@ def draw_back(shape, pose):
         _lobe(c, cx, 30 + bob, 4, "SKS", only="SK")
         _lobe(c, cx - 1, 29 + bob, 3, "SK", only="SKS")
     c.col(CX, SHOULDER_Y + 4 + bob, 40 + bob, "SKS")         # the spine
+    c.col(CX + 1, SHOULDER_Y + 6 + bob, 38 + bob, "SKD")
     c.row(25, 38, 37 + bob, "SKS")                   # and a roll of fat across
+    c.row(26, 37, 41 + bob, "SKS")                   # and another under it
+    # The back is where lichen actually grows on a thing that cannot reach it,
+    # and the view he mostly presents while walking away from you.
+    _lichen(c, 22, 29 + bob, 4)
+    _lichen(c, 38, 33 + bob, 3)
+    _lichen(c, 29, 26 + bob, 2)
+    for x, y, big in ((20, 34, True), (42, 28, False), (34, 42, False),
+                      (25, 39, False)):
+        _wart(c, x, y + bob, big)
     _skirt_front(c, bob)
     for side in (-1, 1):
         _arm_front(c, side, bob, pose.get("swing", 0), pose.get("punch", 0),
@@ -303,7 +416,7 @@ def draw_back(shape, pose):
     _shade(c, "SK", "SKL", "SKS")
     c.outline()
     if shape.get("gas"):
-        _gas(c, GAS_BACK, pose.get("phase", 0))
+        _gas(c, "back", pose.get("t", 0.0))
     return c
 
 
@@ -339,6 +452,12 @@ def draw_side(shape, pose):
     _lobe(c, 24, 32 + bob, 10, "SKL", only="SK")     # lit along the back
     _lobe(c, 43, 40 + bob, 9, "SKS", only="SK")      # the gut falls into shade
     _lobe(c, 21, 42 + bob, 6, "SKS", only="SK")      # and so does the rump
+    c.row(34, 45, 36 + bob, "SKS")                   # a fold over the belly
+    c.row(36, 44, 39 + bob, "SKD")
+    _lichen(c, 23, 28 + bob, 4)                      # lichen along the spine
+    _lichen(c, 20, 36 + bob, 3)
+    for x, y, big in ((26, 27, True), (22, 44, False), (40, 32, False)):
+        _wart(c, x, y + bob, big)
 
     c.rect(21, 42 + bob, 46, 47 + bob, "TU")         # the hide, side on
     c.row(21, 46, 42 + bob, "TUL")
@@ -354,13 +473,21 @@ def draw_side(shape, pose):
         c.row(x0, x1, t + 6 + i, "SK")               # the jaw leads, not a beak
     _lobe(c, 33, t + 3, 4, "SKL", only="SK")
     c.row(38, 46, t + 4, "SKS")                      # brow
-    c.rect(41, t + 5, 42, t + 6, "OL")               # eye
-    c.set(47, t + 7, "OL")                           # nostril
-    c.row(38, 48, t + 8, "OL")                       # the maw, side on
-    c.rect(29, t + 3, 31, t + 6, "SK")               # the near ear
+    c.row(39, 46, t + 5, "SKD")                      # the dark under it
+    c.rect(41, t + 5, 43, t + 6, "IR")               # the eye, amber in shadow
+    c.set(42, t + 6, "OL")
+    c.set(47, t + 7, "SKD")                          # nostril
+    c.row(38, 48, t + 8, "SKS")                      # the lip
+    c.row(39, 47, t + 9, "MW")                       # and the maw behind it
+    c.set(41, t + 9, "HN")                           # a tooth in the dark
+    c.rect(27, t + 2, 31, t + 6, "SK")               # the near ear, long
+    c.rect(28, t + 4, 29, t + 5, "SKS")
     if shape.get("tusks"):
-        c.rect(44, t + 7, 45, t + 8, "HN")
+        c.rect(44, t + 7, 45, t + 9, "HN")           # the tusk, up past the lip
+        c.set(44, t + 6, "HN")
         c.set(45, t + 8, "HNS")
+    _wart(c, 36, t + 2)
+    _lichen(c, 30, t + 1, 2)
 
     # The near arm, which in profile hangs over the body and so is drawn with
     # an edge of its own: hanging, wound up, or thrown straight out in front of
@@ -372,14 +499,25 @@ def draw_side(shape, pose):
         _arm_side(c, [(20, 34)] * 6, 31 + bob)       # drawn back behind him
         _fist(c, 18, 34 + bob, 5, edge="OL")
     else:
+        # Hangs against the gut, tapering from shoulder to wrist. It needs an
+        # edge of its own on both sides or it is the same green as the belly
+        # behind it - but the taper has to be gentle, or the edges wander and
+        # it stops reading as one limb. The shoulder goes on first: laid over
+        # the top afterwards it simply painted the arm out.
         sw = pose.get("swing", 0)
-        spans = [(31 + i // 4 + sw, 36 + i // 4 + sw) for i in range(16)]
-        spans += [(33 + sw, 39 + sw)] * 3            # and a fist on the end
-        _arm_side(c, spans, 29 + bob)
+        _lobe(c, 34 + sw, 30 + bob, 5, "SK")
+        _lobe(c, 33 + sw, 29 + bob, 3, "SKL", only="SK")
+        widths = (6, 6, 6, 6, 5, 5, 5, 5, 5, 4, 4, 4, 4, 4, 4, 4, 5)
+        spans = [(33 + i // 6 + sw, 33 + i // 6 + sw + w)
+                 for i, w in enumerate(widths)]
+        _arm_side(c, spans, 30 + bob)
+        for i in range(4):                           # lit down the outer edge
+            c.set(34 + sw, 32 + i + bob, "SKL")
+        _fist(c, 36 + sw, 49 + bob, 4, edge="OL")
     _shade(c, "SK", "SKL", "SKS")
     c.outline()
     if shape.get("gas"):
-        _gas(c, GAS_SIDE, pose.get("phase", 0))
+        _gas(c, "side", pose.get("t", 0.0))
     return c
 
 
@@ -396,24 +534,33 @@ def draw_shadow(squash=0):
 # Slow all the way through: a heavy thing that has to shift its own weight is
 # the whole read, and it is also what makes the punch something you can walk
 # out of rather than something that simply happens to you.
+# Six steps to a stride and four to a breath, at proportionally shorter frame
+# times: the cycles last exactly as long as they did, but the gas is sampled
+# twice as finely along them, and the walk gets a pass between each contact
+# instead of cutting straight from one foot to the other.
 WALK = [
     dict(bob=0, leg=1, swing=-1, squash=0),
-    dict(bob=-1, leg=0, swing=0, squash=1),
+    dict(bob=-1, leg=1, swing=-1, squash=1),
+    dict(bob=0, leg=0, swing=0, squash=0),
     dict(bob=0, leg=-1, swing=1, squash=0),
-    dict(bob=-1, leg=0, swing=0, squash=1),
+    dict(bob=-1, leg=-1, swing=1, squash=1),
+    dict(bob=0, leg=0, swing=0, squash=0),
 ]
-IDLE = [
+IDLE = [                       # breathing, and the belly settling after it
     dict(bob=0, leg=0, swing=0, squash=0),
     dict(bob=-1, leg=0, swing=0, squash=0),
+    dict(bob=-1, leg=0, swing=0, squash=0),
+    dict(bob=0, leg=0, swing=0, squash=0),
 ]
-ATTACK = [                     # wind up, throw, hold, drop the arm
+ATTACK = [                     # wind up, throw, land, hold, drop the arm
     dict(bob=-1, leg=0, swing=0, punch=-1, squash=0),
+    dict(bob=0, leg=0, swing=0, punch=-1, squash=0),
     dict(bob=1, leg=0, swing=0, punch=1, squash=1),
     dict(bob=1, leg=0, swing=0, punch=1, squash=1),
     dict(bob=0, leg=0, swing=0, punch=0, squash=0),
 ]
-STATES = {"walk": (WALK, 230, True), "idle": (IDLE, 620, True),
-          "attack": (ATTACK, 170, False)}
+STATES = {"walk": (WALK, 153, True), "idle": (IDLE, 310, True),
+          "attack": (ATTACK, 136, False)}
 STATE_ORDER = ["walk", "idle", "attack"]
 
 
@@ -432,7 +579,10 @@ def build_frames(species="troll", states=None, held=None, worn=None):
         for state in states_for(states, held):
             poses, ms, loops = STATES[state]
             for i, pose in enumerate(poses):
-                pose = dict(pose, phase=i)
+                # `t` is the fraction of the cycle, which is what the gas runs
+                # off - so the same vents drawn at more frames get finer, not
+                # longer. `phase` stays for anything that wants the index.
+                pose = dict(pose, phase=i, t=i / len(poses))
                 if facing in ("left", "right"):
                     cel = draw_side(shape, pose)
                     if facing == "left":

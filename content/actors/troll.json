@@ -35,11 +35,11 @@
   },
   "hostile": {
     "sight": 74,
-    "lose": 150,
+    "lose": 190,
     "charge_speed": 34,
     "damage": 7,
     "reach": 26,
     "cooldown_ms": 2200,
-    "leash": 96
+    "leash": 200
   }
 }
