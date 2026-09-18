@@ -16,7 +16,6 @@
   "legend": {
     ".": "tile.grass",
     "t": "tile.grass_tall",
-    ",": "tile.grass_flower",
     "a": "tile.leaves",
     "c": "tile.gravel"
   },
@@ -356,6 +355,13 @@
       "tile": [
         15,
         7
+      ]
+    },
+    {
+      "def": "prop.lamp_post",
+      "tile": [
+        4,
+        9
       ]
     }
   ],
