@@ -91,7 +91,12 @@ indistinguishable from one written by hand.
 
 A save may only write over the map it came from - the server compares the
 incoming `id` with the one in the target file and refuses a mismatch, so a map
-can never be destroyed by a save meant for another.
+can never be destroyed by a save meant for another. A save also carries through
+every key it does not understand. `save()` names the fields it writes, and
+`exits` was once not among them, so opening a joined map and pressing save
+quietly disconnected the world - and no gate caught it, because a map without
+exits is perfectly legal. Anything added to the map format needs to survive
+that round trip.
 
 Paint terrain, place and erase objects, move the spawn, undo, save, and
 **save + build** to run the gates without leaving the page. Terrain and objects
@@ -100,6 +105,56 @@ never offers a swatch you cannot paint with. Objects are grouped by kind
 (props, actors, items) and marked solid or walkable ground. Painting unwalkable ground over
 something removes what stood there and says so, because the `map-footprint`
 gate would refuse the map otherwise.
+
+### The world view
+
+Press **W**, or the `world` button, for the atlas. A map carries no world
+position - only doorways, each saying "this edge of mine leads to that map, and
+you arrive over there". That is enough to place them: follow the doorways and
+every map lands against the one it joins, lined up on the row the player walks
+across. So the atlas is not a diagram kept alongside the content, it is the
+shape the content already has, and a wrong join shows up as a map in the wrong
+place rather than as a note nobody reads.
+
+A **gate** is the way through between two maps, and it has a mouth on each
+side. The two mouths are the thing that has to be read together, so each gate
+gets a colour and a number used everywhere it is drawn: a filled band on the
+mouth, an arrow running to where it puts you down, a dashed arrow if the trip
+is one-way, and a matching row in the panel giving the pair, the edge and how
+wide the crossing is. The mouths on the map you are editing carry the same
+colour and number, with an arrow per tile pointing the way you leave, and
+arrivals from elsewhere drawn as a dashed outline - so both ends of a crossing
+are visible without leaving the map.
+
+Maps that reach each other form one world; maps that reach nothing are stacked
+below, which is how you spot that Riverside - 159 entities of it - is not
+currently reachable from anywhere. The panel also reports one-way links.
+Clicking a map or a gate opens it.
+
+Gates run north-south as readily as east-west - Wilderness IV sits above
+Wilderness II - and which coordinate a crossing preserves depends on the edge:
+cross a side edge and you keep your row, cross a top or bottom edge and you
+keep your column. `--cross` measured the row either way for as long as every
+gate in the game ran east to west, and passed for the wrong reason until the
+first north-south one was built.
+
+**Arriving faces the way you were walking.** Reaching an edge-wide doorway
+means walking at that edge, so west means left, east means right, and a
+crossing that hands you a different facing spins the player round on the spot.
+`map-exit` enforces it for every edge-aligned doorway, which is how the
+Wilderness II crossing was caught; an inland doorway is exempt, having no edge
+to infer a direction from. `node tools/shot.cjs --cross` walks a gate for real
+and checks the arrival, the row, the bag and the facing.
+
+**Gatherable, or just scenery.** The game decides that one way: a definition
+that comes from `content/items/` becomes a pickup, and a prop or an actor never
+does however much it looks like loot. The editor reads the same fact rather
+than keeping a list - items are marked with a gold diamond in the palette and
+ringed on the map, against solid and walkable-scenery marks for everything
+else, so placing a thing tells you whether it can end up in the bag.
+
+The map's in-game name is editable in the bar; it was previously hand-edited
+JSON only.
 
 Nothing hot-reloads: F5 the page after editing `editor/*`, restart the server
 after editing `tools/editor.py`. **Stop the old server before starting a new
@@ -217,9 +272,30 @@ three-by-two structure. The gates check every footprint tile is real ground and
 that no two solid things claim the same tile; `game/main.js` puts one static
 body on each.
 
+**A prop bigger than a building** goes in the 64x64 class: a function in
+`tools/gen/props.py` added to `HUGE_PROPS`, and a file in `content/props/`.
+Four tiles wide. An even tile count has no middle tile, so the anchor cannot
+sit at both the frame centre and a tile centre - it sits at a tile centre
+(x=24) because that is what keeps the sprite square on the grid, and the art is
+drawn centred in the frame, which means the sprite covers tile offsets -1, 0,
++1 and +2. `prop.burrow_tree` is the first of them; its root flare reaches
+nearly the full width of the frame on purpose, because that is what makes a
+four-tile footprint read as solid rather than as a canopy floating over
+walkable ground. Nothing else needs wiring: the editor loads whatever atlases
+the manifest lists, and `art-scale` accepts a new one at any multiple of 16.
+
 **An NPC** is a file in `content/actors/` plus a line in the map. Its `rig`
 (`biped` / `quadruped`), `states`, `speed`, `blocks`, `interact` and `wander`
 settings are all content. No JS changes.
+
+**Putting the hero somewhere, in a test:** `body.reset(x, y)`, never
+`sprite.setPosition(x, y)`. A dynamic Arcade body writes its own position back
+over the sprite on the next step, so setPosition teleports nothing and the
+hero snaps to where it was. This is not cosmetic - it made the collision test
+pass without the hero ever standing next to the animal, and it made the boar
+look as though it never charged. A test that moves the hero and then asserts
+they did not get somewhere is exactly the test this silently breaks, so assert
+contact (`body.touching`) rather than distance alone.
 
 `blocks` means something different for something that walks. A static thing
 gets a still body on each footprint tile and its tiles go into the blocked set

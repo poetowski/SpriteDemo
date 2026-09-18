@@ -166,6 +166,12 @@ def build_atlases(sprite_rigs, content):
         big.add(pid, [canvas], big_anchor)
         big_canvases[pid] = canvas
 
+    huge = Atlas("props_huge", props_gen.HUGE_FRAME, props_gen.HUGE_FRAME, 2)
+    huge_canvases = {}
+    for pid, canvas in props_gen.build_huge_props():
+        huge.add(pid, [canvas], props_gen.HUGE_ANCHOR)
+        huge_canvases[pid] = canvas
+
     items = Atlas("items", items_gen.SIZE, items_gen.SIZE, 8)
     item_canvases = {}
     for iid, canvas in items_gen.build_items():
@@ -178,11 +184,12 @@ def build_atlases(sprite_rigs, content):
         fx.add(gid, [canvas], fx_gen.ANCHOR)
         fx_canvases[gid] = canvas
 
-    sheets = [actors, tiles, props, big, items, fx]
+    sheets = [actors, tiles, props, big, huge, items, fx]
     sprites = {}
     for a in sheets:
         sprites.update(a.sprites())
     others = {"props": prop_canvases, "props_big": big_canvases,
+              "props_huge": huge_canvases,
               "items": item_canvases, "fx": fx_canvases}
     return tile_index, sheets, sprites, anims, tile_canvases, others, by_sprite
 
@@ -236,6 +243,7 @@ def write_aseprite(by_sprite, tile_canvases, others):
             ("tiles", tile_canvases, tiles_gen.SIZE),
             ("props", others["props"], actor.FRAME),
             ("props_big", others["props_big"], props_gen.BIG_FRAME),
+            ("props_huge", others["props_huge"], props_gen.HUGE_FRAME),
             ("items", others["items"], items_gen.SIZE),
             ("fx", others["fx"], fx_gen.SIZE)):
         path = os.path.join(out, f"{name}.aseprite")

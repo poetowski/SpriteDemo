@@ -49,6 +49,16 @@
    "rows": 2,
    "count": 5
   },
+  "props_huge": {
+   "image": "atlases/props_huge.png",
+   "frame": [
+    64,
+    64
+   ],
+   "cols": 2,
+   "rows": 1,
+   "count": 1
+  },
   "items": {
    "image": "atlases/items.png",
    "frame": [
@@ -9373,6 +9383,14 @@
    "anchor": [
     24,
     45
+   ]
+  },
+  "prop.burrow_tree": {
+   "atlas": "props_huge",
+   "index": 0,
+   "anchor": [
+    24,
+    61
    ]
   },
   "item.apple": {

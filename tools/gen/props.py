@@ -4,8 +4,9 @@ Two frame sizes, one rule. Small props share the actor's 32x32 frame and ground
 line, so a single anchor rule and a single depth-sort rule cover both:
 everything is positioned by the point its base sits on, and drawn in order of
 that point's y. Structures too big for that frame use a 48x48 frame with the
-same convention - three tiles wide, base on the anchor row - which is why the
-engine needs no special case for them.
+same convention - three tiles wide, base on the anchor row - and the few things
+bigger still use 64x64, four tiles wide. Same convention every time, which is
+why the engine needs no special case for any of them.
 
 How much of the world a prop *blocks* is not decided here: that is the
 "footprint" field in content/props/, a list of tile offsets from the anchor
@@ -23,6 +24,16 @@ BIG_FRAME = 48
 BIG_GROUND_Y = 45
 BIG_ANCHOR = (24, BIG_GROUND_Y)
 BIG_BASE_Y = BIG_GROUND_Y - 1
+
+# Four tiles wide, for the one or two things that dwarf a building. An even
+# tile count has no middle tile, so the anchor cannot sit at both the frame
+# centre and a tile centre: it sits at a tile centre (x=24), because that is
+# what keeps the sprite square on the grid, and the art is drawn centred in
+# the frame. The sprite therefore covers tile offsets -1, 0, +1, +2.
+HUGE_FRAME = 64
+HUGE_GROUND_Y = 61
+HUGE_ANCHOR = (24, HUGE_GROUND_Y)
+HUGE_BASE_Y = HUGE_GROUND_Y - 1
 
 
 # --------------------------------------------------------------- helpers ---
@@ -52,6 +63,15 @@ def _blob(c, y0, widths, key, cx=15):
     """Stack of centred rows - a hand-shaped mass, one half-width per row."""
     for i, w in enumerate(widths):
         c.row(cx - w, cx + 1 + w, y0 + i, key)
+
+
+def _lobe(c, cx, cy, r, key):
+    """A filled disc. A crown built from several of these has a lumpy edge,
+    where one big stack of centred rows only ever looks like a balloon."""
+    for y in range(cy - r, cy + r + 1):
+        for x in range(cx - r, cx + r + 1):
+            if (x - cx) ** 2 + (y - cy) ** 2 <= r * r:
+                c.set(x, y, key)
 
 
 def _plank(c, x0, y0, x1, y1, key="WD", light="WDL", dark="WDD"):
@@ -646,6 +666,99 @@ def shed():
     return c.outline()
 
 
+def burrow_tree():
+    """An old tree with a burrow under its roots, four tiles across.
+
+    Drawn in the order it would be seen: roots and trunk, the crown over them,
+    then the hole cut into the trunk that gives the thing its name. The root
+    flare reaches nearly the full width of the frame on purpose - it is what
+    makes a four-tile footprint read as solid rather than as a canopy floating
+    over walkable ground.
+
+    The crown is built from lobes and then given its own light and shade
+    inside, not just at the rim: a mass this size shaded only at the edge
+    reads as one flat green balloon, whatever shape its silhouette is."""
+    c = Canvas(HUGE_FRAME, HUGE_FRAME)
+    CX = 31                      # rows span CX-w .. CX+1+w, so centred on x=32
+
+    # Trunk, widening as it drops.
+    _taper(c, 26, 52, 6, 10, "WD", cx=CX)
+    # Roots, as separate humps along the ground rather than one trapezoid with
+    # slices cut out of it - cutting gaps into a solid flare severs it and
+    # leaves specks behind.
+    for cx, cy, r in ((32, 56, 11), (19, 58, 7), (45, 58, 7),
+                      (10, 60, 5), (54, 60, 5)):
+        _lobe(c, cx, cy, r, "WD")
+    for y in range(HUGE_GROUND_Y, HUGE_FRAME):      # nothing below the base
+        for x in range(HUGE_FRAME):
+            c.set(x, y, None)
+
+    # A crown of overlapping lobes.
+    for cx, cy, r in ((32, 22, 19), (16, 24, 12), (48, 24, 12), (32, 12, 11),
+                      (21, 14, 8), (43, 14, 8), (11, 31, 7), (53, 31, 7),
+                      (32, 32, 11)):
+        _lobe(c, cx, cy, r, "BU")
+
+    # Clumps: shadowed undersides low and to the right, lit tops high and to
+    # the left. This is the internal form, and it does most of the work.
+    # Each clump is a crescent, not a disc: the lobe, then a plain lobe laid
+    # back over it offset towards the light. A full disc of the lighter green
+    # reads as a pale spot stuck on the foliage; a crescent reads as light
+    # catching the top of a clump, which is what it is.
+    for cx, cy, r in ((25, 35, 7), (41, 34, 8), (52, 30, 5), (34, 39, 6),
+                      (13, 30, 4), (44, 20, 5)):
+        _lobe(c, cx, cy, r, "BUD")
+        _lobe(c, cx - 2, cy - 2, r - 1, "BU")
+    for cx, cy, r in ((24, 11, 6), (14, 20, 4), (38, 8, 5), (30, 19, 4),
+                      (47, 15, 3)):
+        _lobe(c, cx, cy, r, "BUL")
+        _lobe(c, cx + 2, cy + 2, r - 1, "BU")
+
+    # Sky through the leaves. Irregular on purpose: neat little diamonds read
+    # as ornaments stuck on the tree rather than as gaps in it.
+    for x, y in ((22, 19), (23, 19), (22, 20),
+                 (40, 16), (41, 16), (41, 17), (42, 17),
+                 (30, 9), (31, 10),
+                 (36, 27), (37, 27), (36, 28),
+                 (15, 26), (16, 27),
+                 (49, 27), (50, 28), (50, 27),
+                 (27, 30), (26, 31),
+                 (33, 14), (34, 14),
+                 (19, 33), (20, 33)):
+        c.set(x, y, None)
+
+    # Bark, on whatever trunk the crown left showing.
+    for x in (CX - 7, CX - 3, CX + 4, CX + 8):
+        for y in range(30, 58):
+            if c.get(x, y) == "WD":
+                c.set(x, y, "WDD")
+
+    # The burrow: an arch cut into the base. OL, not a stone key - a hollow
+    # under a tree is the darkest thing in the frame, and grey reads as rock.
+    arch = (3, 4, 5, 6, 6, 7, 7, 7, 7, 7, 7, 7)
+    for i, w in enumerate(arch):
+        c.row(CX - w, CX + 1 + w, 49 + i, "OL")
+    for y in (58, 59, 60):
+        c.row(CX - 6, CX + 1 + 6, y, "DRD")
+    c.row(CX - 5, CX + 1 + 5, 60, "DR")
+    for x, y in ((CX - 4, 59), (CX + 5, 60), (CX + 1, 59)):
+        c.set(x, y, "DRL")
+    # A lip of shadow on the trunk around the mouth, so the hole is recessed
+    # rather than painted on. _shade cannot do this: the arch is not
+    # transparent, so it reads as interior and never gets an edge.
+    for y in range(47, HUGE_GROUND_Y):
+        for x in range(CX - 10, CX + 11):
+            if c.get(x, y) != "WD":
+                continue
+            if any(c.get(x + dx, y + dy) in ("OL", "DRD", "DR")
+                   for dx, dy in ((1, 0), (-1, 0), (0, 1), (0, -1))):
+                c.set(x, y, "WDD")
+
+    _shade(c, "BU", "BUL", "BUD")
+    _shade(c, "WD", "WDL", "WDD")
+    return c.outline()
+
+
 PROPS = {
     "prop.bush": bush,
     "prop.rock": rock,
@@ -689,6 +802,11 @@ BIG_PROPS = {
 }
 BIG_PROP_ORDER = list(BIG_PROPS)
 
+HUGE_PROPS = {
+    "prop.burrow_tree": burrow_tree,
+}
+HUGE_PROP_ORDER = list(HUGE_PROPS)
+
 
 def build_props():
     """[(id, Canvas), ...] in a stable order - the order is the atlas index."""
@@ -698,3 +816,8 @@ def build_props():
 def build_big_props():
     """The 48x48 structures, same contract, their own atlas."""
     return [(pid, BIG_PROPS[pid]()) for pid in BIG_PROP_ORDER]
+
+
+def build_huge_props():
+    """The 64x64 giants, same contract again, their own atlas."""
+    return [(pid, HUGE_PROPS[pid]()) for pid in HUGE_PROP_ORDER]
