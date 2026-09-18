@@ -1,0 +1,6 @@
+{
+  "id": "tile.plank_wall",
+  "sprite": "tile.plank_wall",
+  "walkable": false,
+  "material": "wood"
+}

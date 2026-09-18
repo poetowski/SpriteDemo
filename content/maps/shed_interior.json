@@ -1,0 +1,197 @@
+{
+  "id": "map.shed_interior",
+  "name": "The Shieling",
+  "tile_size": 16,
+  "size": [
+    20,
+    20
+  ],
+  "spawn": {
+    "tile": [
+      10,
+      17
+    ],
+    "facing": "up"
+  },
+  "legend": {
+    "#": "tile.plank_wall",
+    ".": "tile.wood_floor",
+    "s": "tile.straw",
+    "c": "tile.cobble"
+  },
+  "ground": [
+    "####################",
+    "#..sss.............#",
+    "#sssss.s...........#",
+    "#..sss.s...........#",
+    "#...sss............#",
+    "#...ss.............#",
+    "#..................#",
+    "#..................#",
+    "#..................#",
+    "#..................#",
+    "#..................#",
+    "#...............s..#",
+    "#............s....s#",
+    "#.............sssss#",
+    "#............sssss.#",
+    "#...........ssssss.#",
+    "#............ssssss#",
+    "#.........c..sss...#",
+    "##########c#########",
+    "####################"
+  ],
+  "entities": [
+    {
+      "def": "prop.hearth",
+      "tile": [
+        3,
+        1
+      ]
+    },
+    {
+      "def": "prop.woodpile",
+      "tile": [
+        6,
+        1
+      ]
+    },
+    {
+      "def": "prop.workbench",
+      "tile": [
+        2,
+        6
+      ]
+    },
+    {
+      "def": "prop.anvil",
+      "tile": [
+        2,
+        9
+      ]
+    },
+    {
+      "def": "prop.barrel",
+      "tile": [
+        1,
+        12
+      ]
+    },
+    {
+      "def": "prop.crate",
+      "tile": [
+        2,
+        14
+      ]
+    },
+    {
+      "def": "prop.sack",
+      "tile": [
+        1,
+        16
+      ]
+    },
+    {
+      "def": "prop.weapon_rack",
+      "tile": [
+        9,
+        1
+      ]
+    },
+    {
+      "def": "prop.shelf",
+      "tile": [
+        13,
+        1
+      ]
+    },
+    {
+      "def": "prop.shelf",
+      "tile": [
+        17,
+        3
+      ]
+    },
+    {
+      "def": "prop.table",
+      "tile": [
+        7,
+        8
+      ]
+    },
+    {
+      "def": "prop.bench",
+      "tile": [
+        7,
+        10
+      ]
+    },
+    {
+      "def": "prop.chest",
+      "tile": [
+        17,
+        8
+      ]
+    },
+    {
+      "def": "prop.barrel",
+      "tile": [
+        18,
+        11
+      ]
+    },
+    {
+      "def": "prop.bed_straw",
+      "tile": [
+        15,
+        15
+      ]
+    },
+    {
+      "def": "prop.crate",
+      "tile": [
+        5,
+        16
+      ]
+    },
+    {
+      "def": "prop.woodpile",
+      "tile": [
+        13,
+        10
+      ]
+    },
+    {
+      "def": "item.sword",
+      "tile": [
+        10,
+        3
+      ]
+    },
+    {
+      "def": "item.mail",
+      "tile": [
+        12,
+        6
+      ]
+    }
+  ],
+  "exits": [
+    {
+      "tiles": [
+        [
+          10,
+          18
+        ]
+      ],
+      "to": "map.wilderness1",
+      "spawns": [
+        [
+          12,
+          9
+        ]
+      ],
+      "facing": "down"
+    }
+  ]
+}

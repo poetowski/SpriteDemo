@@ -378,6 +378,22 @@
         ]
       ],
       "facing": "down"
+    },
+    {
+      "tiles": [
+        [
+          12,
+          8
+        ]
+      ],
+      "to": "map.shed_interior",
+      "spawns": [
+        [
+          10,
+          17
+        ]
+      ],
+      "facing": "up"
     }
   ]
 }

@@ -221,7 +221,13 @@ class Browser {
     try { this.ws.close(); } catch (e) { /* already gone */ }
     this.proc.kill();
     await sleep(150);
-    fs.rmSync(this.profile, { recursive: true, force: true });
+    // Windows keeps a handle on the profile for a moment after the process
+    // dies, so the first rm can fail even with force. Worth a couple of
+    // retries, and never worth failing a run that has already finished over.
+    for (let i = 0; i < 4; i++) {
+      try { fs.rmSync(this.profile, { recursive: true, force: true }); break; }
+      catch (e) { await sleep(250); }
+    }
   }
 }
 

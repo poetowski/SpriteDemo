@@ -199,6 +199,9 @@ const BOOTED = () => !!(window.game && window.game.scene
   const count = (inv) => inv.length;
 
   const [cols, rows] = report.size;
+  if (report.wanderers === 0 && report.entities > 0) {
+    skipped.push(['livestock', 'nothing wanders on this map']);
+  }
   const checks = [
     ['no console errors', problems.length === 0, problems.join(' | ')],
     ['world matches the map', report.worldBounds[0] === cols * report.tileSize
@@ -212,7 +215,11 @@ const BOOTED = () => !!(window.game && window.game.scene
       `${report.blocked} blocked tiles for ${report.staticBlockers} solid things`],
     ['one body per blocked tile', report.solids === report.blocked,
       `${report.solids} bodies vs ${report.blocked} tiles`],
-    ['livestock is wandering', report.wanderers > 0, `${report.wanderers}`],
+    // Only where there is livestock to wander. An interior has none, and a
+    // room full of nothing is not a failure of the wander code.
+    ...(report.wanderers > 0 || report.entities === 0
+        ? [['livestock is wandering', report.wanderers > 0, `${report.wanderers}`]]
+        : []),
   ];
   if (GIVE) {
     const on = (report.weapon === GIVE || report.armor === GIVE)

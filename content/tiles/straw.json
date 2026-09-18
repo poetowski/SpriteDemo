@@ -1,0 +1,6 @@
+{
+  "id": "tile.straw",
+  "sprite": "tile.straw",
+  "walkable": true,
+  "material": "straw"
+}

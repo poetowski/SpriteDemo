@@ -1,0 +1,11 @@
+{
+  "id": "prop.shelf",
+  "sprite": "prop.shelf",
+  "footprint": [
+    [
+      0,
+      0
+    ]
+  ],
+  "blocks": true
+}

@@ -1,0 +1,11 @@
+{
+  "id": "prop.hearth",
+  "sprite": "prop.hearth",
+  "footprint": [
+    [
+      0,
+      0
+    ]
+  ],
+  "blocks": true
+}

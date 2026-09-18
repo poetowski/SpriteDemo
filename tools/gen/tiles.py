@@ -314,6 +314,47 @@ def wood_floor(seed=0, phase=0):
     return c
 
 
+def plank_wall(seed=0, phase=0):
+    """A timber wall seen from inside: studs behind horizontal boards. Dark,
+    because an interior wall is the thing light falls off rather than onto -
+    and because a floor and a wall in the same wood at the same value would
+    leave the room with no corners."""
+    c = Canvas(SIZE, SIZE)
+    c.rect(0, 0, SIZE - 1, SIZE - 1, "WDD")
+    rnd = scatter(0x9A11 + seed * 379)
+    # Darker than the floor by a clear margin, and it has to be measured
+    # rather than eyeballed: the first version came out at luma 88 against a
+    # floor of 95 and the room had no corners - the wall and the boards you
+    # walk on were the same wood at the same brightness.
+    for y in range(2, SIZE, 4):
+        c.row(0, SIZE - 1, y - 1, "OL")           # the shadowed seam
+        c.row(0, SIZE - 1, y, "WD")               # and the face of the board
+    for x in (4, 12):                             # the studs behind them
+        c.col(x, 0, SIZE - 1, "OL")
+        c.col(x + 1, 0, SIZE - 1, "WDD")
+    for _ in range(7):                            # knots and grain
+        _put(c, rnd(SIZE), rnd(SIZE), "OL")
+    return c
+
+
+def straw(seed=0, phase=0):
+    """Straw trodden over a floor: the cheapest thing to put down and the
+    first thing in any shed that keeps animals or stores a harvest."""
+    c = Canvas(SIZE, SIZE)
+    c.rect(0, 0, SIZE - 1, SIZE - 1, "TH")
+    rnd = scatter(0x3C5E + seed * 421)
+    for _ in range(26):                           # stalks, lying every way
+        x, y = rnd(SIZE), rnd(SIZE)
+        key = ("THD", "THL", "TH")[rnd(3)]
+        if rnd(2):
+            c.row(x, x + 2, y, key)
+        else:
+            c.col(x, y, y + 2, key)
+    for _ in range(5):
+        _put(c, rnd(SIZE), rnd(SIZE), "WDD")      # floor showing through
+    return c
+
+
 BASE = {
     "tile.grass": grass,
     "tile.grass_flower": grass_flower,
@@ -327,6 +368,8 @@ BASE = {
     "tile.cobble": cobble,
     "tile.stone": stone,
     "tile.wood_floor": wood_floor,
+    "tile.plank_wall": plank_wall,
+    "tile.straw": straw,
     "tile.shallow": shallow,
     "tile.water": water,
 }
@@ -335,7 +378,8 @@ TILE_ORDER = list(BASE)
 # How many seeded variants of each base to draw. A cell picks one by position,
 # so the field changes without anyone having authored it.
 VARIANTS = {"tile.grass": 3, "tile.grass_tall": 2, "tile.water": 2,
-            "tile.sand": 2, "tile.leaves": 2, "tile.wood_floor": 2}
+            "tile.sand": 2, "tile.leaves": 2, "tile.wood_floor": 2,
+            "tile.straw": 2}
 
 # Tiles drawn in several phases. The art pipeline emits every phase as its own
 # frame and the engine cycles them; the base frame is what the map resolves to.

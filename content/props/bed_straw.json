@@ -1,0 +1,11 @@
+{
+  "id": "prop.bed_straw",
+  "sprite": "prop.bed_straw",
+  "footprint": [
+    [
+      0,
+      0
+    ]
+  ],
+  "blocks": true
+}

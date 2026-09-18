@@ -141,6 +141,16 @@ keep your column. `--cross` measured the row either way for as long as every
 gate in the game ran east to west, and passed for the wrong reason until the
 first north-south one was built.
 
+**A door is not a seam.** A doorway that sits inland - the shed on Wilderness
+I, whose art always drew a door on its front tile - leads somewhere that is not
+next to anything, so the atlas keeps interiors off the grid entirely: they sit
+in a band below the world on a plate of their own, with a line drawn back to
+the exact tile their door stands on. That is the half a reader needs, because
+the room is nowhere but its door is somewhere precise. `interiorsOf()` decides
+it: a map with no edge-aligned way in is an interior. A prop can only be a door
+if its footprint leaves the doorway tile out - the shed's was solid, so for a
+while the door was a picture of a door.
+
 **Arriving faces the way you were walking.** Reaching an edge-wide doorway
 means walking at that edge, so west means left, east means right, and a
 crossing that hands you a different facing spins the player round on the spot.

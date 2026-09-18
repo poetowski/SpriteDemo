@@ -716,12 +716,36 @@ async function loadWorld() {
   return state.world;
 }
 
-/** Maps that reach each other, in either direction, belong on one atlas. */
-function componentsOf(byId) {
-  const adj = new Map([...byId.keys()].map((id) => [id, new Set()]));
+/** Maps entered through a door rather than over a seam: an interior.
+ *  Keyed by map id, valued by the doorway that leads in. A map with any
+ *  edge-aligned way in is not one of these, however many doors it also has -
+ *  it has a place on the grid, and the grid should show it. */
+function interiorsOf(byId) {
+  const inside = new Map();
   for (const { map } of byId.values()) {
     for (const ex of map.exits || []) {
-      if (!byId.has(ex.to)) continue;
+      if (!byId.has(ex.to) || edgeOf(map, ex.tiles)) continue;
+      if (!inside.has(ex.to)) {
+        inside.set(ex.to, { parent: map.id, door: ex.tiles[0].slice() });
+      }
+    }
+  }
+  for (const id of [...inside.keys()]) {
+    const bySeam = [...byId.values()].some((e) => (e.map.exits || [])
+      .some((x) => x.to === id && edgeOf(e.map, x.tiles)));
+    if (bySeam) inside.delete(id);
+  }
+  return inside;
+}
+
+/** Maps that reach each other, in either direction, belong on one atlas. */
+function componentsOf(byId, inside = new Map()) {
+  const outdoor = [...byId.keys()].filter((id) => !inside.has(id));
+  const adj = new Map(outdoor.map((id) => [id, new Set()]));
+  for (const { map } of byId.values()) {
+    if (inside.has(map.id)) continue;
+    for (const ex of map.exits || []) {
+      if (!byId.has(ex.to) || inside.has(ex.to)) continue;   // doors are not seams
       adj.get(map.id).add(ex.to);
       adj.get(ex.to).add(map.id);
     }
@@ -771,7 +795,8 @@ function placeAcross(here, ex, destMap, invert) {
 function layoutWorld() {
   const { byId } = state.world;
   const openId = state.map && state.map.id;
-  const comps = componentsOf(byId).sort((a, b) => {
+  const inside = interiorsOf(byId);
+  const comps = componentsOf(byId, inside).sort((a, b) => {
     const ai = a.includes(openId) ? 0 : 1;
     const bi = b.includes(openId) ? 0 : 1;
     return ai - bi || String(a[0]).localeCompare(String(b[0]));
@@ -837,12 +862,25 @@ function layoutWorld() {
     }
     cursorY += (maxY - minY) + WORLD_GUTTER * 2;
   }
-  return { placed, loose, groups: comps.length };
+
+  // The interiors, in a row under the world proper. Each one keeps the tile
+  // its door stands on, so the view can draw the line back to it rather than
+  // implying it sits somewhere.
+  let ix = 0;
+  for (const [id, where] of inside) {
+    const e = byId.get(id);
+    if (!e) continue;
+    placed.set(id, { ...e, ox: ix, oy: cursorY + WORLD_GUTTER,
+                     interior: true, parent: where.parent, door: where.door });
+    ix += e.map.size[0] + WORLD_GUTTER * 2;
+  }
+  return { placed, loose, groups: comps.length, interiors: inside };
 }
 
 /** What is worth saying about how the maps join up. */
 function worldNotes() {
   const { byId } = state.world;
+  const interiors = (state.layout && state.layout.interiors) || new Map();
   const notes = [];
   const nameOf = (id) => (byId.has(id) ? byId.get(id).map.name || id : id);
   const leadsTo = (id) => [...byId.values()].filter(
@@ -867,8 +905,12 @@ function worldNotes() {
       }
       const edge = edgeOf(map, ex.tiles);
       if (!edge) {
-        notes.push({ bad: false, html: `<b>${map.name}</b> has an inland doorway to `
-          + `<b>${nameOf(ex.to)}</b> - drawn as an arrow, since it is not a seam.` });
+        // Only worth saying when it is not simply a door into a room. An
+        // interior is *supposed* to be entered from the middle of a map.
+        if (!interiors.has(ex.to) && !interiors.has(map.id)) {
+          notes.push({ bad: false, html: `<b>${map.name}</b> has an inland doorway to `
+            + `<b>${nameOf(ex.to)}</b> - drawn as an arrow, since it is not a seam.` });
+        }
       } else if (ex.facing && ex.facing !== EDGE_FACING[edge]) {
         notes.push({ bad: true, html: `<b>${map.name}</b> leaves by its ${edge} edge, `
           + `so the player is walking ${EDGE_FACING[edge]} - but they arrive on `
@@ -1035,7 +1077,18 @@ function renderWorld() {
     });
 
     const open = id === (state.map && state.map.id);
-    ctx.strokeStyle = open ? "#74c46b" : "#55607a";
+    if (p.interior) {
+      // A room, drawn as one: a plate around it and a dashed edge, so it
+      // never reads as another field of the world lying next to the rest.
+      ctx.fillStyle = "rgba(14,16,21,.55)";
+      ctx.fillRect(px - 5, py - 5, w * z + 10, h * z + 10);
+      ctx.strokeStyle = open ? "#74c46b" : "#c9a86c";
+      ctx.lineWidth = open ? 2 : 1;
+      ctx.setLineDash([5, 3]);
+      ctx.strokeRect(px - 5.5, py - 5.5, w * z + 11, h * z + 11);
+      ctx.setLineDash([]);
+    }
+    ctx.strokeStyle = open ? "#74c46b" : (p.interior ? "#c9a86c" : "#55607a");
     ctx.lineWidth = open ? 2 : 1;
     ctx.strokeRect(px + .5, py + .5, w * z - 1, h * z - 1);
 
@@ -1049,7 +1102,7 @@ function renderWorld() {
 
     // The plate sits inside the map and is clipped to it. Above the map it
     // would collide with the neighbour's, since maps are drawn edge to edge.
-    const label = `${p.map.name || id}  ${w}x${h}`;
+    const label = (p.interior ? "\u25a3 inside  " : "") + `${p.map.name || id}  ${w}x${h}`;
     ctx.save();
     ctx.beginPath();
     ctx.rect(px, py, w * z, h * z);
@@ -1069,6 +1122,15 @@ function renderWorld() {
     const dst = layout.placed.get(g.to);
     const arrivals = arrivalsOf(g.ex);
     if (!a) continue;
+    // A door into a room already has its own line, drawn from the doorway to
+    // the room's plate. A second arrow for the same crossing, run across the
+    // whole atlas to a map that is not anywhere, is noise on top of it.
+    if (a.interior || (dst && dst.interior)) {
+      gateBadge(ctx, (a.ox + g.ex.tiles[0][0]) * z + z / 2,
+                (a.oy + g.ex.tiles[0][1]) * z + z / 2, g.n, g.colour,
+                Math.max(7, z * .75));
+      continue;
+    }
     const mid = g.ex.tiles[Math.floor(g.ex.tiles.length / 2)];
     const mx = (a.ox + mid[0]) * z + z / 2;
     const my = (a.oy + mid[1]) * z + z / 2;
@@ -1090,11 +1152,43 @@ function renderWorld() {
     gateBadge(ctx, mx, my, g.n, g.colour, Math.max(7, z * .75));
   }
 
+  // Every interior, tied back to the tile its door stands on. This is the
+  // whole point of the treatment: the room is not anywhere, but its door is
+  // somewhere exact, and that is what the reader needs to find.
+  for (const [, p] of layout.placed) {
+    if (!p.interior) continue;
+    const parent = layout.placed.get(p.parent);
+    if (!parent) continue;
+    const dx = (parent.ox + p.door[0]) * z + z / 2;
+    const dy = (parent.oy + p.door[1]) * z + z / 2;
+    const rx = (p.ox + p.map.size[0] / 2) * z;
+    const ry = p.oy * z - 6;
+    ctx.strokeStyle = "#c9a86c";
+    ctx.lineWidth = 1.5;
+    ctx.setLineDash([4, 4]);
+    ctx.beginPath();
+    ctx.moveTo(dx, dy);
+    ctx.bezierCurveTo(dx, (dy + ry) / 2, rx, (dy + ry) / 2, rx, ry);
+    ctx.stroke();
+    ctx.setLineDash([]);
+    // The door end gets the marker, because that is the half you go looking
+    // for on the map you are standing on.
+    ctx.fillStyle = "#c9a86c";
+    ctx.fillRect(dx - z * .35, dy - z * .5, z * .7, z);
+    ctx.fillStyle = "#11141c";
+    ctx.fillRect(dx - z * .15, dy - z * .2, z * .3, z * .6);
+    ctx.fillStyle = "#c9a86c";
+    ctx.beginPath();
+    ctx.arc(rx, ry, 3, 0, Math.PI * 2);
+    ctx.fill();
+  }
+
   // Inland doorways: no shared edge to read, so draw the hop.
   for (const link of layout.loose) {
     const a = layout.placed.get(link.from);
     const b = layout.placed.get(link.to);
     if (!a || !b) continue;
+    if (a.interior || b.interior) continue;       // the door line covers it
     const [tx, ty] = link.ex.tiles[0];
     const x1 = (a.ox + tx) * z + z / 2;
     const y1 = (a.oy + ty) * z + z / 2;
@@ -1147,6 +1241,8 @@ function worldPointOf(id) {
 
 function buildWorldPanel() {
   const { byId, entries } = state.world;
+  const ids = byId;
+  const interiors = (state.layout && state.layout.interiors) || new Map();
   const list = $("world-maps");
   list.replaceChildren(...entries.map(({ name, map }) => {
     const out = (map.exits || []).length;
@@ -1154,17 +1250,20 @@ function buildWorldPanel() {
       (e) => e.map.id !== map.id && (e.map.exits || []).some((x) => x.to === map.id)).length;
     const dest = (map.exits || []).map((x) => (byId.has(x.to) ? byId.get(x.to).map.name : x.to));
     const el = document.createElement("div");
-    el.className = "mapline " + (out + inbound ? "linked" : "orphan")
+    const room = interiors.get(map.id);
+    el.className = "mapline " + (room ? "inside" : out + inbound ? "linked" : "orphan")
                  + (map.id === (state.map && state.map.id) ? " on" : "");
-    el.innerHTML = `<b>${map.name || name}</b>`
+    const parent = room && ids.has(room.parent) ? ids.get(room.parent).map.name : null;
+    el.innerHTML = `<b>${room ? "&#9635; " : ""}${map.name || name}</b>`
       + `<span>${name}.json &middot; ${map.size[0]}x${map.size[1]}</span>`
-      + `<span>${out ? "out to " + dest.join(", ") : "no way out"}`
-      + `${inbound ? ` &middot; ${inbound} in` : ""}</span>`;
+      + `<span>${room ? `inside &mdash; through the door at `
+                        + `${room.door[0]},${room.door[1]} on ${parent}`
+                      : out ? "out to " + dest.join(", ") : "no way out"}`
+      + `${!room && inbound ? ` &middot; ${inbound} in` : ""}</span>`;
     el.onclick = async () => { await openMap(name); await setView("map"); };
     return el;
   }));
 
-  const { byId: ids } = state.world;
   const nameOf = (id) => (ids.has(id) ? ids.get(id).map.name || id : id);
   $("world-gates").replaceChildren(...(state.gates || []).map((g) => {
     const el = document.createElement("div");
@@ -1173,7 +1272,7 @@ function buildWorldPanel() {
     const join = g.oneWay ? "&rarr;" : "&#8646;";
     el.innerHTML = `<b><i style="background:${g.colour}">${g.n}</i>`
       + `${nameOf(g.from)} ${join} ${nameOf(g.to)}</b>`
-      + `<span>${g.edge ? g.edge + " edge" : "inland"} &middot; `
+      + `<span>${g.edge ? g.edge + " edge" : "a door"} &middot; `
       + `${g.ex.tiles.length} tile${g.ex.tiles.length === 1 ? "" : "s"} wide`
       + `${g.oneWay ? " &middot; one way only" : ""}</span>`;
     el.onclick = async () => {
@@ -1332,7 +1431,7 @@ Object.assign(window, {
   snapshot, undo, save, setTool, showTab, render,
   setView, loadWorld, layoutWorld, renderWorld, worldNotes, edgeOf, arrivalsOf,
   componentsOf, mapAtWorld, worldPointOf, worldScale,
-  gatesOf, gateFor, refreshWorld, gatherableOf, blocksOf,
+  gatesOf, gateFor, refreshWorld, gatherableOf, blocksOf, interiorsOf,
 });
 
 boot().catch((e) => message(String(e.message || e), true));

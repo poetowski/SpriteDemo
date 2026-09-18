@@ -759,6 +759,113 @@ def burrow_tree():
     return c.outline()
 
 
+def workbench():
+    """A bench to work at: a thick top on trestles, with the tools that live
+    on it. The vice at the near end is what says workbench rather than table."""
+    c = Canvas(FRAME, FRAME)
+    _plank(c, 2, 15, 29, 19)
+    c.row(2, 29, 20, "WDD")                       # the edge of the top
+    for x in (5, 24):
+        _post(c, x, 21, BASE_Y)
+    c.rect(7, 24, 24, 25, "WDD")                  # a shelf under it
+    c.rect(2, 16, 6, 19, "MT")                    # the vice
+    c.row(2, 6, 16, "MTL")
+    c.col(4, 17, 19, "MTD")
+    c.rect(11, 11, 13, 15, "WD")                  # a mallet standing on end
+    c.rect(10, 9, 14, 12, "WDL")
+    c.row(10, 14, 9, "WDD")
+    for x in (18, 20, 22):                        # chisels in a row
+        c.col(x, 11, 15, "MT")
+        c.set(x, 11, "MTL")
+        c.set(x, 14, "WD")
+    return c.outline()
+
+
+def shelf():
+    """Shelving against a wall, with what a shed keeps on it: jars, a bowl,
+    a folded sack. Two boards, because one reads as another table."""
+    c = Canvas(FRAME, FRAME)
+    for y in (14, 24):
+        _plank(c, 3, y, 28, y + 2)
+        c.row(3, 28, y + 3, "WDD")
+    for x in (4, 27):                             # the uprights
+        c.col(x, 11, BASE_Y, "WD")
+        c.col(x + 1, 11, BASE_Y, "WDD")
+    for x, key in ((8, "CL"), (12, "CLD"), (16, "CL")):
+        c.rect(x, 10, x + 2, 13, key)             # jars on the top board
+        c.row(x, x + 2, 10, "CL")
+        c.set(x + 1, 9, "WDD")                    # and their stoppers
+    _lobe(c, 23, 12, 3, "MT")                     # a bowl, upturned
+    _lobe(c, 22, 11, 2, "MTL")
+    c.rect(8, 20, 15, 23, "CLD")                  # a folded sack below
+    c.row(8, 15, 20, "CL")
+    c.rect(19, 19, 25, 23, "WD")                  # and a crate of something
+    c.row(19, 25, 19, "WDL")
+    c.col(22, 20, 23, "WDD")
+    return c.outline()
+
+
+def hearth():
+    """A stone hearth with the fire banked down in it. The only light source
+    in the room, so the embers are the brightest thing on the sprite."""
+    c = Canvas(FRAME, FRAME)
+    c.rect(3, 8, 28, BASE_Y, "ST")                # the stack
+    _shade(c, "ST", "STL", "STD")
+    for i, y in enumerate(range(11, BASE_Y, 4)):  # courses
+        c.row(4, 27, y, "STD")
+        for x in range(6 + (i % 2) * 5, 27, 10):
+            c.col(x, y - 3, y - 1, "STD")
+    c.rect(9, 17, 22, BASE_Y, "OL")               # the opening, black inside
+    c.row(9, 22, 16, "STL")                       # a lintel over it
+    c.rect(11, 25, 20, 27, "FID")                 # embers on the hearthstone
+    c.rect(12, 26, 19, 27, "FI")
+    for x in (13, 16, 18):
+        c.set(x, 25, "FIL")
+        c.set(x, 24, "FID")
+    c.rect(10, 22, 12, 24, "WDD")                 # a log not yet burnt
+    c.rect(19, 23, 21, 24, "WDD")
+    return c.outline()
+
+
+def weapon_rack():
+    """A rack of hafts against the wall - the reason a shed near a road is
+    worth going into."""
+    c = Canvas(FRAME, FRAME)
+    c.rect(2, 22, 29, 24, "WD")                   # the rail
+    c.row(2, 29, 22, "WDL")
+    c.row(2, 29, 25, "WDD")
+    for x in (4, 27):
+        c.col(x, 25, BASE_Y, "WD")
+        c.col(x + 1, 25, BASE_Y, "WDD")
+    for i, x in enumerate((8, 14, 20, 25)):       # hafts, leaning together
+        lean = -1 if i % 2 else 1
+        for j in range(16):
+            c.set(x + (j * lean) // 6, 8 + j, "WD")
+            c.set(x + (j * lean) // 6 + 1, 8 + j, "WDD")
+    for x, lean in ((8, 1), (20, 1)):             # two of them shod in iron
+        c.rect(x - 1, 6, x + 2, 9, "MT")
+        c.row(x - 1, x + 2, 6, "MTL")
+    return c.outline()
+
+
+def bed_straw():
+    """A pallet of straw under a blanket: where whoever works the shed sleeps
+    when the weather shuts them in."""
+    c = Canvas(FRAME, FRAME)
+    c.rect(3, 16, 28, BASE_Y, "TH")               # the straw
+    for x in range(4, 28, 3):
+        c.col(x, 17, BASE_Y - 1, "THD")
+    c.row(3, 28, 16, "THL")
+    c.rect(3, 21, 28, 27, "TU")                   # a blanket thrown over it
+    c.row(3, 28, 21, "TUL")
+    c.row(3, 28, 27, "TUS")
+    for x in range(5, 28, 6):                     # its folds
+        c.col(x, 22, 26, "TUS")
+    _lobe(c, 8, 18, 4, "CL")                      # a bolster at the head
+    _lobe(c, 7, 17, 3, "CLD")
+    return c.outline()
+
+
 PROPS = {
     "prop.bush": bush,
     "prop.rock": rock,
@@ -790,6 +897,11 @@ PROPS = {
     "prop.trough": trough,
     "prop.flower_pot": flower_pot,
     "prop.flowers": flowers,
+    "prop.workbench": workbench,
+    "prop.shelf": shelf,
+    "prop.hearth": hearth,
+    "prop.weapon_rack": weapon_rack,
+    "prop.bed_straw": bed_straw,
 }
 PROP_ORDER = list(PROPS)
 

@@ -80,6 +80,7 @@
   .mapline span { color: var(--muted); font-size: 11px; }
   .mapline.orphan { border-left-color: var(--warn); }
   .mapline.linked { border-left-color: var(--accent); }
+  .mapline.inside { border-left-color: #c9a86c; }
   .notes { display: flex; flex-direction: column; gap: 5px; }
   .gate { display: flex; flex-direction: column; gap: 2px; padding: 5px 7px; cursor: pointer;
           background: var(--panel2); border: 1px solid var(--line);
@@ -164,7 +165,8 @@
   </div>
   <div id="legend-world" class="legend" hidden>
     Maps are placed where their doorways say they join, so this is the world
-    as the player walks it.<br>
+    as the player walks it. A room you enter through a door is not next to
+    anything, so it sits in a band below with a line back to its doorway.<br>
     <b>click a map</b> to open it<br>
     Each gate has a colour and a number: the filled band is a mouth, the arrow
     runs to where it puts you down, and a dashed arrow is a one-way trip.<br>

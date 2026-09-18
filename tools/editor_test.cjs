@@ -437,6 +437,45 @@ function dropScratch() {
   check('every object in the palette draws something', drawn.blank.length === 0,
         drawn.blank.join(', ') || `atlases: ${drawn.atlases.join(', ')}`);
 
+  // --- interiors ------------------------------------------------------------
+  // A room entered through a door is not next to the map it is entered from,
+  // so the atlas must not place it on the grid as though it were - it gets a
+  // band of its own and a line back to the doorway.
+  const rooms = await page.evaluate(async () => {
+    await window.setView('world');
+    const L = window.editor.layout;
+    const inside = [...L.interiors].map(([id, v]) => ({ id, ...v }));
+    const placed = [...L.placed].map(([id, p]) => ({
+      id, ox: p.ox, oy: p.oy, w: p.map.size[0], h: p.map.size[1],
+      interior: !!p.interior, parent: p.parent || null,
+    }));
+    return {
+      inside, placed,
+      lines: [...document.querySelectorAll('#world-maps .mapline.inside')]
+        .map((n) => n.textContent),
+      notes: [...document.querySelectorAll('#world-notes .note')].map((n) => n.textContent),
+    };
+  });
+  check('a room behind a door is known to be an interior',
+        rooms.inside.some((r) => r.id === 'map.shed_interior'),
+        rooms.inside.map((r) => r.id).join(', ') || 'none found');
+  const room = rooms.placed.find((p) => p.id === 'map.shed_interior');
+  const outdoor = rooms.placed.filter((p) => !p.interior);
+  check('it is kept off the grid the outdoor maps sit on',
+        !!room && room.interior
+          && outdoor.every((o) => !(room.ox < o.ox + o.w && o.ox < room.ox + room.w
+                                 && room.oy < o.oy + o.h && o.oy < room.oy + room.h)),
+        room ? `at ${room.ox},${room.oy}` : 'not placed');
+  check('and it is tied back to the door it is behind',
+        !!room && room.parent === 'map.wilderness1'
+          && rooms.lines.some((t) => /through the door at 12,8/.test(t)),
+        room ? `parent ${room.parent}` : '-');
+  // The note about an inland doorway is for a doorway that is not a door into
+  // a room. Reporting every interior as an oddity would bury the real ones.
+  check('a door into a room is not reported as an oddity',
+        !rooms.notes.some((t) => /inland doorway/.test(t)),
+        rooms.notes.filter((t) => /inland/.test(t)).join(' | ') || 'none');
+
   // --- gates ----------------------------------------------------------------
   // A gate is the pair of mouths, not one exit, so the checks are about the
   // pairing: that the two sides are found to belong together, that a
@@ -448,6 +487,8 @@ function dropScratch() {
       n: g.n, from: g.from, to: g.to, edge: g.edge, oneWay: g.oneWay,
       colour: g.colour, partner: g.partner ? g.partner.id : null,
       tiles: g.ex.tiles.length,
+      toInterior: window.editor.layout.interiors.has(g.to)
+               || window.editor.layout.interiors.has(g.from),
     }));
     return {
       gates: gs,
@@ -465,9 +506,12 @@ function dropScratch() {
         `${gates.rows} rows, ${gates.gates.length} gates`);
   check('both sides of a gate share its number and colour', gates.lookup,
         'wilderness1#0 and wilderness2#0 resolve to the same gate');
-  check('every gate knows which edge it leaves by',
-        gates.gates.every((g) => g.edge || g.oneWay),
-        gates.gates.map((g) => `${g.n}:${g.edge}`).join(' '));
+  // A seam leaves by an edge; a door does not, and that is the difference
+  // between the two kinds of crossing rather than a gap in the data. This
+  // asserted an edge on every gate back when every gate was a seam.
+  check('every gate is a seam on an edge or a door into a room',
+        gates.gates.every((g) => g.edge || g.oneWay || g.toInterior),
+        gates.gates.map((g) => `${g.n}:${g.edge || (g.toInterior ? 'door' : '?')}`).join(' '));
 
   // --- the rotation when crossing ------------------------------------------
   // Walking off an edge and arriving spun round is the bug this catches. The

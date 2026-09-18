@@ -1,0 +1,11 @@
+{
+  "id": "prop.weapon_rack",
+  "sprite": "prop.weapon_rack",
+  "footprint": [
+    [
+      0,
+      0
+    ]
+  ],
+  "blocks": true
+}
