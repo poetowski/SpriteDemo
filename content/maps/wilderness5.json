@@ -507,6 +507,55 @@
         52,
         16
       ]
+    },
+    {
+      "def": "prop.tree_dead",
+      "tile": [
+        2,
+        10
+      ]
+    },
+    {
+      "def": "prop.tree_dead",
+      "tile": [
+        30,
+        6
+      ]
+    },
+    {
+      "def": "prop.tree_dead",
+      "tile": [
+        24,
+        13
+      ]
+    },
+    {
+      "def": "item.berries",
+      "tile": [
+        21,
+        11
+      ]
+    },
+    {
+      "def": "item.berries",
+      "tile": [
+        15,
+        13
+      ]
+    },
+    {
+      "def": "item.berries",
+      "tile": [
+        4,
+        9
+      ]
+    },
+    {
+      "def": "item.berries",
+      "tile": [
+        25,
+        16
+      ]
     }
   ],
   "exits": [
