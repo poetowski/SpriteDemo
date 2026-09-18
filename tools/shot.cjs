@@ -23,6 +23,9 @@ const path = require('path');
 
 const ROOT = path.dirname(__dirname);
 const args = process.argv.slice(2);
+// Modes asked of a map that has no such creature: reported, but not failures.
+// A boar test on a map with no boar says nothing about the game either way.
+const skipped = [];
 
 function flag(name) { return args.includes(name); }
 function value(name, fallback) {
@@ -134,7 +137,12 @@ const BOOTED = () => !!(window.game && window.game.scene
         const d = m.props[e.def] || m.actors[e.def];
         return !!(d && d.blocks && !d.wander);
       }).length,
-      sprites: s.children.list.filter((o) => o.type === 'Sprite').length,
+      // Entity sprites only. The fx atlas is transient - a hit spark, an
+      // alert - so counting every sprite in the scene made this check depend
+      // on what happened to be on screen at the instant of the snapshot. It
+      // held while one boar per map meant effects were rare.
+      sprites: s.children.list.filter(
+        (o) => o.type === 'Sprite' && !(o.texture && o.texture.key === 'fx')).length,
       pickups: s.pickups.length,
       solids: s.solid.getChildren().length,
       blocked: s.blocked.size,
@@ -253,8 +261,13 @@ const BOOTED = () => !!(window.game && window.game.scene
     // so it is worth proving rather than assuming.
     const setup = await page.evaluate(() => {
       const s = window.game.scene.scenes[0];
-      const w = s.wanderers.find((a) => a.def.blocks);
-      if (!w) return null;
+      // Something solid that is not hostile. This asks whether a solid animal
+      // stops the player, and a boar will not hold still to be asked - it
+      // charges, shoves the hero past it, and the measurement is about
+      // aggression instead. That is what --boar is for.
+      const i = s.wanderers.findIndex((a) => a.def.blocks && !a.def.hostile);
+      if (i < 0) return null;
+      const w = s.wanderers[i];
       w.state = 'idle';                       // hold still for the experiment
       w.timer = 99999;
       w.sprite.body.setVelocity(0, 0);
@@ -262,27 +275,35 @@ const BOOTED = () => !!(window.game && window.game.scene
       // back over the sprite, so setPosition alone snaps straight back and
       // the hero never actually stands where the test put them.
       s.hero.body.reset(w.sprite.x - s.ts * 1.5, w.sprite.y);
-      return { def: w.def.sprite, gap: w.sprite.x - s.hero.x };
+      return { i, def: w.def.sprite, gap: w.sprite.x - s.hero.x,
+               tile: w.tile.slice(), map: s.mapId };
     });
     if (setup) {
       await page.keyboard.down('ArrowRight');
       await page.waitForTimeout(900);
       await page.keyboard.up('ArrowRight');
-      const after = await page.evaluate(() => {
+      // By index, not by repeating the predicate. The two halves once held
+      // predicates that had drifted apart, so the hero was stood next to a
+      // goat and the distance measured to a boar thirty tiles away - and the
+      // check reported a catastrophe that was not happening.
+      const after = await page.evaluate((i) => {
         const s = window.game.scene.scenes[0];
-        const w = s.wanderers.find((a) => a.def.blocks);
+        const w = s.wanderers[i];
         return { gap: w.sprite.x - s.hero.x, heroX: s.hero.x, animalX: w.sprite.x,
+                 tile: w.tile.slice(), map: s.mapId,
                  touching: !!s.hero.body.touching.right };
-      });
+      }, setup.i);
       // Two things, because either alone can pass for the wrong reason: the
       // hero is in contact with the animal, and did not pass through it. A
       // hero that never moved would satisfy the second on its own.
       checks.push([`walking into a ${setup.def.split('.')[1]} is blocked`,
         after.touching && after.gap > 8,
         `gap ${setup.gap.toFixed(1)} -> ${after.gap.toFixed(1)}, `
-        + `touching: ${after.touching}`]);
+        + `touching: ${after.touching}, `
+        + `subject ${setup.map} ${JSON.stringify(setup.tile)} `
+        + `-> ${after.map} ${JSON.stringify(after.tile)}`]);
     } else {
-      checks.push(['a solid animal exists to walk into', false, 'none are blocks:true']);
+      skipped.push(['--bump', 'no solid, non-hostile animal on this map']);
     }
   }
 
@@ -310,8 +331,10 @@ const BOOTED = () => !!(window.game && window.game.scene
                 : ex.tiles.every((t) => t[0] === cols - 1) ? 'right'
                 : ex.tiles.every((t) => t[1] === 0) ? 'up'
                 : ex.tiles.every((t) => t[1] === rows - 1) ? 'down' : null;
+      const at = ex.tiles.indexOf(door);
       return { from: s.mapId, to: ex.to, bag: s.inventory.filter(Boolean).length,
-               door, way };
+               door, way,
+               want: (ex.spawns && ex.spawns[at]) || ex.spawn };
     });
     if (before) {
       await page.waitForFunction(
@@ -327,15 +350,18 @@ const BOOTED = () => !!(window.game && window.game.scene
         after.map === before.to, after.map]);
       checks.push(['the bag came across',
         after.bag === before.bag, `${before.bag} -> ${after.bag}`]);
-      // Which coordinate is preserved depends on the edge: cross a side edge
-      // and you keep your row, cross a top or bottom edge and you keep your
-      // column. Measuring the row either way passed for as long as every gate
-      // in the game ran east to west.
-      const along = (before.way === 'left' || before.way === 'right') ? 1 : 0;
-      checks.push([`you come out level with where you left`,
-        !before.way || after.tile[along] === before.door[along],
-        `left ${before.door} going ${before.way}, arrived ${after.tile} `
-        + `(${along ? 'row' : 'column'} must match)`]);
+      // Against the arrival the doorway declares for the tile we stepped on,
+      // not against the tile's own coordinates. Two earlier versions of this
+      // check compared coordinates and were both wrong: the first measured the
+      // row whichever edge you crossed, and the second assumed the two maps
+      // share an origin - true only while every map was the same size. A wide
+      // map laid under three narrow ones meets them at a 20-tile offset, and
+      // there is nothing in the game that knows that but the pairing itself.
+      checks.push(['you come out where the doorway says',
+        !!before.want && after.tile[0] === before.want[0]
+                      && after.tile[1] === before.want[1],
+        `${before.door} going ${before.way} should arrive `
+        + `${JSON.stringify(before.want)}, arrived ${JSON.stringify(after.tile)}`]);
       checks.push(['and not on the way back',
         !after.onExit, `arrived at ${after.tile}`]);
       checks.push(['still facing the way you were walking',
@@ -355,6 +381,18 @@ const BOOTED = () => !!(window.game && window.game.scene
       const s = window.game.scene.scenes[0];
       const w = s.wanderers.find((a) => a.def.hostile);
       if (!w) return null;
+      // Hold every other hostile still. The test stands the hero next to one
+      // boar and measures that one; on a map with five, a second boar was
+      // charging in and shoving the hero around, so the number being measured
+      // was the distance to an animal that had nothing to do with it.
+      for (const other of s.wanderers) {
+        if (other === w || !other.def.hostile) continue;
+        other.state = 'idle';
+        other.timer = 99999;
+        other.chasing = false;
+        other.sprite.body.setVelocity(0, 0);
+        other.def = Object.assign({}, other.def, { hostile: null });
+      }
       const p = s.tileCentre(...w.tile);
       // West of it, not east: a charging boar shoves the hero, and east of
       // this one is the seam - the test kept being pushed onto the next map.
@@ -413,7 +451,7 @@ const BOOTED = () => !!(window.game && window.game.scene
         home.gone ? 'n/a'
                   : `${home.fromHome.toFixed(0)}px from home, ${home.state}`]);
     } else {
-      checks.push(['a hostile exists to be charged by', false, 'none on this map']);
+      skipped.push(['--boar', 'nothing hostile on this map']);
     }
   }
 
@@ -479,6 +517,9 @@ const BOOTED = () => !!(window.game && window.game.scene
   await browser.close();
 
   const failed = checks.filter(([, ok]) => !ok);
+  for (const [mode, why] of skipped) {
+    console.log(`  skip  ${mode}: ${why}`);
+  }
   for (const [name, ok, detail] of checks) {
     console.log(`  ${ok ? 'ok  ' : 'FAIL'}  ${name}${ok ? '' : '   ' + detail}`);
   }
