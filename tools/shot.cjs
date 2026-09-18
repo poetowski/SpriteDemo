@@ -46,6 +46,10 @@ const MID = flag('--mid');                // with --slash: photograph the moment
 const CHOOSE = args.includes('--choose')  // with --talk: take the nth reply (1-based)
   ? Number(value('--choose', '1')) - 1 : null;
 const TILE = value('--tile', null);
+// Which doorway --cross walks. A map has more than one way out of it the
+// moment it is joined to a second neighbour, and the first one authored is
+// then the only one anything ever tests.
+const EXIT = Number(value('--exit', '0'));
 // Something the maps do not carry yet. New art is drawn before it is placed,
 // and a creature nobody has put down anywhere still has to be looked at in
 // the real game rather than on a contact sheet.
@@ -355,9 +359,9 @@ const BOOTED = () => !!(window.game && window.game.scene
     // so the thing worth proving is not that the map changed but that the
     // player arrived with what they were carrying - a restart hands out a
     // fresh bag unless the state is carried across on purpose.
-    const before = await page.evaluate(() => {
+    const before = await page.evaluate((n) => {
       const s = window.game.scene.scenes[0];
-      const ex = (s.map.exits || [])[0];
+      const ex = (s.map.exits || [])[n];
       if (!ex) return null;
       // Cross in the middle of the band rather than at an end: an off-by-one
       // in the pairing shows up there and nowhere else.
@@ -378,7 +382,7 @@ const BOOTED = () => !!(window.game && window.game.scene
       return { from: s.mapId, to: ex.to, bag: s.inventory.filter(Boolean).length,
                door, way,
                want: (ex.spawns && ex.spawns[at]) || ex.spawn };
-    });
+    }, EXIT);
     if (before) {
       await page.waitForFunction(
         (to) => window.game.scene.scenes[0].mapId === to && !!window.game.scene.scenes[0].hero,
@@ -411,7 +415,7 @@ const BOOTED = () => !!(window.game && window.game.scene
         !before.way || after.facing === before.way,
         `walked ${before.way}, arrived facing ${after.facing}`]);
     } else {
-      checks.push(['the map has an exit to cross', false, 'none authored']);
+      checks.push([`the map has an exit ${EXIT} to cross`, false, 'none authored']);
     }
   }
 
@@ -437,9 +441,21 @@ const BOOTED = () => !!(window.game && window.game.scene
         other.def = Object.assign({}, other.def, { hostile: null });
       }
       const p = s.tileCentre(...w.tile);
-      // West of it, not east: a charging boar shoves the hero, and east of
-      // this one is the seam - the test kept being pushed onto the next map.
-      s.hero.body.reset(p.x - s.ts * 2.5, p.y);        // just inside its sight
+      // Which side to stand on. West by preference: a charging boar shoves the
+      // hero, and east of the one this was written for is the seam, so the test
+      // kept being pushed onto the next map. But a valley full of boulders can
+      // have rock on that side, and then the animal charges into a wall - it
+      // closes to a tile and a half, never lands a blow, and the failure reads
+      // as "the elk cannot reach" when what cannot reach is the test.
+      const clear = (dx, dy) => [1, 2, 3].every((n) => {
+        const tx = w.tile[0] + dx * n;
+        const ty = w.tile[1] + dy * n;
+        return s.isWalkable(tx, ty) && !s.exits.get(`${tx},${ty}`);
+      });
+      const side = [[-1, 0], [1, 0], [0, -1], [0, 1]]
+        .find(([dx, dy]) => clear(dx, dy)) || [-1, 0];
+      s.hero.body.reset(p.x + side[0] * s.ts * 2.5,     // just inside its sight
+                        p.y + side[1] * s.ts * 2.5);
       s.cameras.main.centerOn(s.hero.x, s.hero.y);
       s.invuln = 0;
       // What it plays while it closes in, sampled rather than read once at the
@@ -450,18 +466,51 @@ const BOOTED = () => !!(window.game && window.game.scene
         const a = w.sprite.anims.currentAnim;
         if (a) window.__seen.add(a.key);
       } });
-      return { def: w.def.sprite, hp: s.hp,
+      return { def: w.def.sprite, hp: s.hp, side,
                attack: (w.def.states || []).includes('attack'),
+               provoked: !!w.def.hostile.provoked,
                gap: Phaser.Math.Distance.Between(s.hero.x, s.hero.y,
                                                  w.sprite.x, w.sprite.y) };
     });
+    if (before && before.provoked) {
+      // Something that only fights back has two halves to prove, and the
+      // second one is worthless without the first: it has to ignore the hero
+      // while it is left alone, and then charge once it is hit. A test that
+      // only watched it charge would pass just as well with the flag deleted.
+      await page.waitForTimeout(1400);
+      const calm = await page.evaluate(() => {
+        const s = window.game.scene.scenes[0];
+        const w = s.wanderers.find((a) => a.def.hostile);
+        return { chasing: !!w.chasing, hp: s.hp, state: w.state };
+      });
+      checks.push([`the ${before.def.split('.')[1]} leaves the hero alone `
+        + `until it is hit`,
+        !calm.chasing && calm.hp === before.hp,
+        `chasing=${calm.chasing}, grazing=${calm.state}, hp ${calm.hp}`]);
+      // Now hit it, through the same call the swing animation makes rather
+      // than by setting the flag: what is being tested is that a blow angers
+      // it, not that an angry creature charges.
+      const angered = await page.evaluate(([ox, oy]) => {
+        const s = window.game.scene.scenes[0];
+        const w = s.wanderers.find((a) => a.def.hostile);
+        s.facing = ox ? (ox < 0 ? 'right' : 'left') : (oy < 0 ? 'down' : 'up');
+        s.hero.body.reset(w.sprite.x + ox * s.ts, w.sprite.y + oy * s.ts);
+        s.strike();                                   // within a tile, so it lands
+        const hit = !!w.angered;
+        s.hero.body.reset(w.sprite.x + ox * s.ts * 2.5,
+                          w.sprite.y + oy * s.ts * 2.5);
+        s.invuln = 0;
+        return hit;
+      }, before.side);
+      checks.push(['and a blow turns it on the hero', angered, `angered=${angered}`]);
+    }
     if (before) {
       await page.waitForTimeout(2600);
       const after = await page.evaluate(() => {
         const s = window.game.scene.scenes[0];
         const w = s.wanderers.find((a) => a.def.hostile);
         if (!w) return { gone: s.mapId };               // shoved off the map
-        return { hp: s.hp, chasing: !!w.chasing,
+        return { hp: s.hp, chasing: !!w.chasing, reach: w.def.hostile.reach,
                  gap: Phaser.Math.Distance.Between(s.hero.x, s.hero.y,
                                                    w.sprite.x, w.sprite.y) };
       });
@@ -471,7 +520,9 @@ const BOOTED = () => !!(window.game && window.game.scene
                    : `${before.gap.toFixed(0)}px -> ${after.gap.toFixed(0)}px`]);
       checks.push(['and goring the hero costs hp',
         !after.gone && after.hp < before.hp,
-        after.gone ? 'n/a' : `${before.hp} -> ${after.hp}`]);
+        after.gone ? 'n/a'
+                   : `${before.hp} -> ${after.hp}, closed to `
+                     + `${after.gap.toFixed(0)}px of a ${after.reach}px reach`]);
       if (before.attack) {
         const seen = await page.evaluate(() => [...(window.__seen || [])]);
         checks.push(['and the blow is thrown, not just dealt',

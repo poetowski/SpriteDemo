@@ -1,0 +1,37 @@
+{
+  "id": "npc.elk",
+  "sprite": "actor.elk",
+  "rig": "quadruped",
+  "name": "Elk",
+  "states": [
+    "walk",
+    "idle",
+    "graze",
+    "attack"
+  ],
+  "speed": 21,
+  "blocks": true,
+  "facing": "down",
+  "wander": {
+    "radius": 4,
+    "idle_ms": [
+      800,
+      2100
+    ],
+    "graze_ms": [
+      2400,
+      5600
+    ],
+    "graze_chance": 0.55
+  },
+  "hostile": {
+    "provoked": true,
+    "sight": 80,
+    "lose": 170,
+    "charge_speed": 68,
+    "damage": 6,
+    "reach": 20,
+    "cooldown_ms": 1300,
+    "leash": 140
+  }
+}

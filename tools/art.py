@@ -198,6 +198,12 @@ def build_atlases(sprite_rigs, content):
         huge.add(pid, [canvas], props_gen.HUGE_ANCHOR)
         huge_canvases[pid] = canvas
 
+    vast = Atlas("props_vast", props_gen.VAST_FRAME, props_gen.VAST_FRAME, 2)
+    vast_canvases = {}
+    for pid, canvas in props_gen.build_vast_props():
+        vast.add(pid, [canvas], props_gen.VAST_ANCHOR)
+        vast_canvases[pid] = canvas
+
     items = Atlas("items", items_gen.SIZE, items_gen.SIZE, 8)
     item_canvases = {}
     for iid, canvas in items_gen.build_items():
@@ -210,12 +216,12 @@ def build_atlases(sprite_rigs, content):
         fx.add(gid, [canvas], fx_gen.ANCHOR)
         fx_canvases[gid] = canvas
 
-    sheets = [*actor_sheets.values(), tiles, props, big, huge, items, fx]
+    sheets = [*actor_sheets.values(), tiles, props, big, huge, vast, items, fx]
     sprites = {}
     for a in sheets:
         sprites.update(a.sprites())
     others = {"props": prop_canvases, "props_big": big_canvases,
-              "props_huge": huge_canvases,
+              "props_huge": huge_canvases, "props_vast": vast_canvases,
               "items": item_canvases, "fx": fx_canvases}
     return tile_index, sheets, sprites, anims, tile_canvases, others, by_sprite
 
@@ -270,6 +276,7 @@ def write_aseprite(by_sprite, tile_canvases, others):
             ("props", others["props"], actor.FRAME),
             ("props_big", others["props_big"], props_gen.BIG_FRAME),
             ("props_huge", others["props_huge"], props_gen.HUGE_FRAME),
+            ("props_vast", others["props_vast"], props_gen.VAST_FRAME),
             ("items", others["items"], items_gen.SIZE),
             ("fx", others["fx"], fx_gen.SIZE)):
         path = os.path.join(out, f"{name}.aseprite")
@@ -311,6 +318,7 @@ def library(sheets, sprites, anims, tile_index, looks):
         "standard": {"tile": tiles_gen.SIZE, "actor": actor.FRAME,
                      "giant": giant.FRAME, "prop": actor.FRAME,
                      "structure": props_gen.BIG_FRAME,
+                     "erratic": props_gen.VAST_FRAME,
                      "item": items_gen.SIZE, "fx": fx_gen.SIZE},
         "atlases": {a.name: {**a.meta(), "image": f"atlases/{a.name}.png"}
                     for a in sheets},

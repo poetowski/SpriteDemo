@@ -27,24 +27,33 @@ SPECIES = {
     "goat": {"wool": False, "horns": True, "beard": True},
     "boar": {"wool": False, "horns": False, "beard": False,
              "bristles": True, "tusks": True},
+    # "tall" lifts the body and lengthens the legs without moving the hooves,
+    # which is the whole difference between a deer and a sheep in silhouette:
+    # the same barrel carried higher off the ground. The rack does the rest.
+    "elk": {"wool": False, "horns": False, "beard": False,
+            "tall": 3, "antlers": True, "mane": True, "rump": True},
 }
 
 
 # --------------------------------------------------------------- side view ---
-def _side_legs(c, offsets, bob):
-    """Four legs at fixed x, swung by per-leg offsets. Hooves stay grounded."""
+def _side_legs(c, offsets, bob, tall=0):
+    """Four legs at fixed x, swung by per-leg offsets. Hooves stay grounded -
+    a taller animal has longer legs, not floating ones."""
     for base, dx in zip((9, 12, 17, 20), offsets):
         x = base + dx
         lift = 1 if dx > 0 else 0
-        c.rect(x, LEG_TOP + bob, x + 1, FOOT_Y - 1 - lift, "ABS" if base < 15 else "AB")
+        c.rect(x, LEG_TOP + bob - tall, x + 1, FOOT_Y - 1 - lift,
+               "ABS" if base < 15 else "AB")
         c.rect(x, FOOT_Y - lift, x + 1, FOOT_Y - lift, "AH")
 
 
 def _side_body(c, bob, shape):
-    top = 18 + bob
-    c.rect(8, top + 1, 21, 24 + bob, "AB")
+    tall = shape.get("tall", 0)
+    top = 18 + bob - tall
+    belly = 24 + bob - tall
+    c.rect(8, top + 1, 21, belly, "AB")
     c.row(10, 19, top, "AB")
-    c.row(9, 20, 24 + bob, "ABS")               # underside in shade
+    c.row(9, 20, belly, "ABS")                  # underside in shade
     c.row(11, 18, top, "ABL")                   # lit along the spine
     if shape["wool"]:                           # woolly back breaks the outline
         for x in (10, 13, 16, 19):
@@ -54,46 +63,75 @@ def _side_body(c, bob, shape):
         for x in range(9, 21, 2):               # which is what makes a boar
             c.set(x, top - 1, "AFS")            # read as bristling and not fat
         c.set(21, top, "AFS")
-    c.rect(6, 19 + bob, 7, 21 + bob, "ABS")     # tail
+    if shape.get("rump"):                       # the pale patch a deer shows
+        c.rect(8, top + 2, 11, belly - 1, "AR")  # you as it goes away
+    c.rect(6, 19 + bob - tall, 7, 21 + bob - tall, "ABS")     # tail
     if not shape["wool"]:
-        c.rect(6, 19 + bob, 7, 20 + bob, "AF")  # goats have a thin dark tail
+        c.rect(6, 19 + bob - tall, 7, 20 + bob - tall, "AF")  # thin dark tail
 
 
-def _side_head(c, bob, shape, down=0):
-    """down > 0 lowers the head towards the grass."""
-    hy = 15 + bob + down
+def _side_head(c, bob, shape, down=0, lunge=0):
+    """down > 0 lowers the head towards the grass; lunge > 0 throws it forward,
+    which is the whole of a quadruped's attack - it has nothing else to hit
+    you with."""
+    tall = shape.get("tall", 0)
+    hy = 15 + bob + down - tall
+    hx = 22 + lunge
     # The neck spans from the shoulder to wherever the head is, so lowering the
-    # head to graze stretches the neck instead of detaching it.
-    c.rect(20, 18 + bob, 22, hy + 4, "AB")
-    c.rect(22, hy, 26, hy + 5, "AF")            # head
-    c.row(23, 26, hy + 5, "AFS")
-    c.set(26, hy + 3, "AFS")                    # muzzle
-    c.set(25, hy + 2, "OL")                     # eye
-    c.rect(21, hy + 1, 22, hy + 1, "AF")        # ear
+    # head to graze - or throwing it forward - stretches the neck instead of
+    # detaching it.
+    c.rect(20, 18 + bob - tall, hx, hy + 4, "AB")
+    c.rect(hx, hy, hx + 4, hy + 5, "AF")        # head
+    c.row(hx + 1, hx + 4, hy + 5, "AFS")
+    c.set(hx + 4, hy + 3, "AFS")                # muzzle
+    c.set(hx + 3, hy + 2, "OL")                 # eye
+    c.rect(hx - 1, hy + 1, hx, hy + 1, "AF")    # ear
     if shape["horns"]:
-        c.rect(22, hy - 2, 23, hy - 1, "HN")
-        c.set(24, hy - 2, "HNS")
+        c.rect(hx, hy - 2, hx + 1, hy - 1, "HN")
+        c.set(hx + 2, hy - 2, "HNS")
+    if shape.get("mane"):                       # shaggy throat, under the neck
+        for i, x in enumerate(range(19, 24)):
+            c.col(x, hy + 4, hy + 6 + (i % 2), "AFS")
+    if shape.get("antlers"):
+        # One beam sweeping back over the shoulders, with tines of different
+        # lengths standing off it. Every pixel of it is a step from the one
+        # before, starting on the skull: drawn as a spray of pixels two apart
+        # it came out as a detached shrub floating behind the head, and drawn
+        # as tines of one length it came out as a comb. Laid down after the
+        # body, so a lowered head puts the rack along the back and not inside
+        # it.
+        c.set(hx + 2, hy - 2, "HN")                  # brow tine, forward
+        c.set(hx + 2, hy - 3, "HN")
+        beam = ((hx + 1, hy - 1), (hx, hy - 2), (hx - 1, hy - 3),
+                (hx - 2, hy - 4), (hx - 3, hy - 4), (hx - 4, hy - 5),
+                (hx - 5, hy - 5), (hx - 6, hy - 6))
+        for i, (bx, by) in enumerate(beam):
+            c.set(bx, by, "HNS" if i < 2 else "HN")  # darker where it is skull
+        for (tx, ty), length in zip((beam[2], beam[4], beam[6], beam[7]),
+                                    (3, 4, 3, 2)):
+            for i in range(length):
+                c.set(tx + (i + 1) // 2, ty - 1 - i, "HN")
     if shape["beard"]:
-        c.rect(24, hy + 6, 25, hy + 7, "AFS")
+        c.rect(hx + 2, hy + 6, hx + 3, hy + 7, "AFS")
     if shape.get("tusks"):                      # curving up clear of the muzzle
-        c.set(26, hy + 4, "HN")
-        c.set(27, hy + 3, "HN")
-        c.set(27, hy + 2, "HNS")
+        c.set(hx + 4, hy + 4, "HN")
+        c.set(hx + 5, hy + 3, "HN")
+        c.set(hx + 5, hy + 2, "HNS")
 
 
 def draw_side(shape, pose):
     c = Canvas(FRAME, FRAME)
     bob = pose.get("bob", 0)
-    _side_legs(c, pose.get("legs", (0, 0, 0, 0)), bob)
+    _side_legs(c, pose.get("legs", (0, 0, 0, 0)), bob, shape.get("tall", 0))
     _side_body(c, bob, shape)
-    _side_head(c, bob, shape, pose.get("head_down", 0))
+    _side_head(c, bob, shape, pose.get("head_down", 0), pose.get("lunge", 0))
     return c.outline()
 
 
 # ------------------------------------------------------- front / back view ---
-def _front_legs(c, spread, bob):
+def _front_legs(c, spread, bob, tall=0):
     for x in (12 + spread, 18 - spread):
-        c.rect(x, LEG_TOP + bob, x + 1, FOOT_Y - 1, "ABS")
+        c.rect(x, LEG_TOP + bob - tall, x + 1, FOOT_Y - 1, "ABS")
         c.rect(x, FOOT_Y, x + 1, FOOT_Y, "AH")
 
 
@@ -101,22 +139,36 @@ def draw_front(shape, pose):
     """Facing the camera: head drawn over the body, ears out to the sides."""
     c = Canvas(FRAME, FRAME)
     bob = pose.get("bob", 0)
+    tall = shape.get("tall", 0)
     down = pose.get("head_down", 0) // 3       # head-on, the drop barely reads
-    _front_legs(c, pose.get("spread", 0), bob)
-    c.rect(10, 16 + bob, 21, 24 + bob, "AB")            # body
-    c.row(11, 20, 15 + bob, "AB")
-    c.row(12, 19, 15 + bob, "ABL")
+    _front_legs(c, pose.get("spread", 0), bob, tall)
+    c.rect(10, 16 + bob - tall, 21, 24 + bob - tall, "AB")   # body
+    c.row(11, 20, 15 + bob - tall, "AB")
+    c.row(12, 19, 15 + bob - tall, "ABL")
     if shape["wool"]:
         for x in (11, 14, 17, 20):
-            c.set(x, 14 + bob, "ABL")
+            c.set(x, 14 + bob - tall, "ABL")
     if shape.get("bristles"):
         for x in range(11, 21, 2):
-            c.set(x, 14 + bob, "AFS")
+            c.set(x, 14 + bob - tall, "AFS")
 
-    hy = 18 + bob + down
+    hy = 18 + bob + down - tall
     if shape["horns"]:                                  # above the head, so they
         c.rect(12, hy - 4, 13, hy - 2, "HN")            # clear the body outline
         c.rect(18, hy - 4, 19, hy - 2, "HN")
+    if shape.get("antlers"):
+        # Head-on, a rack is wider than the animal - which is the view you get
+        # when an elk has decided about you. It goes out well before it goes
+        # up, and the tines stand clear of the beam: a pair of beams that only
+        # rise read as ears, and beam and tines run together into a solid curve
+        # read as an ox.
+        for side, bx in ((-1, 12), (1, 19)):
+            beam = [(bx + side * i, hy - 1 - (i + 1) // 2) for i in range(6)]
+            for px, py in beam:
+                c.set(px, py, "HN")
+            for i, length in ((2, 3), (4, 4), (5, 2)):
+                px, py = beam[i]
+                c.col(px, py - length, py - 1, "HN")
     c.rect(10, hy + 1, 11, hy + 2, "AF")                # ears
     c.rect(20, hy + 1, 21, hy + 2, "AF")
     c.rect(12, hy, 19, hy + 6, "AF")                    # head over the body
@@ -124,6 +176,8 @@ def draw_front(shape, pose):
     c.rect(14, hy + 4, 17, hy + 6, "AFS")               # muzzle
     c.set(13, hy + 2, "OL")
     c.set(18, hy + 2, "OL")
+    if shape.get("mane"):
+        c.rect(13, hy + 7, 18, hy + 8, "AFS")
     if shape["beard"]:
         c.rect(15, hy + 7, 16, hy + 8, "AFS")
     if shape.get("tusks"):                              # one either side of the
@@ -138,27 +192,42 @@ def draw_back(shape, pose):
     """Facing away: rump and tail, ears just visible over the shoulders."""
     c = Canvas(FRAME, FRAME)
     bob = pose.get("bob", 0)
-    _front_legs(c, pose.get("spread", 0), bob)
-    c.rect(10, 16 + bob, 21, 25 + bob, "AB")            # body
-    c.row(11, 20, 15 + bob, "AB")
-    c.row(12, 19, 15 + bob, "ABL")
-    c.row(11, 20, 25 + bob, "ABS")
+    tall = shape.get("tall", 0)
+    _front_legs(c, pose.get("spread", 0), bob, tall)
+    c.rect(10, 16 + bob - tall, 21, 25 + bob - tall, "AB")   # body
+    c.row(11, 20, 15 + bob - tall, "AB")
+    c.row(12, 19, 15 + bob - tall, "ABL")
+    c.row(11, 20, 25 + bob - tall, "ABS")
     if shape["wool"]:
         for x in (11, 14, 17, 20):
-            c.set(x, 14 + bob, "ABL")
+            c.set(x, 14 + bob - tall, "ABL")
     if shape.get("bristles"):
         for x in range(11, 21, 2):
-            c.set(x, 14 + bob, "AFS")
-    c.rect(15, 16 + bob, 16, 20 + bob, "ABS")           # tail
+            c.set(x, 14 + bob - tall, "AFS")
+    if shape.get("rump"):                  # going away is the view a deer gives
+        c.rect(13, 18 + bob - tall, 18, 23 + bob - tall, "AR")
+        for x, y in ((13, 18), (18, 18), (13, 23), (18, 23)):
+            c.set(x, y + bob - tall, "AB")     # corners off, so it is a patch
+
+    c.rect(15, 16 + bob - tall, 16, 20 + bob - tall, "ABS")  # tail
     if not shape["wool"]:
-        c.rect(15, 15 + bob, 16, 19 + bob, "AF")
+        c.rect(15, 15 + bob - tall, 16, 19 + bob - tall, "AF")
 
     # From behind the head is hidden, so grazing reads through the body bob only.
-    c.rect(11, 13 + bob, 12, 14 + bob, "AF")            # ear tips over the shoulders
-    c.rect(19, 13 + bob, 20, 14 + bob, "AF")
+    c.rect(11, 13 + bob - tall, 12, 14 + bob - tall, "AF")   # ear tips, over
+    c.rect(19, 13 + bob - tall, 20, 14 + bob - tall, "AF")   # the shoulders
     if shape["horns"]:
-        c.rect(13, 12 + bob, 14, 13 + bob, "HN")
-        c.rect(17, 12 + bob, 18, 13 + bob, "HN")
+        c.rect(13, 12 + bob - tall, 14, 13 + bob - tall, "HN")
+        c.rect(17, 12 + bob - tall, 18, 13 + bob - tall, "HN")
+    if shape.get("antlers"):               # the rack still clears the shoulders
+        top = 12 + bob - tall
+        for side, bx in ((-1, 12), (1, 19)):
+            beam = [(bx + side * i, top - (i + 1) // 2) for i in range(5)]
+            for px, py in beam:
+                c.set(px, py, "HN")
+            for i, length in ((2, 3), (4, 2)):
+                px, py = beam[i]
+                c.col(px, py - length, py - 1, "HN")
     return c.outline()
 
 
@@ -177,10 +246,18 @@ GRAZE = [                       # head down, chewing
     dict(bob=0, legs=(0, 0, 0, 0), spread=1, head_down=7),
     dict(bob=0, legs=(0, 0, 0, 0), spread=1, head_down=6),
 ]
-# state -> (poses, ms per frame, loops); every animal state loops.
+ATTACK = [                      # head down and thrown forward: a goring
+    dict(bob=0, legs=(0, 0, 0, 0), spread=0, head_down=1),
+    dict(bob=-1, legs=(2, -1, -1, 1), spread=1, head_down=4, lunge=2),
+    dict(bob=0, legs=(3, -2, -2, 2), spread=2, head_down=6, lunge=4),
+    dict(bob=-1, legs=(1, 0, 0, 1), spread=1, head_down=3, lunge=1),
+]
+# state -> (poses, ms per frame, loops). Everything an animal does by itself
+# loops; a blow is a one-shot, because the engine times how long the creature
+# stands still to throw it from the length of this animation.
 STATES = {"walk": (WALK, 150, True), "idle": (IDLE, 600, True),
-          "graze": (GRAZE, 380, True)}
-STATE_ORDER = ["walk", "idle", "graze"]
+          "graze": (GRAZE, 380, True), "attack": (ATTACK, 110, False)}
+STATE_ORDER = ["walk", "idle", "graze", "attack"]
 
 
 def states_for(states=None, held=None):

@@ -84,6 +84,9 @@ PALETTE = {
     "AF":  ((0x5b, 0x52, 0x4b, 255), "animal face"),
     "AFS": ((0x3e, 0x37, 0x32, 255), "animal face shade"),
     "AH":  ((0x4a, 0x41, 0x3a, 255), "animal hoof"),
+    # The pale patch a deer shows you as it leaves. Defaults to the body's own
+    # light tone, so it costs the species that do not have one nothing at all.
+    "AR":  ((0xf5, 0xf1, 0xe6, 255), "animal rump"),
     "HN":  ((0xcd, 0xbb, 0x96, 255), "horn"),
     "HNS": ((0xa3, 0x90, 0x6d, 255), "horn shade"),
     # Gas, and the only translucent colours besides the ground shadow: a cloud
@@ -124,6 +127,21 @@ VARIANTS = {
         "AF":  (0x2e, 0x24, 0x1d, 255),
         "AFS": (0x20, 0x19, 0x14, 255),
         "AH":  (0x1d, 0x17, 0x12, 255),
+    },
+    "elk": {
+        # A bull elk is two animals of colour: a tawny body and a much darker
+        # head, neck and mane. That contrast is most of what tells it from the
+        # goat at this size - the rack does the rest, and the pale rump is
+        # what you see of it walking away.
+        "AB":  (0x8e, 0x6c, 0x45, 255),
+        "ABS": (0x69, 0x4e, 0x31, 255),
+        "ABL": (0xac, 0x89, 0x5c, 255),
+        "AR":  (0xd6, 0xc4, 0x9c, 255),   # the rump patch
+        "AF":  (0x45, 0x33, 0x25, 255),   # head, neck and mane
+        "AFS": (0x2d, 0x21, 0x18, 255),
+        "AH":  (0x26, 0x1d, 0x16, 255),
+        "HN":  (0xa8, 0x8e, 0x60, 255),   # antlers, browner than a goat's horn
+        "HNS": (0x77, 0x62, 0x40, 255),
     },
     "troll": {
         # Woodland colours: moss and bark, so a troll standing still among the

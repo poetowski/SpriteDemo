@@ -1,0 +1,9 @@
+{
+  "id": "prop.boulder_8",
+  "sprite": "prop.boulder_8",
+  "footprint": [
+    [-1, -1], [0, -1], [1, -1], [2, -1],
+    [-1, 0], [0, 0], [1, 0], [2, 0]
+  ],
+  "blocks": true
+}

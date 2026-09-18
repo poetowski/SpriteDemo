@@ -6,6 +6,7 @@
   "giant": 64,
   "prop": 32,
   "structure": 48,
+  "erratic": 128,
   "item": 16,
   "fx": 8
  },
@@ -17,8 +18,8 @@
     32
    ],
    "cols": 6,
-   "rows": 84,
-   "count": 504
+   "rows": 92,
+   "count": 552
   },
   "actors_huge": {
    "image": "atlases/actors_huge.png",
@@ -57,14 +58,24 @@
     48
    ],
    "cols": 4,
-   "rows": 2,
-   "count": 8
+   "rows": 3,
+   "count": 11
   },
   "props_huge": {
    "image": "atlases/props_huge.png",
    "frame": [
     64,
     64
+   ],
+   "cols": 2,
+   "rows": 1,
+   "count": 2
+  },
+  "props_vast": {
+   "image": "atlases/props_vast.png",
+   "frame": [
+    128,
+    128
    ],
    "cols": 2,
    "rows": 1,
@@ -348,7 +359,7 @@
     29
    ]
   },
-  "actor.goat/walk/down/0": {
+  "actor.elk/walk/down/0": {
    "atlas": "actors",
    "index": 32,
    "anchor": [
@@ -356,7 +367,7 @@
     29
    ]
   },
-  "actor.goat/walk/down/1": {
+  "actor.elk/walk/down/1": {
    "atlas": "actors",
    "index": 33,
    "anchor": [
@@ -364,7 +375,7 @@
     29
    ]
   },
-  "actor.goat/walk/down/2": {
+  "actor.elk/walk/down/2": {
    "atlas": "actors",
    "index": 34,
    "anchor": [
@@ -372,7 +383,7 @@
     29
    ]
   },
-  "actor.goat/walk/down/3": {
+  "actor.elk/walk/down/3": {
    "atlas": "actors",
    "index": 35,
    "anchor": [
@@ -380,7 +391,7 @@
     29
    ]
   },
-  "actor.goat/idle/down/0": {
+  "actor.elk/idle/down/0": {
    "atlas": "actors",
    "index": 36,
    "anchor": [
@@ -388,7 +399,7 @@
     29
    ]
   },
-  "actor.goat/idle/down/1": {
+  "actor.elk/idle/down/1": {
    "atlas": "actors",
    "index": 37,
    "anchor": [
@@ -396,7 +407,7 @@
     29
    ]
   },
-  "actor.goat/graze/down/0": {
+  "actor.elk/graze/down/0": {
    "atlas": "actors",
    "index": 38,
    "anchor": [
@@ -404,7 +415,7 @@
     29
    ]
   },
-  "actor.goat/graze/down/1": {
+  "actor.elk/graze/down/1": {
    "atlas": "actors",
    "index": 39,
    "anchor": [
@@ -412,7 +423,7 @@
     29
    ]
   },
-  "actor.goat/walk/left/0": {
+  "actor.elk/attack/down/0": {
    "atlas": "actors",
    "index": 40,
    "anchor": [
@@ -420,7 +431,7 @@
     29
    ]
   },
-  "actor.goat/walk/left/1": {
+  "actor.elk/attack/down/1": {
    "atlas": "actors",
    "index": 41,
    "anchor": [
@@ -428,7 +439,7 @@
     29
    ]
   },
-  "actor.goat/walk/left/2": {
+  "actor.elk/attack/down/2": {
    "atlas": "actors",
    "index": 42,
    "anchor": [
@@ -436,7 +447,7 @@
     29
    ]
   },
-  "actor.goat/walk/left/3": {
+  "actor.elk/attack/down/3": {
    "atlas": "actors",
    "index": 43,
    "anchor": [
@@ -444,7 +455,7 @@
     29
    ]
   },
-  "actor.goat/idle/left/0": {
+  "actor.elk/walk/left/0": {
    "atlas": "actors",
    "index": 44,
    "anchor": [
@@ -452,7 +463,7 @@
     29
    ]
   },
-  "actor.goat/idle/left/1": {
+  "actor.elk/walk/left/1": {
    "atlas": "actors",
    "index": 45,
    "anchor": [
@@ -460,7 +471,7 @@
     29
    ]
   },
-  "actor.goat/graze/left/0": {
+  "actor.elk/walk/left/2": {
    "atlas": "actors",
    "index": 46,
    "anchor": [
@@ -468,7 +479,7 @@
     29
    ]
   },
-  "actor.goat/graze/left/1": {
+  "actor.elk/walk/left/3": {
    "atlas": "actors",
    "index": 47,
    "anchor": [
@@ -476,7 +487,7 @@
     29
    ]
   },
-  "actor.goat/walk/right/0": {
+  "actor.elk/idle/left/0": {
    "atlas": "actors",
    "index": 48,
    "anchor": [
@@ -484,7 +495,7 @@
     29
    ]
   },
-  "actor.goat/walk/right/1": {
+  "actor.elk/idle/left/1": {
    "atlas": "actors",
    "index": 49,
    "anchor": [
@@ -492,7 +503,7 @@
     29
    ]
   },
-  "actor.goat/walk/right/2": {
+  "actor.elk/graze/left/0": {
    "atlas": "actors",
    "index": 50,
    "anchor": [
@@ -500,7 +511,7 @@
     29
    ]
   },
-  "actor.goat/walk/right/3": {
+  "actor.elk/graze/left/1": {
    "atlas": "actors",
    "index": 51,
    "anchor": [
@@ -508,7 +519,7 @@
     29
    ]
   },
-  "actor.goat/idle/right/0": {
+  "actor.elk/attack/left/0": {
    "atlas": "actors",
    "index": 52,
    "anchor": [
@@ -516,7 +527,7 @@
     29
    ]
   },
-  "actor.goat/idle/right/1": {
+  "actor.elk/attack/left/1": {
    "atlas": "actors",
    "index": 53,
    "anchor": [
@@ -524,7 +535,7 @@
     29
    ]
   },
-  "actor.goat/graze/right/0": {
+  "actor.elk/attack/left/2": {
    "atlas": "actors",
    "index": 54,
    "anchor": [
@@ -532,7 +543,7 @@
     29
    ]
   },
-  "actor.goat/graze/right/1": {
+  "actor.elk/attack/left/3": {
    "atlas": "actors",
    "index": 55,
    "anchor": [
@@ -540,7 +551,7 @@
     29
    ]
   },
-  "actor.goat/walk/up/0": {
+  "actor.elk/walk/right/0": {
    "atlas": "actors",
    "index": 56,
    "anchor": [
@@ -548,7 +559,7 @@
     29
    ]
   },
-  "actor.goat/walk/up/1": {
+  "actor.elk/walk/right/1": {
    "atlas": "actors",
    "index": 57,
    "anchor": [
@@ -556,7 +567,7 @@
     29
    ]
   },
-  "actor.goat/walk/up/2": {
+  "actor.elk/walk/right/2": {
    "atlas": "actors",
    "index": 58,
    "anchor": [
@@ -564,7 +575,7 @@
     29
    ]
   },
-  "actor.goat/walk/up/3": {
+  "actor.elk/walk/right/3": {
    "atlas": "actors",
    "index": 59,
    "anchor": [
@@ -572,7 +583,7 @@
     29
    ]
   },
-  "actor.goat/idle/up/0": {
+  "actor.elk/idle/right/0": {
    "atlas": "actors",
    "index": 60,
    "anchor": [
@@ -580,7 +591,7 @@
     29
    ]
   },
-  "actor.goat/idle/up/1": {
+  "actor.elk/idle/right/1": {
    "atlas": "actors",
    "index": 61,
    "anchor": [
@@ -588,7 +599,7 @@
     29
    ]
   },
-  "actor.goat/graze/up/0": {
+  "actor.elk/graze/right/0": {
    "atlas": "actors",
    "index": 62,
    "anchor": [
@@ -596,7 +607,7 @@
     29
    ]
   },
-  "actor.goat/graze/up/1": {
+  "actor.elk/graze/right/1": {
    "atlas": "actors",
    "index": 63,
    "anchor": [
@@ -604,7 +615,7 @@
     29
    ]
   },
-  "actor.hero/walk/down/0": {
+  "actor.elk/attack/right/0": {
    "atlas": "actors",
    "index": 64,
    "anchor": [
@@ -612,7 +623,7 @@
     29
    ]
   },
-  "actor.hero/walk/down/1": {
+  "actor.elk/attack/right/1": {
    "atlas": "actors",
    "index": 65,
    "anchor": [
@@ -620,7 +631,7 @@
     29
    ]
   },
-  "actor.hero/walk/down/2": {
+  "actor.elk/attack/right/2": {
    "atlas": "actors",
    "index": 66,
    "anchor": [
@@ -628,7 +639,7 @@
     29
    ]
   },
-  "actor.hero/walk/down/3": {
+  "actor.elk/attack/right/3": {
    "atlas": "actors",
    "index": 67,
    "anchor": [
@@ -636,7 +647,7 @@
     29
    ]
   },
-  "actor.hero/idle/down/0": {
+  "actor.elk/walk/up/0": {
    "atlas": "actors",
    "index": 68,
    "anchor": [
@@ -644,7 +655,7 @@
     29
    ]
   },
-  "actor.hero/idle/down/1": {
+  "actor.elk/walk/up/1": {
    "atlas": "actors",
    "index": 69,
    "anchor": [
@@ -652,7 +663,7 @@
     29
    ]
   },
-  "actor.hero/gather/down/0": {
+  "actor.elk/walk/up/2": {
    "atlas": "actors",
    "index": 70,
    "anchor": [
@@ -660,7 +671,7 @@
     29
    ]
   },
-  "actor.hero/gather/down/1": {
+  "actor.elk/walk/up/3": {
    "atlas": "actors",
    "index": 71,
    "anchor": [
@@ -668,7 +679,7 @@
     29
    ]
   },
-  "actor.hero/gather/down/2": {
+  "actor.elk/idle/up/0": {
    "atlas": "actors",
    "index": 72,
    "anchor": [
@@ -676,7 +687,7 @@
     29
    ]
   },
-  "actor.hero/walk/left/0": {
+  "actor.elk/idle/up/1": {
    "atlas": "actors",
    "index": 73,
    "anchor": [
@@ -684,7 +695,7 @@
     29
    ]
   },
-  "actor.hero/walk/left/1": {
+  "actor.elk/graze/up/0": {
    "atlas": "actors",
    "index": 74,
    "anchor": [
@@ -692,7 +703,7 @@
     29
    ]
   },
-  "actor.hero/walk/left/2": {
+  "actor.elk/graze/up/1": {
    "atlas": "actors",
    "index": 75,
    "anchor": [
@@ -700,7 +711,7 @@
     29
    ]
   },
-  "actor.hero/walk/left/3": {
+  "actor.elk/attack/up/0": {
    "atlas": "actors",
    "index": 76,
    "anchor": [
@@ -708,7 +719,7 @@
     29
    ]
   },
-  "actor.hero/idle/left/0": {
+  "actor.elk/attack/up/1": {
    "atlas": "actors",
    "index": 77,
    "anchor": [
@@ -716,7 +727,7 @@
     29
    ]
   },
-  "actor.hero/idle/left/1": {
+  "actor.elk/attack/up/2": {
    "atlas": "actors",
    "index": 78,
    "anchor": [
@@ -724,7 +735,7 @@
     29
    ]
   },
-  "actor.hero/gather/left/0": {
+  "actor.elk/attack/up/3": {
    "atlas": "actors",
    "index": 79,
    "anchor": [
@@ -732,7 +743,7 @@
     29
    ]
   },
-  "actor.hero/gather/left/1": {
+  "actor.goat/walk/down/0": {
    "atlas": "actors",
    "index": 80,
    "anchor": [
@@ -740,7 +751,7 @@
     29
    ]
   },
-  "actor.hero/gather/left/2": {
+  "actor.goat/walk/down/1": {
    "atlas": "actors",
    "index": 81,
    "anchor": [
@@ -748,7 +759,7 @@
     29
    ]
   },
-  "actor.hero/walk/right/0": {
+  "actor.goat/walk/down/2": {
    "atlas": "actors",
    "index": 82,
    "anchor": [
@@ -756,7 +767,7 @@
     29
    ]
   },
-  "actor.hero/walk/right/1": {
+  "actor.goat/walk/down/3": {
    "atlas": "actors",
    "index": 83,
    "anchor": [
@@ -764,7 +775,7 @@
     29
    ]
   },
-  "actor.hero/walk/right/2": {
+  "actor.goat/idle/down/0": {
    "atlas": "actors",
    "index": 84,
    "anchor": [
@@ -772,7 +783,7 @@
     29
    ]
   },
-  "actor.hero/walk/right/3": {
+  "actor.goat/idle/down/1": {
    "atlas": "actors",
    "index": 85,
    "anchor": [
@@ -780,7 +791,7 @@
     29
    ]
   },
-  "actor.hero/idle/right/0": {
+  "actor.goat/graze/down/0": {
    "atlas": "actors",
    "index": 86,
    "anchor": [
@@ -788,7 +799,7 @@
     29
    ]
   },
-  "actor.hero/idle/right/1": {
+  "actor.goat/graze/down/1": {
    "atlas": "actors",
    "index": 87,
    "anchor": [
@@ -796,7 +807,7 @@
     29
    ]
   },
-  "actor.hero/gather/right/0": {
+  "actor.goat/walk/left/0": {
    "atlas": "actors",
    "index": 88,
    "anchor": [
@@ -804,7 +815,7 @@
     29
    ]
   },
-  "actor.hero/gather/right/1": {
+  "actor.goat/walk/left/1": {
    "atlas": "actors",
    "index": 89,
    "anchor": [
@@ -812,7 +823,7 @@
     29
    ]
   },
-  "actor.hero/gather/right/2": {
+  "actor.goat/walk/left/2": {
    "atlas": "actors",
    "index": 90,
    "anchor": [
@@ -820,7 +831,7 @@
     29
    ]
   },
-  "actor.hero/walk/up/0": {
+  "actor.goat/walk/left/3": {
    "atlas": "actors",
    "index": 91,
    "anchor": [
@@ -828,7 +839,7 @@
     29
    ]
   },
-  "actor.hero/walk/up/1": {
+  "actor.goat/idle/left/0": {
    "atlas": "actors",
    "index": 92,
    "anchor": [
@@ -836,7 +847,7 @@
     29
    ]
   },
-  "actor.hero/walk/up/2": {
+  "actor.goat/idle/left/1": {
    "atlas": "actors",
    "index": 93,
    "anchor": [
@@ -844,7 +855,7 @@
     29
    ]
   },
-  "actor.hero/walk/up/3": {
+  "actor.goat/graze/left/0": {
    "atlas": "actors",
    "index": 94,
    "anchor": [
@@ -852,7 +863,7 @@
     29
    ]
   },
-  "actor.hero/idle/up/0": {
+  "actor.goat/graze/left/1": {
    "atlas": "actors",
    "index": 95,
    "anchor": [
@@ -860,7 +871,7 @@
     29
    ]
   },
-  "actor.hero/idle/up/1": {
+  "actor.goat/walk/right/0": {
    "atlas": "actors",
    "index": 96,
    "anchor": [
@@ -868,7 +879,7 @@
     29
    ]
   },
-  "actor.hero/gather/up/0": {
+  "actor.goat/walk/right/1": {
    "atlas": "actors",
    "index": 97,
    "anchor": [
@@ -876,7 +887,7 @@
     29
    ]
   },
-  "actor.hero/gather/up/1": {
+  "actor.goat/walk/right/2": {
    "atlas": "actors",
    "index": 98,
    "anchor": [
@@ -884,7 +895,7 @@
     29
    ]
   },
-  "actor.hero/gather/up/2": {
+  "actor.goat/walk/right/3": {
    "atlas": "actors",
    "index": 99,
    "anchor": [
@@ -892,7 +903,7 @@
     29
    ]
   },
-  "actor.hero_axe/walk/down/0": {
+  "actor.goat/idle/right/0": {
    "atlas": "actors",
    "index": 100,
    "anchor": [
@@ -900,7 +911,7 @@
     29
    ]
   },
-  "actor.hero_axe/walk/down/1": {
+  "actor.goat/idle/right/1": {
    "atlas": "actors",
    "index": 101,
    "anchor": [
@@ -908,7 +919,7 @@
     29
    ]
   },
-  "actor.hero_axe/walk/down/2": {
+  "actor.goat/graze/right/0": {
    "atlas": "actors",
    "index": 102,
    "anchor": [
@@ -916,7 +927,7 @@
     29
    ]
   },
-  "actor.hero_axe/walk/down/3": {
+  "actor.goat/graze/right/1": {
    "atlas": "actors",
    "index": 103,
    "anchor": [
@@ -924,7 +935,7 @@
     29
    ]
   },
-  "actor.hero_axe/idle/down/0": {
+  "actor.goat/walk/up/0": {
    "atlas": "actors",
    "index": 104,
    "anchor": [
@@ -932,7 +943,7 @@
     29
    ]
   },
-  "actor.hero_axe/idle/down/1": {
+  "actor.goat/walk/up/1": {
    "atlas": "actors",
    "index": 105,
    "anchor": [
@@ -940,7 +951,7 @@
     29
    ]
   },
-  "actor.hero_axe/gather/down/0": {
+  "actor.goat/walk/up/2": {
    "atlas": "actors",
    "index": 106,
    "anchor": [
@@ -948,7 +959,7 @@
     29
    ]
   },
-  "actor.hero_axe/gather/down/1": {
+  "actor.goat/walk/up/3": {
    "atlas": "actors",
    "index": 107,
    "anchor": [
@@ -956,7 +967,7 @@
     29
    ]
   },
-  "actor.hero_axe/gather/down/2": {
+  "actor.goat/idle/up/0": {
    "atlas": "actors",
    "index": 108,
    "anchor": [
@@ -964,7 +975,7 @@
     29
    ]
   },
-  "actor.hero_axe/slash/down/0": {
+  "actor.goat/idle/up/1": {
    "atlas": "actors",
    "index": 109,
    "anchor": [
@@ -972,7 +983,7 @@
     29
    ]
   },
-  "actor.hero_axe/slash/down/1": {
+  "actor.goat/graze/up/0": {
    "atlas": "actors",
    "index": 110,
    "anchor": [
@@ -980,7 +991,7 @@
     29
    ]
   },
-  "actor.hero_axe/slash/down/2": {
+  "actor.goat/graze/up/1": {
    "atlas": "actors",
    "index": 111,
    "anchor": [
@@ -988,7 +999,7 @@
     29
    ]
   },
-  "actor.hero_axe/slash/down/3": {
+  "actor.hero/walk/down/0": {
    "atlas": "actors",
    "index": 112,
    "anchor": [
@@ -996,7 +1007,7 @@
     29
    ]
   },
-  "actor.hero_axe/walk/left/0": {
+  "actor.hero/walk/down/1": {
    "atlas": "actors",
    "index": 113,
    "anchor": [
@@ -1004,7 +1015,7 @@
     29
    ]
   },
-  "actor.hero_axe/walk/left/1": {
+  "actor.hero/walk/down/2": {
    "atlas": "actors",
    "index": 114,
    "anchor": [
@@ -1012,7 +1023,7 @@
     29
    ]
   },
-  "actor.hero_axe/walk/left/2": {
+  "actor.hero/walk/down/3": {
    "atlas": "actors",
    "index": 115,
    "anchor": [
@@ -1020,7 +1031,7 @@
     29
    ]
   },
-  "actor.hero_axe/walk/left/3": {
+  "actor.hero/idle/down/0": {
    "atlas": "actors",
    "index": 116,
    "anchor": [
@@ -1028,7 +1039,7 @@
     29
    ]
   },
-  "actor.hero_axe/idle/left/0": {
+  "actor.hero/idle/down/1": {
    "atlas": "actors",
    "index": 117,
    "anchor": [
@@ -1036,7 +1047,7 @@
     29
    ]
   },
-  "actor.hero_axe/idle/left/1": {
+  "actor.hero/gather/down/0": {
    "atlas": "actors",
    "index": 118,
    "anchor": [
@@ -1044,7 +1055,7 @@
     29
    ]
   },
-  "actor.hero_axe/gather/left/0": {
+  "actor.hero/gather/down/1": {
    "atlas": "actors",
    "index": 119,
    "anchor": [
@@ -1052,7 +1063,7 @@
     29
    ]
   },
-  "actor.hero_axe/gather/left/1": {
+  "actor.hero/gather/down/2": {
    "atlas": "actors",
    "index": 120,
    "anchor": [
@@ -1060,7 +1071,7 @@
     29
    ]
   },
-  "actor.hero_axe/gather/left/2": {
+  "actor.hero/walk/left/0": {
    "atlas": "actors",
    "index": 121,
    "anchor": [
@@ -1068,7 +1079,7 @@
     29
    ]
   },
-  "actor.hero_axe/slash/left/0": {
+  "actor.hero/walk/left/1": {
    "atlas": "actors",
    "index": 122,
    "anchor": [
@@ -1076,7 +1087,7 @@
     29
    ]
   },
-  "actor.hero_axe/slash/left/1": {
+  "actor.hero/walk/left/2": {
    "atlas": "actors",
    "index": 123,
    "anchor": [
@@ -1084,7 +1095,7 @@
     29
    ]
   },
-  "actor.hero_axe/slash/left/2": {
+  "actor.hero/walk/left/3": {
    "atlas": "actors",
    "index": 124,
    "anchor": [
@@ -1092,7 +1103,7 @@
     29
    ]
   },
-  "actor.hero_axe/slash/left/3": {
+  "actor.hero/idle/left/0": {
    "atlas": "actors",
    "index": 125,
    "anchor": [
@@ -1100,7 +1111,7 @@
     29
    ]
   },
-  "actor.hero_axe/walk/right/0": {
+  "actor.hero/idle/left/1": {
    "atlas": "actors",
    "index": 126,
    "anchor": [
@@ -1108,7 +1119,7 @@
     29
    ]
   },
-  "actor.hero_axe/walk/right/1": {
+  "actor.hero/gather/left/0": {
    "atlas": "actors",
    "index": 127,
    "anchor": [
@@ -1116,7 +1127,7 @@
     29
    ]
   },
-  "actor.hero_axe/walk/right/2": {
+  "actor.hero/gather/left/1": {
    "atlas": "actors",
    "index": 128,
    "anchor": [
@@ -1124,7 +1135,7 @@
     29
    ]
   },
-  "actor.hero_axe/walk/right/3": {
+  "actor.hero/gather/left/2": {
    "atlas": "actors",
    "index": 129,
    "anchor": [
@@ -1132,7 +1143,7 @@
     29
    ]
   },
-  "actor.hero_axe/idle/right/0": {
+  "actor.hero/walk/right/0": {
    "atlas": "actors",
    "index": 130,
    "anchor": [
@@ -1140,7 +1151,7 @@
     29
    ]
   },
-  "actor.hero_axe/idle/right/1": {
+  "actor.hero/walk/right/1": {
    "atlas": "actors",
    "index": 131,
    "anchor": [
@@ -1148,7 +1159,7 @@
     29
    ]
   },
-  "actor.hero_axe/gather/right/0": {
+  "actor.hero/walk/right/2": {
    "atlas": "actors",
    "index": 132,
    "anchor": [
@@ -1156,7 +1167,7 @@
     29
    ]
   },
-  "actor.hero_axe/gather/right/1": {
+  "actor.hero/walk/right/3": {
    "atlas": "actors",
    "index": 133,
    "anchor": [
@@ -1164,7 +1175,7 @@
     29
    ]
   },
-  "actor.hero_axe/gather/right/2": {
+  "actor.hero/idle/right/0": {
    "atlas": "actors",
    "index": 134,
    "anchor": [
@@ -1172,7 +1183,7 @@
     29
    ]
   },
-  "actor.hero_axe/slash/right/0": {
+  "actor.hero/idle/right/1": {
    "atlas": "actors",
    "index": 135,
    "anchor": [
@@ -1180,7 +1191,7 @@
     29
    ]
   },
-  "actor.hero_axe/slash/right/1": {
+  "actor.hero/gather/right/0": {
    "atlas": "actors",
    "index": 136,
    "anchor": [
@@ -1188,7 +1199,7 @@
     29
    ]
   },
-  "actor.hero_axe/slash/right/2": {
+  "actor.hero/gather/right/1": {
    "atlas": "actors",
    "index": 137,
    "anchor": [
@@ -1196,7 +1207,7 @@
     29
    ]
   },
-  "actor.hero_axe/slash/right/3": {
+  "actor.hero/gather/right/2": {
    "atlas": "actors",
    "index": 138,
    "anchor": [
@@ -1204,7 +1215,7 @@
     29
    ]
   },
-  "actor.hero_axe/walk/up/0": {
+  "actor.hero/walk/up/0": {
    "atlas": "actors",
    "index": 139,
    "anchor": [
@@ -1212,7 +1223,7 @@
     29
    ]
   },
-  "actor.hero_axe/walk/up/1": {
+  "actor.hero/walk/up/1": {
    "atlas": "actors",
    "index": 140,
    "anchor": [
@@ -1220,7 +1231,7 @@
     29
    ]
   },
-  "actor.hero_axe/walk/up/2": {
+  "actor.hero/walk/up/2": {
    "atlas": "actors",
    "index": 141,
    "anchor": [
@@ -1228,7 +1239,7 @@
     29
    ]
   },
-  "actor.hero_axe/walk/up/3": {
+  "actor.hero/walk/up/3": {
    "atlas": "actors",
    "index": 142,
    "anchor": [
@@ -1236,7 +1247,7 @@
     29
    ]
   },
-  "actor.hero_axe/idle/up/0": {
+  "actor.hero/idle/up/0": {
    "atlas": "actors",
    "index": 143,
    "anchor": [
@@ -1244,7 +1255,7 @@
     29
    ]
   },
-  "actor.hero_axe/idle/up/1": {
+  "actor.hero/idle/up/1": {
    "atlas": "actors",
    "index": 144,
    "anchor": [
@@ -1252,7 +1263,7 @@
     29
    ]
   },
-  "actor.hero_axe/gather/up/0": {
+  "actor.hero/gather/up/0": {
    "atlas": "actors",
    "index": 145,
    "anchor": [
@@ -1260,7 +1271,7 @@
     29
    ]
   },
-  "actor.hero_axe/gather/up/1": {
+  "actor.hero/gather/up/1": {
    "atlas": "actors",
    "index": 146,
    "anchor": [
@@ -1268,7 +1279,7 @@
     29
    ]
   },
-  "actor.hero_axe/gather/up/2": {
+  "actor.hero/gather/up/2": {
    "atlas": "actors",
    "index": 147,
    "anchor": [
@@ -1276,7 +1287,7 @@
     29
    ]
   },
-  "actor.hero_axe/slash/up/0": {
+  "actor.hero_axe/walk/down/0": {
    "atlas": "actors",
    "index": 148,
    "anchor": [
@@ -1284,7 +1295,7 @@
     29
    ]
   },
-  "actor.hero_axe/slash/up/1": {
+  "actor.hero_axe/walk/down/1": {
    "atlas": "actors",
    "index": 149,
    "anchor": [
@@ -1292,7 +1303,7 @@
     29
    ]
   },
-  "actor.hero_axe/slash/up/2": {
+  "actor.hero_axe/walk/down/2": {
    "atlas": "actors",
    "index": 150,
    "anchor": [
@@ -1300,7 +1311,7 @@
     29
    ]
   },
-  "actor.hero_axe/slash/up/3": {
+  "actor.hero_axe/walk/down/3": {
    "atlas": "actors",
    "index": 151,
    "anchor": [
@@ -1308,7 +1319,7 @@
     29
    ]
   },
-  "actor.hero_axe_mail/walk/down/0": {
+  "actor.hero_axe/idle/down/0": {
    "atlas": "actors",
    "index": 152,
    "anchor": [
@@ -1316,7 +1327,7 @@
     29
    ]
   },
-  "actor.hero_axe_mail/walk/down/1": {
+  "actor.hero_axe/idle/down/1": {
    "atlas": "actors",
    "index": 153,
    "anchor": [
@@ -1324,7 +1335,7 @@
     29
    ]
   },
-  "actor.hero_axe_mail/walk/down/2": {
+  "actor.hero_axe/gather/down/0": {
    "atlas": "actors",
    "index": 154,
    "anchor": [
@@ -1332,7 +1343,7 @@
     29
    ]
   },
-  "actor.hero_axe_mail/walk/down/3": {
+  "actor.hero_axe/gather/down/1": {
    "atlas": "actors",
    "index": 155,
    "anchor": [
@@ -1340,7 +1351,7 @@
     29
    ]
   },
-  "actor.hero_axe_mail/idle/down/0": {
+  "actor.hero_axe/gather/down/2": {
    "atlas": "actors",
    "index": 156,
    "anchor": [
@@ -1348,7 +1359,7 @@
     29
    ]
   },
-  "actor.hero_axe_mail/idle/down/1": {
+  "actor.hero_axe/slash/down/0": {
    "atlas": "actors",
    "index": 157,
    "anchor": [
@@ -1356,7 +1367,7 @@
     29
    ]
   },
-  "actor.hero_axe_mail/gather/down/0": {
+  "actor.hero_axe/slash/down/1": {
    "atlas": "actors",
    "index": 158,
    "anchor": [
@@ -1364,7 +1375,7 @@
     29
    ]
   },
-  "actor.hero_axe_mail/gather/down/1": {
+  "actor.hero_axe/slash/down/2": {
    "atlas": "actors",
    "index": 159,
    "anchor": [
@@ -1372,7 +1383,7 @@
     29
    ]
   },
-  "actor.hero_axe_mail/gather/down/2": {
+  "actor.hero_axe/slash/down/3": {
    "atlas": "actors",
    "index": 160,
    "anchor": [
@@ -1380,7 +1391,7 @@
     29
    ]
   },
-  "actor.hero_axe_mail/slash/down/0": {
+  "actor.hero_axe/walk/left/0": {
    "atlas": "actors",
    "index": 161,
    "anchor": [
@@ -1388,7 +1399,7 @@
     29
    ]
   },
-  "actor.hero_axe_mail/slash/down/1": {
+  "actor.hero_axe/walk/left/1": {
    "atlas": "actors",
    "index": 162,
    "anchor": [
@@ -1396,7 +1407,7 @@
     29
    ]
   },
-  "actor.hero_axe_mail/slash/down/2": {
+  "actor.hero_axe/walk/left/2": {
    "atlas": "actors",
    "index": 163,
    "anchor": [
@@ -1404,7 +1415,7 @@
     29
    ]
   },
-  "actor.hero_axe_mail/slash/down/3": {
+  "actor.hero_axe/walk/left/3": {
    "atlas": "actors",
    "index": 164,
    "anchor": [
@@ -1412,7 +1423,7 @@
     29
    ]
   },
-  "actor.hero_axe_mail/walk/left/0": {
+  "actor.hero_axe/idle/left/0": {
    "atlas": "actors",
    "index": 165,
    "anchor": [
@@ -1420,7 +1431,7 @@
     29
    ]
   },
-  "actor.hero_axe_mail/walk/left/1": {
+  "actor.hero_axe/idle/left/1": {
    "atlas": "actors",
    "index": 166,
    "anchor": [
@@ -1428,7 +1439,7 @@
     29
    ]
   },
-  "actor.hero_axe_mail/walk/left/2": {
+  "actor.hero_axe/gather/left/0": {
    "atlas": "actors",
    "index": 167,
    "anchor": [
@@ -1436,7 +1447,7 @@
     29
    ]
   },
-  "actor.hero_axe_mail/walk/left/3": {
+  "actor.hero_axe/gather/left/1": {
    "atlas": "actors",
    "index": 168,
    "anchor": [
@@ -1444,7 +1455,7 @@
     29
    ]
   },
-  "actor.hero_axe_mail/idle/left/0": {
+  "actor.hero_axe/gather/left/2": {
    "atlas": "actors",
    "index": 169,
    "anchor": [
@@ -1452,7 +1463,7 @@
     29
    ]
   },
-  "actor.hero_axe_mail/idle/left/1": {
+  "actor.hero_axe/slash/left/0": {
    "atlas": "actors",
    "index": 170,
    "anchor": [
@@ -1460,7 +1471,7 @@
     29
    ]
   },
-  "actor.hero_axe_mail/gather/left/0": {
+  "actor.hero_axe/slash/left/1": {
    "atlas": "actors",
    "index": 171,
    "anchor": [
@@ -1468,7 +1479,7 @@
     29
    ]
   },
-  "actor.hero_axe_mail/gather/left/1": {
+  "actor.hero_axe/slash/left/2": {
    "atlas": "actors",
    "index": 172,
    "anchor": [
@@ -1476,7 +1487,7 @@
     29
    ]
   },
-  "actor.hero_axe_mail/gather/left/2": {
+  "actor.hero_axe/slash/left/3": {
    "atlas": "actors",
    "index": 173,
    "anchor": [
@@ -1484,7 +1495,7 @@
     29
    ]
   },
-  "actor.hero_axe_mail/slash/left/0": {
+  "actor.hero_axe/walk/right/0": {
    "atlas": "actors",
    "index": 174,
    "anchor": [
@@ -1492,7 +1503,7 @@
     29
    ]
   },
-  "actor.hero_axe_mail/slash/left/1": {
+  "actor.hero_axe/walk/right/1": {
    "atlas": "actors",
    "index": 175,
    "anchor": [
@@ -1500,7 +1511,7 @@
     29
    ]
   },
-  "actor.hero_axe_mail/slash/left/2": {
+  "actor.hero_axe/walk/right/2": {
    "atlas": "actors",
    "index": 176,
    "anchor": [
@@ -1508,7 +1519,7 @@
     29
    ]
   },
-  "actor.hero_axe_mail/slash/left/3": {
+  "actor.hero_axe/walk/right/3": {
    "atlas": "actors",
    "index": 177,
    "anchor": [
@@ -1516,7 +1527,7 @@
     29
    ]
   },
-  "actor.hero_axe_mail/walk/right/0": {
+  "actor.hero_axe/idle/right/0": {
    "atlas": "actors",
    "index": 178,
    "anchor": [
@@ -1524,7 +1535,7 @@
     29
    ]
   },
-  "actor.hero_axe_mail/walk/right/1": {
+  "actor.hero_axe/idle/right/1": {
    "atlas": "actors",
    "index": 179,
    "anchor": [
@@ -1532,7 +1543,7 @@
     29
    ]
   },
-  "actor.hero_axe_mail/walk/right/2": {
+  "actor.hero_axe/gather/right/0": {
    "atlas": "actors",
    "index": 180,
    "anchor": [
@@ -1540,7 +1551,7 @@
     29
    ]
   },
-  "actor.hero_axe_mail/walk/right/3": {
+  "actor.hero_axe/gather/right/1": {
    "atlas": "actors",
    "index": 181,
    "anchor": [
@@ -1548,7 +1559,7 @@
     29
    ]
   },
-  "actor.hero_axe_mail/idle/right/0": {
+  "actor.hero_axe/gather/right/2": {
    "atlas": "actors",
    "index": 182,
    "anchor": [
@@ -1556,7 +1567,7 @@
     29
    ]
   },
-  "actor.hero_axe_mail/idle/right/1": {
+  "actor.hero_axe/slash/right/0": {
    "atlas": "actors",
    "index": 183,
    "anchor": [
@@ -1564,7 +1575,7 @@
     29
    ]
   },
-  "actor.hero_axe_mail/gather/right/0": {
+  "actor.hero_axe/slash/right/1": {
    "atlas": "actors",
    "index": 184,
    "anchor": [
@@ -1572,7 +1583,7 @@
     29
    ]
   },
-  "actor.hero_axe_mail/gather/right/1": {
+  "actor.hero_axe/slash/right/2": {
    "atlas": "actors",
    "index": 185,
    "anchor": [
@@ -1580,7 +1591,7 @@
     29
    ]
   },
-  "actor.hero_axe_mail/gather/right/2": {
+  "actor.hero_axe/slash/right/3": {
    "atlas": "actors",
    "index": 186,
    "anchor": [
@@ -1588,7 +1599,7 @@
     29
    ]
   },
-  "actor.hero_axe_mail/slash/right/0": {
+  "actor.hero_axe/walk/up/0": {
    "atlas": "actors",
    "index": 187,
    "anchor": [
@@ -1596,7 +1607,7 @@
     29
    ]
   },
-  "actor.hero_axe_mail/slash/right/1": {
+  "actor.hero_axe/walk/up/1": {
    "atlas": "actors",
    "index": 188,
    "anchor": [
@@ -1604,7 +1615,7 @@
     29
    ]
   },
-  "actor.hero_axe_mail/slash/right/2": {
+  "actor.hero_axe/walk/up/2": {
    "atlas": "actors",
    "index": 189,
    "anchor": [
@@ -1612,7 +1623,7 @@
     29
    ]
   },
-  "actor.hero_axe_mail/slash/right/3": {
+  "actor.hero_axe/walk/up/3": {
    "atlas": "actors",
    "index": 190,
    "anchor": [
@@ -1620,7 +1631,7 @@
     29
    ]
   },
-  "actor.hero_axe_mail/walk/up/0": {
+  "actor.hero_axe/idle/up/0": {
    "atlas": "actors",
    "index": 191,
    "anchor": [
@@ -1628,7 +1639,7 @@
     29
    ]
   },
-  "actor.hero_axe_mail/walk/up/1": {
+  "actor.hero_axe/idle/up/1": {
    "atlas": "actors",
    "index": 192,
    "anchor": [
@@ -1636,7 +1647,7 @@
     29
    ]
   },
-  "actor.hero_axe_mail/walk/up/2": {
+  "actor.hero_axe/gather/up/0": {
    "atlas": "actors",
    "index": 193,
    "anchor": [
@@ -1644,7 +1655,7 @@
     29
    ]
   },
-  "actor.hero_axe_mail/walk/up/3": {
+  "actor.hero_axe/gather/up/1": {
    "atlas": "actors",
    "index": 194,
    "anchor": [
@@ -1652,7 +1663,7 @@
     29
    ]
   },
-  "actor.hero_axe_mail/idle/up/0": {
+  "actor.hero_axe/gather/up/2": {
    "atlas": "actors",
    "index": 195,
    "anchor": [
@@ -1660,7 +1671,7 @@
     29
    ]
   },
-  "actor.hero_axe_mail/idle/up/1": {
+  "actor.hero_axe/slash/up/0": {
    "atlas": "actors",
    "index": 196,
    "anchor": [
@@ -1668,7 +1679,7 @@
     29
    ]
   },
-  "actor.hero_axe_mail/gather/up/0": {
+  "actor.hero_axe/slash/up/1": {
    "atlas": "actors",
    "index": 197,
    "anchor": [
@@ -1676,7 +1687,7 @@
     29
    ]
   },
-  "actor.hero_axe_mail/gather/up/1": {
+  "actor.hero_axe/slash/up/2": {
    "atlas": "actors",
    "index": 198,
    "anchor": [
@@ -1684,7 +1695,7 @@
     29
    ]
   },
-  "actor.hero_axe_mail/gather/up/2": {
+  "actor.hero_axe/slash/up/3": {
    "atlas": "actors",
    "index": 199,
    "anchor": [
@@ -1692,7 +1703,7 @@
     29
    ]
   },
-  "actor.hero_axe_mail/slash/up/0": {
+  "actor.hero_axe_mail/walk/down/0": {
    "atlas": "actors",
    "index": 200,
    "anchor": [
@@ -1700,7 +1711,7 @@
     29
    ]
   },
-  "actor.hero_axe_mail/slash/up/1": {
+  "actor.hero_axe_mail/walk/down/1": {
    "atlas": "actors",
    "index": 201,
    "anchor": [
@@ -1708,7 +1719,7 @@
     29
    ]
   },
-  "actor.hero_axe_mail/slash/up/2": {
+  "actor.hero_axe_mail/walk/down/2": {
    "atlas": "actors",
    "index": 202,
    "anchor": [
@@ -1716,7 +1727,7 @@
     29
    ]
   },
-  "actor.hero_axe_mail/slash/up/3": {
+  "actor.hero_axe_mail/walk/down/3": {
    "atlas": "actors",
    "index": 203,
    "anchor": [
@@ -1724,7 +1735,7 @@
     29
    ]
   },
-  "actor.hero_mail/walk/down/0": {
+  "actor.hero_axe_mail/idle/down/0": {
    "atlas": "actors",
    "index": 204,
    "anchor": [
@@ -1732,7 +1743,7 @@
     29
    ]
   },
-  "actor.hero_mail/walk/down/1": {
+  "actor.hero_axe_mail/idle/down/1": {
    "atlas": "actors",
    "index": 205,
    "anchor": [
@@ -1740,7 +1751,7 @@
     29
    ]
   },
-  "actor.hero_mail/walk/down/2": {
+  "actor.hero_axe_mail/gather/down/0": {
    "atlas": "actors",
    "index": 206,
    "anchor": [
@@ -1748,7 +1759,7 @@
     29
    ]
   },
-  "actor.hero_mail/walk/down/3": {
+  "actor.hero_axe_mail/gather/down/1": {
    "atlas": "actors",
    "index": 207,
    "anchor": [
@@ -1756,7 +1767,7 @@
     29
    ]
   },
-  "actor.hero_mail/idle/down/0": {
+  "actor.hero_axe_mail/gather/down/2": {
    "atlas": "actors",
    "index": 208,
    "anchor": [
@@ -1764,7 +1775,7 @@
     29
    ]
   },
-  "actor.hero_mail/idle/down/1": {
+  "actor.hero_axe_mail/slash/down/0": {
    "atlas": "actors",
    "index": 209,
    "anchor": [
@@ -1772,7 +1783,7 @@
     29
    ]
   },
-  "actor.hero_mail/gather/down/0": {
+  "actor.hero_axe_mail/slash/down/1": {
    "atlas": "actors",
    "index": 210,
    "anchor": [
@@ -1780,7 +1791,7 @@
     29
    ]
   },
-  "actor.hero_mail/gather/down/1": {
+  "actor.hero_axe_mail/slash/down/2": {
    "atlas": "actors",
    "index": 211,
    "anchor": [
@@ -1788,7 +1799,7 @@
     29
    ]
   },
-  "actor.hero_mail/gather/down/2": {
+  "actor.hero_axe_mail/slash/down/3": {
    "atlas": "actors",
    "index": 212,
    "anchor": [
@@ -1796,7 +1807,7 @@
     29
    ]
   },
-  "actor.hero_mail/walk/left/0": {
+  "actor.hero_axe_mail/walk/left/0": {
    "atlas": "actors",
    "index": 213,
    "anchor": [
@@ -1804,7 +1815,7 @@
     29
    ]
   },
-  "actor.hero_mail/walk/left/1": {
+  "actor.hero_axe_mail/walk/left/1": {
    "atlas": "actors",
    "index": 214,
    "anchor": [
@@ -1812,7 +1823,7 @@
     29
    ]
   },
-  "actor.hero_mail/walk/left/2": {
+  "actor.hero_axe_mail/walk/left/2": {
    "atlas": "actors",
    "index": 215,
    "anchor": [
@@ -1820,7 +1831,7 @@
     29
    ]
   },
-  "actor.hero_mail/walk/left/3": {
+  "actor.hero_axe_mail/walk/left/3": {
    "atlas": "actors",
    "index": 216,
    "anchor": [
@@ -1828,7 +1839,7 @@
     29
    ]
   },
-  "actor.hero_mail/idle/left/0": {
+  "actor.hero_axe_mail/idle/left/0": {
    "atlas": "actors",
    "index": 217,
    "anchor": [
@@ -1836,7 +1847,7 @@
     29
    ]
   },
-  "actor.hero_mail/idle/left/1": {
+  "actor.hero_axe_mail/idle/left/1": {
    "atlas": "actors",
    "index": 218,
    "anchor": [
@@ -1844,7 +1855,7 @@
     29
    ]
   },
-  "actor.hero_mail/gather/left/0": {
+  "actor.hero_axe_mail/gather/left/0": {
    "atlas": "actors",
    "index": 219,
    "anchor": [
@@ -1852,7 +1863,7 @@
     29
    ]
   },
-  "actor.hero_mail/gather/left/1": {
+  "actor.hero_axe_mail/gather/left/1": {
    "atlas": "actors",
    "index": 220,
    "anchor": [
@@ -1860,7 +1871,7 @@
     29
    ]
   },
-  "actor.hero_mail/gather/left/2": {
+  "actor.hero_axe_mail/gather/left/2": {
    "atlas": "actors",
    "index": 221,
    "anchor": [
@@ -1868,7 +1879,7 @@
     29
    ]
   },
-  "actor.hero_mail/walk/right/0": {
+  "actor.hero_axe_mail/slash/left/0": {
    "atlas": "actors",
    "index": 222,
    "anchor": [
@@ -1876,7 +1887,7 @@
     29
    ]
   },
-  "actor.hero_mail/walk/right/1": {
+  "actor.hero_axe_mail/slash/left/1": {
    "atlas": "actors",
    "index": 223,
    "anchor": [
@@ -1884,7 +1895,7 @@
     29
    ]
   },
-  "actor.hero_mail/walk/right/2": {
+  "actor.hero_axe_mail/slash/left/2": {
    "atlas": "actors",
    "index": 224,
    "anchor": [
@@ -1892,7 +1903,7 @@
     29
    ]
   },
-  "actor.hero_mail/walk/right/3": {
+  "actor.hero_axe_mail/slash/left/3": {
    "atlas": "actors",
    "index": 225,
    "anchor": [
@@ -1900,7 +1911,7 @@
     29
    ]
   },
-  "actor.hero_mail/idle/right/0": {
+  "actor.hero_axe_mail/walk/right/0": {
    "atlas": "actors",
    "index": 226,
    "anchor": [
@@ -1908,7 +1919,7 @@
     29
    ]
   },
-  "actor.hero_mail/idle/right/1": {
+  "actor.hero_axe_mail/walk/right/1": {
    "atlas": "actors",
    "index": 227,
    "anchor": [
@@ -1916,7 +1927,7 @@
     29
    ]
   },
-  "actor.hero_mail/gather/right/0": {
+  "actor.hero_axe_mail/walk/right/2": {
    "atlas": "actors",
    "index": 228,
    "anchor": [
@@ -1924,7 +1935,7 @@
     29
    ]
   },
-  "actor.hero_mail/gather/right/1": {
+  "actor.hero_axe_mail/walk/right/3": {
    "atlas": "actors",
    "index": 229,
    "anchor": [
@@ -1932,7 +1943,7 @@
     29
    ]
   },
-  "actor.hero_mail/gather/right/2": {
+  "actor.hero_axe_mail/idle/right/0": {
    "atlas": "actors",
    "index": 230,
    "anchor": [
@@ -1940,7 +1951,7 @@
     29
    ]
   },
-  "actor.hero_mail/walk/up/0": {
+  "actor.hero_axe_mail/idle/right/1": {
    "atlas": "actors",
    "index": 231,
    "anchor": [
@@ -1948,7 +1959,7 @@
     29
    ]
   },
-  "actor.hero_mail/walk/up/1": {
+  "actor.hero_axe_mail/gather/right/0": {
    "atlas": "actors",
    "index": 232,
    "anchor": [
@@ -1956,7 +1967,7 @@
     29
    ]
   },
-  "actor.hero_mail/walk/up/2": {
+  "actor.hero_axe_mail/gather/right/1": {
    "atlas": "actors",
    "index": 233,
    "anchor": [
@@ -1964,7 +1975,7 @@
     29
    ]
   },
-  "actor.hero_mail/walk/up/3": {
+  "actor.hero_axe_mail/gather/right/2": {
    "atlas": "actors",
    "index": 234,
    "anchor": [
@@ -1972,7 +1983,7 @@
     29
    ]
   },
-  "actor.hero_mail/idle/up/0": {
+  "actor.hero_axe_mail/slash/right/0": {
    "atlas": "actors",
    "index": 235,
    "anchor": [
@@ -1980,7 +1991,7 @@
     29
    ]
   },
-  "actor.hero_mail/idle/up/1": {
+  "actor.hero_axe_mail/slash/right/1": {
    "atlas": "actors",
    "index": 236,
    "anchor": [
@@ -1988,7 +1999,7 @@
     29
    ]
   },
-  "actor.hero_mail/gather/up/0": {
+  "actor.hero_axe_mail/slash/right/2": {
    "atlas": "actors",
    "index": 237,
    "anchor": [
@@ -1996,7 +2007,7 @@
     29
    ]
   },
-  "actor.hero_mail/gather/up/1": {
+  "actor.hero_axe_mail/slash/right/3": {
    "atlas": "actors",
    "index": 238,
    "anchor": [
@@ -2004,7 +2015,7 @@
     29
    ]
   },
-  "actor.hero_mail/gather/up/2": {
+  "actor.hero_axe_mail/walk/up/0": {
    "atlas": "actors",
    "index": 239,
    "anchor": [
@@ -2012,7 +2023,7 @@
     29
    ]
   },
-  "actor.hero_spear/walk/down/0": {
+  "actor.hero_axe_mail/walk/up/1": {
    "atlas": "actors",
    "index": 240,
    "anchor": [
@@ -2020,7 +2031,7 @@
     29
    ]
   },
-  "actor.hero_spear/walk/down/1": {
+  "actor.hero_axe_mail/walk/up/2": {
    "atlas": "actors",
    "index": 241,
    "anchor": [
@@ -2028,7 +2039,7 @@
     29
    ]
   },
-  "actor.hero_spear/walk/down/2": {
+  "actor.hero_axe_mail/walk/up/3": {
    "atlas": "actors",
    "index": 242,
    "anchor": [
@@ -2036,7 +2047,7 @@
     29
    ]
   },
-  "actor.hero_spear/walk/down/3": {
+  "actor.hero_axe_mail/idle/up/0": {
    "atlas": "actors",
    "index": 243,
    "anchor": [
@@ -2044,7 +2055,7 @@
     29
    ]
   },
-  "actor.hero_spear/idle/down/0": {
+  "actor.hero_axe_mail/idle/up/1": {
    "atlas": "actors",
    "index": 244,
    "anchor": [
@@ -2052,7 +2063,7 @@
     29
    ]
   },
-  "actor.hero_spear/idle/down/1": {
+  "actor.hero_axe_mail/gather/up/0": {
    "atlas": "actors",
    "index": 245,
    "anchor": [
@@ -2060,7 +2071,7 @@
     29
    ]
   },
-  "actor.hero_spear/gather/down/0": {
+  "actor.hero_axe_mail/gather/up/1": {
    "atlas": "actors",
    "index": 246,
    "anchor": [
@@ -2068,7 +2079,7 @@
     29
    ]
   },
-  "actor.hero_spear/gather/down/1": {
+  "actor.hero_axe_mail/gather/up/2": {
    "atlas": "actors",
    "index": 247,
    "anchor": [
@@ -2076,7 +2087,7 @@
     29
    ]
   },
-  "actor.hero_spear/gather/down/2": {
+  "actor.hero_axe_mail/slash/up/0": {
    "atlas": "actors",
    "index": 248,
    "anchor": [
@@ -2084,7 +2095,7 @@
     29
    ]
   },
-  "actor.hero_spear/slash/down/0": {
+  "actor.hero_axe_mail/slash/up/1": {
    "atlas": "actors",
    "index": 249,
    "anchor": [
@@ -2092,7 +2103,7 @@
     29
    ]
   },
-  "actor.hero_spear/slash/down/1": {
+  "actor.hero_axe_mail/slash/up/2": {
    "atlas": "actors",
    "index": 250,
    "anchor": [
@@ -2100,7 +2111,7 @@
     29
    ]
   },
-  "actor.hero_spear/slash/down/2": {
+  "actor.hero_axe_mail/slash/up/3": {
    "atlas": "actors",
    "index": 251,
    "anchor": [
@@ -2108,7 +2119,7 @@
     29
    ]
   },
-  "actor.hero_spear/slash/down/3": {
+  "actor.hero_mail/walk/down/0": {
    "atlas": "actors",
    "index": 252,
    "anchor": [
@@ -2116,7 +2127,7 @@
     29
    ]
   },
-  "actor.hero_spear/walk/left/0": {
+  "actor.hero_mail/walk/down/1": {
    "atlas": "actors",
    "index": 253,
    "anchor": [
@@ -2124,7 +2135,7 @@
     29
    ]
   },
-  "actor.hero_spear/walk/left/1": {
+  "actor.hero_mail/walk/down/2": {
    "atlas": "actors",
    "index": 254,
    "anchor": [
@@ -2132,7 +2143,7 @@
     29
    ]
   },
-  "actor.hero_spear/walk/left/2": {
+  "actor.hero_mail/walk/down/3": {
    "atlas": "actors",
    "index": 255,
    "anchor": [
@@ -2140,7 +2151,7 @@
     29
    ]
   },
-  "actor.hero_spear/walk/left/3": {
+  "actor.hero_mail/idle/down/0": {
    "atlas": "actors",
    "index": 256,
    "anchor": [
@@ -2148,7 +2159,7 @@
     29
    ]
   },
-  "actor.hero_spear/idle/left/0": {
+  "actor.hero_mail/idle/down/1": {
    "atlas": "actors",
    "index": 257,
    "anchor": [
@@ -2156,7 +2167,7 @@
     29
    ]
   },
-  "actor.hero_spear/idle/left/1": {
+  "actor.hero_mail/gather/down/0": {
    "atlas": "actors",
    "index": 258,
    "anchor": [
@@ -2164,7 +2175,7 @@
     29
    ]
   },
-  "actor.hero_spear/gather/left/0": {
+  "actor.hero_mail/gather/down/1": {
    "atlas": "actors",
    "index": 259,
    "anchor": [
@@ -2172,7 +2183,7 @@
     29
    ]
   },
-  "actor.hero_spear/gather/left/1": {
+  "actor.hero_mail/gather/down/2": {
    "atlas": "actors",
    "index": 260,
    "anchor": [
@@ -2180,7 +2191,7 @@
     29
    ]
   },
-  "actor.hero_spear/gather/left/2": {
+  "actor.hero_mail/walk/left/0": {
    "atlas": "actors",
    "index": 261,
    "anchor": [
@@ -2188,7 +2199,7 @@
     29
    ]
   },
-  "actor.hero_spear/slash/left/0": {
+  "actor.hero_mail/walk/left/1": {
    "atlas": "actors",
    "index": 262,
    "anchor": [
@@ -2196,7 +2207,7 @@
     29
    ]
   },
-  "actor.hero_spear/slash/left/1": {
+  "actor.hero_mail/walk/left/2": {
    "atlas": "actors",
    "index": 263,
    "anchor": [
@@ -2204,7 +2215,7 @@
     29
    ]
   },
-  "actor.hero_spear/slash/left/2": {
+  "actor.hero_mail/walk/left/3": {
    "atlas": "actors",
    "index": 264,
    "anchor": [
@@ -2212,7 +2223,7 @@
     29
    ]
   },
-  "actor.hero_spear/slash/left/3": {
+  "actor.hero_mail/idle/left/0": {
    "atlas": "actors",
    "index": 265,
    "anchor": [
@@ -2220,7 +2231,7 @@
     29
    ]
   },
-  "actor.hero_spear/walk/right/0": {
+  "actor.hero_mail/idle/left/1": {
    "atlas": "actors",
    "index": 266,
    "anchor": [
@@ -2228,7 +2239,7 @@
     29
    ]
   },
-  "actor.hero_spear/walk/right/1": {
+  "actor.hero_mail/gather/left/0": {
    "atlas": "actors",
    "index": 267,
    "anchor": [
@@ -2236,7 +2247,7 @@
     29
    ]
   },
-  "actor.hero_spear/walk/right/2": {
+  "actor.hero_mail/gather/left/1": {
    "atlas": "actors",
    "index": 268,
    "anchor": [
@@ -2244,7 +2255,7 @@
     29
    ]
   },
-  "actor.hero_spear/walk/right/3": {
+  "actor.hero_mail/gather/left/2": {
    "atlas": "actors",
    "index": 269,
    "anchor": [
@@ -2252,7 +2263,7 @@
     29
    ]
   },
-  "actor.hero_spear/idle/right/0": {
+  "actor.hero_mail/walk/right/0": {
    "atlas": "actors",
    "index": 270,
    "anchor": [
@@ -2260,7 +2271,7 @@
     29
    ]
   },
-  "actor.hero_spear/idle/right/1": {
+  "actor.hero_mail/walk/right/1": {
    "atlas": "actors",
    "index": 271,
    "anchor": [
@@ -2268,7 +2279,7 @@
     29
    ]
   },
-  "actor.hero_spear/gather/right/0": {
+  "actor.hero_mail/walk/right/2": {
    "atlas": "actors",
    "index": 272,
    "anchor": [
@@ -2276,7 +2287,7 @@
     29
    ]
   },
-  "actor.hero_spear/gather/right/1": {
+  "actor.hero_mail/walk/right/3": {
    "atlas": "actors",
    "index": 273,
    "anchor": [
@@ -2284,7 +2295,7 @@
     29
    ]
   },
-  "actor.hero_spear/gather/right/2": {
+  "actor.hero_mail/idle/right/0": {
    "atlas": "actors",
    "index": 274,
    "anchor": [
@@ -2292,7 +2303,7 @@
     29
    ]
   },
-  "actor.hero_spear/slash/right/0": {
+  "actor.hero_mail/idle/right/1": {
    "atlas": "actors",
    "index": 275,
    "anchor": [
@@ -2300,7 +2311,7 @@
     29
    ]
   },
-  "actor.hero_spear/slash/right/1": {
+  "actor.hero_mail/gather/right/0": {
    "atlas": "actors",
    "index": 276,
    "anchor": [
@@ -2308,7 +2319,7 @@
     29
    ]
   },
-  "actor.hero_spear/slash/right/2": {
+  "actor.hero_mail/gather/right/1": {
    "atlas": "actors",
    "index": 277,
    "anchor": [
@@ -2316,7 +2327,7 @@
     29
    ]
   },
-  "actor.hero_spear/slash/right/3": {
+  "actor.hero_mail/gather/right/2": {
    "atlas": "actors",
    "index": 278,
    "anchor": [
@@ -2324,7 +2335,7 @@
     29
    ]
   },
-  "actor.hero_spear/walk/up/0": {
+  "actor.hero_mail/walk/up/0": {
    "atlas": "actors",
    "index": 279,
    "anchor": [
@@ -2332,7 +2343,7 @@
     29
    ]
   },
-  "actor.hero_spear/walk/up/1": {
+  "actor.hero_mail/walk/up/1": {
    "atlas": "actors",
    "index": 280,
    "anchor": [
@@ -2340,7 +2351,7 @@
     29
    ]
   },
-  "actor.hero_spear/walk/up/2": {
+  "actor.hero_mail/walk/up/2": {
    "atlas": "actors",
    "index": 281,
    "anchor": [
@@ -2348,7 +2359,7 @@
     29
    ]
   },
-  "actor.hero_spear/walk/up/3": {
+  "actor.hero_mail/walk/up/3": {
    "atlas": "actors",
    "index": 282,
    "anchor": [
@@ -2356,7 +2367,7 @@
     29
    ]
   },
-  "actor.hero_spear/idle/up/0": {
+  "actor.hero_mail/idle/up/0": {
    "atlas": "actors",
    "index": 283,
    "anchor": [
@@ -2364,7 +2375,7 @@
     29
    ]
   },
-  "actor.hero_spear/idle/up/1": {
+  "actor.hero_mail/idle/up/1": {
    "atlas": "actors",
    "index": 284,
    "anchor": [
@@ -2372,7 +2383,7 @@
     29
    ]
   },
-  "actor.hero_spear/gather/up/0": {
+  "actor.hero_mail/gather/up/0": {
    "atlas": "actors",
    "index": 285,
    "anchor": [
@@ -2380,7 +2391,7 @@
     29
    ]
   },
-  "actor.hero_spear/gather/up/1": {
+  "actor.hero_mail/gather/up/1": {
    "atlas": "actors",
    "index": 286,
    "anchor": [
@@ -2388,7 +2399,7 @@
     29
    ]
   },
-  "actor.hero_spear/gather/up/2": {
+  "actor.hero_mail/gather/up/2": {
    "atlas": "actors",
    "index": 287,
    "anchor": [
@@ -2396,7 +2407,7 @@
     29
    ]
   },
-  "actor.hero_spear/slash/up/0": {
+  "actor.hero_spear/walk/down/0": {
    "atlas": "actors",
    "index": 288,
    "anchor": [
@@ -2404,7 +2415,7 @@
     29
    ]
   },
-  "actor.hero_spear/slash/up/1": {
+  "actor.hero_spear/walk/down/1": {
    "atlas": "actors",
    "index": 289,
    "anchor": [
@@ -2412,7 +2423,7 @@
     29
    ]
   },
-  "actor.hero_spear/slash/up/2": {
+  "actor.hero_spear/walk/down/2": {
    "atlas": "actors",
    "index": 290,
    "anchor": [
@@ -2420,7 +2431,7 @@
     29
    ]
   },
-  "actor.hero_spear/slash/up/3": {
+  "actor.hero_spear/walk/down/3": {
    "atlas": "actors",
    "index": 291,
    "anchor": [
@@ -2428,7 +2439,7 @@
     29
    ]
   },
-  "actor.hero_spear_mail/walk/down/0": {
+  "actor.hero_spear/idle/down/0": {
    "atlas": "actors",
    "index": 292,
    "anchor": [
@@ -2436,7 +2447,7 @@
     29
    ]
   },
-  "actor.hero_spear_mail/walk/down/1": {
+  "actor.hero_spear/idle/down/1": {
    "atlas": "actors",
    "index": 293,
    "anchor": [
@@ -2444,7 +2455,7 @@
     29
    ]
   },
-  "actor.hero_spear_mail/walk/down/2": {
+  "actor.hero_spear/gather/down/0": {
    "atlas": "actors",
    "index": 294,
    "anchor": [
@@ -2452,7 +2463,7 @@
     29
    ]
   },
-  "actor.hero_spear_mail/walk/down/3": {
+  "actor.hero_spear/gather/down/1": {
    "atlas": "actors",
    "index": 295,
    "anchor": [
@@ -2460,7 +2471,7 @@
     29
    ]
   },
-  "actor.hero_spear_mail/idle/down/0": {
+  "actor.hero_spear/gather/down/2": {
    "atlas": "actors",
    "index": 296,
    "anchor": [
@@ -2468,7 +2479,7 @@
     29
    ]
   },
-  "actor.hero_spear_mail/idle/down/1": {
+  "actor.hero_spear/slash/down/0": {
    "atlas": "actors",
    "index": 297,
    "anchor": [
@@ -2476,7 +2487,7 @@
     29
    ]
   },
-  "actor.hero_spear_mail/gather/down/0": {
+  "actor.hero_spear/slash/down/1": {
    "atlas": "actors",
    "index": 298,
    "anchor": [
@@ -2484,7 +2495,7 @@
     29
    ]
   },
-  "actor.hero_spear_mail/gather/down/1": {
+  "actor.hero_spear/slash/down/2": {
    "atlas": "actors",
    "index": 299,
    "anchor": [
@@ -2492,7 +2503,7 @@
     29
    ]
   },
-  "actor.hero_spear_mail/gather/down/2": {
+  "actor.hero_spear/slash/down/3": {
    "atlas": "actors",
    "index": 300,
    "anchor": [
@@ -2500,7 +2511,7 @@
     29
    ]
   },
-  "actor.hero_spear_mail/slash/down/0": {
+  "actor.hero_spear/walk/left/0": {
    "atlas": "actors",
    "index": 301,
    "anchor": [
@@ -2508,7 +2519,7 @@
     29
    ]
   },
-  "actor.hero_spear_mail/slash/down/1": {
+  "actor.hero_spear/walk/left/1": {
    "atlas": "actors",
    "index": 302,
    "anchor": [
@@ -2516,7 +2527,7 @@
     29
    ]
   },
-  "actor.hero_spear_mail/slash/down/2": {
+  "actor.hero_spear/walk/left/2": {
    "atlas": "actors",
    "index": 303,
    "anchor": [
@@ -2524,7 +2535,7 @@
     29
    ]
   },
-  "actor.hero_spear_mail/slash/down/3": {
+  "actor.hero_spear/walk/left/3": {
    "atlas": "actors",
    "index": 304,
    "anchor": [
@@ -2532,7 +2543,7 @@
     29
    ]
   },
-  "actor.hero_spear_mail/walk/left/0": {
+  "actor.hero_spear/idle/left/0": {
    "atlas": "actors",
    "index": 305,
    "anchor": [
@@ -2540,7 +2551,7 @@
     29
    ]
   },
-  "actor.hero_spear_mail/walk/left/1": {
+  "actor.hero_spear/idle/left/1": {
    "atlas": "actors",
    "index": 306,
    "anchor": [
@@ -2548,7 +2559,7 @@
     29
    ]
   },
-  "actor.hero_spear_mail/walk/left/2": {
+  "actor.hero_spear/gather/left/0": {
    "atlas": "actors",
    "index": 307,
    "anchor": [
@@ -2556,7 +2567,7 @@
     29
    ]
   },
-  "actor.hero_spear_mail/walk/left/3": {
+  "actor.hero_spear/gather/left/1": {
    "atlas": "actors",
    "index": 308,
    "anchor": [
@@ -2564,7 +2575,7 @@
     29
    ]
   },
-  "actor.hero_spear_mail/idle/left/0": {
+  "actor.hero_spear/gather/left/2": {
    "atlas": "actors",
    "index": 309,
    "anchor": [
@@ -2572,7 +2583,7 @@
     29
    ]
   },
-  "actor.hero_spear_mail/idle/left/1": {
+  "actor.hero_spear/slash/left/0": {
    "atlas": "actors",
    "index": 310,
    "anchor": [
@@ -2580,7 +2591,7 @@
     29
    ]
   },
-  "actor.hero_spear_mail/gather/left/0": {
+  "actor.hero_spear/slash/left/1": {
    "atlas": "actors",
    "index": 311,
    "anchor": [
@@ -2588,7 +2599,7 @@
     29
    ]
   },
-  "actor.hero_spear_mail/gather/left/1": {
+  "actor.hero_spear/slash/left/2": {
    "atlas": "actors",
    "index": 312,
    "anchor": [
@@ -2596,7 +2607,7 @@
     29
    ]
   },
-  "actor.hero_spear_mail/gather/left/2": {
+  "actor.hero_spear/slash/left/3": {
    "atlas": "actors",
    "index": 313,
    "anchor": [
@@ -2604,7 +2615,7 @@
     29
    ]
   },
-  "actor.hero_spear_mail/slash/left/0": {
+  "actor.hero_spear/walk/right/0": {
    "atlas": "actors",
    "index": 314,
    "anchor": [
@@ -2612,7 +2623,7 @@
     29
    ]
   },
-  "actor.hero_spear_mail/slash/left/1": {
+  "actor.hero_spear/walk/right/1": {
    "atlas": "actors",
    "index": 315,
    "anchor": [
@@ -2620,7 +2631,7 @@
     29
    ]
   },
-  "actor.hero_spear_mail/slash/left/2": {
+  "actor.hero_spear/walk/right/2": {
    "atlas": "actors",
    "index": 316,
    "anchor": [
@@ -2628,7 +2639,7 @@
     29
    ]
   },
-  "actor.hero_spear_mail/slash/left/3": {
+  "actor.hero_spear/walk/right/3": {
    "atlas": "actors",
    "index": 317,
    "anchor": [
@@ -2636,7 +2647,7 @@
     29
    ]
   },
-  "actor.hero_spear_mail/walk/right/0": {
+  "actor.hero_spear/idle/right/0": {
    "atlas": "actors",
    "index": 318,
    "anchor": [
@@ -2644,7 +2655,7 @@
     29
    ]
   },
-  "actor.hero_spear_mail/walk/right/1": {
+  "actor.hero_spear/idle/right/1": {
    "atlas": "actors",
    "index": 319,
    "anchor": [
@@ -2652,7 +2663,7 @@
     29
    ]
   },
-  "actor.hero_spear_mail/walk/right/2": {
+  "actor.hero_spear/gather/right/0": {
    "atlas": "actors",
    "index": 320,
    "anchor": [
@@ -2660,7 +2671,7 @@
     29
    ]
   },
-  "actor.hero_spear_mail/walk/right/3": {
+  "actor.hero_spear/gather/right/1": {
    "atlas": "actors",
    "index": 321,
    "anchor": [
@@ -2668,7 +2679,7 @@
     29
    ]
   },
-  "actor.hero_spear_mail/idle/right/0": {
+  "actor.hero_spear/gather/right/2": {
    "atlas": "actors",
    "index": 322,
    "anchor": [
@@ -2676,7 +2687,7 @@
     29
    ]
   },
-  "actor.hero_spear_mail/idle/right/1": {
+  "actor.hero_spear/slash/right/0": {
    "atlas": "actors",
    "index": 323,
    "anchor": [
@@ -2684,7 +2695,7 @@
     29
    ]
   },
-  "actor.hero_spear_mail/gather/right/0": {
+  "actor.hero_spear/slash/right/1": {
    "atlas": "actors",
    "index": 324,
    "anchor": [
@@ -2692,7 +2703,7 @@
     29
    ]
   },
-  "actor.hero_spear_mail/gather/right/1": {
+  "actor.hero_spear/slash/right/2": {
    "atlas": "actors",
    "index": 325,
    "anchor": [
@@ -2700,7 +2711,7 @@
     29
    ]
   },
-  "actor.hero_spear_mail/gather/right/2": {
+  "actor.hero_spear/slash/right/3": {
    "atlas": "actors",
    "index": 326,
    "anchor": [
@@ -2708,7 +2719,7 @@
     29
    ]
   },
-  "actor.hero_spear_mail/slash/right/0": {
+  "actor.hero_spear/walk/up/0": {
    "atlas": "actors",
    "index": 327,
    "anchor": [
@@ -2716,7 +2727,7 @@
     29
    ]
   },
-  "actor.hero_spear_mail/slash/right/1": {
+  "actor.hero_spear/walk/up/1": {
    "atlas": "actors",
    "index": 328,
    "anchor": [
@@ -2724,7 +2735,7 @@
     29
    ]
   },
-  "actor.hero_spear_mail/slash/right/2": {
+  "actor.hero_spear/walk/up/2": {
    "atlas": "actors",
    "index": 329,
    "anchor": [
@@ -2732,7 +2743,7 @@
     29
    ]
   },
-  "actor.hero_spear_mail/slash/right/3": {
+  "actor.hero_spear/walk/up/3": {
    "atlas": "actors",
    "index": 330,
    "anchor": [
@@ -2740,7 +2751,7 @@
     29
    ]
   },
-  "actor.hero_spear_mail/walk/up/0": {
+  "actor.hero_spear/idle/up/0": {
    "atlas": "actors",
    "index": 331,
    "anchor": [
@@ -2748,7 +2759,7 @@
     29
    ]
   },
-  "actor.hero_spear_mail/walk/up/1": {
+  "actor.hero_spear/idle/up/1": {
    "atlas": "actors",
    "index": 332,
    "anchor": [
@@ -2756,7 +2767,7 @@
     29
    ]
   },
-  "actor.hero_spear_mail/walk/up/2": {
+  "actor.hero_spear/gather/up/0": {
    "atlas": "actors",
    "index": 333,
    "anchor": [
@@ -2764,7 +2775,7 @@
     29
    ]
   },
-  "actor.hero_spear_mail/walk/up/3": {
+  "actor.hero_spear/gather/up/1": {
    "atlas": "actors",
    "index": 334,
    "anchor": [
@@ -2772,7 +2783,7 @@
     29
    ]
   },
-  "actor.hero_spear_mail/idle/up/0": {
+  "actor.hero_spear/gather/up/2": {
    "atlas": "actors",
    "index": 335,
    "anchor": [
@@ -2780,7 +2791,7 @@
     29
    ]
   },
-  "actor.hero_spear_mail/idle/up/1": {
+  "actor.hero_spear/slash/up/0": {
    "atlas": "actors",
    "index": 336,
    "anchor": [
@@ -2788,7 +2799,7 @@
     29
    ]
   },
-  "actor.hero_spear_mail/gather/up/0": {
+  "actor.hero_spear/slash/up/1": {
    "atlas": "actors",
    "index": 337,
    "anchor": [
@@ -2796,7 +2807,7 @@
     29
    ]
   },
-  "actor.hero_spear_mail/gather/up/1": {
+  "actor.hero_spear/slash/up/2": {
    "atlas": "actors",
    "index": 338,
    "anchor": [
@@ -2804,7 +2815,7 @@
     29
    ]
   },
-  "actor.hero_spear_mail/gather/up/2": {
+  "actor.hero_spear/slash/up/3": {
    "atlas": "actors",
    "index": 339,
    "anchor": [
@@ -2812,7 +2823,7 @@
     29
    ]
   },
-  "actor.hero_spear_mail/slash/up/0": {
+  "actor.hero_spear_mail/walk/down/0": {
    "atlas": "actors",
    "index": 340,
    "anchor": [
@@ -2820,7 +2831,7 @@
     29
    ]
   },
-  "actor.hero_spear_mail/slash/up/1": {
+  "actor.hero_spear_mail/walk/down/1": {
    "atlas": "actors",
    "index": 341,
    "anchor": [
@@ -2828,7 +2839,7 @@
     29
    ]
   },
-  "actor.hero_spear_mail/slash/up/2": {
+  "actor.hero_spear_mail/walk/down/2": {
    "atlas": "actors",
    "index": 342,
    "anchor": [
@@ -2836,7 +2847,7 @@
     29
    ]
   },
-  "actor.hero_spear_mail/slash/up/3": {
+  "actor.hero_spear_mail/walk/down/3": {
    "atlas": "actors",
    "index": 343,
    "anchor": [
@@ -2844,7 +2855,7 @@
     29
    ]
   },
-  "actor.hero_sword/walk/down/0": {
+  "actor.hero_spear_mail/idle/down/0": {
    "atlas": "actors",
    "index": 344,
    "anchor": [
@@ -2852,7 +2863,7 @@
     29
    ]
   },
-  "actor.hero_sword/walk/down/1": {
+  "actor.hero_spear_mail/idle/down/1": {
    "atlas": "actors",
    "index": 345,
    "anchor": [
@@ -2860,7 +2871,7 @@
     29
    ]
   },
-  "actor.hero_sword/walk/down/2": {
+  "actor.hero_spear_mail/gather/down/0": {
    "atlas": "actors",
    "index": 346,
    "anchor": [
@@ -2868,7 +2879,7 @@
     29
    ]
   },
-  "actor.hero_sword/walk/down/3": {
+  "actor.hero_spear_mail/gather/down/1": {
    "atlas": "actors",
    "index": 347,
    "anchor": [
@@ -2876,7 +2887,7 @@
     29
    ]
   },
-  "actor.hero_sword/idle/down/0": {
+  "actor.hero_spear_mail/gather/down/2": {
    "atlas": "actors",
    "index": 348,
    "anchor": [
@@ -2884,7 +2895,7 @@
     29
    ]
   },
-  "actor.hero_sword/idle/down/1": {
+  "actor.hero_spear_mail/slash/down/0": {
    "atlas": "actors",
    "index": 349,
    "anchor": [
@@ -2892,7 +2903,7 @@
     29
    ]
   },
-  "actor.hero_sword/gather/down/0": {
+  "actor.hero_spear_mail/slash/down/1": {
    "atlas": "actors",
    "index": 350,
    "anchor": [
@@ -2900,7 +2911,7 @@
     29
    ]
   },
-  "actor.hero_sword/gather/down/1": {
+  "actor.hero_spear_mail/slash/down/2": {
    "atlas": "actors",
    "index": 351,
    "anchor": [
@@ -2908,7 +2919,7 @@
     29
    ]
   },
-  "actor.hero_sword/gather/down/2": {
+  "actor.hero_spear_mail/slash/down/3": {
    "atlas": "actors",
    "index": 352,
    "anchor": [
@@ -2916,7 +2927,7 @@
     29
    ]
   },
-  "actor.hero_sword/slash/down/0": {
+  "actor.hero_spear_mail/walk/left/0": {
    "atlas": "actors",
    "index": 353,
    "anchor": [
@@ -2924,7 +2935,7 @@
     29
    ]
   },
-  "actor.hero_sword/slash/down/1": {
+  "actor.hero_spear_mail/walk/left/1": {
    "atlas": "actors",
    "index": 354,
    "anchor": [
@@ -2932,7 +2943,7 @@
     29
    ]
   },
-  "actor.hero_sword/slash/down/2": {
+  "actor.hero_spear_mail/walk/left/2": {
    "atlas": "actors",
    "index": 355,
    "anchor": [
@@ -2940,7 +2951,7 @@
     29
    ]
   },
-  "actor.hero_sword/slash/down/3": {
+  "actor.hero_spear_mail/walk/left/3": {
    "atlas": "actors",
    "index": 356,
    "anchor": [
@@ -2948,7 +2959,7 @@
     29
    ]
   },
-  "actor.hero_sword/walk/left/0": {
+  "actor.hero_spear_mail/idle/left/0": {
    "atlas": "actors",
    "index": 357,
    "anchor": [
@@ -2956,7 +2967,7 @@
     29
    ]
   },
-  "actor.hero_sword/walk/left/1": {
+  "actor.hero_spear_mail/idle/left/1": {
    "atlas": "actors",
    "index": 358,
    "anchor": [
@@ -2964,7 +2975,7 @@
     29
    ]
   },
-  "actor.hero_sword/walk/left/2": {
+  "actor.hero_spear_mail/gather/left/0": {
    "atlas": "actors",
    "index": 359,
    "anchor": [
@@ -2972,7 +2983,7 @@
     29
    ]
   },
-  "actor.hero_sword/walk/left/3": {
+  "actor.hero_spear_mail/gather/left/1": {
    "atlas": "actors",
    "index": 360,
    "anchor": [
@@ -2980,7 +2991,7 @@
     29
    ]
   },
-  "actor.hero_sword/idle/left/0": {
+  "actor.hero_spear_mail/gather/left/2": {
    "atlas": "actors",
    "index": 361,
    "anchor": [
@@ -2988,7 +2999,7 @@
     29
    ]
   },
-  "actor.hero_sword/idle/left/1": {
+  "actor.hero_spear_mail/slash/left/0": {
    "atlas": "actors",
    "index": 362,
    "anchor": [
@@ -2996,7 +3007,7 @@
     29
    ]
   },
-  "actor.hero_sword/gather/left/0": {
+  "actor.hero_spear_mail/slash/left/1": {
    "atlas": "actors",
    "index": 363,
    "anchor": [
@@ -3004,7 +3015,7 @@
     29
    ]
   },
-  "actor.hero_sword/gather/left/1": {
+  "actor.hero_spear_mail/slash/left/2": {
    "atlas": "actors",
    "index": 364,
    "anchor": [
@@ -3012,7 +3023,7 @@
     29
    ]
   },
-  "actor.hero_sword/gather/left/2": {
+  "actor.hero_spear_mail/slash/left/3": {
    "atlas": "actors",
    "index": 365,
    "anchor": [
@@ -3020,7 +3031,7 @@
     29
    ]
   },
-  "actor.hero_sword/slash/left/0": {
+  "actor.hero_spear_mail/walk/right/0": {
    "atlas": "actors",
    "index": 366,
    "anchor": [
@@ -3028,7 +3039,7 @@
     29
    ]
   },
-  "actor.hero_sword/slash/left/1": {
+  "actor.hero_spear_mail/walk/right/1": {
    "atlas": "actors",
    "index": 367,
    "anchor": [
@@ -3036,7 +3047,7 @@
     29
    ]
   },
-  "actor.hero_sword/slash/left/2": {
+  "actor.hero_spear_mail/walk/right/2": {
    "atlas": "actors",
    "index": 368,
    "anchor": [
@@ -3044,7 +3055,7 @@
     29
    ]
   },
-  "actor.hero_sword/slash/left/3": {
+  "actor.hero_spear_mail/walk/right/3": {
    "atlas": "actors",
    "index": 369,
    "anchor": [
@@ -3052,7 +3063,7 @@
     29
    ]
   },
-  "actor.hero_sword/walk/right/0": {
+  "actor.hero_spear_mail/idle/right/0": {
    "atlas": "actors",
    "index": 370,
    "anchor": [
@@ -3060,7 +3071,7 @@
     29
    ]
   },
-  "actor.hero_sword/walk/right/1": {
+  "actor.hero_spear_mail/idle/right/1": {
    "atlas": "actors",
    "index": 371,
    "anchor": [
@@ -3068,7 +3079,7 @@
     29
    ]
   },
-  "actor.hero_sword/walk/right/2": {
+  "actor.hero_spear_mail/gather/right/0": {
    "atlas": "actors",
    "index": 372,
    "anchor": [
@@ -3076,7 +3087,7 @@
     29
    ]
   },
-  "actor.hero_sword/walk/right/3": {
+  "actor.hero_spear_mail/gather/right/1": {
    "atlas": "actors",
    "index": 373,
    "anchor": [
@@ -3084,7 +3095,7 @@
     29
    ]
   },
-  "actor.hero_sword/idle/right/0": {
+  "actor.hero_spear_mail/gather/right/2": {
    "atlas": "actors",
    "index": 374,
    "anchor": [
@@ -3092,7 +3103,7 @@
     29
    ]
   },
-  "actor.hero_sword/idle/right/1": {
+  "actor.hero_spear_mail/slash/right/0": {
    "atlas": "actors",
    "index": 375,
    "anchor": [
@@ -3100,7 +3111,7 @@
     29
    ]
   },
-  "actor.hero_sword/gather/right/0": {
+  "actor.hero_spear_mail/slash/right/1": {
    "atlas": "actors",
    "index": 376,
    "anchor": [
@@ -3108,7 +3119,7 @@
     29
    ]
   },
-  "actor.hero_sword/gather/right/1": {
+  "actor.hero_spear_mail/slash/right/2": {
    "atlas": "actors",
    "index": 377,
    "anchor": [
@@ -3116,7 +3127,7 @@
     29
    ]
   },
-  "actor.hero_sword/gather/right/2": {
+  "actor.hero_spear_mail/slash/right/3": {
    "atlas": "actors",
    "index": 378,
    "anchor": [
@@ -3124,7 +3135,7 @@
     29
    ]
   },
-  "actor.hero_sword/slash/right/0": {
+  "actor.hero_spear_mail/walk/up/0": {
    "atlas": "actors",
    "index": 379,
    "anchor": [
@@ -3132,7 +3143,7 @@
     29
    ]
   },
-  "actor.hero_sword/slash/right/1": {
+  "actor.hero_spear_mail/walk/up/1": {
    "atlas": "actors",
    "index": 380,
    "anchor": [
@@ -3140,7 +3151,7 @@
     29
    ]
   },
-  "actor.hero_sword/slash/right/2": {
+  "actor.hero_spear_mail/walk/up/2": {
    "atlas": "actors",
    "index": 381,
    "anchor": [
@@ -3148,7 +3159,7 @@
     29
    ]
   },
-  "actor.hero_sword/slash/right/3": {
+  "actor.hero_spear_mail/walk/up/3": {
    "atlas": "actors",
    "index": 382,
    "anchor": [
@@ -3156,7 +3167,7 @@
     29
    ]
   },
-  "actor.hero_sword/walk/up/0": {
+  "actor.hero_spear_mail/idle/up/0": {
    "atlas": "actors",
    "index": 383,
    "anchor": [
@@ -3164,7 +3175,7 @@
     29
    ]
   },
-  "actor.hero_sword/walk/up/1": {
+  "actor.hero_spear_mail/idle/up/1": {
    "atlas": "actors",
    "index": 384,
    "anchor": [
@@ -3172,7 +3183,7 @@
     29
    ]
   },
-  "actor.hero_sword/walk/up/2": {
+  "actor.hero_spear_mail/gather/up/0": {
    "atlas": "actors",
    "index": 385,
    "anchor": [
@@ -3180,7 +3191,7 @@
     29
    ]
   },
-  "actor.hero_sword/walk/up/3": {
+  "actor.hero_spear_mail/gather/up/1": {
    "atlas": "actors",
    "index": 386,
    "anchor": [
@@ -3188,7 +3199,7 @@
     29
    ]
   },
-  "actor.hero_sword/idle/up/0": {
+  "actor.hero_spear_mail/gather/up/2": {
    "atlas": "actors",
    "index": 387,
    "anchor": [
@@ -3196,7 +3207,7 @@
     29
    ]
   },
-  "actor.hero_sword/idle/up/1": {
+  "actor.hero_spear_mail/slash/up/0": {
    "atlas": "actors",
    "index": 388,
    "anchor": [
@@ -3204,7 +3215,7 @@
     29
    ]
   },
-  "actor.hero_sword/gather/up/0": {
+  "actor.hero_spear_mail/slash/up/1": {
    "atlas": "actors",
    "index": 389,
    "anchor": [
@@ -3212,7 +3223,7 @@
     29
    ]
   },
-  "actor.hero_sword/gather/up/1": {
+  "actor.hero_spear_mail/slash/up/2": {
    "atlas": "actors",
    "index": 390,
    "anchor": [
@@ -3220,7 +3231,7 @@
     29
    ]
   },
-  "actor.hero_sword/gather/up/2": {
+  "actor.hero_spear_mail/slash/up/3": {
    "atlas": "actors",
    "index": 391,
    "anchor": [
@@ -3228,7 +3239,7 @@
     29
    ]
   },
-  "actor.hero_sword/slash/up/0": {
+  "actor.hero_sword/walk/down/0": {
    "atlas": "actors",
    "index": 392,
    "anchor": [
@@ -3236,7 +3247,7 @@
     29
    ]
   },
-  "actor.hero_sword/slash/up/1": {
+  "actor.hero_sword/walk/down/1": {
    "atlas": "actors",
    "index": 393,
    "anchor": [
@@ -3244,7 +3255,7 @@
     29
    ]
   },
-  "actor.hero_sword/slash/up/2": {
+  "actor.hero_sword/walk/down/2": {
    "atlas": "actors",
    "index": 394,
    "anchor": [
@@ -3252,7 +3263,7 @@
     29
    ]
   },
-  "actor.hero_sword/slash/up/3": {
+  "actor.hero_sword/walk/down/3": {
    "atlas": "actors",
    "index": 395,
    "anchor": [
@@ -3260,7 +3271,7 @@
     29
    ]
   },
-  "actor.hero_sword_mail/walk/down/0": {
+  "actor.hero_sword/idle/down/0": {
    "atlas": "actors",
    "index": 396,
    "anchor": [
@@ -3268,7 +3279,7 @@
     29
    ]
   },
-  "actor.hero_sword_mail/walk/down/1": {
+  "actor.hero_sword/idle/down/1": {
    "atlas": "actors",
    "index": 397,
    "anchor": [
@@ -3276,7 +3287,7 @@
     29
    ]
   },
-  "actor.hero_sword_mail/walk/down/2": {
+  "actor.hero_sword/gather/down/0": {
    "atlas": "actors",
    "index": 398,
    "anchor": [
@@ -3284,7 +3295,7 @@
     29
    ]
   },
-  "actor.hero_sword_mail/walk/down/3": {
+  "actor.hero_sword/gather/down/1": {
    "atlas": "actors",
    "index": 399,
    "anchor": [
@@ -3292,7 +3303,7 @@
     29
    ]
   },
-  "actor.hero_sword_mail/idle/down/0": {
+  "actor.hero_sword/gather/down/2": {
    "atlas": "actors",
    "index": 400,
    "anchor": [
@@ -3300,7 +3311,7 @@
     29
    ]
   },
-  "actor.hero_sword_mail/idle/down/1": {
+  "actor.hero_sword/slash/down/0": {
    "atlas": "actors",
    "index": 401,
    "anchor": [
@@ -3308,7 +3319,7 @@
     29
    ]
   },
-  "actor.hero_sword_mail/gather/down/0": {
+  "actor.hero_sword/slash/down/1": {
    "atlas": "actors",
    "index": 402,
    "anchor": [
@@ -3316,7 +3327,7 @@
     29
    ]
   },
-  "actor.hero_sword_mail/gather/down/1": {
+  "actor.hero_sword/slash/down/2": {
    "atlas": "actors",
    "index": 403,
    "anchor": [
@@ -3324,7 +3335,7 @@
     29
    ]
   },
-  "actor.hero_sword_mail/gather/down/2": {
+  "actor.hero_sword/slash/down/3": {
    "atlas": "actors",
    "index": 404,
    "anchor": [
@@ -3332,7 +3343,7 @@
     29
    ]
   },
-  "actor.hero_sword_mail/slash/down/0": {
+  "actor.hero_sword/walk/left/0": {
    "atlas": "actors",
    "index": 405,
    "anchor": [
@@ -3340,7 +3351,7 @@
     29
    ]
   },
-  "actor.hero_sword_mail/slash/down/1": {
+  "actor.hero_sword/walk/left/1": {
    "atlas": "actors",
    "index": 406,
    "anchor": [
@@ -3348,7 +3359,7 @@
     29
    ]
   },
-  "actor.hero_sword_mail/slash/down/2": {
+  "actor.hero_sword/walk/left/2": {
    "atlas": "actors",
    "index": 407,
    "anchor": [
@@ -3356,7 +3367,7 @@
     29
    ]
   },
-  "actor.hero_sword_mail/slash/down/3": {
+  "actor.hero_sword/walk/left/3": {
    "atlas": "actors",
    "index": 408,
    "anchor": [
@@ -3364,7 +3375,7 @@
     29
    ]
   },
-  "actor.hero_sword_mail/walk/left/0": {
+  "actor.hero_sword/idle/left/0": {
    "atlas": "actors",
    "index": 409,
    "anchor": [
@@ -3372,7 +3383,7 @@
     29
    ]
   },
-  "actor.hero_sword_mail/walk/left/1": {
+  "actor.hero_sword/idle/left/1": {
    "atlas": "actors",
    "index": 410,
    "anchor": [
@@ -3380,7 +3391,7 @@
     29
    ]
   },
-  "actor.hero_sword_mail/walk/left/2": {
+  "actor.hero_sword/gather/left/0": {
    "atlas": "actors",
    "index": 411,
    "anchor": [
@@ -3388,7 +3399,7 @@
     29
    ]
   },
-  "actor.hero_sword_mail/walk/left/3": {
+  "actor.hero_sword/gather/left/1": {
    "atlas": "actors",
    "index": 412,
    "anchor": [
@@ -3396,7 +3407,7 @@
     29
    ]
   },
-  "actor.hero_sword_mail/idle/left/0": {
+  "actor.hero_sword/gather/left/2": {
    "atlas": "actors",
    "index": 413,
    "anchor": [
@@ -3404,7 +3415,7 @@
     29
    ]
   },
-  "actor.hero_sword_mail/idle/left/1": {
+  "actor.hero_sword/slash/left/0": {
    "atlas": "actors",
    "index": 414,
    "anchor": [
@@ -3412,7 +3423,7 @@
     29
    ]
   },
-  "actor.hero_sword_mail/gather/left/0": {
+  "actor.hero_sword/slash/left/1": {
    "atlas": "actors",
    "index": 415,
    "anchor": [
@@ -3420,7 +3431,7 @@
     29
    ]
   },
-  "actor.hero_sword_mail/gather/left/1": {
+  "actor.hero_sword/slash/left/2": {
    "atlas": "actors",
    "index": 416,
    "anchor": [
@@ -3428,7 +3439,7 @@
     29
    ]
   },
-  "actor.hero_sword_mail/gather/left/2": {
+  "actor.hero_sword/slash/left/3": {
    "atlas": "actors",
    "index": 417,
    "anchor": [
@@ -3436,7 +3447,7 @@
     29
    ]
   },
-  "actor.hero_sword_mail/slash/left/0": {
+  "actor.hero_sword/walk/right/0": {
    "atlas": "actors",
    "index": 418,
    "anchor": [
@@ -3444,7 +3455,7 @@
     29
    ]
   },
-  "actor.hero_sword_mail/slash/left/1": {
+  "actor.hero_sword/walk/right/1": {
    "atlas": "actors",
    "index": 419,
    "anchor": [
@@ -3452,7 +3463,7 @@
     29
    ]
   },
-  "actor.hero_sword_mail/slash/left/2": {
+  "actor.hero_sword/walk/right/2": {
    "atlas": "actors",
    "index": 420,
    "anchor": [
@@ -3460,7 +3471,7 @@
     29
    ]
   },
-  "actor.hero_sword_mail/slash/left/3": {
+  "actor.hero_sword/walk/right/3": {
    "atlas": "actors",
    "index": 421,
    "anchor": [
@@ -3468,7 +3479,7 @@
     29
    ]
   },
-  "actor.hero_sword_mail/walk/right/0": {
+  "actor.hero_sword/idle/right/0": {
    "atlas": "actors",
    "index": 422,
    "anchor": [
@@ -3476,7 +3487,7 @@
     29
    ]
   },
-  "actor.hero_sword_mail/walk/right/1": {
+  "actor.hero_sword/idle/right/1": {
    "atlas": "actors",
    "index": 423,
    "anchor": [
@@ -3484,7 +3495,7 @@
     29
    ]
   },
-  "actor.hero_sword_mail/walk/right/2": {
+  "actor.hero_sword/gather/right/0": {
    "atlas": "actors",
    "index": 424,
    "anchor": [
@@ -3492,7 +3503,7 @@
     29
    ]
   },
-  "actor.hero_sword_mail/walk/right/3": {
+  "actor.hero_sword/gather/right/1": {
    "atlas": "actors",
    "index": 425,
    "anchor": [
@@ -3500,7 +3511,7 @@
     29
    ]
   },
-  "actor.hero_sword_mail/idle/right/0": {
+  "actor.hero_sword/gather/right/2": {
    "atlas": "actors",
    "index": 426,
    "anchor": [
@@ -3508,7 +3519,7 @@
     29
    ]
   },
-  "actor.hero_sword_mail/idle/right/1": {
+  "actor.hero_sword/slash/right/0": {
    "atlas": "actors",
    "index": 427,
    "anchor": [
@@ -3516,7 +3527,7 @@
     29
    ]
   },
-  "actor.hero_sword_mail/gather/right/0": {
+  "actor.hero_sword/slash/right/1": {
    "atlas": "actors",
    "index": 428,
    "anchor": [
@@ -3524,7 +3535,7 @@
     29
    ]
   },
-  "actor.hero_sword_mail/gather/right/1": {
+  "actor.hero_sword/slash/right/2": {
    "atlas": "actors",
    "index": 429,
    "anchor": [
@@ -3532,7 +3543,7 @@
     29
    ]
   },
-  "actor.hero_sword_mail/gather/right/2": {
+  "actor.hero_sword/slash/right/3": {
    "atlas": "actors",
    "index": 430,
    "anchor": [
@@ -3540,7 +3551,7 @@
     29
    ]
   },
-  "actor.hero_sword_mail/slash/right/0": {
+  "actor.hero_sword/walk/up/0": {
    "atlas": "actors",
    "index": 431,
    "anchor": [
@@ -3548,7 +3559,7 @@
     29
    ]
   },
-  "actor.hero_sword_mail/slash/right/1": {
+  "actor.hero_sword/walk/up/1": {
    "atlas": "actors",
    "index": 432,
    "anchor": [
@@ -3556,7 +3567,7 @@
     29
    ]
   },
-  "actor.hero_sword_mail/slash/right/2": {
+  "actor.hero_sword/walk/up/2": {
    "atlas": "actors",
    "index": 433,
    "anchor": [
@@ -3564,7 +3575,7 @@
     29
    ]
   },
-  "actor.hero_sword_mail/slash/right/3": {
+  "actor.hero_sword/walk/up/3": {
    "atlas": "actors",
    "index": 434,
    "anchor": [
@@ -3572,7 +3583,7 @@
     29
    ]
   },
-  "actor.hero_sword_mail/walk/up/0": {
+  "actor.hero_sword/idle/up/0": {
    "atlas": "actors",
    "index": 435,
    "anchor": [
@@ -3580,7 +3591,7 @@
     29
    ]
   },
-  "actor.hero_sword_mail/walk/up/1": {
+  "actor.hero_sword/idle/up/1": {
    "atlas": "actors",
    "index": 436,
    "anchor": [
@@ -3588,7 +3599,7 @@
     29
    ]
   },
-  "actor.hero_sword_mail/walk/up/2": {
+  "actor.hero_sword/gather/up/0": {
    "atlas": "actors",
    "index": 437,
    "anchor": [
@@ -3596,7 +3607,7 @@
     29
    ]
   },
-  "actor.hero_sword_mail/walk/up/3": {
+  "actor.hero_sword/gather/up/1": {
    "atlas": "actors",
    "index": 438,
    "anchor": [
@@ -3604,7 +3615,7 @@
     29
    ]
   },
-  "actor.hero_sword_mail/idle/up/0": {
+  "actor.hero_sword/gather/up/2": {
    "atlas": "actors",
    "index": 439,
    "anchor": [
@@ -3612,7 +3623,7 @@
     29
    ]
   },
-  "actor.hero_sword_mail/idle/up/1": {
+  "actor.hero_sword/slash/up/0": {
    "atlas": "actors",
    "index": 440,
    "anchor": [
@@ -3620,7 +3631,7 @@
     29
    ]
   },
-  "actor.hero_sword_mail/gather/up/0": {
+  "actor.hero_sword/slash/up/1": {
    "atlas": "actors",
    "index": 441,
    "anchor": [
@@ -3628,7 +3639,7 @@
     29
    ]
   },
-  "actor.hero_sword_mail/gather/up/1": {
+  "actor.hero_sword/slash/up/2": {
    "atlas": "actors",
    "index": 442,
    "anchor": [
@@ -3636,7 +3647,7 @@
     29
    ]
   },
-  "actor.hero_sword_mail/gather/up/2": {
+  "actor.hero_sword/slash/up/3": {
    "atlas": "actors",
    "index": 443,
    "anchor": [
@@ -3644,7 +3655,7 @@
     29
    ]
   },
-  "actor.hero_sword_mail/slash/up/0": {
+  "actor.hero_sword_mail/walk/down/0": {
    "atlas": "actors",
    "index": 444,
    "anchor": [
@@ -3652,7 +3663,7 @@
     29
    ]
   },
-  "actor.hero_sword_mail/slash/up/1": {
+  "actor.hero_sword_mail/walk/down/1": {
    "atlas": "actors",
    "index": 445,
    "anchor": [
@@ -3660,7 +3671,7 @@
     29
    ]
   },
-  "actor.hero_sword_mail/slash/up/2": {
+  "actor.hero_sword_mail/walk/down/2": {
    "atlas": "actors",
    "index": 446,
    "anchor": [
@@ -3668,7 +3679,7 @@
     29
    ]
   },
-  "actor.hero_sword_mail/slash/up/3": {
+  "actor.hero_sword_mail/walk/down/3": {
    "atlas": "actors",
    "index": 447,
    "anchor": [
@@ -3676,7 +3687,7 @@
     29
    ]
   },
-  "actor.sheep/walk/down/0": {
+  "actor.hero_sword_mail/idle/down/0": {
    "atlas": "actors",
    "index": 448,
    "anchor": [
@@ -3684,7 +3695,7 @@
     29
    ]
   },
-  "actor.sheep/walk/down/1": {
+  "actor.hero_sword_mail/idle/down/1": {
    "atlas": "actors",
    "index": 449,
    "anchor": [
@@ -3692,7 +3703,7 @@
     29
    ]
   },
-  "actor.sheep/walk/down/2": {
+  "actor.hero_sword_mail/gather/down/0": {
    "atlas": "actors",
    "index": 450,
    "anchor": [
@@ -3700,7 +3711,7 @@
     29
    ]
   },
-  "actor.sheep/walk/down/3": {
+  "actor.hero_sword_mail/gather/down/1": {
    "atlas": "actors",
    "index": 451,
    "anchor": [
@@ -3708,7 +3719,7 @@
     29
    ]
   },
-  "actor.sheep/idle/down/0": {
+  "actor.hero_sword_mail/gather/down/2": {
    "atlas": "actors",
    "index": 452,
    "anchor": [
@@ -3716,7 +3727,7 @@
     29
    ]
   },
-  "actor.sheep/idle/down/1": {
+  "actor.hero_sword_mail/slash/down/0": {
    "atlas": "actors",
    "index": 453,
    "anchor": [
@@ -3724,7 +3735,7 @@
     29
    ]
   },
-  "actor.sheep/graze/down/0": {
+  "actor.hero_sword_mail/slash/down/1": {
    "atlas": "actors",
    "index": 454,
    "anchor": [
@@ -3732,7 +3743,7 @@
     29
    ]
   },
-  "actor.sheep/graze/down/1": {
+  "actor.hero_sword_mail/slash/down/2": {
    "atlas": "actors",
    "index": 455,
    "anchor": [
@@ -3740,7 +3751,7 @@
     29
    ]
   },
-  "actor.sheep/walk/left/0": {
+  "actor.hero_sword_mail/slash/down/3": {
    "atlas": "actors",
    "index": 456,
    "anchor": [
@@ -3748,7 +3759,7 @@
     29
    ]
   },
-  "actor.sheep/walk/left/1": {
+  "actor.hero_sword_mail/walk/left/0": {
    "atlas": "actors",
    "index": 457,
    "anchor": [
@@ -3756,7 +3767,7 @@
     29
    ]
   },
-  "actor.sheep/walk/left/2": {
+  "actor.hero_sword_mail/walk/left/1": {
    "atlas": "actors",
    "index": 458,
    "anchor": [
@@ -3764,7 +3775,7 @@
     29
    ]
   },
-  "actor.sheep/walk/left/3": {
+  "actor.hero_sword_mail/walk/left/2": {
    "atlas": "actors",
    "index": 459,
    "anchor": [
@@ -3772,7 +3783,7 @@
     29
    ]
   },
-  "actor.sheep/idle/left/0": {
+  "actor.hero_sword_mail/walk/left/3": {
    "atlas": "actors",
    "index": 460,
    "anchor": [
@@ -3780,7 +3791,7 @@
     29
    ]
   },
-  "actor.sheep/idle/left/1": {
+  "actor.hero_sword_mail/idle/left/0": {
    "atlas": "actors",
    "index": 461,
    "anchor": [
@@ -3788,7 +3799,7 @@
     29
    ]
   },
-  "actor.sheep/graze/left/0": {
+  "actor.hero_sword_mail/idle/left/1": {
    "atlas": "actors",
    "index": 462,
    "anchor": [
@@ -3796,7 +3807,7 @@
     29
    ]
   },
-  "actor.sheep/graze/left/1": {
+  "actor.hero_sword_mail/gather/left/0": {
    "atlas": "actors",
    "index": 463,
    "anchor": [
@@ -3804,7 +3815,7 @@
     29
    ]
   },
-  "actor.sheep/walk/right/0": {
+  "actor.hero_sword_mail/gather/left/1": {
    "atlas": "actors",
    "index": 464,
    "anchor": [
@@ -3812,7 +3823,7 @@
     29
    ]
   },
-  "actor.sheep/walk/right/1": {
+  "actor.hero_sword_mail/gather/left/2": {
    "atlas": "actors",
    "index": 465,
    "anchor": [
@@ -3820,7 +3831,7 @@
     29
    ]
   },
-  "actor.sheep/walk/right/2": {
+  "actor.hero_sword_mail/slash/left/0": {
    "atlas": "actors",
    "index": 466,
    "anchor": [
@@ -3828,7 +3839,7 @@
     29
    ]
   },
-  "actor.sheep/walk/right/3": {
+  "actor.hero_sword_mail/slash/left/1": {
    "atlas": "actors",
    "index": 467,
    "anchor": [
@@ -3836,7 +3847,7 @@
     29
    ]
   },
-  "actor.sheep/idle/right/0": {
+  "actor.hero_sword_mail/slash/left/2": {
    "atlas": "actors",
    "index": 468,
    "anchor": [
@@ -3844,7 +3855,7 @@
     29
    ]
   },
-  "actor.sheep/idle/right/1": {
+  "actor.hero_sword_mail/slash/left/3": {
    "atlas": "actors",
    "index": 469,
    "anchor": [
@@ -3852,7 +3863,7 @@
     29
    ]
   },
-  "actor.sheep/graze/right/0": {
+  "actor.hero_sword_mail/walk/right/0": {
    "atlas": "actors",
    "index": 470,
    "anchor": [
@@ -3860,7 +3871,7 @@
     29
    ]
   },
-  "actor.sheep/graze/right/1": {
+  "actor.hero_sword_mail/walk/right/1": {
    "atlas": "actors",
    "index": 471,
    "anchor": [
@@ -3868,7 +3879,7 @@
     29
    ]
   },
-  "actor.sheep/walk/up/0": {
+  "actor.hero_sword_mail/walk/right/2": {
    "atlas": "actors",
    "index": 472,
    "anchor": [
@@ -3876,7 +3887,7 @@
     29
    ]
   },
-  "actor.sheep/walk/up/1": {
+  "actor.hero_sword_mail/walk/right/3": {
    "atlas": "actors",
    "index": 473,
    "anchor": [
@@ -3884,7 +3895,7 @@
     29
    ]
   },
-  "actor.sheep/walk/up/2": {
+  "actor.hero_sword_mail/idle/right/0": {
    "atlas": "actors",
    "index": 474,
    "anchor": [
@@ -3892,7 +3903,7 @@
     29
    ]
   },
-  "actor.sheep/walk/up/3": {
+  "actor.hero_sword_mail/idle/right/1": {
    "atlas": "actors",
    "index": 475,
    "anchor": [
@@ -3900,7 +3911,7 @@
     29
    ]
   },
-  "actor.sheep/idle/up/0": {
+  "actor.hero_sword_mail/gather/right/0": {
    "atlas": "actors",
    "index": 476,
    "anchor": [
@@ -3908,7 +3919,7 @@
     29
    ]
   },
-  "actor.sheep/idle/up/1": {
+  "actor.hero_sword_mail/gather/right/1": {
    "atlas": "actors",
    "index": 477,
    "anchor": [
@@ -3916,7 +3927,7 @@
     29
    ]
   },
-  "actor.sheep/graze/up/0": {
+  "actor.hero_sword_mail/gather/right/2": {
    "atlas": "actors",
    "index": 478,
    "anchor": [
@@ -3924,7 +3935,7 @@
     29
    ]
   },
-  "actor.sheep/graze/up/1": {
+  "actor.hero_sword_mail/slash/right/0": {
    "atlas": "actors",
    "index": 479,
    "anchor": [
@@ -3932,7 +3943,7 @@
     29
    ]
   },
-  "actor.smith/walk/down/0": {
+  "actor.hero_sword_mail/slash/right/1": {
    "atlas": "actors",
    "index": 480,
    "anchor": [
@@ -3940,7 +3951,7 @@
     29
    ]
   },
-  "actor.smith/walk/down/1": {
+  "actor.hero_sword_mail/slash/right/2": {
    "atlas": "actors",
    "index": 481,
    "anchor": [
@@ -3948,7 +3959,7 @@
     29
    ]
   },
-  "actor.smith/walk/down/2": {
+  "actor.hero_sword_mail/slash/right/3": {
    "atlas": "actors",
    "index": 482,
    "anchor": [
@@ -3956,7 +3967,7 @@
     29
    ]
   },
-  "actor.smith/walk/down/3": {
+  "actor.hero_sword_mail/walk/up/0": {
    "atlas": "actors",
    "index": 483,
    "anchor": [
@@ -3964,7 +3975,7 @@
     29
    ]
   },
-  "actor.smith/idle/down/0": {
+  "actor.hero_sword_mail/walk/up/1": {
    "atlas": "actors",
    "index": 484,
    "anchor": [
@@ -3972,7 +3983,7 @@
     29
    ]
   },
-  "actor.smith/idle/down/1": {
+  "actor.hero_sword_mail/walk/up/2": {
    "atlas": "actors",
    "index": 485,
    "anchor": [
@@ -3980,7 +3991,7 @@
     29
    ]
   },
-  "actor.smith/walk/left/0": {
+  "actor.hero_sword_mail/walk/up/3": {
    "atlas": "actors",
    "index": 486,
    "anchor": [
@@ -3988,7 +3999,7 @@
     29
    ]
   },
-  "actor.smith/walk/left/1": {
+  "actor.hero_sword_mail/idle/up/0": {
    "atlas": "actors",
    "index": 487,
    "anchor": [
@@ -3996,7 +4007,7 @@
     29
    ]
   },
-  "actor.smith/walk/left/2": {
+  "actor.hero_sword_mail/idle/up/1": {
    "atlas": "actors",
    "index": 488,
    "anchor": [
@@ -4004,7 +4015,7 @@
     29
    ]
   },
-  "actor.smith/walk/left/3": {
+  "actor.hero_sword_mail/gather/up/0": {
    "atlas": "actors",
    "index": 489,
    "anchor": [
@@ -4012,7 +4023,7 @@
     29
    ]
   },
-  "actor.smith/idle/left/0": {
+  "actor.hero_sword_mail/gather/up/1": {
    "atlas": "actors",
    "index": 490,
    "anchor": [
@@ -4020,7 +4031,7 @@
     29
    ]
   },
-  "actor.smith/idle/left/1": {
+  "actor.hero_sword_mail/gather/up/2": {
    "atlas": "actors",
    "index": 491,
    "anchor": [
@@ -4028,7 +4039,7 @@
     29
    ]
   },
-  "actor.smith/walk/right/0": {
+  "actor.hero_sword_mail/slash/up/0": {
    "atlas": "actors",
    "index": 492,
    "anchor": [
@@ -4036,7 +4047,7 @@
     29
    ]
   },
-  "actor.smith/walk/right/1": {
+  "actor.hero_sword_mail/slash/up/1": {
    "atlas": "actors",
    "index": 493,
    "anchor": [
@@ -4044,7 +4055,7 @@
     29
    ]
   },
-  "actor.smith/walk/right/2": {
+  "actor.hero_sword_mail/slash/up/2": {
    "atlas": "actors",
    "index": 494,
    "anchor": [
@@ -4052,7 +4063,7 @@
     29
    ]
   },
-  "actor.smith/walk/right/3": {
+  "actor.hero_sword_mail/slash/up/3": {
    "atlas": "actors",
    "index": 495,
    "anchor": [
@@ -4060,7 +4071,7 @@
     29
    ]
   },
-  "actor.smith/idle/right/0": {
+  "actor.sheep/walk/down/0": {
    "atlas": "actors",
    "index": 496,
    "anchor": [
@@ -4068,7 +4079,7 @@
     29
    ]
   },
-  "actor.smith/idle/right/1": {
+  "actor.sheep/walk/down/1": {
    "atlas": "actors",
    "index": 497,
    "anchor": [
@@ -4076,7 +4087,7 @@
     29
    ]
   },
-  "actor.smith/walk/up/0": {
+  "actor.sheep/walk/down/2": {
    "atlas": "actors",
    "index": 498,
    "anchor": [
@@ -4084,7 +4095,7 @@
     29
    ]
   },
-  "actor.smith/walk/up/1": {
+  "actor.sheep/walk/down/3": {
    "atlas": "actors",
    "index": 499,
    "anchor": [
@@ -4092,7 +4103,7 @@
     29
    ]
   },
-  "actor.smith/walk/up/2": {
+  "actor.sheep/idle/down/0": {
    "atlas": "actors",
    "index": 500,
    "anchor": [
@@ -4100,7 +4111,7 @@
     29
    ]
   },
-  "actor.smith/walk/up/3": {
+  "actor.sheep/idle/down/1": {
    "atlas": "actors",
    "index": 501,
    "anchor": [
@@ -4108,7 +4119,7 @@
     29
    ]
   },
-  "actor.smith/idle/up/0": {
+  "actor.sheep/graze/down/0": {
    "atlas": "actors",
    "index": 502,
    "anchor": [
@@ -4116,9 +4127,393 @@
     29
    ]
   },
-  "actor.smith/idle/up/1": {
+  "actor.sheep/graze/down/1": {
    "atlas": "actors",
    "index": 503,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.sheep/walk/left/0": {
+   "atlas": "actors",
+   "index": 504,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.sheep/walk/left/1": {
+   "atlas": "actors",
+   "index": 505,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.sheep/walk/left/2": {
+   "atlas": "actors",
+   "index": 506,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.sheep/walk/left/3": {
+   "atlas": "actors",
+   "index": 507,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.sheep/idle/left/0": {
+   "atlas": "actors",
+   "index": 508,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.sheep/idle/left/1": {
+   "atlas": "actors",
+   "index": 509,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.sheep/graze/left/0": {
+   "atlas": "actors",
+   "index": 510,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.sheep/graze/left/1": {
+   "atlas": "actors",
+   "index": 511,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.sheep/walk/right/0": {
+   "atlas": "actors",
+   "index": 512,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.sheep/walk/right/1": {
+   "atlas": "actors",
+   "index": 513,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.sheep/walk/right/2": {
+   "atlas": "actors",
+   "index": 514,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.sheep/walk/right/3": {
+   "atlas": "actors",
+   "index": 515,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.sheep/idle/right/0": {
+   "atlas": "actors",
+   "index": 516,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.sheep/idle/right/1": {
+   "atlas": "actors",
+   "index": 517,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.sheep/graze/right/0": {
+   "atlas": "actors",
+   "index": 518,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.sheep/graze/right/1": {
+   "atlas": "actors",
+   "index": 519,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.sheep/walk/up/0": {
+   "atlas": "actors",
+   "index": 520,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.sheep/walk/up/1": {
+   "atlas": "actors",
+   "index": 521,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.sheep/walk/up/2": {
+   "atlas": "actors",
+   "index": 522,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.sheep/walk/up/3": {
+   "atlas": "actors",
+   "index": 523,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.sheep/idle/up/0": {
+   "atlas": "actors",
+   "index": 524,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.sheep/idle/up/1": {
+   "atlas": "actors",
+   "index": 525,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.sheep/graze/up/0": {
+   "atlas": "actors",
+   "index": 526,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.sheep/graze/up/1": {
+   "atlas": "actors",
+   "index": 527,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.smith/walk/down/0": {
+   "atlas": "actors",
+   "index": 528,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.smith/walk/down/1": {
+   "atlas": "actors",
+   "index": 529,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.smith/walk/down/2": {
+   "atlas": "actors",
+   "index": 530,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.smith/walk/down/3": {
+   "atlas": "actors",
+   "index": 531,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.smith/idle/down/0": {
+   "atlas": "actors",
+   "index": 532,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.smith/idle/down/1": {
+   "atlas": "actors",
+   "index": 533,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.smith/walk/left/0": {
+   "atlas": "actors",
+   "index": 534,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.smith/walk/left/1": {
+   "atlas": "actors",
+   "index": 535,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.smith/walk/left/2": {
+   "atlas": "actors",
+   "index": 536,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.smith/walk/left/3": {
+   "atlas": "actors",
+   "index": 537,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.smith/idle/left/0": {
+   "atlas": "actors",
+   "index": 538,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.smith/idle/left/1": {
+   "atlas": "actors",
+   "index": 539,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.smith/walk/right/0": {
+   "atlas": "actors",
+   "index": 540,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.smith/walk/right/1": {
+   "atlas": "actors",
+   "index": 541,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.smith/walk/right/2": {
+   "atlas": "actors",
+   "index": 542,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.smith/walk/right/3": {
+   "atlas": "actors",
+   "index": 543,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.smith/idle/right/0": {
+   "atlas": "actors",
+   "index": 544,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.smith/idle/right/1": {
+   "atlas": "actors",
+   "index": 545,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.smith/walk/up/0": {
+   "atlas": "actors",
+   "index": 546,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.smith/walk/up/1": {
+   "atlas": "actors",
+   "index": 547,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.smith/walk/up/2": {
+   "atlas": "actors",
+   "index": 548,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.smith/walk/up/3": {
+   "atlas": "actors",
+   "index": 549,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.smith/idle/up/0": {
+   "atlas": "actors",
+   "index": 550,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.smith/idle/up/1": {
+   "atlas": "actors",
+   "index": 551,
    "anchor": [
     16,
     29
@@ -10076,12 +10471,52 @@
     45
    ]
   },
+  "prop.boulder_2": {
+   "atlas": "props_big",
+   "index": 8,
+   "anchor": [
+    24,
+    45
+   ]
+  },
+  "prop.boulder_4": {
+   "atlas": "props_big",
+   "index": 9,
+   "anchor": [
+    24,
+    45
+   ]
+  },
+  "prop.boulder_6": {
+   "atlas": "props_big",
+   "index": 10,
+   "anchor": [
+    24,
+    45
+   ]
+  },
   "prop.burrow_tree": {
    "atlas": "props_huge",
    "index": 0,
    "anchor": [
     24,
     61
+   ]
+  },
+  "prop.boulder_8": {
+   "atlas": "props_huge",
+   "index": 1,
+   "anchor": [
+    24,
+    61
+   ]
+  },
+  "prop.boulder_16": {
+   "atlas": "props_vast",
+   "index": 0,
+   "anchor": [
+    56,
+    125
    ]
   },
   "item.apple": {
@@ -10410,7 +10845,7 @@
    "ms": 380,
    "loop": true
   },
-  "actor.goat/walk/down": {
+  "actor.elk/walk/down": {
    "atlas": "actors",
    "frames": [
     32,
@@ -10421,7 +10856,7 @@
    "ms": 150,
    "loop": true
   },
-  "actor.goat/idle/down": {
+  "actor.elk/idle/down": {
    "atlas": "actors",
    "frames": [
     36,
@@ -10430,7 +10865,7 @@
    "ms": 600,
    "loop": true
   },
-  "actor.goat/graze/down": {
+  "actor.elk/graze/down": {
    "atlas": "actors",
    "frames": [
     38,
@@ -10439,7 +10874,7 @@
    "ms": 380,
    "loop": true
   },
-  "actor.goat/walk/left": {
+  "actor.elk/attack/down": {
    "atlas": "actors",
    "frames": [
     40,
@@ -10447,57 +10882,50 @@
     42,
     43
    ],
-   "ms": 150,
-   "loop": true
+   "ms": 110,
+   "loop": false
   },
-  "actor.goat/idle/left": {
+  "actor.elk/walk/left": {
    "atlas": "actors",
    "frames": [
     44,
-    45
-   ],
-   "ms": 600,
-   "loop": true
-  },
-  "actor.goat/graze/left": {
-   "atlas": "actors",
-   "frames": [
+    45,
     46,
     47
-   ],
-   "ms": 380,
-   "loop": true
-  },
-  "actor.goat/walk/right": {
-   "atlas": "actors",
-   "frames": [
-    48,
-    49,
-    50,
-    51
    ],
    "ms": 150,
    "loop": true
   },
-  "actor.goat/idle/right": {
+  "actor.elk/idle/left": {
    "atlas": "actors",
    "frames": [
-    52,
-    53
+    48,
+    49
    ],
    "ms": 600,
    "loop": true
   },
-  "actor.goat/graze/right": {
+  "actor.elk/graze/left": {
    "atlas": "actors",
    "frames": [
-    54,
-    55
+    50,
+    51
    ],
    "ms": 380,
    "loop": true
   },
-  "actor.goat/walk/up": {
+  "actor.elk/attack/left": {
+   "atlas": "actors",
+   "frames": [
+    52,
+    53,
+    54,
+    55
+   ],
+   "ms": 110,
+   "loop": false
+  },
+  "actor.elk/walk/right": {
    "atlas": "actors",
    "frames": [
     56,
@@ -10508,7 +10936,7 @@
    "ms": 150,
    "loop": true
   },
-  "actor.goat/idle/up": {
+  "actor.elk/idle/right": {
    "atlas": "actors",
    "frames": [
     60,
@@ -10517,7 +10945,7 @@
    "ms": 600,
    "loop": true
   },
-  "actor.goat/graze/up": {
+  "actor.elk/graze/right": {
    "atlas": "actors",
    "frames": [
     62,
@@ -10526,7 +10954,7 @@
    "ms": 380,
    "loop": true
   },
-  "actor.hero/walk/down": {
+  "actor.elk/attack/right": {
    "atlas": "actors",
    "frames": [
     64,
@@ -10534,14 +10962,181 @@
     66,
     67
    ],
+   "ms": 110,
+   "loop": false
+  },
+  "actor.elk/walk/up": {
+   "atlas": "actors",
+   "frames": [
+    68,
+    69,
+    70,
+    71
+   ],
+   "ms": 150,
+   "loop": true
+  },
+  "actor.elk/idle/up": {
+   "atlas": "actors",
+   "frames": [
+    72,
+    73
+   ],
+   "ms": 600,
+   "loop": true
+  },
+  "actor.elk/graze/up": {
+   "atlas": "actors",
+   "frames": [
+    74,
+    75
+   ],
+   "ms": 380,
+   "loop": true
+  },
+  "actor.elk/attack/up": {
+   "atlas": "actors",
+   "frames": [
+    76,
+    77,
+    78,
+    79
+   ],
+   "ms": 110,
+   "loop": false
+  },
+  "actor.goat/walk/down": {
+   "atlas": "actors",
+   "frames": [
+    80,
+    81,
+    82,
+    83
+   ],
+   "ms": 150,
+   "loop": true
+  },
+  "actor.goat/idle/down": {
+   "atlas": "actors",
+   "frames": [
+    84,
+    85
+   ],
+   "ms": 600,
+   "loop": true
+  },
+  "actor.goat/graze/down": {
+   "atlas": "actors",
+   "frames": [
+    86,
+    87
+   ],
+   "ms": 380,
+   "loop": true
+  },
+  "actor.goat/walk/left": {
+   "atlas": "actors",
+   "frames": [
+    88,
+    89,
+    90,
+    91
+   ],
+   "ms": 150,
+   "loop": true
+  },
+  "actor.goat/idle/left": {
+   "atlas": "actors",
+   "frames": [
+    92,
+    93
+   ],
+   "ms": 600,
+   "loop": true
+  },
+  "actor.goat/graze/left": {
+   "atlas": "actors",
+   "frames": [
+    94,
+    95
+   ],
+   "ms": 380,
+   "loop": true
+  },
+  "actor.goat/walk/right": {
+   "atlas": "actors",
+   "frames": [
+    96,
+    97,
+    98,
+    99
+   ],
+   "ms": 150,
+   "loop": true
+  },
+  "actor.goat/idle/right": {
+   "atlas": "actors",
+   "frames": [
+    100,
+    101
+   ],
+   "ms": 600,
+   "loop": true
+  },
+  "actor.goat/graze/right": {
+   "atlas": "actors",
+   "frames": [
+    102,
+    103
+   ],
+   "ms": 380,
+   "loop": true
+  },
+  "actor.goat/walk/up": {
+   "atlas": "actors",
+   "frames": [
+    104,
+    105,
+    106,
+    107
+   ],
+   "ms": 150,
+   "loop": true
+  },
+  "actor.goat/idle/up": {
+   "atlas": "actors",
+   "frames": [
+    108,
+    109
+   ],
+   "ms": 600,
+   "loop": true
+  },
+  "actor.goat/graze/up": {
+   "atlas": "actors",
+   "frames": [
+    110,
+    111
+   ],
+   "ms": 380,
+   "loop": true
+  },
+  "actor.hero/walk/down": {
+   "atlas": "actors",
+   "frames": [
+    112,
+    113,
+    114,
+    115
+   ],
    "ms": 120,
    "loop": true
   },
   "actor.hero/idle/down": {
    "atlas": "actors",
    "frames": [
-    68,
-    69
+    116,
+    117
    ],
    "ms": 500,
    "loop": true
@@ -10549,9 +11144,9 @@
   "actor.hero/gather/down": {
    "atlas": "actors",
    "frames": [
-    70,
-    71,
-    72
+    118,
+    119,
+    120
    ],
    "ms": 140,
    "loop": false
@@ -10559,10 +11154,10 @@
   "actor.hero/walk/left": {
    "atlas": "actors",
    "frames": [
-    73,
-    74,
-    75,
-    76
+    121,
+    122,
+    123,
+    124
    ],
    "ms": 120,
    "loop": true
@@ -10570,8 +11165,8 @@
   "actor.hero/idle/left": {
    "atlas": "actors",
    "frames": [
-    77,
-    78
+    125,
+    126
    ],
    "ms": 500,
    "loop": true
@@ -10579,9 +11174,9 @@
   "actor.hero/gather/left": {
    "atlas": "actors",
    "frames": [
-    79,
-    80,
-    81
+    127,
+    128,
+    129
    ],
    "ms": 140,
    "loop": false
@@ -10589,10 +11184,10 @@
   "actor.hero/walk/right": {
    "atlas": "actors",
    "frames": [
-    82,
-    83,
-    84,
-    85
+    130,
+    131,
+    132,
+    133
    ],
    "ms": 120,
    "loop": true
@@ -10600,8 +11195,8 @@
   "actor.hero/idle/right": {
    "atlas": "actors",
    "frames": [
-    86,
-    87
+    134,
+    135
    ],
    "ms": 500,
    "loop": true
@@ -10609,167 +11204,14 @@
   "actor.hero/gather/right": {
    "atlas": "actors",
    "frames": [
-    88,
-    89,
-    90
+    136,
+    137,
+    138
    ],
    "ms": 140,
    "loop": false
   },
   "actor.hero/walk/up": {
-   "atlas": "actors",
-   "frames": [
-    91,
-    92,
-    93,
-    94
-   ],
-   "ms": 120,
-   "loop": true
-  },
-  "actor.hero/idle/up": {
-   "atlas": "actors",
-   "frames": [
-    95,
-    96
-   ],
-   "ms": 500,
-   "loop": true
-  },
-  "actor.hero/gather/up": {
-   "atlas": "actors",
-   "frames": [
-    97,
-    98,
-    99
-   ],
-   "ms": 140,
-   "loop": false
-  },
-  "actor.hero_axe/walk/down": {
-   "atlas": "actors",
-   "frames": [
-    100,
-    101,
-    102,
-    103
-   ],
-   "ms": 120,
-   "loop": true
-  },
-  "actor.hero_axe/idle/down": {
-   "atlas": "actors",
-   "frames": [
-    104,
-    105
-   ],
-   "ms": 500,
-   "loop": true
-  },
-  "actor.hero_axe/gather/down": {
-   "atlas": "actors",
-   "frames": [
-    106,
-    107,
-    108
-   ],
-   "ms": 140,
-   "loop": false
-  },
-  "actor.hero_axe/slash/down": {
-   "atlas": "actors",
-   "frames": [
-    109,
-    110,
-    111,
-    112
-   ],
-   "ms": 90,
-   "loop": false
-  },
-  "actor.hero_axe/walk/left": {
-   "atlas": "actors",
-   "frames": [
-    113,
-    114,
-    115,
-    116
-   ],
-   "ms": 120,
-   "loop": true
-  },
-  "actor.hero_axe/idle/left": {
-   "atlas": "actors",
-   "frames": [
-    117,
-    118
-   ],
-   "ms": 500,
-   "loop": true
-  },
-  "actor.hero_axe/gather/left": {
-   "atlas": "actors",
-   "frames": [
-    119,
-    120,
-    121
-   ],
-   "ms": 140,
-   "loop": false
-  },
-  "actor.hero_axe/slash/left": {
-   "atlas": "actors",
-   "frames": [
-    122,
-    123,
-    124,
-    125
-   ],
-   "ms": 90,
-   "loop": false
-  },
-  "actor.hero_axe/walk/right": {
-   "atlas": "actors",
-   "frames": [
-    126,
-    127,
-    128,
-    129
-   ],
-   "ms": 120,
-   "loop": true
-  },
-  "actor.hero_axe/idle/right": {
-   "atlas": "actors",
-   "frames": [
-    130,
-    131
-   ],
-   "ms": 500,
-   "loop": true
-  },
-  "actor.hero_axe/gather/right": {
-   "atlas": "actors",
-   "frames": [
-    132,
-    133,
-    134
-   ],
-   "ms": 140,
-   "loop": false
-  },
-  "actor.hero_axe/slash/right": {
-   "atlas": "actors",
-   "frames": [
-    135,
-    136,
-    137,
-    138
-   ],
-   "ms": 90,
-   "loop": false
-  },
-  "actor.hero_axe/walk/up": {
    "atlas": "actors",
    "frames": [
     139,
@@ -10780,7 +11222,7 @@
    "ms": 120,
    "loop": true
   },
-  "actor.hero_axe/idle/up": {
+  "actor.hero/idle/up": {
    "atlas": "actors",
    "frames": [
     143,
@@ -10789,7 +11231,7 @@
    "ms": 500,
    "loop": true
   },
-  "actor.hero_axe/gather/up": {
+  "actor.hero/gather/up": {
    "atlas": "actors",
    "frames": [
     145,
@@ -10799,7 +11241,7 @@
    "ms": 140,
    "loop": false
   },
-  "actor.hero_axe/slash/up": {
+  "actor.hero_axe/walk/down": {
    "atlas": "actors",
    "frames": [
     148,
@@ -10807,40 +11249,40 @@
     150,
     151
    ],
-   "ms": 90,
-   "loop": false
-  },
-  "actor.hero_axe_mail/walk/down": {
-   "atlas": "actors",
-   "frames": [
-    152,
-    153,
-    154,
-    155
-   ],
    "ms": 120,
    "loop": true
   },
-  "actor.hero_axe_mail/idle/down": {
+  "actor.hero_axe/idle/down": {
    "atlas": "actors",
    "frames": [
-    156,
-    157
+    152,
+    153
    ],
    "ms": 500,
    "loop": true
   },
-  "actor.hero_axe_mail/gather/down": {
+  "actor.hero_axe/gather/down": {
    "atlas": "actors",
    "frames": [
-    158,
-    159,
-    160
+    154,
+    155,
+    156
    ],
    "ms": 140,
    "loop": false
   },
-  "actor.hero_axe_mail/slash/down": {
+  "actor.hero_axe/slash/down": {
+   "atlas": "actors",
+   "frames": [
+    157,
+    158,
+    159,
+    160
+   ],
+   "ms": 90,
+   "loop": false
+  },
+  "actor.hero_axe/walk/left": {
    "atlas": "actors",
    "frames": [
     161,
@@ -10848,40 +11290,40 @@
     163,
     164
    ],
-   "ms": 90,
-   "loop": false
-  },
-  "actor.hero_axe_mail/walk/left": {
-   "atlas": "actors",
-   "frames": [
-    165,
-    166,
-    167,
-    168
-   ],
    "ms": 120,
    "loop": true
   },
-  "actor.hero_axe_mail/idle/left": {
+  "actor.hero_axe/idle/left": {
    "atlas": "actors",
    "frames": [
-    169,
-    170
+    165,
+    166
    ],
    "ms": 500,
    "loop": true
   },
-  "actor.hero_axe_mail/gather/left": {
+  "actor.hero_axe/gather/left": {
    "atlas": "actors",
    "frames": [
-    171,
-    172,
-    173
+    167,
+    168,
+    169
    ],
    "ms": 140,
    "loop": false
   },
-  "actor.hero_axe_mail/slash/left": {
+  "actor.hero_axe/slash/left": {
+   "atlas": "actors",
+   "frames": [
+    170,
+    171,
+    172,
+    173
+   ],
+   "ms": 90,
+   "loop": false
+  },
+  "actor.hero_axe/walk/right": {
    "atlas": "actors",
    "frames": [
     174,
@@ -10889,40 +11331,40 @@
     176,
     177
    ],
-   "ms": 90,
-   "loop": false
-  },
-  "actor.hero_axe_mail/walk/right": {
-   "atlas": "actors",
-   "frames": [
-    178,
-    179,
-    180,
-    181
-   ],
    "ms": 120,
    "loop": true
   },
-  "actor.hero_axe_mail/idle/right": {
+  "actor.hero_axe/idle/right": {
    "atlas": "actors",
    "frames": [
-    182,
-    183
+    178,
+    179
    ],
    "ms": 500,
    "loop": true
   },
-  "actor.hero_axe_mail/gather/right": {
+  "actor.hero_axe/gather/right": {
    "atlas": "actors",
    "frames": [
-    184,
-    185,
-    186
+    180,
+    181,
+    182
    ],
    "ms": 140,
    "loop": false
   },
-  "actor.hero_axe_mail/slash/right": {
+  "actor.hero_axe/slash/right": {
+   "atlas": "actors",
+   "frames": [
+    183,
+    184,
+    185,
+    186
+   ],
+   "ms": 90,
+   "loop": false
+  },
+  "actor.hero_axe/walk/up": {
    "atlas": "actors",
    "frames": [
     187,
@@ -10930,40 +11372,40 @@
     189,
     190
    ],
-   "ms": 90,
-   "loop": false
-  },
-  "actor.hero_axe_mail/walk/up": {
-   "atlas": "actors",
-   "frames": [
-    191,
-    192,
-    193,
-    194
-   ],
    "ms": 120,
    "loop": true
   },
-  "actor.hero_axe_mail/idle/up": {
+  "actor.hero_axe/idle/up": {
    "atlas": "actors",
    "frames": [
-    195,
-    196
+    191,
+    192
    ],
    "ms": 500,
    "loop": true
   },
-  "actor.hero_axe_mail/gather/up": {
+  "actor.hero_axe/gather/up": {
    "atlas": "actors",
    "frames": [
-    197,
-    198,
-    199
+    193,
+    194,
+    195
    ],
    "ms": 140,
    "loop": false
   },
-  "actor.hero_axe_mail/slash/up": {
+  "actor.hero_axe/slash/up": {
+   "atlas": "actors",
+   "frames": [
+    196,
+    197,
+    198,
+    199
+   ],
+   "ms": 90,
+   "loop": false
+  },
+  "actor.hero_axe_mail/walk/down": {
    "atlas": "actors",
    "frames": [
     200,
@@ -10971,40 +11413,40 @@
     202,
     203
    ],
-   "ms": 90,
-   "loop": false
-  },
-  "actor.hero_mail/walk/down": {
-   "atlas": "actors",
-   "frames": [
-    204,
-    205,
-    206,
-    207
-   ],
    "ms": 120,
    "loop": true
   },
-  "actor.hero_mail/idle/down": {
+  "actor.hero_axe_mail/idle/down": {
    "atlas": "actors",
    "frames": [
-    208,
-    209
+    204,
+    205
    ],
    "ms": 500,
    "loop": true
   },
-  "actor.hero_mail/gather/down": {
+  "actor.hero_axe_mail/gather/down": {
    "atlas": "actors",
    "frames": [
-    210,
-    211,
-    212
+    206,
+    207,
+    208
    ],
    "ms": 140,
    "loop": false
   },
-  "actor.hero_mail/walk/left": {
+  "actor.hero_axe_mail/slash/down": {
+   "atlas": "actors",
+   "frames": [
+    209,
+    210,
+    211,
+    212
+   ],
+   "ms": 90,
+   "loop": false
+  },
+  "actor.hero_axe_mail/walk/left": {
    "atlas": "actors",
    "frames": [
     213,
@@ -11015,7 +11457,7 @@
    "ms": 120,
    "loop": true
   },
-  "actor.hero_mail/idle/left": {
+  "actor.hero_axe_mail/idle/left": {
    "atlas": "actors",
    "frames": [
     217,
@@ -11024,7 +11466,7 @@
    "ms": 500,
    "loop": true
   },
-  "actor.hero_mail/gather/left": {
+  "actor.hero_axe_mail/gather/left": {
    "atlas": "actors",
    "frames": [
     219,
@@ -11034,7 +11476,7 @@
    "ms": 140,
    "loop": false
   },
-  "actor.hero_mail/walk/right": {
+  "actor.hero_axe_mail/slash/left": {
    "atlas": "actors",
    "frames": [
     222,
@@ -11042,14 +11484,167 @@
     224,
     225
    ],
+   "ms": 90,
+   "loop": false
+  },
+  "actor.hero_axe_mail/walk/right": {
+   "atlas": "actors",
+   "frames": [
+    226,
+    227,
+    228,
+    229
+   ],
+   "ms": 120,
+   "loop": true
+  },
+  "actor.hero_axe_mail/idle/right": {
+   "atlas": "actors",
+   "frames": [
+    230,
+    231
+   ],
+   "ms": 500,
+   "loop": true
+  },
+  "actor.hero_axe_mail/gather/right": {
+   "atlas": "actors",
+   "frames": [
+    232,
+    233,
+    234
+   ],
+   "ms": 140,
+   "loop": false
+  },
+  "actor.hero_axe_mail/slash/right": {
+   "atlas": "actors",
+   "frames": [
+    235,
+    236,
+    237,
+    238
+   ],
+   "ms": 90,
+   "loop": false
+  },
+  "actor.hero_axe_mail/walk/up": {
+   "atlas": "actors",
+   "frames": [
+    239,
+    240,
+    241,
+    242
+   ],
+   "ms": 120,
+   "loop": true
+  },
+  "actor.hero_axe_mail/idle/up": {
+   "atlas": "actors",
+   "frames": [
+    243,
+    244
+   ],
+   "ms": 500,
+   "loop": true
+  },
+  "actor.hero_axe_mail/gather/up": {
+   "atlas": "actors",
+   "frames": [
+    245,
+    246,
+    247
+   ],
+   "ms": 140,
+   "loop": false
+  },
+  "actor.hero_axe_mail/slash/up": {
+   "atlas": "actors",
+   "frames": [
+    248,
+    249,
+    250,
+    251
+   ],
+   "ms": 90,
+   "loop": false
+  },
+  "actor.hero_mail/walk/down": {
+   "atlas": "actors",
+   "frames": [
+    252,
+    253,
+    254,
+    255
+   ],
+   "ms": 120,
+   "loop": true
+  },
+  "actor.hero_mail/idle/down": {
+   "atlas": "actors",
+   "frames": [
+    256,
+    257
+   ],
+   "ms": 500,
+   "loop": true
+  },
+  "actor.hero_mail/gather/down": {
+   "atlas": "actors",
+   "frames": [
+    258,
+    259,
+    260
+   ],
+   "ms": 140,
+   "loop": false
+  },
+  "actor.hero_mail/walk/left": {
+   "atlas": "actors",
+   "frames": [
+    261,
+    262,
+    263,
+    264
+   ],
+   "ms": 120,
+   "loop": true
+  },
+  "actor.hero_mail/idle/left": {
+   "atlas": "actors",
+   "frames": [
+    265,
+    266
+   ],
+   "ms": 500,
+   "loop": true
+  },
+  "actor.hero_mail/gather/left": {
+   "atlas": "actors",
+   "frames": [
+    267,
+    268,
+    269
+   ],
+   "ms": 140,
+   "loop": false
+  },
+  "actor.hero_mail/walk/right": {
+   "atlas": "actors",
+   "frames": [
+    270,
+    271,
+    272,
+    273
+   ],
    "ms": 120,
    "loop": true
   },
   "actor.hero_mail/idle/right": {
    "atlas": "actors",
    "frames": [
-    226,
-    227
+    274,
+    275
    ],
    "ms": 500,
    "loop": true
@@ -11057,167 +11652,14 @@
   "actor.hero_mail/gather/right": {
    "atlas": "actors",
    "frames": [
-    228,
-    229,
-    230
+    276,
+    277,
+    278
    ],
    "ms": 140,
    "loop": false
   },
   "actor.hero_mail/walk/up": {
-   "atlas": "actors",
-   "frames": [
-    231,
-    232,
-    233,
-    234
-   ],
-   "ms": 120,
-   "loop": true
-  },
-  "actor.hero_mail/idle/up": {
-   "atlas": "actors",
-   "frames": [
-    235,
-    236
-   ],
-   "ms": 500,
-   "loop": true
-  },
-  "actor.hero_mail/gather/up": {
-   "atlas": "actors",
-   "frames": [
-    237,
-    238,
-    239
-   ],
-   "ms": 140,
-   "loop": false
-  },
-  "actor.hero_spear/walk/down": {
-   "atlas": "actors",
-   "frames": [
-    240,
-    241,
-    242,
-    243
-   ],
-   "ms": 120,
-   "loop": true
-  },
-  "actor.hero_spear/idle/down": {
-   "atlas": "actors",
-   "frames": [
-    244,
-    245
-   ],
-   "ms": 500,
-   "loop": true
-  },
-  "actor.hero_spear/gather/down": {
-   "atlas": "actors",
-   "frames": [
-    246,
-    247,
-    248
-   ],
-   "ms": 140,
-   "loop": false
-  },
-  "actor.hero_spear/slash/down": {
-   "atlas": "actors",
-   "frames": [
-    249,
-    250,
-    251,
-    252
-   ],
-   "ms": 90,
-   "loop": false
-  },
-  "actor.hero_spear/walk/left": {
-   "atlas": "actors",
-   "frames": [
-    253,
-    254,
-    255,
-    256
-   ],
-   "ms": 120,
-   "loop": true
-  },
-  "actor.hero_spear/idle/left": {
-   "atlas": "actors",
-   "frames": [
-    257,
-    258
-   ],
-   "ms": 500,
-   "loop": true
-  },
-  "actor.hero_spear/gather/left": {
-   "atlas": "actors",
-   "frames": [
-    259,
-    260,
-    261
-   ],
-   "ms": 140,
-   "loop": false
-  },
-  "actor.hero_spear/slash/left": {
-   "atlas": "actors",
-   "frames": [
-    262,
-    263,
-    264,
-    265
-   ],
-   "ms": 90,
-   "loop": false
-  },
-  "actor.hero_spear/walk/right": {
-   "atlas": "actors",
-   "frames": [
-    266,
-    267,
-    268,
-    269
-   ],
-   "ms": 120,
-   "loop": true
-  },
-  "actor.hero_spear/idle/right": {
-   "atlas": "actors",
-   "frames": [
-    270,
-    271
-   ],
-   "ms": 500,
-   "loop": true
-  },
-  "actor.hero_spear/gather/right": {
-   "atlas": "actors",
-   "frames": [
-    272,
-    273,
-    274
-   ],
-   "ms": 140,
-   "loop": false
-  },
-  "actor.hero_spear/slash/right": {
-   "atlas": "actors",
-   "frames": [
-    275,
-    276,
-    277,
-    278
-   ],
-   "ms": 90,
-   "loop": false
-  },
-  "actor.hero_spear/walk/up": {
    "atlas": "actors",
    "frames": [
     279,
@@ -11228,7 +11670,7 @@
    "ms": 120,
    "loop": true
   },
-  "actor.hero_spear/idle/up": {
+  "actor.hero_mail/idle/up": {
    "atlas": "actors",
    "frames": [
     283,
@@ -11237,7 +11679,7 @@
    "ms": 500,
    "loop": true
   },
-  "actor.hero_spear/gather/up": {
+  "actor.hero_mail/gather/up": {
    "atlas": "actors",
    "frames": [
     285,
@@ -11247,7 +11689,7 @@
    "ms": 140,
    "loop": false
   },
-  "actor.hero_spear/slash/up": {
+  "actor.hero_spear/walk/down": {
    "atlas": "actors",
    "frames": [
     288,
@@ -11255,40 +11697,40 @@
     290,
     291
    ],
-   "ms": 90,
-   "loop": false
-  },
-  "actor.hero_spear_mail/walk/down": {
-   "atlas": "actors",
-   "frames": [
-    292,
-    293,
-    294,
-    295
-   ],
    "ms": 120,
    "loop": true
   },
-  "actor.hero_spear_mail/idle/down": {
+  "actor.hero_spear/idle/down": {
    "atlas": "actors",
    "frames": [
-    296,
-    297
+    292,
+    293
    ],
    "ms": 500,
    "loop": true
   },
-  "actor.hero_spear_mail/gather/down": {
+  "actor.hero_spear/gather/down": {
    "atlas": "actors",
    "frames": [
-    298,
-    299,
-    300
+    294,
+    295,
+    296
    ],
    "ms": 140,
    "loop": false
   },
-  "actor.hero_spear_mail/slash/down": {
+  "actor.hero_spear/slash/down": {
+   "atlas": "actors",
+   "frames": [
+    297,
+    298,
+    299,
+    300
+   ],
+   "ms": 90,
+   "loop": false
+  },
+  "actor.hero_spear/walk/left": {
    "atlas": "actors",
    "frames": [
     301,
@@ -11296,40 +11738,40 @@
     303,
     304
    ],
-   "ms": 90,
-   "loop": false
-  },
-  "actor.hero_spear_mail/walk/left": {
-   "atlas": "actors",
-   "frames": [
-    305,
-    306,
-    307,
-    308
-   ],
    "ms": 120,
    "loop": true
   },
-  "actor.hero_spear_mail/idle/left": {
+  "actor.hero_spear/idle/left": {
    "atlas": "actors",
    "frames": [
-    309,
-    310
+    305,
+    306
    ],
    "ms": 500,
    "loop": true
   },
-  "actor.hero_spear_mail/gather/left": {
+  "actor.hero_spear/gather/left": {
    "atlas": "actors",
    "frames": [
-    311,
-    312,
-    313
+    307,
+    308,
+    309
    ],
    "ms": 140,
    "loop": false
   },
-  "actor.hero_spear_mail/slash/left": {
+  "actor.hero_spear/slash/left": {
+   "atlas": "actors",
+   "frames": [
+    310,
+    311,
+    312,
+    313
+   ],
+   "ms": 90,
+   "loop": false
+  },
+  "actor.hero_spear/walk/right": {
    "atlas": "actors",
    "frames": [
     314,
@@ -11337,40 +11779,40 @@
     316,
     317
    ],
-   "ms": 90,
-   "loop": false
-  },
-  "actor.hero_spear_mail/walk/right": {
-   "atlas": "actors",
-   "frames": [
-    318,
-    319,
-    320,
-    321
-   ],
    "ms": 120,
    "loop": true
   },
-  "actor.hero_spear_mail/idle/right": {
+  "actor.hero_spear/idle/right": {
    "atlas": "actors",
    "frames": [
-    322,
-    323
+    318,
+    319
    ],
    "ms": 500,
    "loop": true
   },
-  "actor.hero_spear_mail/gather/right": {
+  "actor.hero_spear/gather/right": {
    "atlas": "actors",
    "frames": [
-    324,
-    325,
-    326
+    320,
+    321,
+    322
    ],
    "ms": 140,
    "loop": false
   },
-  "actor.hero_spear_mail/slash/right": {
+  "actor.hero_spear/slash/right": {
+   "atlas": "actors",
+   "frames": [
+    323,
+    324,
+    325,
+    326
+   ],
+   "ms": 90,
+   "loop": false
+  },
+  "actor.hero_spear/walk/up": {
    "atlas": "actors",
    "frames": [
     327,
@@ -11378,40 +11820,40 @@
     329,
     330
    ],
-   "ms": 90,
-   "loop": false
-  },
-  "actor.hero_spear_mail/walk/up": {
-   "atlas": "actors",
-   "frames": [
-    331,
-    332,
-    333,
-    334
-   ],
    "ms": 120,
    "loop": true
   },
-  "actor.hero_spear_mail/idle/up": {
+  "actor.hero_spear/idle/up": {
    "atlas": "actors",
    "frames": [
-    335,
-    336
+    331,
+    332
    ],
    "ms": 500,
    "loop": true
   },
-  "actor.hero_spear_mail/gather/up": {
+  "actor.hero_spear/gather/up": {
    "atlas": "actors",
    "frames": [
-    337,
-    338,
-    339
+    333,
+    334,
+    335
    ],
    "ms": 140,
    "loop": false
   },
-  "actor.hero_spear_mail/slash/up": {
+  "actor.hero_spear/slash/up": {
+   "atlas": "actors",
+   "frames": [
+    336,
+    337,
+    338,
+    339
+   ],
+   "ms": 90,
+   "loop": false
+  },
+  "actor.hero_spear_mail/walk/down": {
    "atlas": "actors",
    "frames": [
     340,
@@ -11419,40 +11861,40 @@
     342,
     343
    ],
-   "ms": 90,
-   "loop": false
-  },
-  "actor.hero_sword/walk/down": {
-   "atlas": "actors",
-   "frames": [
-    344,
-    345,
-    346,
-    347
-   ],
    "ms": 120,
    "loop": true
   },
-  "actor.hero_sword/idle/down": {
+  "actor.hero_spear_mail/idle/down": {
    "atlas": "actors",
    "frames": [
-    348,
-    349
+    344,
+    345
    ],
    "ms": 500,
    "loop": true
   },
-  "actor.hero_sword/gather/down": {
+  "actor.hero_spear_mail/gather/down": {
    "atlas": "actors",
    "frames": [
-    350,
-    351,
-    352
+    346,
+    347,
+    348
    ],
    "ms": 140,
    "loop": false
   },
-  "actor.hero_sword/slash/down": {
+  "actor.hero_spear_mail/slash/down": {
+   "atlas": "actors",
+   "frames": [
+    349,
+    350,
+    351,
+    352
+   ],
+   "ms": 90,
+   "loop": false
+  },
+  "actor.hero_spear_mail/walk/left": {
    "atlas": "actors",
    "frames": [
     353,
@@ -11460,40 +11902,40 @@
     355,
     356
    ],
-   "ms": 90,
-   "loop": false
-  },
-  "actor.hero_sword/walk/left": {
-   "atlas": "actors",
-   "frames": [
-    357,
-    358,
-    359,
-    360
-   ],
    "ms": 120,
    "loop": true
   },
-  "actor.hero_sword/idle/left": {
+  "actor.hero_spear_mail/idle/left": {
    "atlas": "actors",
    "frames": [
-    361,
-    362
+    357,
+    358
    ],
    "ms": 500,
    "loop": true
   },
-  "actor.hero_sword/gather/left": {
+  "actor.hero_spear_mail/gather/left": {
    "atlas": "actors",
    "frames": [
-    363,
-    364,
-    365
+    359,
+    360,
+    361
    ],
    "ms": 140,
    "loop": false
   },
-  "actor.hero_sword/slash/left": {
+  "actor.hero_spear_mail/slash/left": {
+   "atlas": "actors",
+   "frames": [
+    362,
+    363,
+    364,
+    365
+   ],
+   "ms": 90,
+   "loop": false
+  },
+  "actor.hero_spear_mail/walk/right": {
    "atlas": "actors",
    "frames": [
     366,
@@ -11501,40 +11943,40 @@
     368,
     369
    ],
-   "ms": 90,
-   "loop": false
-  },
-  "actor.hero_sword/walk/right": {
-   "atlas": "actors",
-   "frames": [
-    370,
-    371,
-    372,
-    373
-   ],
    "ms": 120,
    "loop": true
   },
-  "actor.hero_sword/idle/right": {
+  "actor.hero_spear_mail/idle/right": {
    "atlas": "actors",
    "frames": [
-    374,
-    375
+    370,
+    371
    ],
    "ms": 500,
    "loop": true
   },
-  "actor.hero_sword/gather/right": {
+  "actor.hero_spear_mail/gather/right": {
    "atlas": "actors",
    "frames": [
-    376,
-    377,
-    378
+    372,
+    373,
+    374
    ],
    "ms": 140,
    "loop": false
   },
-  "actor.hero_sword/slash/right": {
+  "actor.hero_spear_mail/slash/right": {
+   "atlas": "actors",
+   "frames": [
+    375,
+    376,
+    377,
+    378
+   ],
+   "ms": 90,
+   "loop": false
+  },
+  "actor.hero_spear_mail/walk/up": {
    "atlas": "actors",
    "frames": [
     379,
@@ -11542,40 +11984,40 @@
     381,
     382
    ],
-   "ms": 90,
-   "loop": false
-  },
-  "actor.hero_sword/walk/up": {
-   "atlas": "actors",
-   "frames": [
-    383,
-    384,
-    385,
-    386
-   ],
    "ms": 120,
    "loop": true
   },
-  "actor.hero_sword/idle/up": {
+  "actor.hero_spear_mail/idle/up": {
    "atlas": "actors",
    "frames": [
-    387,
-    388
+    383,
+    384
    ],
    "ms": 500,
    "loop": true
   },
-  "actor.hero_sword/gather/up": {
+  "actor.hero_spear_mail/gather/up": {
    "atlas": "actors",
    "frames": [
-    389,
-    390,
-    391
+    385,
+    386,
+    387
    ],
    "ms": 140,
    "loop": false
   },
-  "actor.hero_sword/slash/up": {
+  "actor.hero_spear_mail/slash/up": {
+   "atlas": "actors",
+   "frames": [
+    388,
+    389,
+    390,
+    391
+   ],
+   "ms": 90,
+   "loop": false
+  },
+  "actor.hero_sword/walk/down": {
    "atlas": "actors",
    "frames": [
     392,
@@ -11583,40 +12025,40 @@
     394,
     395
    ],
-   "ms": 90,
-   "loop": false
-  },
-  "actor.hero_sword_mail/walk/down": {
-   "atlas": "actors",
-   "frames": [
-    396,
-    397,
-    398,
-    399
-   ],
    "ms": 120,
    "loop": true
   },
-  "actor.hero_sword_mail/idle/down": {
+  "actor.hero_sword/idle/down": {
    "atlas": "actors",
    "frames": [
-    400,
-    401
+    396,
+    397
    ],
    "ms": 500,
    "loop": true
   },
-  "actor.hero_sword_mail/gather/down": {
+  "actor.hero_sword/gather/down": {
    "atlas": "actors",
    "frames": [
-    402,
-    403,
-    404
+    398,
+    399,
+    400
    ],
    "ms": 140,
    "loop": false
   },
-  "actor.hero_sword_mail/slash/down": {
+  "actor.hero_sword/slash/down": {
+   "atlas": "actors",
+   "frames": [
+    401,
+    402,
+    403,
+    404
+   ],
+   "ms": 90,
+   "loop": false
+  },
+  "actor.hero_sword/walk/left": {
    "atlas": "actors",
    "frames": [
     405,
@@ -11624,40 +12066,40 @@
     407,
     408
    ],
-   "ms": 90,
-   "loop": false
-  },
-  "actor.hero_sword_mail/walk/left": {
-   "atlas": "actors",
-   "frames": [
-    409,
-    410,
-    411,
-    412
-   ],
    "ms": 120,
    "loop": true
   },
-  "actor.hero_sword_mail/idle/left": {
+  "actor.hero_sword/idle/left": {
    "atlas": "actors",
    "frames": [
-    413,
-    414
+    409,
+    410
    ],
    "ms": 500,
    "loop": true
   },
-  "actor.hero_sword_mail/gather/left": {
+  "actor.hero_sword/gather/left": {
    "atlas": "actors",
    "frames": [
-    415,
-    416,
-    417
+    411,
+    412,
+    413
    ],
    "ms": 140,
    "loop": false
   },
-  "actor.hero_sword_mail/slash/left": {
+  "actor.hero_sword/slash/left": {
+   "atlas": "actors",
+   "frames": [
+    414,
+    415,
+    416,
+    417
+   ],
+   "ms": 90,
+   "loop": false
+  },
+  "actor.hero_sword/walk/right": {
    "atlas": "actors",
    "frames": [
     418,
@@ -11665,40 +12107,40 @@
     420,
     421
    ],
-   "ms": 90,
-   "loop": false
-  },
-  "actor.hero_sword_mail/walk/right": {
-   "atlas": "actors",
-   "frames": [
-    422,
-    423,
-    424,
-    425
-   ],
    "ms": 120,
    "loop": true
   },
-  "actor.hero_sword_mail/idle/right": {
+  "actor.hero_sword/idle/right": {
    "atlas": "actors",
    "frames": [
-    426,
-    427
+    422,
+    423
    ],
    "ms": 500,
    "loop": true
   },
-  "actor.hero_sword_mail/gather/right": {
+  "actor.hero_sword/gather/right": {
    "atlas": "actors",
    "frames": [
-    428,
-    429,
-    430
+    424,
+    425,
+    426
    ],
    "ms": 140,
    "loop": false
   },
-  "actor.hero_sword_mail/slash/right": {
+  "actor.hero_sword/slash/right": {
+   "atlas": "actors",
+   "frames": [
+    427,
+    428,
+    429,
+    430
+   ],
+   "ms": 90,
+   "loop": false
+  },
+  "actor.hero_sword/walk/up": {
    "atlas": "actors",
    "frames": [
     431,
@@ -11706,40 +12148,40 @@
     433,
     434
    ],
-   "ms": 90,
-   "loop": false
-  },
-  "actor.hero_sword_mail/walk/up": {
-   "atlas": "actors",
-   "frames": [
-    435,
-    436,
-    437,
-    438
-   ],
    "ms": 120,
    "loop": true
   },
-  "actor.hero_sword_mail/idle/up": {
+  "actor.hero_sword/idle/up": {
    "atlas": "actors",
    "frames": [
-    439,
-    440
+    435,
+    436
    ],
    "ms": 500,
    "loop": true
   },
-  "actor.hero_sword_mail/gather/up": {
+  "actor.hero_sword/gather/up": {
    "atlas": "actors",
    "frames": [
-    441,
-    442,
-    443
+    437,
+    438,
+    439
    ],
    "ms": 140,
    "loop": false
   },
-  "actor.hero_sword_mail/slash/up": {
+  "actor.hero_sword/slash/up": {
+   "atlas": "actors",
+   "frames": [
+    440,
+    441,
+    442,
+    443
+   ],
+   "ms": 90,
+   "loop": false
+  },
+  "actor.hero_sword_mail/walk/down": {
    "atlas": "actors",
    "frames": [
     444,
@@ -11747,166 +12189,152 @@
     446,
     447
    ],
-   "ms": 90,
-   "loop": false
+   "ms": 120,
+   "loop": true
   },
-  "actor.sheep/walk/down": {
+  "actor.hero_sword_mail/idle/down": {
    "atlas": "actors",
    "frames": [
     448,
-    449,
+    449
+   ],
+   "ms": 500,
+   "loop": true
+  },
+  "actor.hero_sword_mail/gather/down": {
+   "atlas": "actors",
+   "frames": [
     450,
-    451
+    451,
+    452
    ],
-   "ms": 150,
-   "loop": true
+   "ms": 140,
+   "loop": false
   },
-  "actor.sheep/idle/down": {
+  "actor.hero_sword_mail/slash/down": {
    "atlas": "actors",
    "frames": [
-    452,
-    453
-   ],
-   "ms": 600,
-   "loop": true
-  },
-  "actor.sheep/graze/down": {
-   "atlas": "actors",
-   "frames": [
+    453,
     454,
-    455
+    455,
+    456
    ],
-   "ms": 380,
-   "loop": true
+   "ms": 90,
+   "loop": false
   },
-  "actor.sheep/walk/left": {
+  "actor.hero_sword_mail/walk/left": {
    "atlas": "actors",
    "frames": [
-    456,
     457,
     458,
-    459
+    459,
+    460
    ],
-   "ms": 150,
+   "ms": 120,
    "loop": true
   },
-  "actor.sheep/idle/left": {
+  "actor.hero_sword_mail/idle/left": {
    "atlas": "actors",
    "frames": [
-    460,
-    461
+    461,
+    462
    ],
-   "ms": 600,
+   "ms": 500,
    "loop": true
   },
-  "actor.sheep/graze/left": {
+  "actor.hero_sword_mail/gather/left": {
    "atlas": "actors",
    "frames": [
-    462,
-    463
-   ],
-   "ms": 380,
-   "loop": true
-  },
-  "actor.sheep/walk/right": {
-   "atlas": "actors",
-   "frames": [
+    463,
     464,
-    465,
-    466,
-    467
+    465
    ],
-   "ms": 150,
-   "loop": true
+   "ms": 140,
+   "loop": false
   },
-  "actor.sheep/idle/right": {
+  "actor.hero_sword_mail/slash/left": {
    "atlas": "actors",
    "frames": [
+    466,
+    467,
     468,
     469
    ],
-   "ms": 600,
-   "loop": true
+   "ms": 90,
+   "loop": false
   },
-  "actor.sheep/graze/right": {
+  "actor.hero_sword_mail/walk/right": {
    "atlas": "actors",
    "frames": [
     470,
-    471
+    471,
+    472,
+    473
    ],
-   "ms": 380,
+   "ms": 120,
    "loop": true
   },
-  "actor.sheep/walk/up": {
+  "actor.hero_sword_mail/idle/right": {
    "atlas": "actors",
    "frames": [
-    472,
-    473,
     474,
     475
    ],
-   "ms": 150,
+   "ms": 500,
    "loop": true
   },
-  "actor.sheep/idle/up": {
+  "actor.hero_sword_mail/gather/right": {
    "atlas": "actors",
    "frames": [
     476,
-    477
+    477,
+    478
    ],
-   "ms": 600,
-   "loop": true
+   "ms": 140,
+   "loop": false
   },
-  "actor.sheep/graze/up": {
+  "actor.hero_sword_mail/slash/right": {
    "atlas": "actors",
    "frames": [
-    478,
-    479
-   ],
-   "ms": 380,
-   "loop": true
-  },
-  "actor.smith/walk/down": {
-   "atlas": "actors",
-   "frames": [
+    479,
     480,
     481,
-    482,
-    483
+    482
+   ],
+   "ms": 90,
+   "loop": false
+  },
+  "actor.hero_sword_mail/walk/up": {
+   "atlas": "actors",
+   "frames": [
+    483,
+    484,
+    485,
+    486
    ],
    "ms": 120,
    "loop": true
   },
-  "actor.smith/idle/down": {
+  "actor.hero_sword_mail/idle/up": {
    "atlas": "actors",
    "frames": [
-    484,
-    485
+    487,
+    488
    ],
    "ms": 500,
    "loop": true
   },
-  "actor.smith/walk/left": {
+  "actor.hero_sword_mail/gather/up": {
    "atlas": "actors",
    "frames": [
-    486,
-    487,
-    488,
-    489
-   ],
-   "ms": 120,
-   "loop": true
-  },
-  "actor.smith/idle/left": {
-   "atlas": "actors",
-   "frames": [
+    489,
     490,
     491
    ],
-   "ms": 500,
-   "loop": true
+   "ms": 140,
+   "loop": false
   },
-  "actor.smith/walk/right": {
+  "actor.hero_sword_mail/slash/up": {
    "atlas": "actors",
    "frames": [
     492,
@@ -11914,14 +12342,181 @@
     494,
     495
    ],
+   "ms": 90,
+   "loop": false
+  },
+  "actor.sheep/walk/down": {
+   "atlas": "actors",
+   "frames": [
+    496,
+    497,
+    498,
+    499
+   ],
+   "ms": 150,
+   "loop": true
+  },
+  "actor.sheep/idle/down": {
+   "atlas": "actors",
+   "frames": [
+    500,
+    501
+   ],
+   "ms": 600,
+   "loop": true
+  },
+  "actor.sheep/graze/down": {
+   "atlas": "actors",
+   "frames": [
+    502,
+    503
+   ],
+   "ms": 380,
+   "loop": true
+  },
+  "actor.sheep/walk/left": {
+   "atlas": "actors",
+   "frames": [
+    504,
+    505,
+    506,
+    507
+   ],
+   "ms": 150,
+   "loop": true
+  },
+  "actor.sheep/idle/left": {
+   "atlas": "actors",
+   "frames": [
+    508,
+    509
+   ],
+   "ms": 600,
+   "loop": true
+  },
+  "actor.sheep/graze/left": {
+   "atlas": "actors",
+   "frames": [
+    510,
+    511
+   ],
+   "ms": 380,
+   "loop": true
+  },
+  "actor.sheep/walk/right": {
+   "atlas": "actors",
+   "frames": [
+    512,
+    513,
+    514,
+    515
+   ],
+   "ms": 150,
+   "loop": true
+  },
+  "actor.sheep/idle/right": {
+   "atlas": "actors",
+   "frames": [
+    516,
+    517
+   ],
+   "ms": 600,
+   "loop": true
+  },
+  "actor.sheep/graze/right": {
+   "atlas": "actors",
+   "frames": [
+    518,
+    519
+   ],
+   "ms": 380,
+   "loop": true
+  },
+  "actor.sheep/walk/up": {
+   "atlas": "actors",
+   "frames": [
+    520,
+    521,
+    522,
+    523
+   ],
+   "ms": 150,
+   "loop": true
+  },
+  "actor.sheep/idle/up": {
+   "atlas": "actors",
+   "frames": [
+    524,
+    525
+   ],
+   "ms": 600,
+   "loop": true
+  },
+  "actor.sheep/graze/up": {
+   "atlas": "actors",
+   "frames": [
+    526,
+    527
+   ],
+   "ms": 380,
+   "loop": true
+  },
+  "actor.smith/walk/down": {
+   "atlas": "actors",
+   "frames": [
+    528,
+    529,
+    530,
+    531
+   ],
+   "ms": 120,
+   "loop": true
+  },
+  "actor.smith/idle/down": {
+   "atlas": "actors",
+   "frames": [
+    532,
+    533
+   ],
+   "ms": 500,
+   "loop": true
+  },
+  "actor.smith/walk/left": {
+   "atlas": "actors",
+   "frames": [
+    534,
+    535,
+    536,
+    537
+   ],
+   "ms": 120,
+   "loop": true
+  },
+  "actor.smith/idle/left": {
+   "atlas": "actors",
+   "frames": [
+    538,
+    539
+   ],
+   "ms": 500,
+   "loop": true
+  },
+  "actor.smith/walk/right": {
+   "atlas": "actors",
+   "frames": [
+    540,
+    541,
+    542,
+    543
+   ],
    "ms": 120,
    "loop": true
   },
   "actor.smith/idle/right": {
    "atlas": "actors",
    "frames": [
-    496,
-    497
+    544,
+    545
    ],
    "ms": 500,
    "loop": true
@@ -11929,10 +12524,10 @@
   "actor.smith/walk/up": {
    "atlas": "actors",
    "frames": [
-    498,
-    499,
-    500,
-    501
+    546,
+    547,
+    548,
+    549
    ],
    "ms": 120,
    "loop": true
@@ -11940,8 +12535,8 @@
   "actor.smith/idle/up": {
    "atlas": "actors",
    "frames": [
-    502,
-    503
+    550,
+    551
    ],
    "ms": 500,
    "loop": true

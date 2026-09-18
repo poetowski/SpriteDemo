@@ -29,7 +29,8 @@ def run(content, man, tile_canvases=None):
     #     back to the old size, or a new atlas added at the wrong one, fails
     #     here rather than looking subtly chunky in the game.
     STANDARD = {"actors": 32, "actors_huge": 64, "tiles": 16, "props": 32,
-                "props_big": 48, "props_huge": 64, "items": 16, "fx": 8}
+                "props_big": 48, "props_huge": 64, "props_vast": 128,
+                "items": 16, "fx": 8}
     for name, meta in man["atlases"].items():
         w, h = meta["frame"]
         if w != h:
@@ -102,6 +103,13 @@ def run(content, man, tile_canvases=None):
             if not isinstance(v, (int, float)) or v <= 0:
                 _fail("actor-hostile", f"{defn['_file']}: hostile.{field} must "
                                        f"be a positive number, not {v!r}")
+        # Optional, and a flag rather than a number: "provoked" says the
+        # creature does not use any of the above until it has been hit. A
+        # string or a 1 here would be truthy and quietly work, and then one
+        # day would not.
+        if "provoked" in h and not isinstance(h["provoked"], bool):
+            _fail("actor-hostile", f"{defn['_file']}: hostile.provoked is a "
+                                   f"flag - true or false, not {h['provoked']!r}")
         if h["lose"] < h["sight"]:
             _fail("actor-hostile", f"{defn['_file']}: hostile.lose ({h['lose']}) "
                                    f"is inside hostile.sight ({h['sight']}), so "

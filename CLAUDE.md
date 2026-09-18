@@ -62,6 +62,7 @@ node tools/shot.cjs --map    # 3. and shoot the whole world
    node tools/shot.cjs --map                # the whole world in one frame
    node tools/shot.cjs --on map.wilderness2 # start on another map, not the default
    node tools/shot.cjs --cross              # walk out of the map, check the bag arrives
+   node tools/shot.cjs --exit 3 --cross     # ...by its fourth doorway, not its first
    node tools/shot.cjs --on map.wilderness3 --boar   # stand still, get charged
    node tools/shot.cjs --spawn npc.troll     # something no map carries yet
    ```
@@ -134,6 +135,15 @@ able to reach either - and no gate treats that as an error, because a map
 nobody walks to is still a valid map. The panel also reports one-way links.
 Clicking a map or a gate opens it.
 
+**Where a gate sits on the new map decides where that map lands**, and the
+ground next door may already be taken. Wilderness VI is 40x40 against
+Wilderness I's 20, joined along the whole of Wilderness I's north edge: joined
+at its *middle* it would hang ten tiles west, straight over Wilderness IV,
+which is already north of Wilderness II. So the seam is its south-west twenty
+columns and the map runs east instead. No gate catches two maps in one place -
+the editor's world view does, and `no two maps overlap on the atlas` in
+`editor_test.cjs` is the check that says so.
+
 Gates run north-south as readily as east-west - Wilderness IV sits above
 Wilderness II - and which coordinate a crossing preserves depends on the edge:
 cross a side edge and you keep your row, cross a top or bottom edge and you
@@ -190,6 +200,8 @@ editor in a headless browser and checks all of the above
 | `actors_huge` | 64x64 | `(24, 61)` | `gen/giant.py` |
 | `props` | 32x32 | `(16, 29)` | `gen/props.py` |
 | `props_big` | 48x48 | `(24, 45)` | `gen/props.py` structures |
+| `props_huge` | 64x64 | `(24, 61)` | `gen/props.py` four tiles wide |
+| `props_vast` | 128x128 | `(56, 125)` | `gen/props.py` four by four |
 | `items` | 16x16 | `(8, 14)` | `gen/items.py` |
 | `fx` | 8x8 | `(4, 4)` | `gen/fx.py` |
 
@@ -262,7 +274,7 @@ tools/gen/palette.py   the one palette; a character variant is a key remap
 tools/gen/actor.py     the biped rig      (32x32 frame, anchor [16, 29])
 tools/gen/animal.py    the quadruped rig  (same frame, same contract)
 tools/gen/giant.py     the giant rig      (64x64 frame, anchor [24, 61])
-tools/gen/props.py     props 32x32, structures 48x48 (anchor [24, 45])
+tools/gen/props.py     props 32x32, structures 48x48, and the 64/128 erratics
 tools/gen/tiles.py     16x16 ground tiles, variants and the blob transitions
 tools/art.py           the art pipeline: draws everything -> assets/
 tools/build.py         the game build: assets/ + content/ -> build/ + game/
@@ -315,6 +327,35 @@ four-tile footprint read as solid rather than as a canopy floating over
 walkable ground. Nothing else needs wiring: the editor loads whatever atlases
 the manifest lists, and `art-scale` accepts a new one at any multiple of 16.
 
+**A prop that stands on a square of ground** - four tiles by four - needs the
+128x128 class (`VAST_PROPS`), and that is the only reason the frame exists: a
+mass four tiles deep eats 64px of the frame from the bottom before any of it is
+height, and there is nothing left of a 64px frame to be tall with. Same rule
+again - anchor on a tile centre (x=56), art centred - so it covers offsets -1,
+0, +1, +2 and rises most of four tiles over them. `prop.boulder_16` is the one.
+
+**The boulders are a size ladder**, and that is the point of them: 2, 4, 6, 8
+and 16 tiles, from something you walk round to something a road stops at. A
+field of rock drawn from one rock at one size reads as a repeated stamp however
+carefully it is scattered. Each is authored at the frame its footprint needs
+(`boulder_2`, `_4`, `_6` at 48x48, `_8` at 64x64, `_16` at 128x128) rather than
+drawn once and scaled, and all five share three helpers in `tools/gen/props.py`
+worth knowing about before drawing any other rock:
+
+- `_mass` unions discs and then fills each column between its own topmost and
+  bottommost pixel. Filling down to the ground line instead - which was the
+  first thing tried - gives every boulder vertical sides and a flat top, a mesa
+  rather than a rock. The lobes that carry the weight are placed *through* the
+  ground line and cut off by it, which is what leaves a broad flat base.
+- `_form` partitions the mass between a few planes by straight lines, because
+  that is what a facet is. A gradient quantised into bands was tried first and
+  a mass this size shaded that way reads as an airbrushed ball with contour
+  lines on it, whatever the thresholds. Its grain is divided by the mass's own
+  span: a fixed jitter frays a small rock by a pixel and a large one across a
+  quarter of its face.
+- `_moss` thins each lichen patch towards its rim. A solid disc of one colour
+  on a boulder reads as a sticker.
+
 **An NPC** is a file in `content/actors/` plus a line in the map. Its `rig`
 (`biped` / `quadruped` / `giant`), `states`, `speed`, `blocks`, `interact` and
 `wander` settings are all content. No JS changes.
@@ -335,7 +376,10 @@ off the atlas, and a wanderer's collision body is derived from its footprint -
 state, which the rig draws and the engine plays when a hostile lands a blow;
 it plants its feet for as long as the swing runs. An actor without one still
 hurts on contact, which is what the boar does. The animation is content: no
-list of creatures that punch exists anywhere in the engine.
+list of creatures that punch exists anywhere in the engine. The quadruped rig
+has one too now - head down and thrown forward, since a deer has nothing else
+to hit you with - and adding it to `STATE_ORDER` changed nothing for the sheep,
+the goat or the boar, because a rig only draws the states its actor declares.
 
 **Putting the hero somewhere, in a test:** `body.reset(x, y)`, never
 `sprite.setPosition(x, y)`. A dynamic Arcade body writes its own position back
@@ -382,10 +426,26 @@ something quietly impossible. A charge heads straight at the hero rather than
 tile by tile, and tests each axis against `isWalkable` first, because the body
 is immovable and nothing else would stop it coming through the rock.
 
+**Something that only fights back** adds `"provoked": true` to that same block.
+It is one flag rather than a second kind of creature: the elk carries the whole
+hostile block from the start and simply does not use it until something hits
+it, and after that it is a boar with antlers until it gets home again, where it
+forgets. `provoke()` in `game/main.js` is the only thing that sets the flag, so
+nothing in the engine knows what an elk is - and it fires for *anything* with a
+`hostile` block, so a struck boar now turns on you rather than bolting. Because
+it does, a creature that turns cannot also run: `strike()` startles it or
+provokes it, never both.
+
 The `actor-hostile` gate requires every field, positive, with `lose` outside
 `sight` and a `wander` block to fall back to. `node tools/shot.cjs --on
-map.wilderness3 --boar` stands in front of one and checks all four things: it
-notices, it closes, it costs hp, and it goes home and settles.
+map.wilderness3 --boar` stands in front of one and checks four things: it
+notices, it closes, it costs hp, and it goes home and settles - and on a
+`provoked` creature it first checks the other half, that being left alone
+leaves you alone, because a test that only watched it charge would pass just as
+well with the flag deleted. **Give a wanderer room to charge in**: `leash` is
+measured from where it spawned, so a wide `wander.radius` and a short leash
+leaves it no distance to charge in at all - it notices, takes two steps, and
+breaks off at the end of its own tether.
 
 Damage to the hero goes through `hurt()`, which subtracts armour but never all
 of it, and running out of hp is not death: `blackOut()` puts you back at the

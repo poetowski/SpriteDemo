@@ -484,7 +484,12 @@ class World extends Phaser.Scene {
 
   stepHostile(w, dt) {
     const cfg = w.def.hostile;
-    if (!cfg) return false;
+    // "provoked" is the difference between a boar and an elk, and it is one
+    // field rather than a second kind of creature: the elk carries the whole
+    // hostile block from the start and simply does not use it until something
+    // hits it. See provoke() - which is also the only thing that sets the flag,
+    // so nothing in here needs to know what an elk is.
+    if (!cfg || (cfg.provoked && !w.angered)) return false;
     const home = this.tileCentre(w.home[0], w.home[1]);
 
     // Going home. It has broken off and walks back at its own speed, not the
@@ -510,6 +515,7 @@ class World extends Phaser.Scene {
         const at = w.stuck > 2500 ? { x: w.sprite.x, y: w.sprite.y } : home;
         w.sprite.body.reset(at.x, at.y);
         w.returning = false;
+        w.angered = false;        // home, and no longer holding the grudge
         w.homeBest = undefined;
         w.stuck = 0;
         w.tile = [Math.floor(at.x / this.ts), Math.floor(at.y / this.ts)];
@@ -854,7 +860,7 @@ class World extends Phaser.Scene {
     for (const w of this.wanderers) {
       if (!inArc(w.sprite)) continue;
       this.flinch(w.sprite);
-      this.startle(w, dir);
+      if (!this.provoke(w)) this.startle(w, dir);   // it turns, or it bolts
       this.floatDamage(w.sprite);
     }
     for (const h of this.hittable) {
@@ -862,6 +868,21 @@ class World extends Phaser.Scene {
       this.flinch(h.sprite, true);
       this.floatDamage(h.sprite);
     }
+  }
+
+  /** A blow lands on something that can fight back. Anything carrying a
+   *  "hostile" block turns on the hero when struck instead of bolting - it
+   *  knows exactly who hit it, so it does not have to see them first - and
+   *  something marked "provoked" has been waiting for exactly this: it grazed
+   *  like a sheep until now and is a boar with antlers from here on, until it
+   *  gets back to where it lives. Returns whether the blow angered it, because
+   *  a creature that turns on you must not also run away from you. */
+  provoke(w) {
+    if (!w.def.hostile) return false;
+    w.angered = true;
+    w.chasing = true;
+    w.returning = false;
+    return true;
   }
 
   /** A blow's worth: the weapon's damage, give or take a fifth. */

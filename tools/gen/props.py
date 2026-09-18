@@ -5,8 +5,9 @@ line, so a single anchor rule and a single depth-sort rule cover both:
 everything is positioned by the point its base sits on, and drawn in order of
 that point's y. Structures too big for that frame use a 48x48 frame with the
 same convention - three tiles wide, base on the anchor row - and the few things
-bigger still use 64x64, four tiles wide. Same convention every time, which is
-why the engine needs no special case for any of them.
+bigger still use 64x64, four tiles wide, or 128x128 for the one that stands on
+four tiles by four. Same convention every time, which is why the engine needs
+no special case for any of them.
 
 How much of the world a prop *blocks* is not decided here: that is the
 "footprint" field in content/props/, a list of tile offsets from the anchor
@@ -17,7 +18,7 @@ a canopy wider than the tile it stands on.
 import math
 
 from gen.actor import FRAME, GROUND_Y
-from gen.palette import Canvas
+from gen.palette import Canvas, scatter
 
 BASE_Y = GROUND_Y - 1          # last opaque row, matching the actor's boots
 
@@ -36,6 +37,17 @@ HUGE_FRAME = 64
 HUGE_GROUND_Y = 61
 HUGE_ANCHOR = (24, HUGE_GROUND_Y)
 HUGE_BASE_Y = HUGE_GROUND_Y - 1
+
+# Four tiles wide and four deep, which is the only reason this frame exists: a
+# mass standing on a 4x4 patch of ground eats 64px of the frame from the bottom
+# before any of it is height, and there is nothing left of a 64px frame to be
+# tall with. Same rule as above - anchor on a tile centre, art centred in the
+# frame - so it covers tile offsets -1, 0, +1, +2 and rises most of four tiles
+# over them.
+VAST_FRAME = 128
+VAST_GROUND_Y = 125
+VAST_ANCHOR = (56, VAST_GROUND_Y)
+VAST_BASE_Y = VAST_GROUND_Y - 1
 
 
 # --------------------------------------------------------------- helpers ---
@@ -87,6 +99,120 @@ def _plank(c, x0, y0, x1, y1, key="WD", light="WDL", dark="WDD"):
 def _post(c, x, y0, y1, key="WD", dark="WDD"):
     c.col(x, y0, y1, key)
     c.col(x + 1, y0, y1, dark)
+
+
+ROCK = ("ST", "STL", "STD", "STX")
+
+
+def _mass(c, lobes, base_y, key="ST"):
+    """A solid lump: overlapping discs, then each column filled between its
+    own topmost and bottommost pixel so the gaps where two discs meet close up
+    without the silhouette being dragged anywhere. Filling down to the ground
+    line instead would give every boulder vertical sides and a flat top - a
+    mesa, not a rock.
+
+    The lobes that carry the weight are placed *through* the ground line and
+    cut off by it, which is what leaves a broad flat base: a boulder resting
+    on the turf, rather than one balanced on the point it was drawn from."""
+    for cx, cy, r in lobes:
+        _lobe(c, cx, cy, r, key)
+    for x in range(c.w):
+        col = [y for y in range(base_y + 1) if c.px[y][x] is not None]
+        if col:
+            c.col(x, col[0], col[-1], key)
+    c.rect(0, base_y + 1, c.w - 1, c.h - 1, None)
+
+
+# The planes a rock is shaded in, as (du, dv, bias, key) scored over the mass's
+# own bounds - u across, v down, both 0..1 - with the brightest score winning.
+# A partition by straight lines, because that is what a facet is: light meets
+# shade along an edge. The first thing tried here was a gradient quantised into
+# bands, and a mass this size shaded that way reads as an airbrushed ball with
+# contours on it however the bands are tuned. Light from the up-left, as
+# everywhere else in the game.
+PLANES = ((-1.00, -0.80, 1.05, "STL"),      # the face turned to the light
+          (0.00, 0.00, 0.45, "ST"),         # the broad middle of the rock
+          (0.90, 0.50, -0.30, "STD"),       # turned away, to the right
+          (1.10, 1.10, -1.00, "STX"))       # and the corner in its own shadow
+
+
+def _form(c, base="ST", seed=7, planes=PLANES, tilt=0.0, grit=0.8):
+    """Volume by position within the mass's own bounds: every pixel goes to
+    whichever plane claims it, so the tones meet along straight edges and the
+    thing reads as faceted rock. `scatter` roughens those edges a pixel at a
+    time, which is the difference between granite and a folded paper bag.
+
+    Every pixel it touches is one that is already `base`, so the shading stays
+    inside the silhouette - painting it by raw coordinate is what puts pixels
+    outside the shape, and nothing asserts that away."""
+    cells = [(x, y) for y in range(c.h) for x in range(c.w) if c.px[y][x] == base]
+    if not cells:
+        return
+    x0 = min(x for x, _ in cells)
+    x1 = max(x for x, _ in cells)
+    y0 = min(y for _, y in cells)
+    y1 = max(y for _, y in cells)
+    grain = scatter(seed)
+    # The jitter is measured against the mass, not the score: u and v are
+    # normalised, so a fixed jitter frays a small rock by a pixel and a large
+    # one across a quarter of its face. Divided by the span it is the same few
+    # pixels of ragged edge whatever size the boulder is.
+    span = max(4, x1 - x0, y1 - y0)
+    for x, y in cells:
+        u = (x - x0) / max(1, x1 - x0)
+        v = (y - y0) / max(1, y1 - y0)
+        # Bend the field the planes are scored over rather than the planes
+        # themselves: added to every score alike, a wobble would cancel out of
+        # the comparison and do nothing at all.
+        u, v = u + tilt * math.sin(v * 4.1 + 0.7), v + tilt * math.sin(u * 3.3)
+        best, key = None, base
+        for du, dv, bias, k in planes:
+            s = du * u + dv * v + bias + (grain(5) - 2) * (grit / span)
+            if best is None or s > best:
+                best, key = s, k
+        c.px[y][x] = key
+
+
+def _rim(c, keys, light, dark):
+    """_shade for a mass that already has form inside it. The rim comes from
+    the silhouette and the interior from _form, so running _shade after _form
+    would only catch the pixels _form happened to leave alone."""
+    for y in range(c.h):
+        for x in range(c.w):
+            if c.px[y][x] not in keys:
+                continue
+            if c.get(x - 1, y) is None or c.get(x, y - 1) is None:
+                c.px[y][x] = light
+            elif c.get(x + 1, y) is None or c.get(x, y + 1) is None:
+                c.px[y][x] = dark
+
+
+def _crack(c, pts, key="STX"):
+    """A fissure: straight runs between points, drawn only where there is rock
+    to crack. What keeps a big face from reading as a painted backdrop."""
+    for (ax, ay), (bx, by) in zip(pts, pts[1:]):
+        steps = max(abs(bx - ax), abs(by - ay), 1)
+        for i in range(steps + 1):
+            x = ax + (bx - ax) * i // steps
+            y = ay + (by - ay) * i // steps
+            if c.get(x, y) is not None:
+                c.set(x, y, key)
+
+
+def _moss(c, patches, key="MS", seed=5):
+    """Lichen low on the sheltered side. Thinned towards the rim of each patch
+    rather than filled solid: a disc of one colour on a boulder reads as a
+    sticker, where a patch that frays out at its edge reads as something
+    growing. Only ever over rock, so it cannot eat the outline."""
+    grain = scatter(seed)
+    for cx, cy, r in patches:
+        for y in range(cy - r, cy + r + 1):
+            for x in range(cx - r, cx + r + 1):
+                d = (x - cx) ** 2 + (y - cy) ** 2
+                if d > r * r or grain(r * r) < d:
+                    continue
+                if c.get(x, y) in ROCK:
+                    c.set(x, y, key)
 
 
 # ----------------------------------------------------------------- nature ---
@@ -214,6 +340,97 @@ def boulder():
                       (26, 16, 25), (27, 15, 24)):
         c.row(x0, x1, y, "STD")          # and one turned away from it
     _shade(c, "ST", "STL", "STD")
+    return c.outline()
+
+
+# ------------------------------------------------------------- the ladder ---
+# Boulders by how much ground they stand on. A rock field drawn from one rock
+# at one size reads as a repeated stamp however it is scattered, so the sizes
+# are the point: two tiles is something to walk round, sixteen is something the
+# road stops at. Each is authored at the frame its footprint needs rather than
+# drawn small and scaled up, and the tiles it actually blocks are the
+# "footprint" in content/props/ - the art is free to overhang them.
+
+
+def boulder_2():
+    """Two tiles: a split rock, waist high, the smallest thing here you cannot
+    step over. Drawn across the anchor tile and the one to its right, which is
+    what an even-width footprint means - there is no middle tile to sit on."""
+    c = Canvas(BIG_FRAME, BIG_FRAME)
+    _mass(c, ((28, 37, 14), (38, 42, 8)), BIG_BASE_Y)
+    _form(c, seed=21, tilt=0.10)
+    _crack(c, ((31, 22), (29, 30), (33, 38), (32, 44)))
+    _rim(c, ROCK, "STL", "STD")
+    return c.outline()
+
+
+def boulder_4():
+    """Four tiles, two by two: shoulder height and square on, the first size
+    that hides what is behind it."""
+    c = Canvas(BIG_FRAME, BIG_FRAME)
+    _mass(c, ((29, 33, 16), (38, 42, 9), (26, 22, 10)), BIG_BASE_Y)
+    _form(c, seed=34, tilt=0.13)
+    _crack(c, ((27, 12), (30, 22), (25, 32), (28, 44)))
+    _crack(c, ((36, 26), (41, 35)))
+    _moss(c, ((20, 40, 5), (31, 43, 4)))
+    _rim(c, ROCK, "STL", "STD")
+    return c.outline()
+
+
+def boulder_6():
+    """Six tiles, three by two: a crag rather than a rock, tall enough that the
+    road has to bend round it. Same footprint as a cottage, which is the point
+    of putting one at a bend - it reads as a building until you are close."""
+    c = Canvas(BIG_FRAME, BIG_FRAME)
+    _mass(c, ((23, 31, 20), (11, 42, 10), (37, 40, 9), (28, 17, 12)),
+          BIG_BASE_Y)
+    _form(c, seed=55, tilt=0.11)
+    _crack(c, ((21, 8), (26, 20), (20, 29), (23, 44)))
+    _crack(c, ((33, 24), (38, 33), (35, 44)))
+    _moss(c, ((7, 41, 6), (18, 43, 4), (40, 41, 4)))
+    _rim(c, ROCK, "STL", "STD")
+    return c.outline()
+
+
+def boulder_8():
+    """Eight tiles, four by two: the boulder you see from the other end of the
+    valley. Four tiles across, so it shares the 64x64 frame and the anchor
+    convention with the burrow tree."""
+    c = Canvas(HUGE_FRAME, HUGE_FRAME)
+    _mass(c, ((29, 40, 27), (12, 55, 12), (50, 52, 12), (36, 22, 15)),
+          HUGE_BASE_Y)
+    _form(c, seed=71, tilt=0.12)
+    _crack(c, ((28, 10), (34, 28), (27, 42), (31, 60)))
+    _crack(c, ((44, 32), (52, 46), (48, 60)))
+    _crack(c, ((9, 46), (17, 55)))
+    _moss(c, ((8, 55, 7), (23, 58, 5), (54, 56, 5), (39, 59, 4)))
+    _rim(c, ROCK, "STL", "STD")
+    return c.outline()
+
+
+def boulder_16():
+    """Sixteen tiles, four by four: the erratic the pass is named for. Two
+    storeys of rock standing on a square of ground the size of a barnyard,
+    which is why it gets a frame of its own - see VAST_FRAME above.
+
+    Built in two masses rather than one so it reads as a block that split and
+    settled: a lower plinth spreading out to the ground, and a leaning cap sat
+    on top of it with the fissure between them running the whole way across.
+    One dome this size, however lumpy its edge, is a boulder-shaped hill."""
+    c = Canvas(VAST_FRAME, VAST_FRAME)
+    _mass(c, ((62, 100, 40), (48, 74, 24), (84, 80, 20),
+              (62, 58, 22)), VAST_BASE_Y)
+    _form(c, seed=93, tilt=0.14)
+    # The split: one long fissure across the whole mass, with the cap's weight
+    # carried on the left of it, plus the shorter cracks that run off it.
+    _crack(c, ((27, 80), (46, 72), (64, 76), (82, 68), (102, 76)))
+    _crack(c, ((46, 72), (50, 50), (45, 28)))
+    _crack(c, ((64, 76), (68, 96), (62, 112), (65, 124)))
+    _crack(c, ((82, 68), (90, 86), (86, 104), (90, 124)))
+    _crack(c, ((33, 90), (39, 108), (34, 124)))
+    _moss(c, ((32, 110, 9), (50, 119, 7), (97, 114, 8), (73, 121, 6),
+              (24, 96, 5)))
+    _rim(c, ROCK, "STL", "STD")
     return c.outline()
 
 
@@ -1007,13 +1224,22 @@ BIG_PROPS = {
     "prop.tower": tower,
     "prop.windmill": windmill,
     "prop.shed": shed,
+    "prop.boulder_2": boulder_2,
+    "prop.boulder_4": boulder_4,
+    "prop.boulder_6": boulder_6,
 }
 BIG_PROP_ORDER = list(BIG_PROPS)
 
 HUGE_PROPS = {
     "prop.burrow_tree": burrow_tree,
+    "prop.boulder_8": boulder_8,
 }
 HUGE_PROP_ORDER = list(HUGE_PROPS)
+
+VAST_PROPS = {
+    "prop.boulder_16": boulder_16,
+}
+VAST_PROP_ORDER = list(VAST_PROPS)
 
 
 def build_props():
@@ -1029,3 +1255,8 @@ def build_big_props():
 def build_huge_props():
     """The 64x64 giants, same contract again, their own atlas."""
     return [(pid, HUGE_PROPS[pid]()) for pid in HUGE_PROP_ORDER]
+
+
+def build_vast_props():
+    """The 128x128 class: four tiles across and four deep, their own atlas."""
+    return [(pid, VAST_PROPS[pid]()) for pid in VAST_PROP_ORDER]

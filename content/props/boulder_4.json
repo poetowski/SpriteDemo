@@ -1,0 +1,9 @@
+{
+  "id": "prop.boulder_4",
+  "sprite": "prop.boulder_4",
+  "footprint": [
+    [0, -1], [1, -1],
+    [0, 0], [1, 0]
+  ],
+  "blocks": true
+}
