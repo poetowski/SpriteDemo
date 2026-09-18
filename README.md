@@ -6,10 +6,10 @@ plus `.aseprite` sources, and played in Phaser 3 — with the map, the props, th
 NPCs and their dialogue all loaded from engine-neutral JSON. Sheep and goats
 wander and graze on their own.
 
-Riverside is 96×72 tiles — a forest, a lake and the river out of it, a village
-at the crossroads, a quarry, a walled graveyard and a farm — with 33 kinds of
-prop, every one of them solid, and thirteen kinds of thing to pick up, three
-of which go in the weapon hand and swing.
+The world is four 20×20 wildernesses you walk between — fells and pine woods,
+a shieling, a boar that hunts its own patch, and a lake north of it all with an
+old burrow tree four tiles across — with 36 kinds of prop and fifteen kinds of
+thing to pick up, three of which go in the weapon hand and swing.
 
 ![the world](build/map.png)
 

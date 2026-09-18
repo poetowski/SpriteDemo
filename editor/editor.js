@@ -99,7 +99,9 @@ async function boot() {
 
   buildPalettes();
   wire();
-  await openMap(maps.includes("riverside") ? "riverside" : maps[0]);
+  // Whichever map comes first, rather than one named here: the name that used
+  // to be hardcoded outlived the map it pointed at.
+  await openMap(maps[0]);
   // The gates are a property of every map together, not of the open one, so
   // they are read once up front - the tile view colours and numbers its
   // mouths the same way the atlas does.

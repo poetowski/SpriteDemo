@@ -127,8 +127,10 @@ arrivals from elsewhere drawn as a dashed outline - so both ends of a crossing
 are visible without leaving the map.
 
 Maps that reach each other form one world; maps that reach nothing are stacked
-below, which is how you spot that Riverside - 159 entities of it - is not
-currently reachable from anywhere. The panel also reports one-way links.
+below. That is what the view is for: the two Riverside maps sat there as their
+own islands for a while, 159 entities of one of them, with nothing in the game
+able to reach either - and no gate treats that as an error, because a map
+nobody walks to is still a valid map. The panel also reports one-way links.
 Clicking a map or a gate opens it.
 
 Gates run north-south as readily as east-west - Wilderness IV sits above

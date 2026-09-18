@@ -37,6 +37,11 @@ function makeScratch() {
   const m = JSON.parse(fs.readFileSync(path.join(MAPS, source), 'utf-8'));
   m.id = 'map.scratch';
   m.name = 'Scratch';
+  // No way in and no way out, deliberately. The world view has to report a map
+  // nothing reaches, and for a while the only maps like that were two real ones
+  // sitting in the repo - so deleting them broke a check that had nothing to do
+  // with them. The test brings its own orphan now.
+  delete m.exits;
   fs.writeFileSync(scratch, JSON.stringify(m, null, 2) + '\n');
   madeScratch = true;
 }
