@@ -1,0 +1,475 @@
+{
+  "id": "map.wilderness8",
+  "name": "Wilderness VIII",
+  "tile_size": 16,
+  "size": [
+    40,
+    20
+  ],
+  "spawn": {
+    "tile": [
+      35,
+      6
+    ],
+    "facing": "left"
+  },
+  "legend": {
+    ".": "tile.grass",
+    "t": "tile.grass_tall",
+    ",": "tile.grass_flower",
+    "a": "tile.leaves",
+    "p": "tile.path"
+  },
+  "ground": [
+    "....aaaaaaaaaaa.a.......................",
+    "...aaaaaaaaaaaaaa.......................",
+    "...aaaaaaaaaaaaaa.......................",
+    "...a.aaaaaaaaaaa.....................ppp",
+    "....aaaaaaaaaaaa..................ppp...",
+    "...............tttt..t........pp........",
+    "...aaaa......t.ttttt........pp..........",
+    "..aaaaaa....,,..........pp..............",
+    "..aaaaaa....,,.......ppp................",
+    "...aaaa..........pp.....................",
+    "...........pp..pp.....,,,...............",
+    ".........pp....t...t....................",
+    "....ppp...........tttttt................",
+    ".................ttttttt.t.aaaaaaaaaaa..",
+    ".................tttttt...aaaaaaaaaaaaa.",
+    "..................t...t...aaaaaaaaaaaaa.",
+    "..........,,,.............aaaaaaaaaaaaa.",
+    "..........,,,.............aaaaaaaaaaaaa.",
+    "..........................aaaaaaaaaaaaa.",
+    "...........................aaaaaaaaaa.a."
+  ],
+  "entities": [
+    {
+      "def": "prop.tree_pine",
+      "tile": [
+        5,
+        1
+      ]
+    },
+    {
+      "def": "prop.tree_pine",
+      "tile": [
+        7,
+        0
+      ]
+    },
+    {
+      "def": "prop.tree_pine",
+      "tile": [
+        9,
+        1
+      ]
+    },
+    {
+      "def": "prop.tree_pine",
+      "tile": [
+        11,
+        0
+      ]
+    },
+    {
+      "def": "prop.tree_pine",
+      "tile": [
+        13,
+        1
+      ]
+    },
+    {
+      "def": "prop.tree_pine",
+      "tile": [
+        6,
+        3
+      ]
+    },
+    {
+      "def": "prop.tree_pine",
+      "tile": [
+        10,
+        3
+      ]
+    },
+    {
+      "def": "prop.tree_pine",
+      "tile": [
+        8,
+        2
+      ]
+    },
+    {
+      "def": "prop.tree_pine",
+      "tile": [
+        12,
+        2
+      ]
+    },
+    {
+      "def": "prop.tree_oak",
+      "tile": [
+        15,
+        2
+      ]
+    },
+    {
+      "def": "prop.tree_oak",
+      "tile": [
+        4,
+        2
+      ]
+    },
+    {
+      "def": "prop.tree_oak",
+      "tile": [
+        14,
+        4
+      ]
+    },
+    {
+      "def": "prop.mushroom",
+      "tile": [
+        6,
+        2
+      ]
+    },
+    {
+      "def": "prop.mushroom",
+      "tile": [
+        11,
+        2
+      ]
+    },
+    {
+      "def": "prop.bush",
+      "tile": [
+        13,
+        5
+      ]
+    },
+    {
+      "def": "item.berries",
+      "tile": [
+        12,
+        5
+      ]
+    },
+    {
+      "def": "prop.tree_oak",
+      "tile": [
+        3,
+        7
+      ]
+    },
+    {
+      "def": "prop.tree_oak",
+      "tile": [
+        5,
+        6
+      ]
+    },
+    {
+      "def": "prop.tree_pine",
+      "tile": [
+        2,
+        9
+      ]
+    },
+    {
+      "def": "prop.tree_pine",
+      "tile": [
+        6,
+        8
+      ]
+    },
+    {
+      "def": "prop.bush",
+      "tile": [
+        6,
+        10
+      ]
+    },
+    {
+      "def": "item.berries",
+      "tile": [
+        7,
+        10
+      ]
+    },
+    {
+      "def": "prop.tree_pine",
+      "tile": [
+        28,
+        15
+      ]
+    },
+    {
+      "def": "prop.tree_pine",
+      "tile": [
+        30,
+        14
+      ]
+    },
+    {
+      "def": "prop.tree_pine",
+      "tile": [
+        32,
+        16
+      ]
+    },
+    {
+      "def": "prop.tree_pine",
+      "tile": [
+        34,
+        15
+      ]
+    },
+    {
+      "def": "prop.tree_pine",
+      "tile": [
+        36,
+        14
+      ]
+    },
+    {
+      "def": "prop.tree_pine",
+      "tile": [
+        29,
+        17
+      ]
+    },
+    {
+      "def": "prop.tree_pine",
+      "tile": [
+        33,
+        18
+      ]
+    },
+    {
+      "def": "prop.tree_pine",
+      "tile": [
+        37,
+        16
+      ]
+    },
+    {
+      "def": "prop.tree_pine",
+      "tile": [
+        31,
+        19
+      ]
+    },
+    {
+      "def": "prop.tree_pine",
+      "tile": [
+        35,
+        18
+      ]
+    },
+    {
+      "def": "prop.tree_oak",
+      "tile": [
+        27,
+        16
+      ]
+    },
+    {
+      "def": "prop.tree_oak",
+      "tile": [
+        38,
+        18
+      ]
+    },
+    {
+      "def": "prop.mushroom",
+      "tile": [
+        31,
+        17
+      ]
+    },
+    {
+      "def": "prop.bush",
+      "tile": [
+        26,
+        14
+      ]
+    },
+    {
+      "def": "item.berries",
+      "tile": [
+        27,
+        13
+      ]
+    },
+    {
+      "def": "item.berries",
+      "tile": [
+        33,
+        13
+      ]
+    },
+    {
+      "def": "prop.boulder_8",
+      "tile": [
+        23,
+        17
+      ]
+    },
+    {
+      "def": "prop.boulder_6",
+      "tile": [
+        20,
+        19
+      ]
+    },
+    {
+      "def": "prop.boulder_4",
+      "tile": [
+        26,
+        19
+      ]
+    },
+    {
+      "def": "prop.rock",
+      "tile": [
+        21,
+        15
+      ]
+    },
+    {
+      "def": "prop.rock",
+      "tile": [
+        25,
+        14
+      ]
+    },
+    {
+      "def": "prop.rock",
+      "tile": [
+        19,
+        17
+      ]
+    },
+    {
+      "def": "prop.boulder",
+      "tile": [
+        24,
+        12
+      ]
+    },
+    {
+      "def": "npc.goat",
+      "tile": [
+        18,
+        13
+      ]
+    },
+    {
+      "def": "npc.goat",
+      "tile": [
+        20,
+        14
+      ]
+    },
+    {
+      "def": "npc.goat",
+      "tile": [
+        21,
+        12
+      ]
+    },
+    {
+      "def": "npc.goat",
+      "tile": [
+        17,
+        12
+      ]
+    },
+    {
+      "def": "npc.elk",
+      "tile": [
+        4,
+        15
+      ]
+    },
+    {
+      "def": "npc.elk",
+      "tile": [
+        8,
+        17
+      ]
+    },
+    {
+      "def": "npc.elk",
+      "tile": [
+        11,
+        14
+      ]
+    },
+    {
+      "def": "npc.bear",
+      "tile": [
+        29,
+        12
+      ]
+    },
+    {
+      "def": "npc.bear",
+      "tile": [
+        8,
+        6
+      ]
+    }
+  ],
+  "exits": [
+    {
+      "tiles": [
+        [
+          39,
+          1
+        ],
+        [
+          39,
+          2
+        ],
+        [
+          39,
+          3
+        ],
+        [
+          39,
+          4
+        ],
+        [
+          39,
+          5
+        ]
+      ],
+      "to": "map.wilderness4",
+      "spawns": [
+        [
+          1,
+          1
+        ],
+        [
+          1,
+          2
+        ],
+        [
+          1,
+          3
+        ],
+        [
+          1,
+          4
+        ],
+        [
+          1,
+          5
+        ]
+      ],
+      "facing": "right"
+    }
+  ]
+}

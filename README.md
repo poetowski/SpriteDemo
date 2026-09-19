@@ -6,7 +6,7 @@ plus `.aseprite` sources, and played in Phaser 3 — with the map, the props, th
 NPCs, their dialogue and the errands they hand out all loaded from
 engine-neutral JSON. Sheep and goats wander and graze on their own.
 
-The world is seven wildernesses you walk between — fells and pine woods, a
+The world is eight wildernesses you walk between — fells and pine woods, a
 shieling, a boar that hunts its own patch, a lake north of it all with an old
 burrow tree four tiles across, and westernmost a temple under a crag with two
 fires burning and a monk sweeping a step that is already clean — with 37 kinds
@@ -118,6 +118,14 @@ shape, so the atlas, the anchors and the depth sorting treat them identically.
 A goat is the sheep rig with horns, a beard, a smooth back and a tan palette —
 which species an actor uses is a `"rig"` field in `content/`, not a pipeline
 change.
+
+**A species is a set of silhouette flags**, which is what keeps five animals on
+one rig without any of them reading as a recolour of another. `SPECIES` in
+`animal.py`: the boar bristles and has tusks, the elk is `tall` with antlers, a
+mane and a pale rump, and the bear has `bulk`, a shoulder `hump`, round ears on
+top of the skull instead of behind it, flat paws, a stub tail and a pale blunt
+muzzle borrowing the horn keys. Every flag is read with `.get`, so adding one
+for a new animal leaves the others alone.
 
 **Anchors, not offsets.** Every sprite exports the pixel that sits on a map tile
 (`[16, 29]` — between the feet). The game sets sprite origin from it, so art of

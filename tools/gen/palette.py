@@ -147,6 +147,19 @@ VARIANTS = {
         "AFS": (0x20, 0x19, 0x14, 255),
         "AH":  (0x1d, 0x17, 0x12, 255),
     },
+    "bear": {
+        # Dark brown all through, with the muzzle borrowing the horn keys -
+        # the one pale thing on it, and at this size the fastest way to tell
+        # which end is looking at you.
+        "AB":  (0x6b, 0x4e, 0x36, 255),
+        "ABS": (0x4a, 0x35, 0x24, 255),
+        "ABL": (0x8a, 0x68, 0x49, 255),
+        "AF":  (0x3a, 0x2a, 0x1d, 255),
+        "AFS": (0x25, 0x1a, 0x12, 255),
+        "AH":  (0x1c, 0x15, 0x0f, 255),   # claws
+        "HN":  (0xb9, 0x9a, 0x6e, 255),   # the muzzle
+        "HNS": (0x8c, 0x72, 0x50, 255),
+    },
     "elk": {
         # A bull elk is two animals of colour: a tawny body and a much darker
         # head, neck and mane. That contrast is most of what tells it from the

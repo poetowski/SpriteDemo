@@ -1,0 +1,37 @@
+{
+  "id": "npc.bear",
+  "sprite": "actor.bear",
+  "rig": "quadruped",
+  "name": "Bear",
+  "states": [
+    "walk",
+    "idle",
+    "graze",
+    "attack"
+  ],
+  "speed": 20,
+  "hp": 34,
+  "blocks": true,
+  "facing": "down",
+  "wander": {
+    "radius": 5,
+    "idle_ms": [
+      900,
+      2400
+    ],
+    "graze_ms": [
+      2200,
+      5200
+    ],
+    "graze_chance": 0.45
+  },
+  "hostile": {
+    "sight": 72,
+    "lose": 150,
+    "charge_speed": 56,
+    "damage": 8,
+    "reach": 20,
+    "cooldown_ms": 1500,
+    "leash": 130
+  }
+}

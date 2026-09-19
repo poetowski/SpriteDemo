@@ -428,6 +428,17 @@ worth knowing about before drawing any other rock:
 (`biped` / `quadruped` / `giant`), `states`, `speed`, `blocks`, `interact` and
 `wander` settings are all content. No JS changes.
 
+**A new animal is a set of silhouette flags plus a palette**, not a second rig.
+`SPECIES` in `tools/gen/animal.py` carries them and every one is read with
+`.get`, so adding a flag leaves the other four animals alone. What a species
+needs is whatever makes its outline unmistakable at 32px and nothing else: the
+boar bristles and has tusks, the elk is `tall` with antlers and a pale rump,
+and the bear is `bulk` (a deeper, wider barrel), `hump` (the rise over the
+shoulders nothing else here has), `round_ears`, `paws`, `stub_tail` and
+`snout` - a pale blunt muzzle drawn with the horn keys. The ears were the
+whole job: drawn at the head's own height they sat under the hump and the bear
+stopped reading as one, so they are placed clear of the shoulders instead.
+
 **A new face is a palette entry, not a drawing** - `VARIANTS` in
 `tools/gen/palette.py`, and the actor's `sprite` names it (`actor.monk` ->
 variant `monk`). Friedrich is the hero's frames with a saffron robe, and

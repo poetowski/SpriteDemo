@@ -412,20 +412,6 @@
         4,
         6
       ]
-    },
-    {
-      "def": "item.berries",
-      "tile": [
-        5,
-        6
-      ]
-    },
-    {
-      "def": "item.berries",
-      "tile": [
-        4,
-        7
-      ]
     }
   ],
   "exits": [
