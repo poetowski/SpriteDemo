@@ -39,7 +39,7 @@ node tools/shot.cjs --map    # 3. and shoot the whole world
                              # 4. publish game/page.html (below)
 ```
 
-1. **Build.** All 26 gates must pass. A gate failure names an authored file -
+1. **Build.** All 32 gates must pass. A gate failure names an authored file -
    fix that file, never the generated output. Needs Pillow.
 
 2. **Screenshot.** `tools/shot.cjs` loads `game/index.html` in a headless
@@ -64,6 +64,9 @@ node tools/shot.cjs --map    # 3. and shoot the whole world
    node tools/shot.cjs --cross              # walk out of the map, check the bag arrives
    node tools/shot.cjs --exit 3 --cross     # ...by its fourth doorway, not its first
    node tools/shot.cjs --on map.wilderness3 --boar   # stand still, get charged
+   node tools/shot.cjs --quest              # take every errand on offer and run it
+   node tools/shot.cjs --kill               # strike a hostile until it dies
+   node tools/shot.cjs --journal            # open the quest log
    node tools/shot.cjs --spawn npc.troll     # something no map carries yet
    ```
 
@@ -101,7 +104,8 @@ exits is perfectly legal. Anything added to the map format needs to survive
 that round trip.
 
 Paint terrain, place and erase objects, move the spawn, undo, save, and
-**save + build** to run the gates without leaving the page. Terrain and objects
+**save + build** to run the gates without leaving the page. **W** is the world
+atlas, **Q** the quest board and **D** the conversation graph (below). Terrain and objects
 are exclusive sets: the tool decides which palette is on screen, so the panel
 never offers a swatch you cannot paint with. Objects are grouped by kind
 (props, actors, items) and marked solid or walkable ground. Painting unwalkable ground over
@@ -178,6 +182,34 @@ else, so placing a thing tells you whether it can end up in the bag.
 
 The map's in-game name is editable in the bar; it was previously hand-edited
 JSON only.
+
+### The quest board and the conversation graph
+
+Two more views, **Q** and **D**, both read-only: quests and conversations are
+authored as JSON and checked hard by the build, so the editor's job is not to
+write them but to show the half of them no single file contains.
+
+**The quest board** answers the one question a quest file cannot: whether the
+world can pay it. Each objective says how much of what it asks for is actually
+placed (`7/3 placed`, and which maps), and goes red when it is short. That
+count is of the maps as they stand *including the one on screen, unsaved* -
+paint over the last berry and the board goes red before the build ever sees it,
+which is the whole reason it lives here rather than in a gate alone. A card
+also names who gives the errand and links to the replies that offer and take
+it. Anything a quest depends on is marked on the map view with a gold star and
+named in the status bar, because erasing one of those looks like any other
+erase.
+
+**The conversation view** draws a dialogue as the graph it already is: a box
+per node, laid out in columns by how many replies deep it is, so the way in is
+on the left and the endings are on the right. Replies are arrows - solid
+forward, dashed back - and each carries marks for what it does (`?` conditional,
+`⚑` sets a flag, `+`/`−` gives or takes, `✦` starts a quest, `✓` hands one in),
+because the shape of a conversation is mostly in its effects and they are
+invisible if only the text is drawn. Click a node to read the whole of it with
+every condition and effect spelled out. `no two nodes are drawn on top of each
+other` and `every reply lands on a node that is drawn` are the checks in
+`editor_test.cjs` that keep the picture honest.
 
 Nothing hot-reloads: F5 the page after editing `editor/*`, restart the server
 after editing `tools/editor.py`. **Stop the old server before starting a new
@@ -280,10 +312,10 @@ tools/art.py           the art pipeline: draws everything -> assets/
 tools/build.py         the game build: assets/ + content/ -> build/ + game/
 tools/editor.py        serves the map editor in editor/
 tools/cdp.cjs          drives an installed Chrome when Playwright is absent
-tools/pipeline/        aseprite I/O, atlas packing, autotile, manifest, the 26 gates
+tools/pipeline/        aseprite I/O, atlas packing, autotile, manifest, the 32 gates
 assets/                COMMITTED art library: atlases, atlases.json, .aseprite
 build/                 DERIVED, gitignored - manifest, screenshots
-content/               AUTHORED json - actors, props, tiles, dialogue, maps
+content/               AUTHORED json - actors, props, tiles, dialogue, quests, maps
 game/main.js           the Phaser scene: no art, no content, no hardcoded ids
 ```
 
@@ -468,10 +500,68 @@ every actor with `"wields": true` (that table is the actor's `looks`) and the
 thing that says it. It is a graph: `nodes` of `text` joined by `choices`, and
 `start` is either a node name or a list of entry rules whose first matching
 `when` decides where you come in - that is how a conversation remembers. A
-choice may carry `when` (`flag` / `noflag` / `has` / `nothas` / `all`) and the
-effects `set`, `give` and `take`; no `goto` ends it. Effects run take, give,
-set, so a trade works with a full bag. Keep the condition language as small as
-it is - the gates can only check branches they understand.
+choice may carry `when` (`flag` / `noflag` / `has` / `nothas` / `quest` /
+`all`) and the effects `set`, `give`, `take`, `start` and `finish`; no `goto`
+ends it. Effects run finish, take, give, set, start - handing a quest in is
+what empties the bag, so it goes before anything that tries to fill it, and a
+quest taken here has nothing to do with what was just handed over. Keep the
+condition language as small as it is - the gates can only check branches they
+understand.
+
+**An errand** is a file in `content/quests/` plus the two replies that offer it
+and take it back. The engine knows four kinds of objective and nothing about
+any particular quest:
+
+```json
+{ "id": "quest.arne_berries", "name": "A Handful of Berries",
+  "giver": "npc.arne", "summary": "Arne wants three handfuls of berries.",
+  "objectives": [
+    { "id": "ask",  "kind": "talk",    "target": "npc.goat",
+      "text": "Have a word with the goat" },
+    { "id": "pick", "kind": "collect", "target": "item.berries", "count": 3,
+      "text": "Gather three handfuls of berries" }],
+  "reward": { "xp": 30, "give": "item.coin", "set": "arne.berries_done" } }
+```
+
+`collect` counts what is in the bag, `kill` counts what has died since the
+quest was taken, `talk` is met by speaking to that definition, and `visit` by
+standing on that map (a `tile` and `radius` narrow it to a spot).
+
+**A quest is in one of four states, and those four words are the whole language
+a conversation has for asking about one**: `none`, `active`, `ready` (every
+objective met, not handed in) and `done`. A reply asks with
+`"when": {"quest": {"id": "quest.x", "is": "ready"}}` - `is` may be a list, and
+that is also how "taken but not finished" is said without a negation. One key
+rather than four, and a gate can check the word.
+
+**Fetching is counted off the bag, not remembered.** Put a berry down and the
+tick goes away again, which is the only version of this that cannot drift out
+of step with what the player is actually carrying. The other three kinds are
+things that happened, so those are what the record holds - and a quest that has
+been handed in shows every objective met regardless, because the berries are in
+Arne's hands by then and a finished errand reading 0/3 looks like a bug.
+
+**Handing in takes what the quest asked for**, so no content says twice what
+three berries means; mark a `collect` objective `"keep": true` if the player
+was only ever asked to *have* it. A quest marked `"auto": true` needs no
+hand-in and finishes itself the moment it is ready.
+
+Five gates cover the ways an errand breaks silently: `quest-shape`,
+`quest-target` (nothing to say, nothing to kill, no such map),
+`quest-reward`, `quest-supply` - **the maps must place at least as much of a
+thing as the quest asks for**, which is what catches "fetch three berries"
+where two exist - and `quest-reach`, which requires that some reply starts it
+and, unless it is `auto`, that some reply takes it back.
+
+**Anything carried across a map edge has to be in `checkExit()`.** The journal
+is exactly the kind of field that gets forgotten there; `node tools/shot.cjs
+--cross` now starts an errand before it walks the doorway and checks it arrived.
+
+**A creature dies only if its definition says how much it can take.** `"hp"` on
+an actor is the whole rule - the sheep and the goat have none and can be hit
+all day, and nothing in the engine knows which animals those are. A `kill`
+objective on something with no `hp` fails `quest-target`, because it is a
+bounty that can never be collected.
 
 **A way from one map to another** is an `exits` entry on the map you leave -
 no engine change, like everything else here:

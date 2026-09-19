@@ -50,7 +50,7 @@ def run(content, man, tile_canvases=None):
             if not ID_RE.match(cid):
                 _fail("id-format", f"{defn['_file']}: bad id {cid!r}")
             if not cid.startswith(("tile.", "prop.", "actor.", "npc.",
-                                   "item.", "dlg.", "map.")):
+                                   "item.", "dlg.", "quest.", "map.")):
                 _fail("id-format", f"{defn['_file']}: unknown id prefix {cid!r}")
     passed.append("id-format")
 
@@ -120,6 +120,19 @@ def run(content, man, tile_canvases=None):
                                    f"drops into, and it has to have something "
                                    f"to drop back to")
     passed.append("actor-hostile")
+    # A creature dies only if its definition says how much it can take, so "hp"
+    # is the one field that decides whether something is a hazard or a target.
+    # Half an hp would leave a boar that survives every possible blow.
+    for cid, defn in content["actors"].items():
+        if "hp" not in defn:
+            continue
+        if not isinstance(defn["hp"], int) or isinstance(defn["hp"], bool) or defn["hp"] <= 0:
+            _fail("actor-hp", f"{defn['_file']}: hp must be a positive whole "
+                              f"number, not {defn['hp']!r}")
+        if not defn.get("wander"):
+            _fail("actor-hp", f"{defn['_file']}: {cid} has hp but does not "
+                              f"\"wander\" - only a walking thing can be struck")
+    passed.append("actor-hp")
     passed.append("actor-states")
     passed.append("actor-complete")
     passed.append("actor-anchor")
@@ -396,11 +409,33 @@ def run(content, man, tile_canvases=None):
                                     f"{', '.join(orphans)}")
     passed.append("dialogue-links")
 
+    # A quest is the other thing a conversation can be waiting on, so the same
+    # walk collects where each one is offered, handed in and asked about. What
+    # it finds is checked by the quest gates below.
+    QUEST_STATES = ("none", "active", "ready", "done")
+    started, finished, quest_reads = {}, {}, {}
+
+    def _quest_cond(cond, where):
+        """The quest id a condition waits on, checking its shape as it goes."""
+        q = cond.get("quest")
+        if q is None:
+            return None
+        if not isinstance(q, dict) or not q.get("id"):
+            _fail("dialogue-effects", f"{where}: a quest condition is "
+                                      f"{{\"id\": ..., \"is\": ...}}, not {q!r}")
+        want = q.get("is", "active")
+        for state in ([want] if isinstance(want, str) else want):
+            if state not in QUEST_STATES:
+                _fail("dialogue-effects", f"{where}: quest state {state!r} is not "
+                                          f"one of {', '.join(QUEST_STATES)}")
+        return q["id"]
+
     set_flags = set()
     read_flags = {}
     for did, d in content["dialogue"].items():
         for nid, node in d["nodes"].items():
             for ch in node.get("choices") or []:
+                where = f"{d['_file']}: {nid!r}"
                 for key in ("set",):
                     if ch.get(key):
                         set_flags.add(ch[key])
@@ -408,6 +443,9 @@ def run(content, man, tile_canvases=None):
                     if ch.get(key) and ch[key] not in man["items"]:
                         _fail("dialogue-effects", f"{d['_file']}: {nid!r} {key}s "
                                                   f"unknown item {ch[key]!r}")
+                for key, table in (("start", started), ("finish", finished)):
+                    if ch.get(key):
+                        table.setdefault(ch[key], []).append(where)
                 for cond in _conds(ch):
                     for key in ("has", "nothas"):
                         if cond.get(key) and cond[key] not in man["items"]:
@@ -416,16 +454,158 @@ def run(content, man, tile_canvases=None):
                                   f"{cond[key]!r}")
                     for key in ("flag", "noflag"):
                         if cond.get(key):
-                            read_flags.setdefault(cond[key], f"{d['_file']}: {nid!r}")
+                            read_flags.setdefault(cond[key], where)
+                    qid = _quest_cond(cond, where)
+                    if qid:
+                        quest_reads.setdefault(qid, where)
             for rule in _entry_rules(d):
-                for key in ("flag", "noflag"):
-                    if (rule.get("when") or {}).get(key):
-                        read_flags.setdefault(rule["when"][key], f"{d['_file']}: start")
+                for cond in _conds(rule):
+                    for key in ("flag", "noflag"):
+                        if cond.get(key):
+                            read_flags.setdefault(cond[key], f"{d['_file']}: start")
+                    qid = _quest_cond(cond, f"{d['_file']}: start")
+                    if qid:
+                        quest_reads.setdefault(qid, f"{d['_file']}: start")
+    # Finishing a quest sets its reward flag, so a conversation may wait on one
+    # no choice mentions. Without this a reward flag reads as a dead branch.
+    for q in content["quests"].values():
+        if (q.get("reward") or {}).get("set"):
+            set_flags.add(q["reward"]["set"])
     for flag, where in sorted(read_flags.items()):
         if flag not in set_flags:
             _fail("dialogue-effects", f"{where} waits on flag {flag!r}, which no "
                                       f"choice ever sets")
     passed.append("dialogue-effects")
+
+    # 7c - quests. A quest is a contract between a conversation and the world:
+    # something to do, somewhere it can be done, and someone to tell. Every way
+    # it breaks is silent in game - a quest nobody can start, an errand for an
+    # item that exists nowhere, a bounty on something that cannot die - so each
+    # of those is a gate rather than something to find by playing it through.
+    OBJ_KINDS = ("collect", "kill", "talk", "visit")
+    for qid, q in content["quests"].items():
+        where = q["_file"]
+        for field in ("name", "summary", "objectives"):
+            if not q.get(field):
+                _fail("quest-shape", f"{where}: no {field!r}")
+        if "auto" in q and not isinstance(q["auto"], bool):
+            _fail("quest-shape", f"{where}: \"auto\" is a flag - true or false, "
+                                 f"not {q['auto']!r}")
+        if q.get("giver") and q["giver"] not in content["actors"]:
+            _fail("quest-shape", f"{where}: giver {q['giver']!r} is not an actor")
+        seen = set()
+        for ob in q["objectives"]:
+            oid = ob.get("id")
+            if not oid or not isinstance(oid, str):
+                _fail("quest-shape", f"{where}: an objective has no \"id\"")
+            if oid in seen:
+                _fail("quest-shape", f"{where}: two objectives are both {oid!r}; "
+                                     f"progress is kept against that id")
+            seen.add(oid)
+            if not ob.get("text"):
+                _fail("quest-shape", f"{where}: objective {oid!r} has no \"text\" "
+                                     f"- the log would show a blank line")
+            if ob.get("kind") not in OBJ_KINDS:
+                _fail("quest-shape", f"{where}: objective {oid!r} is a "
+                                     f"{ob.get('kind')!r}; the kinds are "
+                                     f"{', '.join(OBJ_KINDS)}")
+    passed.append("quest-shape")
+
+    for qid, q in content["quests"].items():
+        where = q["_file"]
+        for ob in q["objectives"]:
+            kind, target = ob["kind"], ob.get("target")
+            table = {"collect": content["items"], "kill": content["actors"],
+                     "talk": {**content["actors"], **content["props"]},
+                     "visit": content["maps"]}[kind]
+            if target not in table:
+                _fail("quest-target", f"{where}: objective {ob['id']!r} is a "
+                                      f"{kind} of {target!r}, which is not a "
+                                      f"known {'definition' if kind != 'visit' else 'map'}")
+            if kind in ("collect", "kill"):
+                n = ob.get("count", 1)
+                if not isinstance(n, int) or isinstance(n, bool) or n < 1:
+                    _fail("quest-target", f"{where}: objective {ob['id']!r} asks "
+                                          f"for {n!r} of {target!r}")
+            # Something the player is told to speak to has to have something to
+            # say, and something they are told to kill has to be able to die.
+            if kind == "talk" and not table[target].get("interact"):
+                _fail("quest-target", f"{where}: objective {ob['id']!r} sends the "
+                                      f"player to talk to {target!r}, which has "
+                                      f"no \"interact\" and cannot be talked to")
+            if kind == "kill" and not table[target].get("hp"):
+                _fail("quest-target", f"{where}: objective {ob['id']!r} is a bounty "
+                                      f"on {target!r}, which has no \"hp\" and so "
+                                      f"can never be killed")
+            if kind == "visit" and ob.get("tile"):
+                tw, th = content["maps"][target]["size"]
+                tx, ty = ob["tile"]
+                if not (0 <= tx < tw and 0 <= ty < th):
+                    _fail("quest-target", f"{where}: objective {ob['id']!r} points "
+                                          f"at tile {ob['tile']} on {target}, "
+                                          f"which is {tw}x{th}")
+        r = q.get("reward") or {}
+        if r.get("give") and r["give"] not in content["items"]:
+            _fail("quest-reward", f"{where}: reward gives unknown item "
+                                  f"{r['give']!r}")
+        if "xp" in r and (not isinstance(r["xp"], int) or isinstance(r["xp"], bool)
+                          or r["xp"] <= 0):
+            _fail("quest-reward", f"{where}: reward xp must be a positive whole "
+                                  f"number, not {r['xp']!r}")
+        if "set" in r and not isinstance(r["set"], str):
+            _fail("quest-reward", f"{where}: reward set must be a flag name, "
+                                  f"not {r['set']!r}")
+    passed.append("quest-target")
+    passed.append("quest-reward")
+
+    # The world has to be able to pay out what the quest asks for. "Fetch three
+    # berries" where two exist is a quest that reads perfectly and cannot be
+    # finished, and nothing else in the build would ever say so.
+    placed = {}
+    for m in content["maps"].values():
+        for e in m["entities"]:
+            placed[e["def"]] = placed.get(e["def"], 0) + 1
+    handed = {ch["give"] for d in content["dialogue"].values()
+              for node in d["nodes"].values()
+              for ch in node.get("choices") or [] if ch.get("give")}
+    handed |= {q["reward"]["give"] for q in content["quests"].values()
+               if (q.get("reward") or {}).get("give")}
+    for qid, q in content["quests"].items():
+        where = q["_file"]
+        for ob in q["objectives"]:
+            if ob["kind"] == "visit":
+                continue
+            have = placed.get(ob["target"], 0)
+            want = ob.get("count", 1)
+            if ob["kind"] == "collect" and ob["target"] in handed:
+                continue                       # a conversation hands it over
+            if have < want:
+                _fail("quest-supply", f"{where}: objective {ob['id']!r} needs "
+                                      f"{want} x {ob['target']}, but the maps "
+                                      f"place {have}")
+    passed.append("quest-supply")
+
+    # And someone has to be able to offer it, and - unless it finishes itself -
+    # someone has to be able to take it back.
+    for qid, where in sorted(quest_reads.items()):
+        if qid not in content["quests"]:
+            _fail("quest-reach", f"{where} waits on unknown quest {qid!r}")
+    for table, verb in ((started, "start"), (finished, "finish")):
+        for qid, wheres in sorted(table.items()):
+            if qid not in content["quests"]:
+                _fail("quest-reach", f"{wheres[0]} tries to {verb} unknown quest "
+                                     f"{qid!r}")
+    for qid, q in content["quests"].items():
+        if qid not in started:
+            _fail("quest-reach", f"{q['_file']}: no conversation ever starts "
+                                 f"{qid} - it would sit in content and never "
+                                 f"appear in the game")
+        if not q.get("auto") and qid not in finished:
+            _fail("quest-reach", f"{q['_file']}: no conversation ever finishes "
+                                 f"{qid}, and it is not \"auto\" - the player "
+                                 f"would complete every objective and never be "
+                                 f"paid")
+    passed.append("quest-reach")
 
     # 8 - items: a kind the engine knows; a weapon names what the hand holds;
     #     and every actor that wields has a complete frame set per weapon,

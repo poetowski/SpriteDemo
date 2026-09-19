@@ -1,0 +1,26 @@
+{
+  "id": "quest.arne_berries",
+  "name": "A Handful of Berries",
+  "giver": "npc.arne",
+  "summary": "Arne wants three handfuls of berries off the wood's edge, and says the goat has the run of the patch.",
+  "objectives": [
+    {
+      "id": "ask",
+      "kind": "talk",
+      "target": "npc.goat",
+      "text": "Have a word with the goat"
+    },
+    {
+      "id": "pick",
+      "kind": "collect",
+      "target": "item.berries",
+      "count": 3,
+      "text": "Gather three handfuls of berries"
+    }
+  ],
+  "reward": {
+    "xp": 30,
+    "give": "item.coin",
+    "set": "arne.berries_done"
+  }
+}

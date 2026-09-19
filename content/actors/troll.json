@@ -9,6 +9,7 @@
     "attack"
   ],
   "speed": 11,
+  "hp": 60,
   "blocks": true,
   "facing": "down",
   "footprint": [

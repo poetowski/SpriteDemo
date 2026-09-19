@@ -73,7 +73,57 @@
   .main { grid-area: main; overflow: auto; background: #0e1015; position: relative; }
   #view { image-rendering: pixelated; display: block; cursor: crosshair; }
   #world { image-rendering: pixelated; display: block; cursor: pointer; }
-  #view[hidden], #world[hidden] { display: none; }
+  #dlg { display: block; cursor: pointer; }
+  #view[hidden], #world[hidden], #dlg[hidden] { display: none; }
+  #quests[hidden] { display: none; }
+
+  /* The quest board. Read-only: a quest is authored in content/quests/, and
+     what the editor is for is seeing whether the world can actually pay it -
+     which is a question about every map at once, not about the open one. */
+  #quests { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+            gap: 10px; padding: 12px; align-content: start; }
+  .card { display: flex; flex-direction: column; gap: 5px; padding: 10px 12px;
+          background: var(--panel); border: 1px solid var(--line);
+          border-left: 3px solid var(--accent); border-radius: 4px; }
+  .card.broken { border-left-color: var(--bad); }
+  .card h3 { margin: 0; font-size: 14px; font-weight: 600; letter-spacing: .01em;
+             display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
+  .card h3 em { font-style: normal; font-size: 10px; color: #5d6679; letter-spacing: 0; }
+  .card .sum { color: var(--muted); font-size: 12px; line-height: 1.45; }
+  .card ul { margin: 0; padding: 0; list-style: none;
+             display: flex; flex-direction: column; gap: 3px; }
+  .card li { display: grid; grid-template-columns: 16px 1fr auto; gap: 7px;
+             align-items: baseline; font-size: 12px; }
+  .card li i { font-style: normal; color: var(--accent); }
+  .card li .supply { color: var(--muted); font-size: 11px; white-space: nowrap; }
+  .card li .supply.short { color: var(--bad); }
+  .card .meta { color: var(--muted); font-size: 11px; display: flex;
+                flex-wrap: wrap; gap: 3px 10px; }
+  .card .meta b { color: var(--ink); font-weight: 500; }
+  .card .link { color: #6cc0e0; cursor: pointer; text-decoration: underline dotted; }
+
+  /* Conversations: the side lists them, the canvas draws the one that is open,
+     and clicking a node puts the whole of it in the panel. */
+  .dlgline { display: flex; flex-direction: column; gap: 2px; padding: 5px 7px;
+             background: var(--panel2); border: 1px solid var(--line);
+             border-left: 3px solid var(--muted); border-radius: 3px; cursor: pointer; }
+  .dlgline:hover { border-color: var(--muted); }
+  .dlgline.on { border-color: var(--accent); background: #26362a; }
+  .dlgline b { font-weight: 600; }
+  .dlgline span { color: var(--muted); font-size: 11px; }
+  .dlgline.quest { border-left-color: #e0c341; }
+  .node { display: flex; flex-direction: column; gap: 6px; }
+  .node .line { color: var(--ink); font-size: 12px; line-height: 1.45;
+                border-left: 2px solid var(--line); padding-left: 8px; }
+  .node .reply { display: flex; flex-direction: column; gap: 2px; padding: 5px 7px;
+                 background: var(--panel2); border: 1px solid var(--line); border-radius: 3px; }
+  .node .reply b { font-weight: 500; font-size: 12px; }
+  .node .reply span { color: var(--muted); font-size: 11px; }
+  .tag { display: inline-block; font-size: 10px; letter-spacing: .04em; padding: 0 5px;
+         border-radius: 8px; background: #2a3346; color: #9fb0cd; margin-right: 4px; }
+  .tag.when { background: #2f3a25; color: #b6cf8e; }
+  .tag.quest { background: #3d3418; color: #e0c341; }
+  .tag.item { background: #33283c; color: #c6a0da; }
 
   .views { display: flex; gap: 4px; margin-left: auto; }
   .mapline { display: flex; flex-direction: column; gap: 2px; padding: 6px 7px;
@@ -136,7 +186,9 @@
   <a id="play" href="/game/index.html" target="_blank"><button>open game</button></a>
   <div class="views">
     <button id="v-map" class="on" title="Edit one map">map</button>
-    <button id="v-world" title="See how the maps join up">world</button>
+    <button id="v-world" title="See how the maps join up (W)">world</button>
+    <button id="v-quests" title="Every quest, and whether the world can pay it (Q)">quests</button>
+    <button id="v-dlg" title="Conversations, drawn as the graphs they are (D)">talk</button>
   </div>
 </div>
 
@@ -155,6 +207,18 @@
     <h2>what to look at</h2>
     <div id="world-notes" class="notes"></div>
   </div>
+  <div id="side-quests" class="group" hidden>
+    <h2>quests</h2>
+    <div id="quest-list" class="group"></div>
+    <h2>what to look at</h2>
+    <div id="quest-notes" class="notes"></div>
+  </div>
+  <div id="side-dlg" class="group" hidden>
+    <h2>conversations</h2>
+    <div id="dlg-list" class="group"></div>
+    <h2 id="dlg-node-head">the node</h2>
+    <div id="dlg-node" class="node"></div>
+  </div>
   <div id="legend-map" class="legend">
     <b>paint</b> drag to paint terrain; edges resolve live<br>
     <b>place</b> click to put the selected object down<br>
@@ -166,6 +230,8 @@
     <span style="color:var(--accent)">&#9679;</span> walkable scenery<br>
     <span style="color:#e0c341">&#9670;</span> gatherable - goes in the bag; ringed on the map<br>
     <span style="color:#6cc0e0">&#9654;</span> animated - moves on its own in game<br>
+    <span style="color:#e0c341">&#10022;</span> a quest depends on it - see the
+    <b>quests</b> view<br>
     <span style="color:#6cc0e0">&#9632;</span> gate mouth, arrowed the way you leave<br>
     <span style="color:#6cc0e0">&#9671;</span> dashed: where you arrive from elsewhere
   </div>
@@ -178,9 +244,29 @@
     runs to where it puts you down, and a dashed arrow is a one-way trip.<br>
     <span style="color:var(--accent)">&#9679;</span> where a fresh game starts
   </div>
+  <div id="legend-quests" class="legend" hidden>
+    A quest is authored in <b>content/quests/</b>. What cannot be read there is
+    whether the world can pay it, because that is a question about every map at
+    once - so each objective says how much of what it asks for is placed.<br>
+    <b>&#9670;</b> fetch &nbsp; <b>&#9876;</b> kill &nbsp;
+    <b>&#9776;</b> talk to &nbsp; <b>&#9873;</b> go to<br>
+    <span style="color:var(--bad)">red</span> the maps cannot supply it, or
+    nothing offers it
+  </div>
+  <div id="legend-dlg" class="legend" hidden>
+    A conversation is a graph, so this draws it as one: a box per node, an
+    arrow per reply, laid out in columns by how many replies deep it is.<br>
+    <b>click a node</b> to read the whole of it<br>
+    <span style="color:var(--accent)">&#9679;</span> where the conversation
+    starts<br>
+    A reply is marked with what it does: <b>?</b> only offered when something
+    holds, <b>&#9873;</b> sets a flag, <b>+</b>/<b>&minus;</b> gives or takes,
+    <b>&#10022;</b> starts a quest, <b>&#10003;</b> hands one in.
+  </div>
 </div>
 
-<div class="main"><canvas id="view"></canvas><canvas id="world" hidden></canvas></div>
+<div class="main"><canvas id="view"></canvas><canvas id="world" hidden></canvas><div
+  id="quests" hidden></div><canvas id="dlg" hidden></canvas></div>
 
 <div class="status">
   <span>tile <b id="st-tile">-</b></span>

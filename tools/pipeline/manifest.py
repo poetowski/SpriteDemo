@@ -8,7 +8,7 @@ nothing downstream ever refers to a sprite or a definition by position.
 import json
 import os
 
-KINDS = ("tiles", "props", "actors", "items", "dialogue", "maps")
+KINDS = ("tiles", "props", "actors", "items", "dialogue", "quests", "maps")
 
 
 def load_content(root):
@@ -56,6 +56,7 @@ def build(content, atlases, sprites, anims, tileset=None, grids=None):
         "actors": {k: _strip(v) for k, v in content["actors"].items()},
         "items": {k: _strip(v) for k, v in content["items"].items()},
         "dialogue": {k: _strip(v) for k, v in content["dialogue"].items()},
+        "quests": {k: _strip(v) for k, v in content["quests"].items()},
         "tileset": tileset or {},
         "maps": maps,
     }

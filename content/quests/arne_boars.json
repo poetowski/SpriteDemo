@@ -1,0 +1,26 @@
+{
+  "id": "quest.arne_boars",
+  "name": "Three Fewer Boars",
+  "giver": "npc.arne",
+  "summary": "The boars have come up out of the southern meadow. Arne would like three fewer of them.",
+  "objectives": [
+    {
+      "id": "meadow",
+      "kind": "visit",
+      "target": "map.wilderness5",
+      "text": "Go down to the southern meadow"
+    },
+    {
+      "id": "cull",
+      "kind": "kill",
+      "target": "npc.boar",
+      "count": 3,
+      "text": "Put down three boars"
+    }
+  ],
+  "reward": {
+    "xp": 90,
+    "give": "item.sword",
+    "set": "arne.boars_done"
+  }
+}

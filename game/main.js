@@ -1,14 +1,21 @@
-/* Milestone 5: things to pick up, a bag to keep them in, a weapon in hand.
+/* Milestone 6: things to pick up, a bag to keep them in, a weapon in hand, and
+ * errands worth using all three for.
  *
  * This scene knows no art and no content. Every sprite, animation, tile, prop,
- * actor, item, dialogue line and map comes from window.ART.manifest, which
- * tools/build.py assembles from content/*.json and the generators. Nothing here
- * hardcodes a frame number, a tile index or a piece of text - which is also why
- * this file would port to another engine without touching content/.
+ * actor, item, dialogue line, quest and map comes from window.ART.manifest,
+ * which tools/build.py assembles from content/*.json and the generators.
+ * Nothing here hardcodes a frame number, a tile index or a piece of text -
+ * which is also why this file would port to another engine without touching
+ * content/.
  *
  * Arming the hero is a sprite swap: the manifest's actor record carries a map
  * from weapon item to a frame set with the weapon baked into every pose, so
  * the walk, the gather and the slash all just work with a different base key.
+ *
+ * A quest is the same idea applied to progress. The engine knows four kinds of
+ * objective - fetch, kill, talk, go - and nothing about any particular errand:
+ * which ones exist, what they ask for and what they pay lives in
+ * content/quests/, and a conversation starts and finishes them by id.
  */
 
 const M = ART.manifest;
@@ -192,6 +199,15 @@ class World extends Phaser.Scene {
     this.pending = null;                  // the pickup a gather will collect
     this.invuln = 0;                      // ms of grace after taking a hit
 
+    // --- the journal --------------------------------------------------------
+    // One record per quest the player has taken: what state it is in and the
+    // progress that cannot be read back off the world. A fetch objective is
+    // not in here at all - it is counted from the bag every time it is asked
+    // for, so dropping a berry un-ticks it and no bookkeeping can drift out of
+    // step with what you are actually carrying.
+    this.quests = {};                     // quest id -> { state, ticks }
+    this.questOpen = false;
+
     // --- what came across the map edge with us -----------------------------
     // Crossing restarts the scene, which would otherwise hand the player a
     // fresh bag and a level 1 sheet every time they walked west.
@@ -203,8 +219,12 @@ class World extends Phaser.Scene {
       this.xp = this.carry.xp;
       this.hp = this.carry.hp;
       this.flags = new Set(this.carry.flags);
+      this.quests = this.carry.quests;
       this.refreshLook();
     }
+    // Arriving somewhere is itself progress, so it is checked before the first
+    // frame rather than waiting for the player to move.
+    this.noteVisit();
 
     // --- the ways out ------------------------------------------------------
     // An exit is authored in content/maps/: which tiles are the doorway, where
@@ -237,6 +257,7 @@ class World extends Phaser.Scene {
       up: 'UP', down: 'DOWN', left: 'LEFT', right: 'RIGHT',
       w: 'W', a: 'A', s: 'S', d: 'D',
       talk: 'E', space: 'SPACE', swap: 'Q', bag: 'I', sheet: 'C', esc: 'ESC',
+      journal: 'J',
     });
     const axisOf = { up: 'y', down: 'y', w: 'y', s: 'y',
                      left: 'x', right: 'x', a: 'x', d: 'x' };
@@ -265,9 +286,11 @@ class World extends Phaser.Scene {
     this.keys.swap.on('down', () => this.act('swap'));
     this.keys.bag.on('down', () => this.act('bag'));
     this.keys.sheet.on('down', () => this.act('sheet'));
+    this.keys.journal.on('down', () => this.act('journal'));
     this.keys.esc.on('down', () => {
       if (this.sheetOpen) return this.act('sheet');
       if (this.bagOpen) return this.act('bag');
+      if (this.questOpen) return this.act('journal');
       this.closeDialogue();
     });
     window.__act = (name) => this.act(name);   // the touch buttons come in here
@@ -281,6 +304,7 @@ class World extends Phaser.Scene {
     this.nearest = null;
     this.pushInventory();
     this.pushSheet();
+    this.pushQuests();
   }
 
   tileCentre(tx, ty) {
@@ -311,6 +335,7 @@ class World extends Phaser.Scene {
       carry: {
         inventory: this.inventory, weapon: this.weapon, armor: this.armor,
         level: this.level, xp: this.xp, hp: this.hp, flags: [...this.flags],
+        quests: this.quests,
       },
     });
   }
@@ -383,6 +408,9 @@ class World extends Phaser.Scene {
         def, sprite, home: [tx, ty], tile: [tx, ty],
         facing: def.facing || 'down', state: 'idle', timer: 0,
         goalX: p.x, goalY: p.y, bolt: 0,
+        // undefined for anything whose definition does not say how much it can
+        // take - and that is exactly what makes it unkillable. See wound().
+        hp: def.hp,
       });
     }
     return sprite;
@@ -624,16 +652,39 @@ class World extends Phaser.Scene {
     if (name === 'bag') {
       if (this.dialogue || this.busy) return;
       this.bagOpen = !this.bagOpen;
-      if (this.bagOpen) { this.sheetOpen = false; this.hero.setVelocity(0, 0); }
+      if (this.bagOpen) {
+        this.sheetOpen = this.questOpen = false;
+        this.hero.setVelocity(0, 0);
+      }
       this.pushSheet();
+      this.pushQuests();
       return this.pushInventory();
     }
     if (name === 'sheet') {
       if (this.dialogue || this.busy) return;
       this.sheetOpen = !this.sheetOpen;
-      if (this.sheetOpen) { this.bagOpen = false; this.hero.setVelocity(0, 0); }
+      if (this.sheetOpen) {
+        this.bagOpen = this.questOpen = false;
+        this.hero.setVelocity(0, 0);
+      }
       this.pushInventory();
+      this.pushQuests();
       return this.pushSheet();
+    }
+    if (name === 'journal') {
+      if (this.dialogue || this.busy) return;
+      this.questOpen = !this.questOpen;
+      if (this.questOpen) {
+        this.bagOpen = this.sheetOpen = false;
+        this.hero.setVelocity(0, 0);
+      }
+      this.pushInventory();
+      this.pushSheet();
+      return this.pushQuests();
+    }
+    if (this.questOpen) {                  // read-only: anything shuts it again
+      if (name === 'talk') return this.act('journal');
+      return;
     }
     if (this.sheetOpen) {                  // the sheet has the keys while open
       if (name === 'talk') return this.useGearSlot(this.sheetCursor);
@@ -721,6 +772,7 @@ class World extends Phaser.Scene {
     if (slot < 0) return false;
     this.inventory[slot] = id;
     this.pushInventory();
+    this.afterQuestChange();          // a fetch is counted off the bag
     return true;
   }
 
@@ -857,11 +909,14 @@ class World extends Phaser.Scene {
     const cy = this.hero.y - 6 + dir[1] * this.ts;     // the anchor is at the feet
     const reach = this.ts * 1.25;
     const inArc = (s) => Math.abs(s.x - cx) <= reach && Math.abs(s.y - cy) <= reach;
-    for (const w of this.wanderers) {
+    // Over a copy: a blow that kills takes its target out of this.wanderers,
+    // and a list being edited under a for..of quietly skips the next animal.
+    for (const w of [...this.wanderers]) {
       if (!inArc(w.sprite)) continue;
       this.flinch(w.sprite);
-      if (!this.provoke(w)) this.startle(w, dir);   // it turns, or it bolts
-      this.floatDamage(w.sprite);
+      const n = this.floatDamage(w.sprite);
+      if (this.wound(w, n)) continue;              // that was the last of it
+      if (!this.provoke(w)) this.startle(w, dir);  // it turns, or it bolts
     }
     for (const h of this.hittable) {
       if (!inArc(h.sprite)) continue;
@@ -891,12 +946,66 @@ class World extends Phaser.Scene {
     return Math.max(1, Math.round(base * (0.8 + Math.random() * 0.4)));
   }
 
-  /** A hit the hero landed: roll it, take the xp, and show it. */
+  /** A hit the hero landed: roll it, take the xp, show it, and hand back what
+   *  it was worth so the caller can take it off something's hp. */
   floatDamage(target) {
     const n = this.rollDamage();
     this.addXp(n);
     this.hits = (this.hits || 0) + 1;
     this.showDamage(target, n);
+    return n;
+  }
+
+  /** Take a blow off a creature. Returns whether that killed it.
+   *
+   *  A creature dies only if its definition says how much it can take, which
+   *  is the whole rule: the sheep and the goat carry no "hp" and can be hit
+   *  all day, and nothing in here knows which animals those are. */
+  wound(w, n) {
+    if (!w.def.hp) return false;
+    w.hp -= n;
+    if (w.hp > 0) return false;
+    this.kill(w);
+    return true;
+  }
+
+  /** Take a creature out of the world. Everything it was in has to let go of
+   *  it - the lists it is stepped through, the tiles it reserved, the thing
+   *  the player is standing next to - or it goes on blocking ground and
+   *  offering conversation from behind a sprite that is no longer drawn. */
+  kill(w) {
+    this.wanderers = this.wanderers.filter((x) => x !== w);
+    this.interactables = this.interactables.filter((it) => it.sprite !== w.sprite);
+    if (this.nearest && this.nearest.sprite === w.sprite) this.nearest = null;
+    for (const k of this.cellsAt(w, w.tile[0], w.tile[1])) this.penned.delete(k);
+    // Spliced, not reassigned: the collider holds this very array, so handing
+    // it a new one would leave the hero colliding with the dead.
+    const i = this.livestock.indexOf(w.sprite);
+    if (i >= 0) this.livestock.splice(i, 1);
+    w.sprite.body.setVelocity(0, 0);
+    w.sprite.body.enable = false;
+    this.showDeath(w.sprite);
+    this.noteKill(w.def.id);
+  }
+
+  /** It stiffens white, tips over and goes. Short, because a sandbox where
+   *  things can be killed should not stop for half a second every time. */
+  showDeath(sprite) {
+    sprite.anims.stop();
+    sprite.setTintFill(0xffffff);
+    this.tweens.add({
+      targets: sprite, alpha: 0, angle: 18, y: sprite.y + 3,
+      duration: 420, ease: 'Quad.in', onComplete: () => sprite.destroy(),
+    });
+    for (let i = 0; i < 6; i++) {
+      const a = (Math.PI * 2 * i) / 6 + Math.random() * 0.7;
+      const s = this.add.sprite(sprite.x, sprite.y - 8, 'fx', M.sprites['fx.spark'].index)
+        .setScale(1.5).setDepth(sprite.y + 1000);
+      this.tweens.add({ targets: s, x: sprite.x + Math.cos(a) * 12,
+                        y: sprite.y - 8 + Math.sin(a) * 10, alpha: 0, scale: 0.4,
+                        duration: 400, ease: 'Quad.out',
+                        onComplete: () => s.destroy() });
+    }
   }
 
   /** The number drifts up off the thing that was hit and fades, with a few
@@ -1015,6 +1124,190 @@ class World extends Phaser.Scene {
     this.pushInventory();
   }
 
+  // --- quests --------------------------------------------------------------
+  // The engine knows four kinds of objective - fetch, kill, talk, go - and
+  // nothing about any particular errand. Which quests exist, what they ask for
+  // and what they pay is content/quests/; a conversation starts and finishes
+  // them by id, the same way it sets a flag.
+  //
+  // A quest is in exactly one of four states, and those four words are the
+  // whole language a conversation has for asking about one:
+  //
+  //     none    never taken
+  //     active  taken, something still to do
+  //     ready   taken, every objective met, not yet handed in
+  //     done    handed in and paid
+  //
+  // "ready" is worth being its own state rather than a flag on "active": it is
+  // the difference between the reply "still picking" and "here are your
+  // berries", and the alternative is every hand-in choice re-deriving it.
+
+  questState(id) {
+    const st = this.quests[id];
+    if (!st) return 'none';
+    if (st.state === 'done') return 'done';
+    return this.questProgress(id).every((o) => o.met) ? 'ready' : 'active';
+  }
+
+  /** How many of one item the player has, bag and body together. */
+  countItem(id) {
+    let n = this.inventory.filter((x) => x === id).length;
+    if (this.weapon === id) n += 1;
+    if (this.armor === id) n += 1;
+    return n;
+  }
+
+  /** Every objective of a quest, with the progress made against it.
+   *
+   *  A fetch is counted off the bag each time rather than remembered, so
+   *  putting a berry down takes the tick away again and no bookkeeping can
+   *  drift out of step with what the player is actually carrying. The other
+   *  three kinds are things that happened, so they are what the record holds. */
+  questProgress(id) {
+    const q = M.quests[id];
+    if (!q) return [];
+    const st = this.quests[id];
+    // Once it is handed in it stays handed in. Counting a fetch off the bag is
+    // what keeps it honest while the errand is live, but the berries are in
+    // Arne's hands afterwards, and a finished quest that reads 0/3 looks like
+    // something went wrong rather than like something was finished.
+    const over = st && st.state === 'done';
+    return (q.objectives || []).map((ob) => {
+      const need = ob.count || 1;
+      const have = over ? need : (ob.kind === 'collect'
+        ? this.countItem(ob.target)
+        : ((st && st.ticks[ob.id]) || 0));
+      return { id: ob.id, kind: ob.kind, target: ob.target, text: ob.text,
+               have: Math.min(have, need), need, met: have >= need };
+    });
+  }
+
+  startQuest(id) {
+    if (this.quests[id] || !M.quests[id]) return;
+    this.quests[id] = { state: 'active', ticks: {} };
+    this.toast('Quest taken', M.quests[id].name);
+    this.noteVisit();            // already standing where it sends you: done
+    this.afterQuestChange();
+  }
+
+  /** Hand one in: take what it asked for, pay what it promised.
+   *
+   *  The collect objectives are the receipt, so no content has to say twice
+   *  what three berries means. An objective marked "keep" is one the player
+   *  was only ever asked to have. */
+  finishQuest(id) {
+    if (this.questState(id) !== 'ready') return false;
+    const q = M.quests[id];
+    for (const ob of q.objectives || []) {
+      if (ob.kind !== 'collect' || ob.keep) continue;
+      for (let i = 0; i < (ob.count || 1); i++) this.dropItem(ob.target);
+    }
+    this.quests[id].state = 'done';
+    const r = q.reward || {};
+    if (r.xp) this.addXp(r.xp);
+    if (r.give) this.giveItem(r.give);
+    if (r.set) this.flags.add(r.set);
+    this.toast('Quest complete', q.name);
+    this.afterQuestChange();
+    return true;
+  }
+
+  /** Mark progress on every active quest with an objective that matches.
+   *  `add` counts up (a kill); without it the objective is simply met. */
+  tick(matches, add = 0) {
+    let moved = false;
+    for (const [id, st] of Object.entries(this.quests)) {
+      if (st.state !== 'active' || !M.quests[id]) continue;
+      for (const ob of M.quests[id].objectives || []) {
+        if (!matches(ob)) continue;
+        const was = st.ticks[ob.id] || 0;
+        const now = add ? was + add : 1;
+        if (now === was) continue;
+        st.ticks[ob.id] = now;
+        moved = true;
+      }
+    }
+    if (moved) this.afterQuestChange();
+  }
+
+  noteKill(defId) {
+    this.tick((ob) => ob.kind === 'kill' && ob.target === defId, 1);
+  }
+
+  noteTalk(defId) {
+    if (defId) this.tick((ob) => ob.kind === 'talk' && ob.target === defId);
+  }
+
+  /** Where the hero is standing. A map-wide objective is met by being on the
+   *  map at all; one with a "tile" wants the player within a few of it. */
+  noteVisit() {
+    const [tx, ty] = this.heroTile();
+    this.tick((ob) => ob.kind === 'visit' && ob.target === this.mapId
+      && (!ob.tile || Math.hypot(ob.tile[0] - tx, ob.tile[1] - ty) <= (ob.radius || 2)));
+  }
+
+  /** Everything that moves a quest forward ends up here. It finishes anything
+   *  that finishes itself, and says out loud what just changed - because by
+   *  the time an objective is met the player is usually somewhere else, and a
+   *  log you have to open to find out is a log nobody opens. */
+  afterQuestChange() {
+    for (const id of Object.keys(this.quests)) {
+      const q = M.quests[id];
+      const st = this.quests[id];
+      if (!q) continue;
+      if (q.auto && this.questState(id) === 'ready') this.finishQuest(id);
+      const told = st.metIds || [];
+      const progress = this.questProgress(id);
+      if (st.state === 'active') {
+        for (const o of progress) {
+          if (o.met && !told.includes(o.id)) this.toast('Objective done', o.text);
+        }
+      }
+      st.metIds = progress.filter((o) => o.met).map((o) => o.id);
+      const now = this.questState(id);
+      if (now === 'ready' && st.told !== 'ready') {
+        this.toast('Ready to hand in', q.name);
+      }
+      st.told = now;
+    }
+    this.pushQuests();
+  }
+
+  /** What a quest pays, as one line. */
+  rewardLine(q) {
+    const r = q.reward || {};
+    const bits = [];
+    if (r.xp) bits.push(`${r.xp} xp`);
+    if (r.give && M.items[r.give]) bits.push(M.items[r.give].name);
+    return bits.join(' + ');
+  }
+
+  pushQuests() {
+    if (!window.__quests) return;
+    const rank = { ready: 0, active: 1, done: 2 };
+    const list = Object.keys(this.quests)
+      .filter((id) => M.quests[id])
+      .map((id) => {
+        const q = M.quests[id];
+        return {
+          id, name: q.name, summary: q.summary, state: this.questState(id),
+          giver: (q.giver && M.actors[q.giver] && M.actors[q.giver].name) || null,
+          reward: this.rewardLine(q),
+          objectives: this.questProgress(id),
+        };
+      })
+      .sort((a, b) => rank[a.state] - rank[b.state] || a.name.localeCompare(b.name));
+    window.__quests({
+      open: this.questOpen,
+      quests: list,
+      open_count: list.filter((q) => q.state !== 'done').length,
+    });
+  }
+
+  toast(title, text) {
+    if (window.__toast) window.__toast({ title, text });
+  }
+
   // --- dialogue ------------------------------------------------------------
   // A conversation is a graph: nodes of text joined by the choices the player
   // is offered. What is offered depends on flags this scene remembers and on
@@ -1030,6 +1323,14 @@ class World extends Phaser.Scene {
     if (cond.noflag) return !this.flags.has(cond.noflag);
     if (cond.has) return this.inventory.includes(cond.has);
     if (cond.nothas) return !this.inventory.includes(cond.nothas);
+    // One key for a quest rather than four: the state is a word, and a
+    // condition names the word - or the words - it will accept. That is also
+    // how "taken but not finished" is said without a negation.
+    if (cond.quest) {
+      const want = cond.quest.is || 'active';
+      const now = this.questState(cond.quest.id);
+      return Array.isArray(want) ? want.includes(now) : want === now;
+    }
     return true;
   }
 
@@ -1041,10 +1342,14 @@ class World extends Phaser.Scene {
     return rule ? rule.goto : null;
   }
 
-  openDialogue(id) {
+  /** `withId` is what is being talked to, which the dialogue itself does not
+   *  know - two things can share a conversation - and a quest may be waiting
+   *  on having spoken to exactly that one. */
+  openDialogue(id, withId) {
     const dlg = M.dialogue[id];
     const node = this.entryNode(dlg);
     if (!node) return;
+    this.noteTalk(withId);
     this.hero.setVelocity(0, 0);
     this.dialogue = { dlg, node: null, line: 0, choices: [], pick: 0 };
     this.gotoNode(node);
@@ -1066,7 +1371,7 @@ class World extends Phaser.Scene {
     const d = this.dialogue;
     if (!d) {
       if (this.nearest && this.nearest.def.interact) {
-        this.openDialogue(this.nearest.def.interact);
+        this.openDialogue(this.nearest.def.interact, this.nearest.id);
       }
       return;
     }
@@ -1083,13 +1388,19 @@ class World extends Phaser.Scene {
     if (!d || !d.choices.length || d.line < d.node.text.length - 1) return;
     const choice = d.choices[i];
     if (!choice) return;
-    // take before give, so trading the last thing in a full bag still works
+    // Handing a quest in first, because that is the effect that empties the
+    // bag: it takes what the quest asked for before anything else tries to put
+    // something in. Then take before give, so trading the last thing in a full
+    // bag still works, and start last - a quest taken here has nothing to do
+    // with what this choice just handed over.
+    if (choice.finish) this.finishQuest(choice.finish);
     if (choice.take) this.dropItem(choice.take);
     if (choice.give) this.giveItem(choice.give);
     if (choice.set) {
       this.flags.add(choice.set);
       this.pushInventory();                      // a flag can change a look
     }
+    if (choice.start) this.startQuest(choice.start);
     if (!choice.goto) return this.closeDialogue();
     this.gotoNode(choice.goto);
   }
@@ -1101,14 +1412,17 @@ class World extends Phaser.Scene {
     this.renderDialogue();
   }
 
-  /** Remove one of an item from the bag, unequipping it if it was in use. */
+  /** Remove one of an item from the bag.
+   *
+   *  The bag only: what is worn is not in it, and carrying a second sword
+   *  while one is drawn is the case that matters - handing that one over must
+   *  not take the drawn one out of the hero's hand as well. */
   dropItem(id) {
     const slot = this.inventory.indexOf(id);
     if (slot < 0) return;
     this.inventory[slot] = null;
-    if (this.weapon === id) this.equip(null);
-    else if (this.armor === id) this.wear(null);
-    else this.pushInventory();
+    this.pushInventory();
+    this.afterQuestChange();          // and un-counted when it leaves again
   }
 
   /** Hand something over. A full bag must not swallow it, so it lands at the
@@ -1144,7 +1458,8 @@ class World extends Phaser.Scene {
     const k = this.keys;
     const pad = window.__pad || {};
     const talking = !!this.dialogue;
-    const locked = talking || this.busy || this.bagOpen || this.sheetOpen;
+    const locked = talking || this.busy || this.bagOpen || this.sheetOpen
+      || this.questOpen;
 
     if (this.sheetOpen && (pad.left || pad.right)) {
       this.moveGearCursor((pad.right ? 1 : 0) - (pad.left ? 1 : 0));
@@ -1192,17 +1507,27 @@ class World extends Phaser.Scene {
       if (d < bestD) { bestD = d; best = it; }
     }
     this.nearest = best;
+
+    // Standing somewhere can be the errand. Only when the tile changes, which
+    // is also the only time the answer can have changed.
+    const at = this.heroTile();
+    if (!this.lastTile || this.lastTile[0] !== at[0] || this.lastTile[1] !== at[1]) {
+      this.lastTile = at;
+      this.noteVisit();
+    }
     this.checkExit();
     if (this.travelling) return;          // the scene is on its way out
 
     if (window.__hud) {
       window.__hud({
         anim: shown.split('/').slice(1).join('-'),
-        tile: this.heroTile(),
+        tile: at,
         prompt: !talking && best ? (best.def.name || best.id.split('.')[1]) : null,
         verb: best && best.item ? 'take' : 'talk',
         bagFull: !this.inventory.includes(null),
         talking,
+        quests: Object.keys(this.quests)
+          .filter((id) => this.questState(id) !== 'done').length,
       });
     }
   }

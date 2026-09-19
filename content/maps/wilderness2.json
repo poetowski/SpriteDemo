@@ -391,6 +391,41 @@
         12,
         17
       ]
+    },
+    {
+      "def": "npc.arne",
+      "tile": [
+        13,
+        16
+      ]
+    },
+    {
+      "def": "prop.bush",
+      "tile": [
+        3,
+        6
+      ]
+    },
+    {
+      "def": "item.berries",
+      "tile": [
+        4,
+        6
+      ]
+    },
+    {
+      "def": "item.berries",
+      "tile": [
+        5,
+        6
+      ]
+    },
+    {
+      "def": "item.berries",
+      "tile": [
+        4,
+        7
+      ]
     }
   ],
   "exits": [
