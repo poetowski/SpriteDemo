@@ -48,7 +48,7 @@ node tools/shot.cjs --map    # 3. and shoot the whole world
                              # 4. publish game/page.html (below)
 ```
 
-1. **Build.** All 32 gates must pass. A gate failure names an authored file -
+1. **Build.** All 33 gates must pass. A gate failure names an authored file -
    fix that file, never the generated output. Needs Pillow.
 
 2. **Screenshot.** `tools/shot.cjs` loads `game/index.html` in a headless
@@ -202,6 +202,25 @@ than keeping a list - items are marked with a gold diamond in the palette and
 ringed on the map, against solid and walkable-scenery marks for everything
 else, so placing a thing tells you whether it can end up in the bag.
 
+**A zone is a tag its maps share.** `"tags": ["desert"]` on a map, edited in
+the bar beside the name, and the world view groups by it: a heading per zone
+over its own maps, a chip on each line, and the zone's name over its plate on
+the atlas. A tag is not a second way of saying what a doorway already says -
+the layout is still derived from doorways alone and a tag moves nothing. It is
+for the case doorways cannot cover: a region that is coming but is not joined
+yet. The desert is that case, and until a portal exists it is an island on the
+atlas. So the tag also decides what the panel *says* about an unreached map -
+a tagged one is "a zone of its own until something reaches it", informational;
+an untagged one is still the red "nothing reaches it", which is the failure
+the view exists for. Getting those two the same way round is the whole value:
+tagging must not be a way to silence the check on a map somebody forgot.
+
+`map-tags` keeps the vocabulary usable rather than the tags correct: a list if
+present, non-empty, lowercase, no spaces, no duplicates - so `Desert` and
+`desert` cannot become two zones. The bar lowercases and joins up what you
+type rather than refusing it, because nobody should have to remember a gate's
+rules while typing.
+
 The map's in-game name is editable in the bar; it was previously hand-edited
 JSON only.
 
@@ -251,7 +270,7 @@ editor in a headless browser and checks all of the above
 |---|---|---|---|
 | `tiles` | 16x16 | - | `gen/tiles.py` |
 | `actors` | 32x32 | `(16, 29)` | `gen/actor.py`, `gen/animal.py` |
-| `actors_huge` | 64x64 | `(24, 61)` | `gen/giant.py` |
+| `actors_huge` | 64x64 | `(24, 61)` | `gen/giant.py`, `gen/beast.py` |
 | `props` | 32x32 | `(16, 29)` | `gen/props.py` |
 | `props_big` | 48x48 | `(24, 45)` | `gen/props.py` structures |
 | `props_huge` | 64x64 | `(24, 61)` | `gen/props.py` four tiles wide |
@@ -321,6 +340,35 @@ Ground is authored as plain terrain and drawn with variation and edges:
 - Base textures wrap: place detail with `_put`, and it continues across the
   seam instead of being kept away from the edges.
 
+### A second biome
+
+The desert is the first ground that is not the wilderness's, and it is a
+worked example of everything above rather than a special case. Nothing in the
+pipeline knows there are two biomes:
+
+- **It is its own family of palette keys, not a recolour.** `DN`/`SL`/`SS`/
+  `SC`/`OA` (dune, salt, sandstone, scrub, oasis) plus `GD` gold and `LP`
+  lapis sit alongside the grass keys in `tools/gen/palette.py`. Tinting the
+  green keys sand-coloured would have made every existing tile change with
+  them, which is the thing a shared palette is supposed to prevent.
+- **Everything blends over `tile.dune`.** Salt, sandstone, scrub and the oasis
+  all name dune as their `blend_over`, which is what lets any of them sit
+  against any other - the limit above is a limit on terrains with *different*
+  bases, and one base for the whole biome makes it go away.
+- **Dune is the only non-blending one**, so it is 4 variants rather than 47,
+  and it is the ground everything else is cut out of. The oasis animates like
+  water (three phases), which is 141 frames for the one terrain.
+- **The edge styles carry the biome's meaning.** Salt and sandstone use
+  `_edge_drift`, which heaps sand on the lee side, because in a desert the
+  thing that rubs out an edge is wind. The oasis gets `_edge_oasis`: a wet
+  shore and a lit rim, and deliberately no foam, because still water has none.
+
+**Lapis and gold on sandstone is the whole colour idea**, and it is worth
+saying out loud because it is what makes the built things read as one
+civilisation: the urn, the obelisk, the sun gate and the colossus are all
+sandstone with the same two accents, and the desert tunic is the same idea
+worn. Three colours doing the work of a style guide.
+
 ## Where things live
 
 ```
@@ -328,13 +376,14 @@ tools/gen/palette.py   the one palette; a character variant is a key remap
 tools/gen/actor.py     the biped rig      (32x32 frame, anchor [16, 29])
 tools/gen/animal.py    the quadruped rig  (same frame, same contract)
 tools/gen/giant.py     the giant rig      (64x64 frame, anchor [24, 61])
+tools/gen/beast.py     the big-quadruped rig (64x64 frame, anchor [24, 61])
 tools/gen/props.py     props 32x32, structures 48x48, and the 64/128 erratics
 tools/gen/tiles.py     16x16 ground tiles, variants and the blob transitions
 tools/art.py           the art pipeline: draws everything -> assets/
 tools/build.py         the game build: assets/ + content/ -> build/ + game/
 tools/editor.py        serves the map editor in editor/
 tools/cdp.cjs          drives an installed Chrome when Playwright is absent
-tools/pipeline/        aseprite I/O, atlas packing, autotile, manifest, the 32 gates
+tools/pipeline/        aseprite I/O, atlas packing, autotile, manifest, the 33 gates
 assets/                COMMITTED art library: atlases, atlases.json, .aseprite
 build/                 DERIVED, gitignored - manifest, screenshots
 content/               AUTHORED json - actors, props, tiles, dialogue, quests, maps
@@ -443,6 +492,40 @@ shoulders nothing else here has), `round_ears`, `paws`, `stub_tail` and
 `snout` - a pale blunt muzzle drawn with the horn keys. The ears were the
 whole job: drawn at the head's own height they sat under the hump and the bear
 stopped reading as one, so they are placed clear of the shoulders instead.
+
+The zebra is the flag model taken as far as it goes: `stripes` and `crest`,
+plus a palette, and nothing else. Two things about it are worth keeping:
+**a zebra is a white animal with black on it**, so `AF` - the head key - is
+white and it is the *shade* key that carries every bar, the mane and the
+muzzle; pointing the head at the black made a black horse with pale legs.
+And **the bars are every fourth pixel, not every third**: at every third the
+animal read as solid dark. The front and back views needed their own answer,
+because the rig draws the head over the body head-on, so the barrel's bars are
+hidden: head-on the bars are on the *forehead* (the eye row left clear, or the
+face becomes one smudge), and from behind they run *across* the rump, which is
+both where a zebra's are boldest and out of the way of the tail.
+
+**An animal bigger than the livestock** uses the `beast` rig in
+`tools/gen/beast.py` - the same four facings, walk, idle and graze, but drawn
+at the giant's size and on the giant's sheet, because the frame size is what
+decides which sheet a rig belongs on. An elephant in the 32x32 frame the sheep
+share comes out the size of a bear, and the whole point of one is that it is
+not. It was three things to add - the module, an entry in `RIGS` in `art.py`,
+and `"rig": "beast"` in the content - and nothing else in the pipeline changed.
+Two lessons from drawing it, both only visible once rendered:
+
+- **The head has to step above the line of the back.** Drawn level with the
+  barrel and in the same tone, an elephant in profile is one long grey brick
+  with a hose on the end. That step is the whole silhouette.
+- **An ear is hung, not stuck on.** Drawn as a lens centred on the shoulder it
+  was an oval floating on the animal's side - a sticker. A straight top edge
+  where it attaches, and the rest falling away loose, is what reads.
+  And it has to be a *different tone* from the shoulder it covers.
+
+Legs, too: four columns eight pixels wide put the feet in contact and the four
+of them merged into one black plinth the length of the animal, which reads as a
+thing on a stand rather than a thing standing. Narrower, and daylight between
+the front pair and the rear.
 
 **A new face is a palette entry, not a drawing** - `VARIANTS` in
 `tools/gen/palette.py`, and the actor's `sprite` names it (`actor.monk` ->
@@ -555,6 +638,13 @@ with a guard or a head hung off it. Armor names what is worn
 before the arms. The build bakes one frame set per weapon-and-armour pair for
 every actor with `"wields": true` (that table is the actor's `looks`) and the
 `item-held` gate checks every one is complete.
+
+**A second armour costs a function and a line**, and is worth noting for what
+it does to the sheet: the table is a *product*, so `desert_tunic` alongside
+`mail` doubled the baked hero frame sets rather than adding one. Four weapons
+(none, sword, axe, spear) times three looks (bare, mail, tunic). That is fine
+at this size and would not be at ten of each - which is the reason `looks` is
+a table the build writes rather than something content has to spell out.
 
 **A conversation** is a file in `content/dialogue/` and an `interact` on the
 thing that says it. It is a graph: `nodes` of `text` joined by `choices`, and

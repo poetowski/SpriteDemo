@@ -1,0 +1,12 @@
+{
+  "id": "prop.urn",
+  "sprite": "prop.urn",
+  "footprint": [
+    [
+      0,
+      0
+    ]
+  ],
+  "blocks": true,
+  "hittable": true
+}

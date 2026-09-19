@@ -115,6 +115,7 @@ async function openMap(name) {
   $("mapW").value = state.map.size[0];
   $("mapH").value = state.map.size[1];
   $("mapName").value = state.map.name || "";
+  $("mapTags").value = (state.map.tags || []).join(", ");
   state.undo = [];
   state.dirty = false;
   variantCache.clear();
@@ -680,7 +681,8 @@ async function save() {
     size: m.size, spawn: m.spawn, legend: m.legend,
     ground: m.ground, entities: m.entities,
   };
-  const KNOWN = new Set([...Object.keys(body), "exits"]);
+  const KNOWN = new Set([...Object.keys(body), "exits", "tags"]);
+  if (m.tags && m.tags.length) body.tags = m.tags;
   if (m.exits) body.exits = m.exits;
   for (const [k, v] of Object.entries(m)) if (!KNOWN.has(k)) body[k] = v;
   const r = await fetch(`/api/save?map=${encodeURIComponent(state.mapName)}`, {
@@ -855,6 +857,7 @@ function layoutWorld() {
 
   const placed = new Map();
   const loose = [];
+  const zones = [];
   let cursorY = 0;
 
   for (const comp of comps) {
@@ -902,15 +905,22 @@ function layoutWorld() {
                       oy: -e.map.size[1] - WORLD_GUTTER });
     }
 
-    let minX = Infinity, minY = Infinity, maxY = -Infinity;
+    let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
     for (const p of local.values()) {
       minX = Math.min(minX, p.ox);
       minY = Math.min(minY, p.oy);
+      maxX = Math.max(maxX, p.ox + p.map.size[0]);
       maxY = Math.max(maxY, p.oy + p.map.size[1]);
     }
     for (const [id, p] of local) {
       placed.set(id, { ...p, ox: p.ox - minX, oy: p.oy - minY + cursorY });
     }
+    // A plate that is all one zone gets named, because that is the whole point
+    // of a tag: the second biome is a separate world on this atlas until a
+    // portal joins it, and without the name it is just another island.
+    const tags = [...comp].map((id) => (byId.get(id).map.tags || [])[0]);
+    zones.push({ zone: tags.every((t) => t && t === tags[0]) ? tags[0] : null,
+                 ox: 0, oy: cursorY, w: maxX - minX, h: maxY - minY });
     cursorY += (maxY - minY) + WORLD_GUTTER * 2;
   }
 
@@ -925,7 +935,7 @@ function layoutWorld() {
                      interior: true, parent: where.parent, door: where.door });
     ix += e.map.size[0] + WORLD_GUTTER * 2;
   }
-  return { placed, loose, groups: comps.length, interiors: inside };
+  return { placed, loose, zones, groups: comps.length, interiors: inside };
 }
 
 /** What is worth saying about how the maps join up. */
@@ -940,8 +950,15 @@ function worldNotes() {
   for (const { map } of byId.values()) {
     const out = map.exits || [];
     if (!out.length && !leadsTo(map.id).length) {
-      notes.push({ bad: true, html: `<b>${map.name || map.id}</b> joins nothing. `
-        + "It loads, but no doorway reaches it, so the player cannot walk there." });
+      // A tagged map that joins nothing is a zone waiting for its way in,
+      // which is a different thing from a map somebody forgot to connect -
+      // and the tag is what says which.
+      const zone = (map.tags || [])[0];
+      notes.push(zone
+        ? { bad: false, html: `<b>${map.name || map.id}</b> is <b>${zone}</b> and `
+            + "joins nothing yet - a zone of its own until something reaches it." }
+        : { bad: true, html: `<b>${map.name || map.id}</b> joins nothing. `
+            + "It loads, but no doorway reaches it, so the player cannot walk there." });
       continue;
     }
     for (const ex of out) {
@@ -1083,6 +1100,19 @@ function renderWorld() {
   ctx.fillStyle = "#0e1015";
   ctx.fillRect(0, 0, cv.width, cv.height);
   ctx.translate(WORLD_PAD, WORLD_PAD);
+
+  // The zone name over its plate, drawn first so a map can never sit on it.
+  // Only when there is more than one plate: with a single world the caption
+  // would be a label on the whole picture, which says nothing.
+  if (layout.groups > 1) {
+    ctx.font = "600 11px ui-monospace, Consolas, monospace";
+    ctx.textBaseline = "alphabetic";
+    for (const g of layout.zones) {
+      if (!g.zone) continue;
+      ctx.fillStyle = "#c9a86c";
+      ctx.fillText(g.zone.toUpperCase().split("").join(" "), g.ox * z, g.oy * z - 5);
+    }
+  }
 
   for (const [id, p] of layout.placed) {
     const [w, h] = p.map.size;
@@ -1295,7 +1325,7 @@ function buildWorldPanel() {
   const ids = byId;
   const interiors = (state.layout && state.layout.interiors) || new Map();
   const list = $("world-maps");
-  list.replaceChildren(...entries.map(({ name, map }) => {
+  const line = ({ name, map }) => {
     const out = (map.exits || []).length;
     const inbound = [...byId.values()].filter(
       (e) => e.map.id !== map.id && (e.map.exits || []).some((x) => x.to === map.id)).length;
@@ -1310,10 +1340,33 @@ function buildWorldPanel() {
       + `<span>${room ? `inside &mdash; through the door at `
                         + `${room.door[0]},${room.door[1]} on ${parent}`
                       : out ? "out to " + dest.join(", ") : "no way out"}`
-      + `${!room && inbound ? ` &middot; ${inbound} in` : ""}</span>`;
+      + `${!room && inbound ? ` &middot; ${inbound} in` : ""}</span>`
+      + ((map.tags || []).length
+         ? `<span class="tags">${map.tags.map((t) => `<i class="chip">${t}</i>`).join("")}</span>`
+         : "");
     el.onclick = async () => { await openMap(name); await setView("map"); };
     return el;
-  }));
+  };
+  // Grouped by tag, so a zone is a heading rather than something you have to
+  // spot by reading every line. A map with no tags goes under the world it is
+  // actually joined to, which is what "untagged" has always meant here.
+  const zones = new Map();
+  for (const e of entries) {
+    const key = ((e.map.tags || [])[0]) || "";
+    if (!zones.has(key)) zones.set(key, []);
+    zones.get(key).push(e);
+  }
+  const blocks = [];
+  for (const [zone, members] of [...zones].sort((a, b) => a[0].localeCompare(b[0]))) {
+    if (zones.size > 1) {
+      const h = document.createElement("div");
+      h.className = "zone";
+      h.innerHTML = `<span>${zone || "untagged"}</span><em>${members.length}</em>`;
+      blocks.push(h);
+    }
+    blocks.push(...members.map(line));
+  }
+  list.replaceChildren(...blocks);
 
   const nameOf = (id) => (ids.has(id) ? ids.get(id).map.name || id : id);
   $("world-gates").replaceChildren(...(state.gates || []).map((g) => {
@@ -1977,6 +2030,16 @@ function wire() {
   $("v-dlg").onclick = () => setView("dlg");
   $("mapName").oninput = (e) => {
     state.map.name = e.target.value;
+    state.dirty = true;
+    updateStatus();
+  };
+  // Tags are what make a second zone read as one before anything joins it to
+  // the first. Lowercased here rather than rejected, because the gate wants
+  // one lowercase word and nobody should have to remember that while typing.
+  $("mapTags").oninput = (e) => {
+    const tags = e.target.value.split(",").map((t) => t.trim().toLowerCase())
+      .filter(Boolean).map((t) => t.replace(/\s+/g, "_"));
+    state.map.tags = [...new Set(tags)];
     state.dirty = true;
     updateStatus();
   };

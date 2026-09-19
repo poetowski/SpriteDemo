@@ -52,6 +52,12 @@ function makeScratch() {
   // sitting in the repo - so deleting them broke a check that had nothing to do
   // with them. The test brings its own orphan now.
   delete m.exits;
+  // And it must be its own orphan rather than a member of somebody's zone: the
+  // copy is taken from the first map on disk, which is a tagged one, and a
+  // scratch map that inherited `desert` both joined that zone in the panel and
+  // turned the orphan note informational - so the check for a map nothing
+  // reaches passed on the wrong note entirely.
+  delete m.tags;
   fs.writeFileSync(scratch, JSON.stringify(m, null, 2) + '\n');
   madeScratch = true;
 }
@@ -347,7 +353,19 @@ function dropScratch() {
       maps: window.editor.world.entries.length,
       lines: document.querySelectorAll('#world-maps .mapline').length,
       orphans: document.querySelectorAll('#world-maps .mapline.orphan').length,
-      notes: [...document.querySelectorAll('#world-notes .note')].map((n) => n.textContent),
+      notes: [...document.querySelectorAll('#world-notes .note')].map((n) => ({
+        text: n.textContent, bad: !n.classList.contains('info'),
+      })),
+      // The panel in the order it is drawn, so a zone heading can be checked
+      // to actually stand over its own maps rather than merely to exist.
+      panel: [...document.getElementById('world-maps').children].map((el) => (
+        el.classList.contains('zone')
+          ? { zone: el.querySelector('span').textContent,
+              count: Number(el.querySelector('em').textContent) }
+          : { map: el.querySelector('b').textContent,
+              tags: [...el.querySelectorAll('.chip')].map((c) => c.textContent) })),
+      tagged: window.editor.world.entries.filter((e) => (e.map.tags || []).length)
+        .map((e) => ({ name: e.map.name, tags: e.map.tags })),
     };
   });
   check('the world view draws', !world.hidden && world.viewHidden
@@ -434,9 +452,73 @@ function dropScratch() {
   check('no two maps overlap on the atlas', overlaps.length === 0, overlaps.join(', '));
 
   // A map nothing can reach is the failure this view exists to make obvious.
+  // It has to be the red note: a tagged map says "joins nothing yet" in an
+  // informational one, and matching on the words alone accepted that instead.
   check('a map nothing reaches is called out', world.orphans > 0
-    && world.notes.some((t) => /joins nothing/.test(t)),
+    && world.notes.some((n) => n.bad && /joins nothing/.test(n.text)),
     `${world.orphans} orphan lines`);
+
+  // --- zones ----------------------------------------------------------------
+  // A tag is how a second biome reads as one place before any doorway joins it
+  // to the first, so the panel has to group by it and each line has to say
+  // which zone it is in.
+  const zoneHeads = world.panel.filter((r) => r.zone);
+  const zoneOf = [];
+  let current = null;
+  for (const row of world.panel) {
+    if (row.zone) current = row.zone;
+    else zoneOf.push({ map: row.map, under: current, tags: row.tags });
+  }
+  check('a zone is a heading over its own maps', zoneHeads.length >= 2
+    && zoneHeads.some((z) => z.zone === 'desert')
+    && zoneHeads.every((z) => z.count
+        === zoneOf.filter((m) => m.under === z.zone).length),
+    zoneHeads.map((z) => `${z.zone} ${z.count}`).join(', '));
+  const misfiled = zoneOf.filter((m) =>
+    (m.tags[0] || 'untagged') !== m.under);
+  check('and every map is listed under the tag it carries', misfiled.length === 0,
+        misfiled.map((m) => `${m.map}: ${m.tags.join('/') || 'none'} under ${m.under}`)
+          .join('; '));
+  const unchipped = world.tagged.filter((t) => !zoneOf.some(
+    (m) => m.map === t.name && t.tags.every((tag) => m.tags.includes(tag))));
+  check('a tagged map wears its tags on its line', world.tagged.length > 0
+    && unchipped.length === 0,
+    `${world.tagged.length} tagged, ${unchipped.length} missing chips`);
+
+  // The atlas itself has to say it too: an unjoined zone is its own plate down
+  // the canvas, and without a caption it is indistinguishable from a map
+  // somebody forgot to wire up.
+  const plates = await page.evaluate(() => {
+    const zones = window.editor.layout.zones;
+    const z = window.worldScale();
+    const cv = document.getElementById('world');
+    const ctx = cv.getContext('2d');
+    const PAD = 16;
+    return zones.map((g) => {
+      // The band between this plate's top edge and whatever is above it, which
+      // is where the caption is drawn.
+      const top = Math.max(0, PAD + g.oy * z - 16);
+      const px = ctx.getImageData(PAD, top, Math.min(240, cv.width - PAD), 16).data;
+      let ink = 0;
+      for (let i = 0; i < px.length; i += 4) {
+        if (Math.abs(px[i] - 0xc9) < 24 && Math.abs(px[i + 1] - 0xa8) < 24
+            && Math.abs(px[i + 2] - 0x6c) < 24 && px[i + 3] > 128) ink++;
+      }
+      return { zone: g.zone, w: g.w, h: g.h, ink };
+    });
+  });
+  const desertPlate = plates.find((g) => g.zone === 'desert');
+  check('a plate that is all one zone is named on the atlas',
+        plates.length === world.groups && desertPlate && desertPlate.ink > 20
+        && plates.filter((g) => g.zone).length === 1,
+        plates.map((g) => `${g.zone || 'unnamed'} ${g.w}x${g.h} ink=${g.ink}`).join(', '));
+
+  // A zone with no way in yet is a thing being built, not a thing forgotten -
+  // and the tag is the only difference between the two, so the note has to say
+  // so quietly rather than in red.
+  const zoneNote = world.notes.find((n) => /a zone of its own/.test(n.text));
+  check('a tagged map that joins nothing is a zone, not a mistake',
+        zoneNote && !zoneNote.bad, zoneNote ? zoneNote.text : 'no such note');
 
   // Clicking a map on the atlas opens it.
   const jumped = await page.evaluate(async () => {
@@ -470,6 +552,41 @@ function dropScratch() {
   check('the map name is shown and editable', named.shown === 'Scratch'
     && named.held === 'Renamed By Test' && named.restored === 'Scratch',
     `${named.shown} -> ${named.held} -> ${named.restored}`);
+
+  // The gate wants one lowercase word per tag, so the bar does that for you
+  // rather than refusing what you typed.
+  const typed = await page.evaluate(async (m) => {
+    await window.openMap(m);
+    const field = document.getElementById('mapTags');
+    field.value = ' Desert , DESERT, two words ';
+    field.dispatchEvent(new Event('input'));
+    return window.editor.map.tags;
+  }, MAP);
+  check('tags are lowercased, joined up and deduped as they are typed',
+        JSON.stringify(typed) === JSON.stringify(['desert', 'two_words']),
+        JSON.stringify(typed));
+
+  // And they have to survive save(), which names the fields it writes: `exits`
+  // was once not among them and the world came apart quietly. A tag is the
+  // same kind of field, so it gets the same test - for real, on the test's own
+  // map, because the round trip is through the server as much as the page.
+  await page.evaluate(() => {
+    const field = document.getElementById('mapTags');
+    field.value = 'scratchland';
+    field.dispatchEvent(new Event('input'));
+    return window.save();
+  });
+  await page.waitForFunction(() => state.dirty === false, null, { timeout: 8000 });
+  const savedTags = JSON.parse(fs.readFileSync(file, 'utf-8')).tags;
+  check('and a tag survives the round trip through save',
+        JSON.stringify(savedTags) === JSON.stringify(['scratchland']),
+        JSON.stringify(savedTags));
+  const reopened = await page.evaluate(async (m) => {
+    await window.openMap(m);
+    return document.getElementById('mapTags').value;
+  }, MAP);
+  check('and comes back in the bar when the map is opened again',
+        reopened === 'scratchland', reopened);
 
   const stillCleanAfterWorld = otherMaps.filter((f) =>
     fs.readFileSync(path.join(MAPS, f), 'utf-8') !== otherBefore[f]);

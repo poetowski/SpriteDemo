@@ -1,0 +1,15 @@
+{
+  "id": "prop.sun_gate",
+  "sprite": "prop.sun_gate",
+  "footprint": [
+    [
+      -1,
+      0
+    ],
+    [
+      1,
+      0
+    ]
+  ],
+  "blocks": true
+}

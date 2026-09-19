@@ -9,9 +9,16 @@ engine-neutral JSON. Sheep and goats wander and graze on their own.
 The world is eight wildernesses you walk between — fells and pine woods, a
 shieling, a boar that hunts its own patch, a lake north of it all with an old
 burrow tree four tiles across, and westernmost a temple under a crag with two
-fires burning and a monk sweeping a step that is already clean — with 37 kinds
-of prop and fifteen kinds of thing to pick up, three of which go in the weapon
+fires burning and a monk sweeping a step that is already clean — with 55 kinds
+of prop and sixteen kinds of thing to pick up, three of which go in the weapon
 hand and swing.
+
+And there is a second country nobody can walk to yet: a mythological desert of
+dunes, a salt pan, scrub and an oasis, with a sun gate and a pair of obelisks
+on a sandstone court, a colossus half sunk in the sand, elephants at the water
+and zebras out on the pan. It is a **zone** — a tag its maps share — which is
+what lets the editor group it and show it as its own plate on the world atlas
+while it waits for a portal.
 
 ![the world](build/map.png)
 
@@ -52,7 +59,7 @@ The rule: `tools/` and `content/` are truth. Everything in `build/` and
 content/*.json  +  tools/gen/*.py
         │  generate
 build/atlas/*.png  ·  build/manifest.json  ·  build/aseprite/*.aseprite
-        │  validate   ← 32 gates, all must pass
+        │  validate   ← 33 gates, all must pass
 game/art-embed.js  →  game/index.html + main.js  →  game/page.html
 ```
 
@@ -80,6 +87,7 @@ failure points at an authored file, never at generated output:
 | `map-overlap` | two solid things claiming the same tile |
 | `map-spawn` | a spawn in water, or inside a wall |
 | `map-exit` | a way to another map that lands nowhere real, or lands on the way back |
+| `map-tags` | `Desert` and `desert` quietly becoming two zones |
 | `actor-hostile` | a creature that attacks with a number missing, or that would drop the chase as it started |
 | `actor-hp` | a creature that can be struck but never killed, or killed by nothing |
 | `dialogue-exists` | an NPC pointing at dialogue that does not exist |
@@ -110,22 +118,30 @@ draws a crown of hair over the skull, so pointing the hair keys at the skin
 ones leaves a shaved head with the light still on the dome. Nothing in the rig
 knows there is a bald character.
 
-**Three rigs, one contract.** `tools/gen/actor.py` is the biped; `animal.py` is
+**Four rigs, one contract.** `tools/gen/actor.py` is the biped; `animal.py` is
 the quadruped (walk, idle and a head-down `graze`); `giant.py` is the monster —
-three tiles tall, two wide, with a slow `attack` its own frames draw. All three
-share the same ground line, the same anchor rule and the same `build_frames()`
-shape, so the atlas, the anchors and the depth sorting treat them identically.
-A goat is the sheep rig with horns, a beard, a smooth back and a tan palette —
-which species an actor uses is a `"rig"` field in `content/`, not a pipeline
-change.
+three tiles tall, two wide, with a slow `attack` its own frames draw; and
+`beast.py` is the elephant, a quadruped at the giant's size because one drawn
+in the frame the sheep share comes out the size of a bear. All four share the
+same ground line, the same anchor rule and the same `build_frames()` shape, so
+the atlas, the anchors and the depth sorting treat them identically. A goat is
+the sheep rig with horns, a beard, a smooth back and a tan palette — which
+species an actor uses is a `"rig"` field in `content/`, not a pipeline change,
+and a rig at a new size is two constants and an entry in `RIGS`.
 
-**A species is a set of silhouette flags**, which is what keeps five animals on
+**A species is a set of silhouette flags**, which is what keeps six animals on
 one rig without any of them reading as a recolour of another. `SPECIES` in
 `animal.py`: the boar bristles and has tusks, the elk is `tall` with antlers, a
-mane and a pale rump, and the bear has `bulk`, a shoulder `hump`, round ears on
+mane and a pale rump, the bear has `bulk`, a shoulder `hump`, round ears on
 top of the skull instead of behind it, flat paws, a stub tail and a pale blunt
-muzzle borrowing the horn keys. Every flag is read with `.get`, so adding one
-for a new animal leaves the others alone.
+muzzle borrowing the horn keys, and the zebra is `stripes` and `crest` and
+nothing else. Every flag is read with `.get`, so adding one for a new animal
+leaves the others alone.
+
+A zebra is also the clearest case of why the palette stores keys: it is a
+**white** animal with black on it, so the head key is white and it is the
+*shade* key that carries every bar. Pointing the head at the black instead
+gave a black horse with pale legs — the same drawing, read backwards.
 
 **Anchors, not offsets.** Every sprite exports the pixel that sits on a map tile
 (`[16, 29]` — between the feet). The game sets sprite origin from it, so art of
@@ -295,7 +311,11 @@ weapon-and-armour pair (`actor.hero_sword_mail` and the rest) and writes the
 whole table into the hero's record as `looks`, keyed `"<weapon>|<armor>"`.
 Putting the shirt on is the same one-string switch as drawing a sword. The
 mail shirt lies a few steps from where you start; the first one picked up is
-worn, and **E** on it in the bag takes it off again.
+worn, and **E** on it in the bag takes it off again. The desert tunic — linen
+under a gilt collar and a lapis sash — is the second, and it is worth knowing
+that the table is a *product*: four weapons times three looks is twelve baked
+frame sets for one character, which is why `looks` is something the build
+writes rather than something the content has to spell out.
 
 ## Verification
 
@@ -325,7 +345,11 @@ worn, and **E** on it in the bag takes it off again.
 - `node tools/editor_test.cjs` drives the editor the same way: it erases the
   berries on the open map and checks the quest board goes short *before*
   anything is saved, and that every node of a conversation is drawn, none on
-  top of another, with every reply landing on a box.
+  top of another, with every reply landing on a box. It also checks the world
+  atlas is the same picture whichever map is open — every seam flush and
+  every crossing lined up — and that a zone's tag reaches all three places it
+  has to: the heading over its maps, the chip on each line, and the name over
+  its plate on the atlas, surviving a round trip through save.
 
 ## Engine note
 

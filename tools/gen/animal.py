@@ -40,6 +40,11 @@ SPECIES = {
     "bear": {"wool": False, "horns": False, "beard": False,
              "bulk": 1, "hump": True, "round_ears": True, "paws": True,
              "stub_tail": True, "snout": True},
+    # The zebra is the horse the rig never had, and it needs exactly two
+    # things to be one: the bars, and a mane that stands up instead of lying
+    # along the neck.
+    "zebra": {"wool": False, "horns": False, "beard": False,
+              "tall": 2, "stripes": True, "crest": True},
 }
 
 
@@ -80,6 +85,10 @@ def _side_body(c, bob, shape):
         for x in range(9, 21, 2):               # which is what makes a boar
             c.set(x, top - 1, "AFS")            # read as bristling and not fat
         c.set(21, top, "AFS")
+    if shape.get("stripes"):                    # bars round the barrel. Every
+        for i, x in enumerate(range(10, 22, 4)):    # third pixel was a black
+            c.col(x, top + 1 + (i % 2), belly - 1, "AFS")   # horse; every
+            c.set(x + 1, top + 1 + (i % 2), "AFS")          # fourth is a zebra
     if shape.get("rump"):                       # the pale patch a deer shows
         c.rect(8, top + 2, 11, belly - 1, "AR")  # you as it goes away
     if shape.get("stub_tail"):                  # barely there, and that is the
@@ -117,6 +126,14 @@ def _side_head(c, bob, shape, down=0, lunge=0):
     if shape["horns"]:
         c.rect(hx, hy - 2, hx + 1, hy - 1, "HN")
         c.set(hx + 2, hy - 2, "HNS")
+    if shape.get("stripes"):                    # short ones down the neck
+        for i in range(3):
+            c.col(20 + i * 2, hy + 3 + i, hy + 5 + i, "AFS")
+        c.set(hx + 2, hy + 1, "AFS")
+    if shape.get("crest"):                      # a mane standing up off it
+        for i, x in enumerate(range(19, 24)):
+            c.set(x, hy - 1, "AFS")
+            c.set(x, hy, "AFS" if i % 2 else "AF")
     if shape.get("mane"):                       # shaggy throat, under the neck
         for i, x in enumerate(range(19, 24)):
             c.col(x, hy + 4, hy + 6 + (i % 2), "AFS")
@@ -181,6 +198,9 @@ def draw_front(shape, pose):
     if shape.get("bristles"):
         for x in range(11, 21, 2):
             c.set(x, 14 + bob - tall, "AFS")
+    if shape.get("stripes"):
+        for x in range(11, 21, 4):
+            c.col(x, 16 + bob - tall, 24 + bob - tall, "AFS")
     if shape.get("hump"):                   # head-on it is shoulders, not a
         c.rect(12, 13 + bob - tall, 19, 15 + bob - tall, "AB")   # peak
         c.row(13, 18, 13 + bob - tall, "ABL")
@@ -221,8 +241,22 @@ def draw_front(shape, pose):
         c.row(14, 17, hy + 6, "HNS")
     else:
         c.rect(14, hy + 4, 17, hy + 6, "AFS")           # muzzle
+    if shape.get("stripes"):
+        # Head-on the head covers the body, so bars on the barrel are hidden
+        # and the animal comes at you as a blank white box. A zebra's face is
+        # barred too - down the forehead and along the cheeks - and that is
+        # what has to carry it from this angle.
+        # The forehead only: the eye row stays clear, because bars down the
+        # cheeks ran into the eyes and the face became one dark smudge, and
+        # the muzzle is already dark enough to finish the head from below.
+        for x in (13, 16, 18):
+            c.set(x, hy, "AFS")
+            c.set(x, hy + 1, "AFS")
+        c.set(14, hy, "AFS")
     c.set(13, hy + 2, "OL")
     c.set(18, hy + 2, "OL")
+    if shape.get("crest"):                              # the mane, end on
+        c.rect(15, hy - 3, 16, hy - 1, "AFS")
     if shape.get("mane"):
         c.rect(13, hy + 7, 18, hy + 8, "AFS")
     if shape["beard"]:
@@ -255,6 +289,15 @@ def draw_back(shape, pose):
     if shape.get("bristles"):
         for x in range(11, 21, 2):
             c.set(x, 14 + bob - tall, "AFS")
+    if shape.get("stripes"):
+        # The rump is where a zebra's bars are boldest and they run across it,
+        # not down it - and drawn down it they land under the tail and vanish.
+        # So: horizontal, and either side of where the tail hangs.
+        for i, y in enumerate(range(17 + bob - tall, 25 + bob - tall, 2)):
+            c.row(11, 14 - (i % 2), y, "AFS")
+            c.row(17 + (i % 2), 20, y, "AFS")
+    if shape.get("crest"):
+        c.rect(15, 12 + bob - tall, 16, 14 + bob - tall, "AFS")
     if shape.get("rump"):                  # going away is the view a deer gives
         c.rect(13, 18 + bob - tall, 18, 23 + bob - tall, "AR")
         for x, y in ((13, 18), (18, 18), (13, 23), (18, 23)):

@@ -97,6 +97,37 @@ PALETTE = {
     # lit by something rather than coming off something.
     "DU":  ((0xe8, 0xdc, 0xbe, 150), "dust"),
     "DUL": ((0xff, 0xf2, 0xd4, 110), "dust light"),
+    # --- the desert -------------------------------------------------------
+    # A second biome wants its own family of keys, not a remap of the first.
+    # Nothing in the grass palette reads as sun-bleached: the greens are all
+    # cool and the browns are all damp, and a desert drawn out of them comes
+    # out looking like a dead meadow.
+    "DN":  ((0xe0, 0xbd, 0x7e, 255), "dune"),
+    "DND": ((0xbd, 0x9a, 0x5c, 255), "dune shade"),
+    "DNL": ((0xf5, 0xdc, 0xa6, 255), "dune light"),
+    "DNX": ((0x9a, 0x7a, 0x45, 255), "dune deep"),
+    "SL":  ((0xe8, 0xe4, 0xd8, 255), "salt"),
+    "SLD": ((0xc2, 0xbd, 0xae, 255), "salt shade"),
+    "SLL": ((0xfb, 0xf8, 0xef, 255), "salt light"),
+    "SS":  ((0xc9, 0x8f, 0x5a, 255), "sandstone"),
+    "SSD": ((0x9c, 0x6a, 0x3e, 255), "sandstone shade"),
+    "SSL": ((0xe3, 0xad, 0x74, 255), "sandstone light"),
+    "SC":  ((0x9a, 0x8a, 0x52, 255), "scrub"),
+    "SCD": ((0x6f, 0x63, 0x38, 255), "scrub shade"),
+    "SCL": ((0xb9, 0xa8, 0x6c, 255), "scrub light"),
+    # An oasis is not the river: still, green-blue and much darker in the
+    # middle, because it is deep and there is nothing moving it.
+    "OA":  ((0x2f, 0x8f, 0x8a, 255), "oasis"),
+    "OAD": ((0x1d, 0x63, 0x60, 255), "oasis dark"),
+    "OAL": ((0x57, 0xb9, 0xb0, 255), "oasis light"),
+    "OAX": ((0x14, 0x46, 0x4a, 255), "oasis deep"),
+    # What the old kingdom put on the things it meant to outlast it.
+    "GD":  ((0xd9, 0xb2, 0x4c, 255), "gold"),
+    "GDD": ((0xa8, 0x84, 0x2e, 255), "gold shade"),
+    "GDL": ((0xf0, 0xd5, 0x82, 255), "gold light"),
+    "LP":  ((0x2f, 0x4e, 0x9c, 255), "lapis"),
+    "LPD": ((0x1d, 0x31, 0x68, 255), "lapis shade"),
+    "LPL": ((0x4f, 0x74, 0xc9, 255), "lapis light"),
 }
 
 # Palette swaps. The frames are identical pixels; only the lookup changes, so a
@@ -159,6 +190,30 @@ VARIANTS = {
         "AH":  (0x1c, 0x15, 0x0f, 255),   # claws
         "HN":  (0xb9, 0x9a, 0x6e, 255),   # the muzzle
         "HNS": (0x8c, 0x72, 0x50, 255),
+    },
+    "zebra": {
+        # A zebra is a white animal with black on it, so the *head* key is
+        # white too - it is the shade key that carries every bar, the mane and
+        # the muzzle. Pointing the head at the black instead made it a black
+        # horse with a few white legs.
+        "AB":  (0xf0, 0xee, 0xe8, 255),
+        "ABS": (0xc6, 0xc3, 0xbb, 255),
+        "ABL": (0xff, 0xff, 0xfa, 255),
+        "AF":  (0xe4, 0xe1, 0xd9, 255),
+        "AFS": (0x24, 0x21, 0x1f, 255),
+        "AH":  (0x22, 0x20, 0x1e, 255),
+    },
+    "elephant": {
+        # Grey on grey: the shape has to carry it, so the three body tones sit
+        # close together and the ivory is the only thing that jumps.
+        "AB":  (0x8e, 0x8b, 0x8a, 255),
+        "ABS": (0x68, 0x66, 0x66, 255),
+        "ABL": (0xa9, 0xa6, 0xa4, 255),
+        "AF":  (0x6d, 0x6a, 0x69, 255),
+        "AFS": (0x3e, 0x3c, 0x3b, 255),   # the edge tone: ear, trunk, folds
+        "AH":  (0x2e, 0x2c, 0x2b, 255),
+        "HN":  (0xe4, 0xdd, 0xc8, 255),   # tusks
+        "HNS": (0xb8, 0xb0, 0x9a, 255),
     },
     "elk": {
         # A bull elk is two animals of colour: a tawny body and a much darker

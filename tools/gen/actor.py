@@ -175,7 +175,32 @@ def mail(c, direction, dy=0):
     c.set(x1 + 1, t + 2, "MTD")
 
 
-ARMOURS = {"mail": mail}
+def desert_tunic(c, direction, dy=0):
+    """Linen to the waist under a broad gilt collar. The collar is the armour
+    and the rest is cloth, which is how it reads at a glance against the mail:
+    one is metal all over and this is one bright band at the shoulders."""
+    t = TORSO_TOP + dy
+    b = BELT_Y + dy
+    x0, x1 = (13, 19) if direction == "right" else (12, 19)
+    c.rect(x0, t, x1, b - 1, "CL")                 # the linen
+    for y in range(t + 3, b - 1):                  # and the weave of it, as a
+        for x in range(x0, x1 + 1):                # dither: a dark row every
+            if (x * 2 + y) % 4 == 0:               # other line was a striped
+                c.set(x, y, "CLD")                 # shirt, not woven cloth
+    c.rect(x0, t, x1, t + 2, "GD")                 # the broad collar
+    c.row(x0, x1, t, "GDL")
+    c.row(x0, x1, t + 2, "GDD")
+    c.set(x0 + 1, t + 1, "LP")                     # inlaid, twice
+    c.set(x1 - 1, t + 1, "LP")
+    c.rect(x0 - 1, t, x0, t + 1, "GDL")            # over the shoulder seams
+    c.rect(x1, t, x1 + 1, t + 1, "GDL")
+    c.set(x0 - 1, t + 2, "GDD")
+    c.set(x1 + 1, t + 2, "GDD")
+    c.row(x0, x1, b - 1, "LP")                     # a sash at the waist
+    c.set(x0 + 2, b - 1, "LPL")
+
+
+ARMOURS = {"mail": mail, "desert_tunic": desert_tunic}
 
 
 def draw_weapon(c, hx, hy, aim, name):

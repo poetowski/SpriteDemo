@@ -303,6 +303,24 @@ def run(content, man, tile_canvases=None):
                                       f"the player would be sent straight back")
     passed.append("map-exit")
 
+    # 6c - tags. A zone is a tag its maps share, and the editor groups by it -
+    # so a stray capital, a space, or a bare string where a list belongs
+    # quietly splits one zone into two that read identically in the panel.
+    for mid, m in content["maps"].items():
+        tags = m.get("tags")
+        if tags is None:
+            continue
+        if not isinstance(tags, list) or not tags:
+            _fail("map-tags", f"{m['_file']}: \"tags\" is a list of names, "
+                              f"not {tags!r}")
+        for t in tags:
+            if not isinstance(t, str) or not t or t != t.lower() or " " in t:
+                _fail("map-tags", f"{m['_file']}: tag {t!r} should be one "
+                                  f"lowercase word with no spaces")
+        if len(set(tags)) != len(tags):
+            _fail("map-tags", f"{m['_file']}: {tags} repeats a tag")
+    passed.append("map-tags")
+
     # 6a - the resolved grid: rectangular, and every index a real tile
     count = man["atlases"]["tiles"]["count"]
     for mid, m in man["maps"].items():

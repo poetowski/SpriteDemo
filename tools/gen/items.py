@@ -197,6 +197,21 @@ def mail():
     return c.outline()
 
 
+def desert_tunic():
+    c = Canvas(SIZE, SIZE)
+    c.rect(4, 5, 11, 13, "CL")                  # the linen
+    c.rect(2, 5, 4, 8, "CL")                    # short sleeves
+    c.rect(11, 5, 13, 8, "CL")
+    for y in range(7, 13, 2):
+        c.row(4, 11, y, "CLD")
+    c.rect(4, 3, 11, 5, "GD")                   # the collar, which is the
+    c.row(4, 11, 3, "GDL")                      # whole of what it is
+    c.set(6, 4, "LP")
+    c.set(9, 4, "LP")
+    c.row(4, 11, 12, "LP")                      # and the sash
+    return c.outline()
+
+
 ITEMS = {
     "item.apple": apple,
     "item.berries": berries,
@@ -213,6 +228,7 @@ ITEMS = {
     "item.axe": axe,
     "item.spear": spear,
     "item.mail": mail,
+    "item.desert_tunic": desert_tunic,
 }
 ITEM_ORDER = list(ITEMS)
 

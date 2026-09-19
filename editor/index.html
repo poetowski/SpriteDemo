@@ -136,6 +136,14 @@
   .mapline.orphan { border-left-color: var(--warn); }
   .mapline.linked { border-left-color: var(--accent); }
   .mapline.inside { border-left-color: #c9a86c; }
+  .mapline .tags { display: flex; gap: 3px; flex-wrap: wrap; margin-top: 1px; }
+  .zone { margin: 6px 0 0; font-size: 10px; letter-spacing: .12em;
+          text-transform: uppercase; color: var(--muted);
+          border-bottom: 1px solid var(--line); padding-bottom: 2px;
+          display: flex; justify-content: space-between; align-items: baseline; }
+  .zone em { font-style: normal; color: #5d6679; letter-spacing: 0; }
+  .chip { font-size: 10px; letter-spacing: .04em; padding: 0 5px; border-radius: 8px;
+          background: #3d3418; color: #e0c341; }
   .notes { display: flex; flex-direction: column; gap: 5px; }
   .gate { display: flex; flex-direction: column; gap: 2px; padding: 5px 7px; cursor: pointer;
           background: var(--panel2); border: 1px solid var(--line);
@@ -169,6 +177,8 @@
   <h1>Map editor <span>&middot; paints terrain, places objects, saves to content/maps/</span></h1>
   <label>map <select id="mapSel"></select></label>
   <label>name <input id="mapName" type="text" size="14" title="What this place is called in game"></label>
+  <label>tags <input id="mapTags" type="text" size="10" placeholder="desert"
+    title="Which zone this map belongs to - lowercase words, comma separated"></label>
   <label>size <input id="mapW" type="number" min="8" max="200"> &times; <input id="mapH" type="number" min="8" max="200">
     <button id="resize" title="Resize (pads with grass, crops from the bottom-right)">apply</button></label>
   <div class="tools">
@@ -242,7 +252,9 @@
     <b>click a map</b> to open it<br>
     Each gate has a colour and a number: the filled band is a mouth, the arrow
     runs to where it puts you down, and a dashed arrow is a one-way trip.<br>
-    <span style="color:var(--accent)">&#9679;</span> where a fresh game starts
+    <span style="color:var(--accent)">&#9679;</span> where a fresh game starts<br>
+    Maps are grouped by their <b>tags</b>, so a second zone reads as one even
+    before anything connects it to the first.
   </div>
   <div id="legend-quests" class="legend" hidden>
     A quest is authored in <b>content/quests/</b>. What cannot be read there is

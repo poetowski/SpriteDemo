@@ -605,6 +605,267 @@ def temple(phase=0):
     return c
 
 
+# ------------------------------------------------------------- the desert --
+# A second biome needs its own scenery or it is the same country recoloured.
+# These all lean on the same two ideas as the rest: the shape carries it, and
+# the palette says which world it belongs to.
+def _frond(c, x, y, dx, dy, n, key, dark):
+    """A palm leaf: a rib out from the crown that droops further the further
+    it goes, with leaflets hung off both sides of it. Drawn as a walk rather
+    than a line, because a straight frond reads as a feather duster."""
+    fx, fy = float(x), float(y)
+    for i in range(n):
+        fx += dx
+        fy += dy + i * 0.18                       # the droop, gathering
+        px, py = round(fx), round(fy)
+        c.set(px, py, key)
+        if i:
+            c.set(px, py - 1, key if i % 2 else dark)
+            c.set(px, py + 1, dark)
+
+
+def palm(phase=0):
+    """A date palm: a bare leaning trunk and everything happening at the top,
+    which is the whole silhouette of one."""
+    c = Canvas(FRAME, FRAME)
+    for i in range(BASE_Y - 11):                  # the trunk, leaning west
+        y = BASE_Y - i
+        x = 16 - i // 5
+        c.col(x, y, y, "WD")
+        c.set(x + 1, y, "WDD")
+        if i % 3 == 0:
+            c.set(x, y, "WDL")                    # the old frond scars
+    c.row(14, 18, BASE_Y, "WDD")                  # a flare at the foot
+    hx, hy = 13, 11
+    for dx, dy in ((-1.6, -0.5), (-1.3, 0.5), (1.6, -0.4), (1.3, 0.6),
+                   (-0.7, -1.1), (0.8, -1.1), (0.2, 1.1)):
+        _frond(c, hx, hy, dx, dy, 6, "BU", "BUD")
+    _lobe(c, hx, hy, 2, "BUD")                    # the crown itself
+    for x, y in ((hx + 2, hy + 2), (hx + 3, hy + 2), (hx + 2, hy + 3)):
+        c.set(x, y, "RF")                         # a bunch of dates under it
+    c.rect(0, BASE_Y + 1, FRAME - 1, FRAME - 1, None)
+    return c.outline()
+
+
+def cactus(phase=0):
+    """A column with two arms at different heights. Both at the same height
+    is a candlestick, and it is the one thing that stops it reading as a
+    cactus at all."""
+    c = Canvas(FRAME, FRAME)
+    c.rect(13, 9, 18, BASE_Y, "BU")               # the trunk
+    c.col(13, 9, BASE_Y, "BUL")
+    c.col(18, 9, BASE_Y, "BUD")
+    c.row(13, 18, 9, "BUL")
+    c.rect(9, 15, 12, 17, "BU")                   # the low arm, west
+    c.rect(9, 12, 10, 16, "BU")
+    c.col(9, 12, 17, "BUL")
+    c.rect(19, 13, 22, 15, "BU")                  # and the high one, east
+    c.rect(21, 9, 22, 14, "BU")
+    c.col(22, 9, 15, "BUD")
+    for y in range(11, BASE_Y, 3):                # ribs, and a spine on each
+        for x in (14, 16, 17):
+            c.set(x, y, "BUD")
+        c.set(15, y + 1, "EW")
+    for y in (13, 16):
+        c.set(10, y, "EW")
+    for y in (11, 14):
+        c.set(21, y, "EW")
+    c.rect(0, BASE_Y + 1, FRAME - 1, FRAME - 1, None)
+    return c.outline()
+
+
+def dry_bush(phase=0):
+    """Thorn: a few long stems and a lot of gaps. Twenty short ones packed
+    round a root came out as a solid green lump - what says dead scrub is the
+    sand showing through it."""
+    c = Canvas(FRAME, FRAME)
+    for i in range(9):
+        a = -math.pi / 2 + (i - 4) * 0.34
+        x, y = 16.0, float(BASE_Y - 1)
+        for k in range(6 + (i % 3)):
+            x += math.cos(a) * 1.5
+            y += math.sin(a) * 1.15 + 0.12        # straightening as it rises
+            c.set(round(x), round(y), "SC" if k % 3 else "SCD")
+            if k == 3:                            # one side shoot each
+                c.set(round(x + math.cos(a + 1.1) * 2),
+                      round(y + math.sin(a + 1.1) * 2), "SCD")
+        c.set(round(x), round(y), "SCL")          # a lit tip
+    c.row(14, 18, BASE_Y, "SCD")
+    c.rect(0, BASE_Y + 1, FRAME - 1, FRAME - 1, None)
+    return c.outline()
+
+
+def bones(phase=0):
+    """A horned skull sunk in a drift, with two ribs still standing behind it.
+
+    The first pass was a ribcage seen side on: a spine drawn as a solid bar
+    with the ribs hanging off it, which at this size is a comb, and the second
+    was the same comb lying down. What actually reads as bone at 32px is a
+    skull - a pale mass with two black sockets in it - so the skull carries the
+    object and the ribs are two arcs behind, there to say the rest of the
+    animal is under the sand rather than to be read in themselves."""
+    c = Canvas(FRAME, FRAME)
+    # A mound, not a slab: drawn as a rectangle the drift read as a plank the
+    # skull had been laid on.
+    rnd = scatter(0x3B21)
+    for x in range(3, 29):
+        h = round(3 * math.sin((x - 3) / 25 * math.pi)) + (rnd(2) if 5 < x < 26 else 0)
+        if h <= 0:
+            continue
+        c.col(x, BASE_Y - h, BASE_Y, "DND")
+        c.set(x, BASE_Y - h, "DNX")
+
+    # One long bone beside it rather than a ribcage. Three ribs drawn as arcs
+    # at this size ran together into a white crate, and a rib on its own says
+    # nothing: a femur with a knob at each end is the one bone that is legible
+    # lying down.
+    for k in range(8):
+        c.set(21 + k, 24 - k // 3, "CL")
+        c.set(21 + k, 25 - k // 3, "CLD")
+    for kx, ky in ((20, 24), (20, 25), (21, 23), (28, 21), (28, 22), (27, 20)):
+        c.set(kx, ky, "CL")
+
+    # The horns first, so the skull is drawn over where they meet it and they
+    # never look stuck on the front of its face.
+    for side, hx in ((-1, 10), (1, 19)):
+        for k in range(7):
+            x = hx + side * k
+            y = 17 - (k * 3) // 4 - (k > 4)
+            c.set(x, y, "HN")
+            c.set(x, y + 1, "HNS")
+
+    c.rect(10, 16, 19, 22, "CL")                  # the cranium
+    c.row(11, 18, 15, "CL")
+    c.row(12, 17, 15, "CLD")                      # a brow over the sockets
+    c.rect(13, 22, 16, 26, "CL")                  # and the long face under it
+    c.row(13, 16, 26, "CLD")
+    c.col(14, 23, 25, "CLD")                      # the nasal groove
+    c.rect(11, 18, 12, 20, "OL")                  # two sockets, which is the
+    c.rect(17, 18, 18, 20, "OL")                  # whole of why it reads
+    c.set(10, 16, "CLD")
+    c.set(19, 16, "CLD")
+    c.rect(0, BASE_Y + 1, FRAME - 1, FRAME - 1, None)
+    return c.outline()
+
+
+def urn(phase=0):
+    """A storage jar, banded. Lapis and gold on sandstone is the whole colour
+    idea of this biome in one object."""
+    c = Canvas(FRAME, FRAME)
+    _blob(c, 12, (2, 3, 5, 6, 6, 6, 5, 5, 4, 3, 3, 3, 3, 3, 3, 3, 4), "SS")
+    c.rect(13, 10, 18, 12, "SSD")                 # the neck and its lip
+    c.row(12, 19, 10, "SSL")
+    _shade(c, "SS", "SSL", "SSD")
+    c.row(11, 20, 17, "LP")                       # a band round the shoulder
+    c.row(11, 20, 18, "LPD")
+    c.row(12, 19, 21, "GD")
+    c.set(15, 20, "GDL")
+    c.set(16, 22, "GDL")
+    c.rect(0, BASE_Y + 1, FRAME - 1, FRAME - 1, None)
+    return c.outline()
+
+
+def obelisk():
+    """A needle of sandstone with a gilt pyramidion, on its own plinth. Drawn
+    in the 48 frame for the height, not the width: its footprint is one tile,
+    which is what a thing this slender stands on."""
+    c = Canvas(BIG_FRAME, BIG_FRAME)
+    c.rect(14, BIG_BASE_Y - 6, 33, BIG_BASE_Y, "SS")          # the plinth
+    c.row(14, 33, BIG_BASE_Y - 6, "SSL")
+    c.row(14, 33, BIG_BASE_Y, "SSD")
+    c.rect(16, BIG_BASE_Y - 9, 31, BIG_BASE_Y - 6, "SSD")     # a second course
+    c.row(16, 31, BIG_BASE_Y - 9, "SSL")
+    _taper(c, 12, BIG_BASE_Y - 9, 4, 7, "SS", cx=23)          # the shaft
+    _shade(c, "SS", "SSL", "SSD")
+    for y in range(17, BIG_BASE_Y - 12, 6):                   # carved registers
+        c.row(20, 27, y, "SSD")
+        c.rect(22, y + 2, 25, y + 3, "LP")
+        c.set(23, y + 2, "LPL")
+    _blob(c, 4, (0, 1, 2, 3, 4, 4), "GD", cx=23)              # the pyramidion
+    _shade(c, "GD", "GDL", "GDD")
+    c.row(19, 28, 10, "GDD")
+    return c.outline()
+
+
+SUN_DISC = ((6, "GDL"), (7, "GD"), (6, "GDL"), (5, "GD"))     # per phase
+
+
+def sun_gate(phase=0):
+    """Two posts and a lintel with a disc of light standing in the opening.
+    The middle tile is deliberately left out of its footprint: you can walk
+    under it, which is what a gate is for."""
+    c = Canvas(BIG_FRAME, BIG_FRAME)
+    r, key = SUN_DISC[phase % len(SUN_DISC)]
+    _lobe(c, 23, 26, r, key)                                  # the disc, first,
+    _lobe(c, 23, 26, max(1, r - 3), "GDL")                    # so the posts
+    for i in range(8):                                        # rays off it
+        a = i * math.pi / 4 + phase * 0.2
+        c.set(round(23 + math.cos(a) * (r + 2)), round(26 + math.sin(a) * (r + 2)), "GDL")
+    for x0 in (8, 32):                                        # stand over it
+        c.rect(x0, 14, x0 + 7, BIG_BASE_Y, "SS")
+        c.col(x0, 14, BIG_BASE_Y, "SSL")
+        c.col(x0 + 7, 14, BIG_BASE_Y, "SSD")
+        for y in range(19, BIG_BASE_Y, 6):                    # carved bands
+            c.row(x0, x0 + 7, y, "SSD")
+            c.set(x0 + 3, y + 2, "LP")
+        c.rect(x0 - 1, 11, x0 + 8, 14, "SSD")                 # a capital
+        c.row(x0 - 1, x0 + 8, 11, "SSL")
+    c.rect(6, 6, 41, 11, "SS")                                # the lintel
+    c.row(6, 41, 6, "SSL")
+    c.row(6, 41, 11, "SSD")
+    for x in range(10, 38, 6):                                # and its frieze
+        c.rect(x, 8, x + 2, 9, "LP")
+        c.set(x + 1, 8, "LPL")
+    _lobe(c, 23, 3, 2, "GD")                                  # a sun on top
+    c.rect(0, BIG_BASE_Y + 1, BIG_FRAME - 1, BIG_FRAME - 1, None)
+    return c.outline()
+
+
+def colossus():
+    """A head of something far larger, with the desert up to its mouth. Four
+    tiles across and two deep; what is above the sand is the small part of it,
+    which is the only way to put something this size in a 32px world and have
+    it read as enormous.
+
+    The nemes does the silhouette - a wide flaring headcloth, nothing else -
+    so the pleats belong on its two lappets and nowhere near the face. Ruled
+    right across the frame they came out as a pair of combs on a block."""
+    c = Canvas(HUGE_FRAME, HUGE_FRAME)
+    b = HUGE_BASE_Y
+    _taper(c, 13, b - 6, 11, 26, "SS", cx=31)                 # the headcloth
+    c.rect(21, 17, 42, b - 6, "SS")                           # and the face
+    _shade(c, "SS", "SSL", "SSD")
+    for x in range(6, 21, 4):                                 # pleats, on the
+        c.col(x, 34, b - 7, "SSD")                            # lappets only
+        c.col(x + 1, 36, b - 7, "SSL")
+    for x in range(43, 58, 4):
+        c.col(x, 34, b - 7, "SSD")
+        c.col(x + 1, 36, b - 7, "SSL")
+    c.rect(18, 14, 45, 20, "LP")                              # the browband
+    c.row(18, 45, 14, "LPL")
+    c.row(18, 45, 20, "LPD")
+    c.rect(29, 9, 34, 15, "GD")                               # the cobra on it
+    c.set(31, 7, "GD")
+    c.set(32, 8, "GDL")
+    for x in (24, 36):                                        # eyes, lined
+        c.rect(x, 25, x + 4, 28, "SLL")
+        c.rect(x + 1, 26, x + 2, 27, "OL")
+        c.row(x - 1, x + 5, 24, "LPD")                        # the kohl line
+        c.row(x + 5, x + 7, 24, "LPD")
+    c.rect(29, 30, 34, 38, "SSD")                             # the nose
+    c.row(30, 33, 30, "SSL")
+    c.row(26, 37, 42, "SSD")                                  # the mouth
+    c.row(27, 36, 43, "SSX" if False else "SSD")
+    _crack(c, ((21, 22), (24, 32), (20, 42)))                 # and the damage
+    _crack(c, ((44, 26), (41, 36)))
+    c.rect(0, b - 6, HUGE_FRAME - 1, b, "DND")                # sand to the lip
+    c.row(0, HUGE_FRAME - 1, b - 6, "DNX")
+    for x in range(3, HUGE_FRAME, 6):
+        c.set(x, b - 7, "DND")
+    c.rect(0, b + 1, HUGE_FRAME - 1, HUGE_FRAME - 1, None)
+    return c.outline()
+
+
 def cairn():
     c = Canvas(FRAME, FRAME)
     for y0, w in ((24, 8), (20, 6), (16, 4), (13, 2)):   # stacked, tapering up
@@ -1364,6 +1625,11 @@ PROPS = {
     "prop.hearth": hearth,
     "prop.weapon_rack": weapon_rack,
     "prop.bed_straw": bed_straw,
+    "prop.palm": palm,
+    "prop.cactus": cactus,
+    "prop.dry_bush": dry_bush,
+    "prop.bones": bones,
+    "prop.urn": urn,
 }
 PROP_ORDER = list(PROPS)
 
@@ -1380,6 +1646,7 @@ ANIMATED = {
 }
 ANIMATED_BIG = {
     "prop.windmill": (4, 150),
+    "prop.sun_gate": (4, 240),      # the disc breathing, not flickering
 }
 ANIMATED_HUGE = {}                  # nothing this size moves yet
 ANIMATED_VAST = {
@@ -1406,12 +1673,15 @@ BIG_PROPS = {
     "prop.boulder_2": boulder_2,
     "prop.boulder_4": boulder_4,
     "prop.boulder_6": boulder_6,
+    "prop.obelisk": obelisk,
+    "prop.sun_gate": sun_gate,
 }
 BIG_PROP_ORDER = list(BIG_PROPS)
 
 HUGE_PROPS = {
     "prop.burrow_tree": burrow_tree,
     "prop.boulder_8": boulder_8,
+    "prop.colossus": colossus,
 }
 HUGE_PROP_ORDER = list(HUGE_PROPS)
 
