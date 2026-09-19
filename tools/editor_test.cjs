@@ -377,6 +377,49 @@ function dropScratch() {
     check('the wildernesses are on the atlas', false, Object.keys(by).join(', '));
   }
 
+  // The atlas is a property of the doorways, not of which map happens to be
+  // open, so opening a different one must not move anything. It did: the two
+  // maps' widths were swapped in the branch that places a map reached only by
+  // a doorway pointing at it, which is only visible when those two maps are
+  // different sizes - and for a long time every one of them was 20x20.
+  const seams = await page.evaluate(async () => {
+    const before = window.editor.mapName;      // the file, not the id: the
+    const names = window.editor.world.entries.map((e) => e.name);   // scratch
+    const bad = [];                                                 // map's differ
+    for (const opened of names) {
+      await window.openMap(opened);
+      await window.setView('world');
+      const L = window.editor.layout;
+      for (const { map } of window.editor.world.byId.values()) {
+        const a = L.placed.get(map.id);
+        if (!a || a.interior) continue;
+        for (const ex of map.exits || []) {
+          const b = L.placed.get(ex.to);
+          if (!b || b.interior) continue;      // a door has no seam to be flush
+          const edge = window.edgeOf(map, ex.tiles);
+          const arrivals = window.arrivalsOf(ex);
+          if (!edge || !arrivals) continue;
+          const [aw, ah] = a.map.size;
+          const [bw, bh] = b.map.size;
+          const flush = { west: a.ox === b.ox + bw, east: a.ox + aw === b.ox,
+                          north: a.oy === b.oy + bh, south: a.oy + ah === b.oy }[edge];
+          const [tx, ty] = ex.tiles[0];
+          const [sx, sy] = arrivals[0];
+          const lined = (edge === 'west' || edge === 'east')
+            ? a.oy + ty === b.oy + sy : a.ox + tx === b.ox + sx;
+          if (!flush || !lined) {
+            bad.push(`${map.id} ${edge} -> ${ex.to}`
+              + ` (${flush ? 'offset' : 'not flush'}, with ${opened} open)`);
+          }
+        }
+      }
+    }
+    await window.openMap(before);
+    return [...new Set(bad)];
+  });
+  check('every seam is flush and lined up, whichever map is open',
+        seams.length === 0, seams.join('; '));
+
   // Nothing may be drawn on top of anything else, or the atlas lies about
   // where a place is.
   const overlaps = [];

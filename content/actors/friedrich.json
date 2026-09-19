@@ -1,0 +1,14 @@
+{
+  "id": "npc.friedrich",
+  "sprite": "actor.monk",
+  "name": "Friedrich",
+  "speed": 0,
+  "blocks": true,
+  "facing": "down",
+  "interact": "dlg.friedrich",
+  "rig": "biped",
+  "states": [
+    "walk",
+    "idle"
+  ]
+}

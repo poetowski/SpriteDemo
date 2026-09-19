@@ -192,17 +192,16 @@ def build_atlases(sprite_rigs, content):
     big_canvases = add_props(big, props_gen.BIG_PROPS, big_anchor,
                              props_gen.ANIMATED_BIG)
 
+    # The two biggest classes go through the same helper as the other two, so a
+    # thing four tiles across can move for the same reason a campfire can. They
+    # each had their own loop and no animation until the temple wanted fire.
     huge = Atlas("props_huge", props_gen.HUGE_FRAME, props_gen.HUGE_FRAME, 2)
-    huge_canvases = {}
-    for pid, canvas in props_gen.build_huge_props():
-        huge.add(pid, [canvas], props_gen.HUGE_ANCHOR)
-        huge_canvases[pid] = canvas
+    huge_canvases = add_props(huge, props_gen.HUGE_PROPS, props_gen.HUGE_ANCHOR,
+                              props_gen.ANIMATED_HUGE)
 
     vast = Atlas("props_vast", props_gen.VAST_FRAME, props_gen.VAST_FRAME, 2)
-    vast_canvases = {}
-    for pid, canvas in props_gen.build_vast_props():
-        vast.add(pid, [canvas], props_gen.VAST_ANCHOR)
-        vast_canvases[pid] = canvas
+    vast_canvases = add_props(vast, props_gen.VAST_PROPS, props_gen.VAST_ANCHOR,
+                              props_gen.ANIMATED_VAST)
 
     items = Atlas("items", items_gen.SIZE, items_gen.SIZE, 8)
     item_canvases = {}

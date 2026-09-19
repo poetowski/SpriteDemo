@@ -27,6 +27,10 @@ python tools/editor.py     # the map editor, at http://127.0.0.1:8765/
 - **`assets/` is committed**; `build/` is not. The art library is the
   reviewable record of what the art looks like. `build/` is derived, and
   committing it produced a phantom diff of every PNG on every machine.
+  A different Pillow re-encodes every sheet it writes, identical pixel for
+  pixel and different byte for byte, so **an art commit that touches sheets
+  you did not change is that and not a redraw** - compare the decoded pixels
+  before believing it, and put the untouched ones back.
 
 ## The loop
 
@@ -147,6 +151,19 @@ which is already north of Wilderness II. So the seam is its south-west twenty
 columns and the map runs east instead. No gate catches two maps in one place -
 the editor's world view does, and `no two maps overlap on the atlas` in
 `editor_test.cjs` is the check that says so.
+
+**A gap is as wrong as an overlap, and nothing was checking for one.** The
+layout places a map two ways: hanging the destination off a doorway of the map
+it already has, or - for a map reached only by a doorway *pointing at* it -
+hanging it off that doorway instead. The second case took both the edge and the
+width from the wrong one of the two maps, which is invisible while every map
+placed that way is the same size as its neighbour, and every one of them was
+20x20 for a long time. Wilderness V is sixty wide: open Wilderness VII and V
+landed forty tiles east of where it joins, with a hole between them. Which map
+is open must not move anything, so the check is now `every seam is flush and
+lined up, whichever map is open` - it opens each map in turn and asserts, for
+every edge-aligned gate, that the two maps share that edge and the crossing
+rows line up.
 
 Gates run north-south as readily as east-west - Wilderness IV sits above
 Wilderness II - and which coordinate a crossing preserves depends on the edge:
@@ -331,9 +348,13 @@ three-by-two structure. The gates check every footprint tile is real ground and
 that no two solid things claim the same tile; `game/main.js` puts one static
 body on each.
 
-**A prop that moves** names itself in `ANIMATED` (or `ANIMATED_BIG`) in
+**A prop that moves** names itself in the `ANIMATED` table for its frame size
+(`ANIMATED`, `ANIMATED_BIG`, `ANIMATED_HUGE`, `ANIMATED_VAST`) in
 `tools/gen/props.py` with a frame count and a frame time, and its draw function
-takes `phase`. The first frame keeps the plain id as its atlas key, so the
+takes `phase`. All four sheets are packed by the same helper, so a thing four
+tiles across moves for the same reason a campfire does - the two biggest
+classes each had a loop of their own and no animation at all until the temple
+wanted fire. The first frame keeps the plain id as its atlas key, so the
 editor palette, the `sprite-exists` gate and anything else that only wants a
 picture of the thing are unaffected; the rest are added after and named by an
 animation the engine already knows how to create. In game each instance starts
@@ -342,10 +363,10 @@ flickering in step reads as one object repeated rather than as several things
 burning. The palette marks them, from the animations that exist rather than
 from a second list that could drift.
 
-Six move: campfire, hearth, lamp_post, beehive, trough and windmill. Everything
-else is still on purpose - the trees, bushes and flowers are the most numerous
-props in the game, so animating them multiplies the sheet and pulls the eye to
-the background, and a table has no reason to move by itself.
+Seven move: campfire, hearth, lamp_post, beehive, trough, windmill and temple.
+Everything else is still on purpose - the trees, bushes and flowers are the most
+numerous props in the game, so animating them multiplies the sheet and pulls the
+eye to the background, and a table has no reason to move by itself.
 
 **A prop bigger than a building** goes in the 64x64 class: a function in
 `tools/gen/props.py` added to `HUGE_PROPS`, and a file in `content/props/`.
@@ -364,7 +385,22 @@ the manifest lists, and `art-scale` accepts a new one at any multiple of 16.
 mass four tiles deep eats 64px of the frame from the bottom before any of it is
 height, and there is nothing left of a 64px frame to be tall with. Same rule
 again - anchor on a tile centre (x=56), art centred - so it covers offsets -1,
-0, +1, +2 and rises most of four tiles over them. `prop.boulder_16` is the one.
+0, +1, +2 and rises most of four tiles over them. `prop.boulder_16` was the one;
+`prop.temple` is the second and the first thing this size that moves.
+
+**The temple** is what the 128 frame is for when the thing on it is built
+rather than dumped: a stone podium, four vermilion columns under two tiers of
+upswept tile roof, guardians at the foot of the steps, a pair of lamp columns
+burning at the front, and dust hanging over the stairs. Grey-blue tile against
+vermilion post is the whole colour idea - the roof reads as one mass and the
+posts as another, which is what stops a facade this size turning into texture.
+Two things had to be fixed by looking at it rather than by reasoning: the
+guardians were cut in the same stone as the podium and vanished into it
+completely (they are `STD`/`STX` now, with `FIL` eyes catching the fire), and
+the lamp columns were stone on stone for the same reason and are painted. The
+fire is four frames from `TEMPLE_FLAME`, all ending in the bowl; the dust is
+drawn *after* `outline()`, because a translucent mote with a hard line round it
+is a pebble in the air.
 
 **The boulders are a size ladder**, and that is the point of them: 2, 4, 6, 8
 and 16 tiles, from something you walk round to something a road stops at. A
@@ -391,6 +427,14 @@ worth knowing about before drawing any other rock:
 **An NPC** is a file in `content/actors/` plus a line in the map. Its `rig`
 (`biped` / `quadruped` / `giant`), `states`, `speed`, `blocks`, `interact` and
 `wander` settings are all content. No JS changes.
+
+**A new face is a palette entry, not a drawing** - `VARIANTS` in
+`tools/gen/palette.py`, and the actor's `sprite` names it (`actor.monk` ->
+variant `monk`). Friedrich is the hero's frames with a saffron robe, and
+**bald is a remap too**: the rig draws a crown of hair over the skull, so
+pointing `HR` and `HRL` at the skin keys leaves a shaved head with the light
+still on the dome. Nothing in the rig knows there is a bald character, which
+is the whole point of storing keys rather than colours.
 
 **A monster bigger than a person** uses the `giant` rig - 48px tall and 32
 wide, drawn in a 64x64 frame on its own sheet, because a creature three tiles

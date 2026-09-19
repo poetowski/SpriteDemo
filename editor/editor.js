@@ -810,9 +810,17 @@ function componentsOf(byId, inside = new Map()) {
 /** Where a doorway puts the map on the far side, in tile space.
  *  Forward: `here` is placed and the destination hangs off its edge.
  *  Inverted: the destination is placed and `here` is the one being hung, which
- *  is how a map reached only by a doorway pointing at it gets positioned. */
+ *  is how a map reached only by a doorway pointing at it gets positioned.
+ *
+ *  The two cases do not share a doorway. Forward, `ex` is one of `here`'s own
+ *  exits; inverted, it is one of the *destination's*, pointing back at `here`.
+ *  So which edge it lies on has to be measured against whichever map owns it,
+ *  and which map's width the far one steps over changes with it. Both were
+ *  taken from `here` either way, and it went unnoticed for as long as every
+ *  map placed that way was the same size as its neighbour - Wilderness V is
+ *  sixty wide, and it landed forty tiles out with a hole beside it. */
 function placeAcross(here, ex, destMap, invert) {
-  const edge = edgeOf(here.map, ex.tiles);
+  const edge = edgeOf(invert ? destMap : here.map, ex.tiles);
   const arrivals = arrivalsOf(ex);
   if (!edge || !arrivals) return null;
   const [tx, ty] = ex.tiles[0];
@@ -825,10 +833,13 @@ function placeAcross(here, ex, destMap, invert) {
     if (edge === "north") return { ox: here.ox + tx - sx, oy: here.oy - dh };
     return { ox: here.ox + tx - sx, oy: here.oy + hh };
   }
-  if (edge === "west") return { ox: here.ox + dw, oy: here.oy + sy - ty };
-  if (edge === "east") return { ox: here.ox - hw, oy: here.oy + sy - ty };
-  if (edge === "north") return { ox: here.ox + sx - tx, oy: here.oy + dh };
-  return { ox: here.ox + sx - tx, oy: here.oy - hh };
+  // The doorway is on the map being placed and leads back to `here`, so a
+  // west-edge doorway means the destination sits east of `here` - over
+  // `here`'s width - and an east-edge one means it sits west, over its own.
+  if (edge === "west") return { ox: here.ox + hw, oy: here.oy + sy - ty };
+  if (edge === "east") return { ox: here.ox - dw, oy: here.oy + sy - ty };
+  if (edge === "north") return { ox: here.ox + sx - tx, oy: here.oy + hh };
+  return { ox: here.ox + sx - tx, oy: here.oy - dh };
 }
 
 /** Lay every map out, one atlas per connected group, stacked down the canvas. */

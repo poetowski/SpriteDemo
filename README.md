@@ -6,10 +6,12 @@ plus `.aseprite` sources, and played in Phaser 3 — with the map, the props, th
 NPCs, their dialogue and the errands they hand out all loaded from
 engine-neutral JSON. Sheep and goats wander and graze on their own.
 
-The world is four 20×20 wildernesses you walk between — fells and pine woods,
-a shieling, a boar that hunts its own patch, and a lake north of it all with an
-old burrow tree four tiles across — with 36 kinds of prop and fifteen kinds of
-thing to pick up, three of which go in the weapon hand and swing.
+The world is seven wildernesses you walk between — fells and pine woods, a
+shieling, a boar that hunts its own patch, a lake north of it all with an old
+burrow tree four tiles across, and westernmost a temple under a crag with two
+fires burning and a monk sweeping a step that is already clean — with 37 kinds
+of prop and fifteen kinds of thing to pick up, three of which go in the weapon
+hand and swing.
 
 ![the world](build/map.png)
 
@@ -102,7 +104,11 @@ silhouette, not drawn.
 
 **A second character costs a palette, not art.** Sprites store palette *keys*,
 so `VARIANTS` in `tools/gen/palette.py` turns one rig into many characters —
-Arne the smith is the hero's frames with a rust apron and grey hair.
+Arne the smith is the hero's frames with a rust apron and grey hair, and
+Friedrich the monk is the same frames in saffron. Bald is a remap too: the rig
+draws a crown of hair over the skull, so pointing the hair keys at the skin
+ones leaves a shaved head with the light still on the dome. Nothing in the rig
+knows there is a bald character.
 
 **Three rigs, one contract.** `tools/gen/actor.py` is the biped; `animal.py` is
 the quadruped (walk, idle and a head-down `graze`); `giant.py` is the monster —

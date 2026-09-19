@@ -1,0 +1,327 @@
+{
+  "id": "map.wilderness7",
+  "name": "Wilderness VII",
+  "tile_size": 16,
+  "size": [
+    20,
+    20
+  ],
+  "spawn": {
+    "tile": [
+      14,
+      7
+    ],
+    "facing": "left"
+  },
+  "legend": {
+    ".": "tile.grass",
+    "t": "tile.grass_tall",
+    ",": "tile.grass_flower",
+    "a": "tile.leaves",
+    "c": "tile.gravel",
+    "s": "tile.stone"
+  },
+  "ground": [
+    "ssssssss....aa......",
+    "ssssss......aaa.....",
+    "ssss.........aa.....",
+    "sss.................",
+    "ss..cccccccc........",
+    "s...cccccccc........",
+    "s...cccccccccccccccc",
+    "....cccccccccccccccc",
+    "....cccccccccccccccc",
+    "....cccccccc........",
+    "....cccccccc........",
+    ".....cccccc.........",
+    ".....cccccc.........",
+    "......cccc..........",
+    "....................",
+    "..tt............aa..",
+    ".tttt..........aaa..",
+    "..tt,...........aa..",
+    "....,,..............",
+    "...,,..............."
+  ],
+  "entities": [
+    {
+      "def": "prop.temple",
+      "tile": [
+        7,
+        9
+      ]
+    },
+    {
+      "def": "npc.friedrich",
+      "tile": [
+        7,
+        10
+      ]
+    },
+    {
+      "def": "prop.boulder_8",
+      "tile": [
+        5,
+        3
+      ]
+    },
+    {
+      "def": "prop.rock",
+      "tile": [
+        8,
+        3
+      ]
+    },
+    {
+      "def": "prop.boulder_4",
+      "tile": [
+        10,
+        2
+      ]
+    },
+    {
+      "def": "prop.boulder_6",
+      "tile": [
+        2,
+        6
+      ]
+    },
+    {
+      "def": "prop.boulder_2",
+      "tile": [
+        2,
+        9
+      ]
+    },
+    {
+      "def": "prop.rock",
+      "tile": [
+        1,
+        11
+      ]
+    },
+    {
+      "def": "prop.rock",
+      "tile": [
+        2,
+        15
+      ]
+    },
+    {
+      "def": "prop.tree_pine",
+      "tile": [
+        12,
+        0
+      ]
+    },
+    {
+      "def": "prop.tree_pine",
+      "tile": [
+        13,
+        1
+      ]
+    },
+    {
+      "def": "prop.tree_pine",
+      "tile": [
+        14,
+        2
+      ]
+    },
+    {
+      "def": "prop.tree_pine",
+      "tile": [
+        13,
+        3
+      ]
+    },
+    {
+      "def": "prop.tree_pine",
+      "tile": [
+        16,
+        15
+      ]
+    },
+    {
+      "def": "prop.tree_pine",
+      "tile": [
+        17,
+        16
+      ]
+    },
+    {
+      "def": "prop.tree_pine",
+      "tile": [
+        16,
+        17
+      ]
+    },
+    {
+      "def": "prop.tree_pine",
+      "tile": [
+        18,
+        15
+      ]
+    },
+    {
+      "def": "prop.bush",
+      "tile": [
+        3,
+        12
+      ]
+    },
+    {
+      "def": "prop.bush",
+      "tile": [
+        4,
+        16
+      ]
+    },
+    {
+      "def": "prop.bush",
+      "tile": [
+        15,
+        18
+      ]
+    },
+    {
+      "def": "prop.mushroom",
+      "tile": [
+        12,
+        2
+      ]
+    },
+    {
+      "def": "prop.mushroom",
+      "tile": [
+        17,
+        17
+      ]
+    },
+    {
+      "def": "prop.cairn",
+      "tile": [
+        17,
+        5
+      ]
+    },
+    {
+      "def": "prop.cairn",
+      "tile": [
+        17,
+        9
+      ]
+    },
+    {
+      "def": "npc.elk",
+      "tile": [
+        3,
+        17
+      ]
+    },
+    {
+      "def": "npc.elk",
+      "tile": [
+        16,
+        12
+      ]
+    },
+    {
+      "def": "npc.elk",
+      "tile": [
+        15,
+        2
+      ]
+    }
+  ],
+  "exits": [
+    {
+      "tiles": [
+        [
+          19,
+          5
+        ],
+        [
+          19,
+          6
+        ],
+        [
+          19,
+          7
+        ],
+        [
+          19,
+          8
+        ],
+        [
+          19,
+          9
+        ],
+        [
+          19,
+          10
+        ],
+        [
+          19,
+          11
+        ],
+        [
+          19,
+          12
+        ],
+        [
+          19,
+          13
+        ],
+        [
+          19,
+          14
+        ]
+      ],
+      "to": "map.wilderness5",
+      "spawns": [
+        [
+          1,
+          5
+        ],
+        [
+          1,
+          6
+        ],
+        [
+          1,
+          7
+        ],
+        [
+          1,
+          8
+        ],
+        [
+          1,
+          9
+        ],
+        [
+          1,
+          10
+        ],
+        [
+          1,
+          11
+        ],
+        [
+          1,
+          12
+        ],
+        [
+          1,
+          13
+        ],
+        [
+          1,
+          14
+        ]
+      ],
+      "facing": "right"
+    }
+  ]
+}

@@ -93,6 +93,10 @@ PALETTE = {
     # you cannot see the grass through is a balloon, not a smell.
     "GS":  ((0xc8, 0xbe, 0x3a, 165), "gas"),
     "GSL": ((0xe9, 0xe1, 0x7c, 120), "gas light"),
+    # Dust hanging in the air. Warmer and fainter than the gas, because it is
+    # lit by something rather than coming off something.
+    "DU":  ((0xe8, 0xdc, 0xbe, 150), "dust"),
+    "DUL": ((0xff, 0xf2, 0xd4, 110), "dust light"),
 }
 
 # Palette swaps. The frames are identical pixels; only the lookup changes, so a
@@ -107,6 +111,21 @@ VARIANTS = {
         "HRL": (0x77, 0x74, 0x6f, 255),
         "PN":  (0x4a, 0x44, 0x3c, 255),
         "PNS": (0x33, 0x2e, 0x29, 255),
+    },
+    "monk": {
+        # Bald is a remap like everything else: the rig draws a crown of hair
+        # over the skull, so pointing the hair keys at the skin ones leaves a
+        # shaved head with the light still on the dome. Nothing in the rig
+        # knows there is a bald character.
+        "HR":  (0xf2, 0xc2, 0x92, 255),
+        "HRL": (0xff, 0xdd, 0xb4, 255),
+        "TU":  (0xd9, 0x7d, 0x2b, 255),   # saffron robe over one shoulder
+        "TUS": (0xa4, 0x52, 0x18, 255),
+        "TUL": (0xf0, 0xa3, 0x4c, 255),
+        "PN":  (0xb9, 0x63, 0x22, 255),   # and down to the ankle, so the legs
+        "PNS": (0x8c, 0x47, 0x17, 255),   # are robe rather than trousers
+        "BT":  (0x6b, 0x4c, 0x2c, 255),   # sandals
+        "BTS": (0x49, 0x33, 0x1d, 255),
     },
     "sheep": {},                          # the base animal palette is the sheep
     "goat": {

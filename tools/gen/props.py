@@ -434,6 +434,177 @@ def boulder_16():
     return c.outline()
 
 
+# The flame on a lamp column, one entry per phase: where it starts and how wide
+# it is at each row up. Written out rather than generated because a flame that
+# is only noise reads as static - these four are shapes, and they lean.
+TEMPLE_FLAME = (                              # every one of them ends at y 83,
+    (70, (0, 1, 1, 2, 2, 3, 3, 4, 4, 4, 3, 3, 2, 2)),               # in the bowl
+    (68, (0, 0, 1, 2, 2, 3, 4, 4, 4, 4, 3, 3, 3, 2, 2, 1)),
+    (72, (0, 1, 2, 2, 3, 3, 4, 4, 4, 3, 2, 2)),
+    (69, (0, 1, 1, 2, 3, 3, 4, 4, 4, 4, 3, 2, 2, 2, 1)),
+)
+# Where the dust hangs: over the steps and in the dark of the hall, which is
+# where anything this faint can be seen at all. Each mote drifts up and out
+# over the four frames, and they start at staggered phases so the air moves
+# instead of pulsing.
+TEMPLE_DUST = ((46, 96), (58, 90), (68, 94), (80, 88), (52, 102),
+               (74, 104), (44, 86), (84, 98), (63, 82), (88, 92))
+
+
+def _eave(c, x, y, step, key, dark, n=7):
+    """The upturned tip of an Asian eave. It lifts faster the further out it
+    goes - a tip that rises in a straight line is a ramp, and the whole look of
+    the roof is in that curve."""
+    for i in range(n):
+        lift = (i * i) // 5
+        c.col(x + step * i, y - lift, y + 2 - lift // 2, key)
+        c.set(x + step * i, y - lift, dark)
+
+
+def temple(phase=0):
+    """A temple on a square of ground four tiles by four: stone podium, a
+    vermilion colonnade, two tiers of upswept tile roof, a pair of lamp columns
+    burning at the front, and dust hanging in the air over the steps.
+
+    It is the second thing in the 128 class and the first that moves, which is
+    what made animation worth generalising to every frame size - see
+    ANIMATED_VAST. Grey-blue tile against vermilion post is the whole colour
+    idea: the roof reads as one mass and the columns as another, which is what
+    stops a facade this size turning into texture."""
+    c = Canvas(VAST_FRAME, VAST_FRAME)
+    mid = 63                                  # centred on the 63/64 boundary
+
+    # --- the podium: three courses, each stepping out over the one above ----
+    c.rect(30, 96, 97, 103, "ST")             # the top surface the columns
+    c.row(30, 97, 96, "STL")                  # stand on
+    c.rect(28, 102, 99, 113, "ST")            # the body
+    c.row(28, 99, 102, "STL")
+    c.rect(24, 112, 103, VAST_BASE_Y, "ST")   # and the plinth it rests on
+    c.row(24, 103, 112, "STL")
+    for y in range(106, VAST_BASE_Y, 5):      # courses, joints staggered
+        c.row(25, 102, y, "STD")
+        for x in range(28 + (y % 10), 102, 9):
+            c.col(x, y - 4, y - 1, "STD")
+    _shade(c, "ST", "STL", "STD")
+
+    # --- the steps, cut into the front of it -------------------------------
+    for i, (y0, y1, w) in enumerate(((106, 111, 4), (112, 117, 6), (118, 124, 8))):
+        c.rect(mid - w, y0, mid + 1 + w, y1, "ST")
+        c.row(mid - w, mid + 1 + w, y0, "STL")
+        c.row(mid - w, mid + 1 + w, y1, "STD")
+
+    # --- behind the columns: the dark of the hall, and the doorway ----------
+    c.rect(36, 68, 91, 97, "STX")
+    c.rect(54, 74, 73, 97, "OL")              # the way in, darker still
+    c.row(54, 73, 74, "RFD")                  # under a painted lintel
+    c.row(54, 73, 73, "RF")
+
+    # --- four vermilion columns, and the beam they carry --------------------
+    for cx in (44, 56, 71, 83):
+        c.rect(cx, 66, cx + 4, 99, "RF")
+        c.col(cx, 66, 99, "RFL")              # lit edge
+        c.col(cx + 4, 66, 99, "RFD")
+        c.rect(cx - 1, 64, cx + 5, 67, "RFD")  # the capital
+        c.row(cx - 1, cx + 5, 64, "RFL")
+        c.rect(cx - 1, 96, cx + 5, 99, "STD")  # and a stone base
+    c.rect(30, 58, 97, 65, "RF")              # the architrave
+    c.row(30, 97, 58, "RFL")
+    c.row(30, 97, 65, "RFD")
+    for x in range(34, 96, 8):                # painted brackets under it
+        c.rect(x, 60, x + 3, 63, "THD")
+        c.row(x, x + 3, 60, "TH")
+
+    # --- the lower roof: the widest thing here, so it is drawn as one mass --
+    _taper(c, 42, 57, 17, 41, "MT", cx=mid)
+    _shade(c, "MT", "MTL", "MTD")
+    for y in range(45, 58, 3):                # tile courses
+        for x in range(VAST_FRAME):
+            if c.get(x, y) == "MT":
+                c.set(x, y, "MTD")
+    for x in range(26, 102, 6):               # and the ridges running down it
+        if c.get(x, 56) == "MT" or c.get(x, 56) == "MTD":
+            c.col(x, 50, 57, "MTL")
+    _eave(c, 22, 57, -1, "MT", "MTL")         # the tips, lifting as they go out
+    _eave(c, 105, 57, 1, "MT", "MTL")
+    c.row(21, 106, 57, "MTD")                 # the shadowed line of the eaves
+
+    # --- the upper storey and its roof --------------------------------------
+    c.rect(46, 34, 81, 45, "RF")              # a short wall between the tiers
+    c.row(46, 81, 34, "RFL")
+    c.row(46, 81, 45, "RFD")
+    c.rect(56, 37, 71, 43, "THD")             # one window, shuttered in gold
+    c.row(56, 71, 37, "TH")
+    for x in range(58, 71, 4):
+        c.col(x, 38, 42, "TH")
+    _taper(c, 20, 33, 8, 29, "MT", cx=mid)
+    _shade(c, "MT", "MTL", "MTD")
+    for y in range(22, 34, 3):
+        for x in range(VAST_FRAME):
+            if c.get(x, y) == "MT":
+                c.set(x, y, "MTD")
+    _eave(c, 34, 33, -1, "MT", "MTL", n=6)
+    _eave(c, 93, 33, 1, "MT", "MTL", n=6)
+    c.row(33, 94, 33, "MTD")
+
+    # --- the finial ---------------------------------------------------------
+    c.rect(61, 14, 66, 21, "THD")
+    c.row(61, 66, 14, "TH")
+    c.col(61, 14, 21, "TH")
+    _lobe(c, 63, 11, 3, "TH")
+    _shade(c, "TH", "TH", "THD")
+
+    # --- two guardians flanking the steps -----------------------------------
+    # Dark stone on pale, because a stone lion the colour of the stone it sits
+    # on is not a lion, it is a lump - the first version of these disappeared
+    # into the podium entirely.
+    for sx, face in ((40, 1), (76, -1)):      # they look in at the stair
+        hx = sx + 5 + face                                 # where the head sits
+        c.rect(sx, 116, sx + 11, VAST_BASE_Y, "STD")       # its own plinth
+        c.row(sx, sx + 11, 116, "ST")
+        c.rect(sx + 2, 104, sx + 9, 117, "STX")            # chest and haunches
+        c.col(sx + 2, 104, 117, "STD")                     # lit down one side
+        for a, r in ((-4, 3), (0, 4), (4, 3)):             # a mane of lobes, so
+            _lobe(c, hx + a, 101 + abs(a) // 2, r, "STX")  # the head is a shape
+        _lobe(c, hx, 101, 3, "STD")                        # the face inside it
+        c.set(hx + face * 3, 98, "STX")                    # ears
+        c.set(hx - face * 2, 98, "STX")
+        c.rect(sx + 3, 113, sx + 8, 116, "STD")            # forepaws out front
+        c.col(sx + 4, 113, 116, "STX")
+        c.col(sx + 7, 113, 116, "STX")
+        c.set(hx + face, 101, "FIL")                       # eyes catching the
+        c.set(hx - face * 2, 101, "FIL")                   # light off the bowls
+        c.set(hx + face, 103, "STX")                       # and an open mouth
+
+    # --- the lamp columns, and the fire on them -----------------------------
+    top, widths = TEMPLE_FLAME[phase % len(TEMPLE_FLAME)]
+    for lx in (34, 92):
+        c.rect(lx - 3, 92, lx + 4, 116, "RF")              # a painted shaft, so
+        c.col(lx - 3, 92, 116, "RFL")                      # it is not one more
+        c.col(lx + 4, 92, 116, "RFD")                      # grey thing on grey
+        c.rect(lx - 4, 90, lx + 5, 93, "RFD")
+        c.rect(lx - 5, 84, lx + 6, 90, "MT")               # the bowl
+        c.row(lx - 5, lx + 6, 84, "MTL")
+        c.row(lx - 5, lx + 6, 90, "MTD")
+        c.rect(lx - 4, 82, lx + 5, 84, "FID")              # coals banked in it
+        _blob(c, top, widths, "FI", cx=lx)
+    _shade(c, "FI", "FIL", "FID")
+    for lx in (34, 92):                                    # the hot heart
+        c.rect(lx - 1, 79, lx + 2, 83, "FIL")
+
+    c.rect(0, VAST_BASE_Y + 1, VAST_FRAME - 1, VAST_FRAME - 1, None)
+    c.outline()
+
+    # Dust, after the outline: a translucent mote with a hard line round it is
+    # a pebble in the air, not dust. Same reason the campfire's spark is last.
+    for i, (dx, dy) in enumerate(TEMPLE_DUST):
+        t = (phase + i) % 4
+        x, y = dx + t, dy - t * 3
+        c.set(x, y, "DUL" if (i + phase) % 2 else "DU")
+        if t % 2:
+            c.set(x + 1, y, "DUL")
+    return c
+
+
 def cairn():
     c = Canvas(FRAME, FRAME)
     for y0, w in ((24, 8), (20, 6), (16, 4), (13, 2)):   # stacked, tapering up
@@ -1210,12 +1381,20 @@ ANIMATED = {
 ANIMATED_BIG = {
     "prop.windmill": (4, 150),
 }
+ANIMATED_HUGE = {}                  # nothing this size moves yet
+ANIMATED_VAST = {
+    "prop.temple": (4, 180),        # two fires and the dust off the steps
+}
+# One table per frame size, because that is how the sheets are built - but the
+# lookup is over all of them, so nothing has to know which class a prop is in
+# to ask whether it moves.
+ANIMATED_ALL = (ANIMATED, ANIMATED_BIG, ANIMATED_HUGE, ANIMATED_VAST)
 
 
 def prop_frames(pid, table=None):
     """Every frame of a prop, first frame first. One frame for most of them."""
     fns = table if table is not None else PROPS
-    n = (ANIMATED.get(pid) or ANIMATED_BIG.get(pid) or (1, 0))[0]
+    n = next((t[pid][0] for t in ANIMATED_ALL if pid in t), 1)
     return [fns[pid](phase=p) if n > 1 else fns[pid]() for p in range(n)]
 
 BIG_PROPS = {
@@ -1238,25 +1417,6 @@ HUGE_PROP_ORDER = list(HUGE_PROPS)
 
 VAST_PROPS = {
     "prop.boulder_16": boulder_16,
+    "prop.temple": temple,
 }
 VAST_PROP_ORDER = list(VAST_PROPS)
-
-
-def build_props():
-    """[(id, Canvas), ...] in a stable order - the order is the atlas index."""
-    return [(pid, PROPS[pid]()) for pid in PROP_ORDER]
-
-
-def build_big_props():
-    """The 48x48 structures, same contract, their own atlas."""
-    return [(pid, BIG_PROPS[pid]()) for pid in BIG_PROP_ORDER]
-
-
-def build_huge_props():
-    """The 64x64 giants, same contract again, their own atlas."""
-    return [(pid, HUGE_PROPS[pid]()) for pid in HUGE_PROP_ORDER]
-
-
-def build_vast_props():
-    """The 128x128 class: four tiles across and four deep, their own atlas."""
-    return [(pid, VAST_PROPS[pid]()) for pid in VAST_PROP_ORDER]
