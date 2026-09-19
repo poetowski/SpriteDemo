@@ -30,7 +30,12 @@ python tools/editor.py     # the map editor, at http://127.0.0.1:8765/
   A different Pillow re-encodes every sheet it writes, identical pixel for
   pixel and different byte for byte, so **an art commit that touches sheets
   you did not change is that and not a redraw** - compare the decoded pixels
-  before believing it, and put the untouched ones back.
+  before believing it, and put the untouched ones back. **Then run the build
+  again**, before committing: `game/art-embed.js` carries every sheet inline
+  as base64, so putting a PNG back after the build leaves the embed holding
+  an encoding that is in no file in the tree. That went in once - the game was
+  identical to play, and the derived file simply did not come from the
+  committed one.
 
 ## The loop
 
