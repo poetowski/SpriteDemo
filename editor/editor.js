@@ -169,6 +169,24 @@ function defOf(id) {
   return M.props[id] || M.actors[id] || M.items[id] || null;
 }
 
+/** Every definition some quest depends on, and why - so the map view can mark
+ *  them and the status bar can say which errand an object belongs to. */
+function questTargets() {
+  const out = new Map();
+  const note = (id, why) => {
+    if (!id) return;
+    if (!out.has(id)) out.set(id, []);
+    out.get(id).push(why);
+  };
+  for (const q of Object.values((state.M && state.M.quests) || {})) {
+    note(q.giver, `${q.name}: gives it`);
+    for (const ob of q.objectives || []) {
+      if (ob.kind !== "visit") note(ob.target, `${q.name}: ${ob.text}`);
+    }
+  }
+  return out;
+}
+
 function footprintOf(id) {
   const d = defOf(id);
   return (d && d.footprint && d.footprint.length) ? d.footprint : [[0, 0]];
@@ -295,6 +313,17 @@ function render() {
     ctx.stroke();
   }
 
+  // Anything a quest names - who offers it, what it sends you to fetch, kill
+  // or have a word with - gets a mark. Erasing one of these is the edit that
+  // quietly makes an errand impossible, and it looks like any other erase.
+  const named = questTargets();
+  ctx.font = "600 10px ui-monospace, Consolas, monospace";
+  for (const e of m.entities) {
+    if (!named.has(e.def)) continue;
+    ctx.fillStyle = "#e0c341";
+    ctx.fillText("✦", e.tile[0] * ts * z + ts * z - 9, e.tile[1] * ts * z + 10);
+  }
+
   // The mouths of this map's gates, in the colour and number the world view
   // gives them. Over the footprints, because standing in one is the whole
   // point of the tile.
@@ -378,9 +407,11 @@ function updateStatus() {
   $("st-terrain").textContent = terrainAt(x, y) || "-";
   const here = m.entities.filter((e) => footprintOf(e.def)
     .some(([dx, dy]) => e.tile[0] + dx === x && e.tile[1] + dy === y));
+  const named = questTargets();
   $("st-objects").textContent = here.length
     ? here.map((e) => e.def + (gatherableOf(e.def) ? " (gatherable)"
-        : blocksOf(e.def) ? " (solid)" : "")).join(", ")
+        : blocksOf(e.def) ? " (solid)" : "")
+        + (named.has(e.def) ? ` ✦ ${named.get(e.def).join("; ")}` : "")).join(", ")
     : "-";
   let said = "";
   (m.exits || []).forEach((ex, i) => {
@@ -1300,33 +1331,555 @@ function buildWorldPanel() {
   }));
 }
 
+const VIEWS = { map: "v-map", world: "v-world", quests: "v-quests", dlg: "v-dlg" };
+const PANES = { map: "view", world: "world", quests: "quests", dlg: "dlg" };
+const SIDES = { world: "side-world", quests: "side-quests", dlg: "side-dlg" };
+const LEGENDS = { map: "legend-map", world: "legend-world",
+                  quests: "legend-quests", dlg: "legend-dlg" };
+
 async function setView(name) {
   state.view = name;
-  const world = name === "world";
-  $("v-map").classList.toggle("on", !world);
-  $("v-world").classList.toggle("on", world);
-  $("view").hidden = world;
-  $("world").hidden = !world;
-  $("legend-map").hidden = world;
-  $("legend-world").hidden = !world;
-  $("side-world").hidden = !world;
-  $("pal-terrain").hidden = world || state.tool === "place";
-  $("pal-objects").hidden = world || state.tool !== "place";
-  if (world) {
+  for (const [view, id] of Object.entries(VIEWS)) $(id).classList.toggle("on", view === name);
+  for (const [view, id] of Object.entries(PANES)) $(id).hidden = view !== name;
+  for (const [view, id] of Object.entries(SIDES)) $(id).hidden = view !== name;
+  for (const [view, id] of Object.entries(LEGENDS)) $(id).hidden = view !== name;
+  const map = name === "map";
+  $("pal-terrain").hidden = !map || state.tool === "place";
+  $("pal-objects").hidden = !map || state.tool !== "place";
+  if (name === "world" || name === "quests") {
+    // Both read every map, and the open one comes from memory - so an edit
+    // that has not been saved is already reflected in what they say.
     message("reading the maps...");
     await refreshWorld();
-    renderWorld();
-    message("click a map to open it");
+    if (name === "world") { renderWorld(); message("click a map to open it"); }
+    else { renderQuests(); message("click a quest to read the conversation"); }
+  } else if (name === "dlg") {
+    if (!state.dlgId) state.dlgId = Object.keys(state.M.dialogue || {}).sort()[0];
+    renderDialogueList();
+    renderDialogueGraph();
+    renderDialogueNode();
+    message("click a node to read the whole of it");
   } else {
     $("st-world").textContent = "";
     render();
   }
 }
 
+// ------------------------------------------------------------- the quests --
+// A quest is authored in content/quests/ and the build checks it hard. The one
+// thing no single file shows you is whether the world can actually pay it: how
+// many berries are lying about, whether the thing you are sent to kill is
+// placed anywhere, whether anyone offers the errand at all. That is a question
+// about every map at once - which is exactly what this view has already read,
+// the open map included, so painting over the last berry turns the board red
+// before you have saved, never mind built.
+
+const OBJ_MARK = { collect: "◆", kill: "⚔", talk: "☰", visit: "⚑" };
+
+function questsOf() {
+  return Object.values((state.M && state.M.quests) || {});
+}
+
+/** Every condition in a when-clause, flattened - the same little language the
+ *  build checks and the game runs. */
+function condsOf(c) {
+  const w = c.when;
+  if (!w) return [];
+  return w.all ? w.all : [w];
+}
+
+/** Every map that carries this definition, and how many of it. */
+function placementsOf(defId) {
+  const out = [];
+  for (const { map } of (state.world ? state.world.byId.values() : [])) {
+    const n = (map.entities || []).filter((e) => e.def === defId).length;
+    if (n) out.push({ id: map.id, name: map.name || map.id, n });
+  }
+  return out;
+}
+
+/** Where each quest is offered, handed in, and asked about. */
+function questRefs() {
+  const refs = new Map();
+  const touch = (qid, key, at) => {
+    if (!refs.has(qid)) refs.set(qid, { start: [], finish: [], asks: [] });
+    refs.get(qid)[key].push(at);
+  };
+  for (const d of Object.values(state.M.dialogue || {})) {
+    for (const [nid, node] of Object.entries(d.nodes || {})) {
+      for (const c of node.choices || []) {
+        if (c.start) touch(c.start, "start", { dlg: d.id, node: nid });
+        if (c.finish) touch(c.finish, "finish", { dlg: d.id, node: nid });
+        for (const cond of condsOf(c)) {
+          if (cond.quest) touch(cond.quest.id, "asks", { dlg: d.id, node: nid });
+        }
+      }
+    }
+  }
+  return refs;
+}
+
+/** What the world cannot currently deliver. The build refuses all of this, so
+ *  anything here is an edit that has not been built yet - which is the point:
+ *  it is the edit you are making now. */
+function questNotes() {
+  const refs = questRefs();
+  const notes = [];
+  for (const q of questsOf()) {
+    const ref = refs.get(q.id) || { start: [], finish: [], asks: [] };
+    for (const ob of q.objectives || []) {
+      if (ob.kind === "visit") {
+        if (!state.M.maps[ob.target]) {
+          notes.push({ bad: true, html: `<b>${q.name}</b> sends the player to `
+            + `<b>${ob.target}</b>, which is not a map.` });
+        }
+        continue;
+      }
+      const have = placementsOf(ob.target).reduce((n, p) => n + p.n, 0);
+      const want = ob.count || 1;
+      if (have < want) {
+        notes.push({ bad: true, html: `<b>${q.name}</b> asks for ${want} `
+          + `&times; <b>${ob.target}</b>, and the maps place ${have}. `
+          + `It cannot be finished.` });
+      }
+    }
+    if (!ref.start.length) {
+      notes.push({ bad: true, html: `<b>${q.name}</b> is offered by nobody - no `
+        + "reply anywhere starts it, so it can never appear in the game." });
+    }
+    if (!ref.finish.length && !q.auto) {
+      notes.push({ bad: true, html: `<b>${q.name}</b> can be finished but not `
+        + "handed in, and it is not marked <b>auto</b> - the player would do "
+        + "all of it and never be paid." });
+    }
+  }
+  if (!notes.length) {
+    notes.push({ bad: false, html: questsOf().length
+      ? "Every quest is offered, can be handed in, and the maps place enough "
+        + "of what it asks for."
+      : "No quests yet. They are files in <b>content/quests/</b>." });
+  }
+  return notes;
+}
+
+function renderQuests() {
+  const refs = questRefs();
+  const board = $("quests");
+  board.replaceChildren();
+  const link = (text, did, nid) => {
+    const a = document.createElement("span");
+    a.className = "link";
+    a.textContent = text;
+    a.onclick = () => showDialogue(did, nid);
+    return a;
+  };
+
+  for (const q of questsOf()) {
+    const ref = refs.get(q.id) || { start: [], finish: [], asks: [] };
+    const card = document.createElement("div");
+    let broken = !ref.start.length || (!ref.finish.length && !q.auto);
+
+    const head = document.createElement("h3");
+    head.append(document.createTextNode(q.name || q.id));
+    const id = document.createElement("em");
+    id.textContent = q.id;
+    head.append(id);
+
+    const sum = document.createElement("div");
+    sum.className = "sum";
+    sum.textContent = q.summary || "";
+
+    const ul = document.createElement("ul");
+    for (const ob of q.objectives || []) {
+      const li = document.createElement("li");
+      const mark = document.createElement("i");
+      mark.textContent = OBJ_MARK[ob.kind] || "·";
+      mark.title = ob.kind;
+      const what = document.createElement("span");
+      what.textContent = ob.text;
+      what.title = `${ob.kind} ${ob.target}`
+                 + ((ob.count || 1) > 1 ? ` × ${ob.count}` : "");
+      const sup = document.createElement("span");
+      sup.className = "supply";
+      if (ob.kind === "visit") {
+        const m = state.M.maps[ob.target];
+        sup.textContent = m ? (m.name || ob.target) : "no such map";
+        if (!m) { sup.classList.add("short"); broken = true; }
+      } else {
+        const where = placementsOf(ob.target);
+        const have = where.reduce((n, p) => n + p.n, 0);
+        const want = ob.count || 1;
+        sup.textContent = `${have}/${want} placed`;
+        sup.title = where.length
+          ? where.map((p) => `${p.n} on ${p.name}`).join(", ")
+          : "nowhere in the world";
+        if (have < want) { sup.classList.add("short"); broken = true; }
+      }
+      li.append(mark, what, sup);
+      ul.append(li);
+    }
+
+    const meta = document.createElement("div");
+    meta.className = "meta";
+    const giver = q.giver && state.M.actors[q.giver];
+    if (giver) {
+      const where = placementsOf(q.giver);
+      const span = document.createElement("span");
+      span.innerHTML = `given by <b>${giver.name || q.giver}</b>`
+        + (where.length ? ` on ${where.map((p) => p.name).join(", ")}`
+                        : " &mdash; <span style='color:var(--bad)'>placed nowhere</span>");
+      if (!where.length) broken = true;
+      meta.append(span);
+    }
+    const pay = [q.reward && q.reward.xp ? `${q.reward.xp} xp` : null,
+                 q.reward && q.reward.give
+                   ? ((state.M.items[q.reward.give] || {}).name || q.reward.give)
+                   : null].filter(Boolean).join(" + ");
+    if (pay) {
+      const span = document.createElement("span");
+      span.innerHTML = `pays <b>${pay}</b>`;
+      meta.append(span);
+    }
+    for (const [key, word] of [["start", "offered at"], ["finish", "handed in at"]]) {
+      if (!ref[key].length) continue;
+      const span = document.createElement("span");
+      span.append(document.createTextNode(`${word} `));
+      ref[key].forEach((at, i) => {
+        if (i) span.append(document.createTextNode(", "));
+        span.append(link(`${at.dlg.replace("dlg.", "")}/${at.node}`, at.dlg, at.node));
+      });
+      meta.append(span);
+    }
+    if (q.auto) {
+      const span = document.createElement("span");
+      span.innerHTML = "<b>auto</b> &mdash; finishes itself";
+      meta.append(span);
+    }
+
+    card.className = "card" + (broken ? " broken" : "");
+    card.append(head, sum, ul, meta);
+    board.append(card);
+  }
+
+  $("quest-list").replaceChildren(...questsOf().map((q) => {
+    const el = document.createElement("div");
+    el.className = "dlgline";
+    const ref = refs.get(q.id) || { start: [] };
+    el.innerHTML = `<b>${q.name || q.id}</b>`
+      + `<span>${(q.objectives || []).length} objective`
+      + `${(q.objectives || []).length === 1 ? "" : "s"}`
+      + `${ref.start[0] ? ` &middot; ${ref.start[0].dlg.replace("dlg.", "")}` : ""}</span>`;
+    el.onclick = () => ref.start[0] && showDialogue(ref.start[0].dlg, ref.start[0].node);
+    return el;
+  }));
+  $("quest-notes").replaceChildren(...questNotes().map((n) => {
+    const el = document.createElement("div");
+    el.className = "note" + (n.bad ? "" : " info");
+    el.innerHTML = n.html;
+    return el;
+  }));
+  const n = questsOf().length;
+  $("st-world").textContent = `${n} quest${n === 1 ? "" : "s"}`;
+}
+
+// ------------------------------------------------------ the conversations --
+// A conversation is already a graph - nodes of text joined by the replies the
+// player is offered - so this draws it as one rather than as a list of names
+// you have to hold in your head. Columns are how many replies deep a node is,
+// which puts the way in on the left and the endings on the right.
+
+const NODE_W = 220;
+const NODE_GAP_X = 78;
+const NODE_GAP_Y = 14;
+const NODE_PAD = 18;
+const LINE_H = 13;
+const ROW_H = 15;
+const HEAD_H = 20;
+
+function entriesOf(d) {
+  return typeof d.start === "string" ? [{ goto: d.start }] : (d.start || []);
+}
+
+/** Every prop or actor whose "interact" names this conversation. */
+function speakersOf(did) {
+  const M = state.M;
+  return [...Object.entries(M.props || {}), ...Object.entries(M.actors || {})]
+    .filter(([, d]) => d.interact === did)
+    .map(([id]) => id);
+}
+
+/** What a reply does, as marks: the shape of a conversation is mostly in its
+ *  effects, and they are invisible if only the text is drawn. */
+function choiceMarks(c) {
+  const m = [];
+  if (c.when) m.push("?");
+  if (c.set) m.push("⚑");
+  if (c.give) m.push("+");
+  if (c.take) m.push("−");
+  if (c.start) m.push("✦");
+  if (c.finish) m.push("✓");
+  return m.join("");
+}
+
+function describeCond(cond) {
+  if (cond.flag) return `remembers ${cond.flag}`;
+  if (cond.noflag) return `has not ${cond.noflag}`;
+  if (cond.has) return `carrying ${cond.has}`;
+  if (cond.nothas) return `not carrying ${cond.nothas}`;
+  if (cond.quest) {
+    const want = [].concat(cond.quest.is || "active");
+    return `${cond.quest.id} is ${want.join(" or ")}`;
+  }
+  return JSON.stringify(cond);
+}
+
+/** Boxes and arrows for one conversation. */
+function layoutDialogue(d) {
+  const order = Object.keys(d.nodes || {});
+  const depth = new Map();
+  let frontier = [];
+  for (const r of entriesOf(d)) {
+    if (d.nodes[r.goto] && !depth.has(r.goto)) { depth.set(r.goto, 0); frontier.push(r.goto); }
+  }
+  let layer = 0;
+  while (frontier.length) {
+    const next = [];
+    for (const nid of frontier) {
+      for (const c of d.nodes[nid].choices || []) {
+        if (!c.goto || !d.nodes[c.goto] || depth.has(c.goto)) continue;
+        depth.set(c.goto, layer + 1);
+        next.push(c.goto);
+      }
+    }
+    frontier = next;
+    layer += 1;
+  }
+  // A node nothing reaches is a gate failure, not a drawing problem - but a
+  // draft has them, and leaving it off the picture is the one way to make it
+  // harder to find.
+  for (const nid of order) if (!depth.has(nid)) depth.set(nid, layer);
+
+  const cols = new Map();
+  for (const nid of order) {
+    const lv = depth.get(nid);
+    if (!cols.has(lv)) cols.set(lv, []);
+    cols.get(lv).push(nid);
+  }
+  const boxes = new Map();
+  let maxY = 0;
+  let maxLayer = 0;
+  for (const [lv, ids] of cols) {
+    let y = NODE_PAD;
+    for (const nid of ids) {
+      const node = d.nodes[nid];
+      const h = HEAD_H + (node.text || []).length * LINE_H
+              + (node.choices || []).length * ROW_H + 10;
+      boxes.set(nid, {
+        nid, node, h, w: NODE_W, y,
+        x: NODE_PAD + lv * (NODE_W + NODE_GAP_X),
+        entry: entriesOf(d).some((r) => r.goto === nid),
+      });
+      y += h + NODE_GAP_Y;
+    }
+    maxY = Math.max(maxY, y);
+    maxLayer = Math.max(maxLayer, lv);
+  }
+  return {
+    boxes,
+    width: NODE_PAD * 2 + (maxLayer + 1) * NODE_W + maxLayer * NODE_GAP_X,
+    height: maxY + NODE_PAD,
+  };
+}
+
+/** The y a reply's arrow leaves from. */
+function rowY(box, i) {
+  return box.y + HEAD_H + (box.node.text || []).length * LINE_H + 6 + i * ROW_H + ROW_H / 2;
+}
+
+function clipText(ctx, text, width) {
+  if (ctx.measureText(text).width <= width) return text;
+  let s = text;
+  while (s.length > 1 && ctx.measureText(s + "…").width > width) s = s.slice(0, -1);
+  return s + "…";
+}
+
+function renderDialogueGraph() {
+  const d = state.M.dialogue[state.dlgId];
+  const cv = $("dlg");
+  if (!d) { cv.width = cv.height = 1; return; }
+  const L = state.dlgLayout = layoutDialogue(d);
+  cv.width = L.width;
+  cv.height = L.height;
+  const ctx = cv.getContext("2d");
+  ctx.fillStyle = "#0e1015";
+  ctx.fillRect(0, 0, cv.width, cv.height);
+  ctx.textBaseline = "alphabetic";
+
+  // Arrows first, so a box always sits on top of the lines that reach it.
+  for (const box of L.boxes.values()) {
+    (box.node.choices || []).forEach((c, i) => {
+      const to = c.goto && L.boxes.get(c.goto);
+      if (!to) return;
+      const x1 = box.x + box.w;
+      const y1 = rowY(box, i);
+      const x2 = to.x;
+      const y2 = to.y + Math.min(to.h / 2, 24);
+      const back = x2 <= x1;                       // a reply that goes back
+      ctx.strokeStyle = back ? "#3f4759" : "#45526b";
+      ctx.lineWidth = back ? 1 : 1.4;
+      if (back) ctx.setLineDash([4, 3]);
+      ctx.beginPath();
+      ctx.moveTo(x1, y1);
+      if (back) {
+        // Out to the right, down and back in: a straight line would run
+        // through every box between here and there. Kept shallow on purpose -
+        // there are a lot of these ("something else", "another time"), and a
+        // deep loop each makes the picture mostly loops.
+        const lift = 30 + i * 7;
+        ctx.bezierCurveTo(x1 + 36, y1 + lift, x2 - 36, y2 + lift, x2, y2);
+      } else {
+        ctx.bezierCurveTo(x1 + NODE_GAP_X * 0.6, y1, x2 - NODE_GAP_X * 0.6, y2, x2, y2);
+      }
+      ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.fillStyle = back ? "#5d6679" : "#45526b";
+      arrowHead(ctx, x2, y2, 1, 0, 6);
+    });
+  }
+
+  for (const box of L.boxes.values()) {
+    const on = box.nid === state.dlgNode;
+    ctx.fillStyle = "#1b2130";
+    ctx.fillRect(box.x, box.y, box.w, box.h);
+    ctx.strokeStyle = on ? "#74c46b" : (box.entry ? "#6cc0e0" : "#2e3748");
+    ctx.lineWidth = on ? 2 : 1;
+    ctx.strokeRect(box.x + .5, box.y + .5, box.w - 1, box.h - 1);
+    if (box.entry) {
+      ctx.fillStyle = "#74c46b";
+      ctx.beginPath();
+      ctx.arc(box.x - 7, box.y + HEAD_H / 2 + 2, 3.5, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    ctx.font = "600 11px ui-monospace, Consolas, monospace";
+    ctx.fillStyle = on ? "#d8f2cf" : "#e8e4da";
+    ctx.fillText(clipText(ctx, box.nid, box.w - 16), box.x + 8, box.y + 14);
+
+    ctx.font = "11px ui-monospace, Consolas, monospace";
+    ctx.fillStyle = "#8b93a7";
+    (box.node.text || []).forEach((t, i) => {
+      ctx.fillText(clipText(ctx, t, box.w - 16), box.x + 8, box.y + HEAD_H + 10 + i * LINE_H);
+    });
+
+    (box.node.choices || []).forEach((c, i) => {
+      const y = rowY(box, i);
+      const marks = choiceMarks(c);
+      ctx.fillStyle = c.goto ? "#c9d2e4" : "#7f8798";     // no goto: it ends here
+      ctx.font = "11px ui-monospace, Consolas, monospace";
+      const room = box.w - 18 - (marks ? ctx.measureText(marks).width + 8 : 0);
+      ctx.fillText(clipText(ctx, c.text, room), box.x + 10, y + 4);
+      if (marks) {
+        ctx.fillStyle = c.start || c.finish ? "#e0c341" : "#6cc0e0";
+        ctx.fillText(marks, box.x + box.w - 8 - ctx.measureText(marks).width, y + 4);
+      }
+    });
+  }
+}
+
+/** Which node a point on the conversation canvas lands in. */
+function nodeAtDialogue(px, py) {
+  if (!state.dlgLayout) return null;
+  for (const box of state.dlgLayout.boxes.values()) {
+    if (px >= box.x && py >= box.y && px < box.x + box.w && py < box.y + box.h) return box;
+  }
+  return null;
+}
+
+function renderDialogueList() {
+  const ids = Object.keys(state.M.dialogue || {}).sort();
+  const refs = questRefs();
+  const questy = new Set();
+  for (const [, r] of refs) {
+    for (const at of [...r.start, ...r.finish, ...r.asks]) questy.add(at.dlg);
+  }
+  $("dlg-list").replaceChildren(...ids.map((did) => {
+    const d = state.M.dialogue[did];
+    const who = speakersOf(did);
+    const el = document.createElement("div");
+    el.className = "dlgline" + (did === state.dlgId ? " on" : "")
+                 + (questy.has(did) ? " quest" : "");
+    el.innerHTML = `<b>${d.speaker || did.replace("dlg.", "")}</b>`
+      + `<span>${did} &middot; ${Object.keys(d.nodes || {}).length} nodes</span>`
+      + `<span>${who.length ? who.join(", ") : "nothing says it"}</span>`;
+    el.onclick = () => showDialogue(did);
+    return el;
+  }));
+}
+
+function renderDialogueNode() {
+  const d = state.M.dialogue[state.dlgId];
+  const node = d && d.nodes[state.dlgNode];
+  const panel = $("dlg-node");
+  $("dlg-node-head").textContent = node ? state.dlgNode : "the node";
+  panel.replaceChildren();
+  if (!node) {
+    const el = document.createElement("div");
+    el.className = "legend";
+    el.textContent = "Click a node to read the whole of it.";
+    panel.append(el);
+    return;
+  }
+  for (const t of node.text || []) {
+    const el = document.createElement("div");
+    el.className = "line";
+    el.textContent = t;
+    panel.append(el);
+  }
+  for (const c of node.choices || []) {
+    const el = document.createElement("div");
+    el.className = "reply";
+    const b = document.createElement("b");
+    b.textContent = c.text;
+    el.append(b);
+    const tags = document.createElement("div");
+    for (const cond of condsOf(c)) {
+      const t = document.createElement("span");
+      t.className = "tag " + (cond.quest ? "quest" : "when");
+      t.textContent = describeCond(cond);
+      tags.append(t);
+    }
+    for (const [key, word, cls] of [["set", "sets", ""], ["give", "gives", "item"],
+                                    ["take", "takes", "item"],
+                                    ["start", "starts", "quest"],
+                                    ["finish", "hands in", "quest"]]) {
+      if (!c[key]) continue;
+      const t = document.createElement("span");
+      t.className = "tag " + cls;
+      t.textContent = `${word} ${c[key]}`;
+      tags.append(t);
+    }
+    if (tags.childElementCount) el.append(tags);
+    const go = document.createElement("span");
+    go.textContent = c.goto ? `→ ${c.goto}` : "ends the conversation";
+    el.append(go);
+    panel.append(el);
+  }
+}
+
+async function showDialogue(did, nid) {
+  state.dlgId = did || state.dlgId || Object.keys(state.M.dialogue || {}).sort()[0];
+  state.dlgNode = nid || null;
+  if (state.view !== "dlg") await setView("dlg");
+  renderDialogueList();
+  renderDialogueGraph();
+  renderDialogueNode();
+  message(`${state.dlgId}${nid ? ` · ${nid}` : ""}`);
+}
+
 // ------------------------------------------------------------------ wiring --
 function setTool(name) {
   state.tool = name;
-  if (state.view === "world") setView("map");
+  if (state.view !== "map") setView("map");
   for (const t of ["paint", "place", "erase", "spawn"]) {
     $(`t-${t}`).classList.toggle("on", t === name);
   }
@@ -1392,8 +1945,25 @@ function wire() {
       $("st-objects").textContent = hit.map.name || hit.id;
     }
   });
+  const dv = $("dlg");
+  dv.addEventListener("click", (e) => {
+    const r = dv.getBoundingClientRect();
+    const hit = nodeAtDialogue(e.clientX - r.left, e.clientY - r.top);
+    if (!hit) return;
+    state.dlgNode = hit.nid;
+    renderDialogueGraph();
+    renderDialogueNode();
+  });
+  dv.addEventListener("pointermove", (e) => {
+    const r = dv.getBoundingClientRect();
+    dv.style.cursor = nodeAtDialogue(e.clientX - r.left, e.clientY - r.top)
+      ? "pointer" : "default";
+  });
+
   $("v-map").onclick = () => setView("map");
   $("v-world").onclick = () => setView("world");
+  $("v-quests").onclick = () => setView("quests");
+  $("v-dlg").onclick = () => setView("dlg");
   $("mapName").oninput = (e) => {
     state.map.name = e.target.value;
     state.dirty = true;
@@ -1415,7 +1985,9 @@ function wire() {
     if (e.target.tagName === "INPUT" || e.target.tagName === "SELECT") return;
     if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "z") { e.preventDefault(); return undo(); }
     if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "s") { e.preventDefault(); return save(); }
-    if (e.key.toLowerCase() === "w") return setView(state.view === "world" ? "map" : "world");
+    const views = { w: "world", q: "quests", d: "dlg" };
+    const view = views[e.key.toLowerCase()];
+    if (view) return setView(state.view === view ? "map" : view);
     const keys = { p: "paint", o: "place", x: "erase", s: "spawn" };
     if (keys[e.key.toLowerCase()]) setTool(keys[e.key.toLowerCase()]);
   });
@@ -1441,6 +2013,9 @@ Object.assign(window, {
   setView, loadWorld, layoutWorld, renderWorld, worldNotes, edgeOf, arrivalsOf,
   componentsOf, mapAtWorld, worldPointOf, worldScale,
   gatesOf, gateFor, refreshWorld, gatherableOf, blocksOf, interiorsOf, framesOf,
+  questsOf, questRefs, questNotes, renderQuests, placementsOf, questTargets,
+  layoutDialogue, renderDialogueGraph, renderDialogueList, renderDialogueNode,
+  showDialogue, nodeAtDialogue, speakersOf, condsOf, spriteFor,
 });
 
 boot().catch((e) => message(String(e.message || e), true));

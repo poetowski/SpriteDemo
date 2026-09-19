@@ -9,6 +9,7 @@
     "graze"
   ],
   "speed": 18,
+  "hp": 18,
   "blocks": true,
   "facing": "down",
   "wander": {

@@ -7,6 +7,9 @@
  *   node tools/shot.cjs --gather --tile 34,37    stand by an item, press E, check the bag
  *   node tools/shot.cjs --give item.sword --slash   arm the hero and swing
  *   node tools/shot.cjs --bump                   walk into an animal, check it blocks
+ *   node tools/shot.cjs --quest                  take every errand on offer and run it
+ *   node tools/shot.cjs --kill                   strike a hostile until it dies
+ *   node tools/shot.cjs --journal                open the quest log
  *   node tools/shot.cjs --spawn npc.troll        put one next to the hero and look
  *   node tools/shot.cjs --out /tmp/a.png --wait 1500
  *
@@ -42,6 +45,8 @@ const GIVE = value('--give', null);
 const POSE = value('--pose', null);       // state,frame - hold one pose for the picture
 const PAGE = flag('--page');              // the whole page, buttons included
 const BAG = flag('--bag');                // open the bag before the picture
+const JOURNAL = flag('--journal');        // and the quest log
+const QUEST = flag('--quest');            // run every errand this map can offer
 const MID = flag('--mid');                // with --slash: photograph the moment of impact
 const CHOOSE = args.includes('--choose')  // with --talk: take the nth reply (1-based)
   ? Number(value('--choose', '1')) - 1 : null;
@@ -367,6 +372,11 @@ const BOOTED = () => !!(window.game && window.game.scene
       // in the pairing shows up there and nowhere else.
       const door = ex.tiles[Math.floor(ex.tiles.length / 2)];
       s.addItem('item.axe');
+      // And an errand in hand. A field added to the scene but not to the list
+      // checkExit() carries is lost silently at the map edge, and the journal
+      // is exactly the kind of field that happens to.
+      const errand = Object.keys(window.ART.manifest.quests)[0];
+      if (errand) s.startQuest(errand);
       const p = s.tileCentre(door[0], door[1]);
       s.hero.body.reset(p.x, p.y);
       s.exitLocked = false;                   // as if we had walked onto it
@@ -380,7 +390,8 @@ const BOOTED = () => !!(window.game && window.game.scene
                 : ex.tiles.every((t) => t[1] === rows - 1) ? 'down' : null;
       const at = ex.tiles.indexOf(door);
       return { from: s.mapId, to: ex.to, bag: s.inventory.filter(Boolean).length,
-               door, way,
+               door, way, errand,
+               quests: Object.keys(s.quests).length,
                want: (ex.spawns && ex.spawns[at]) || ex.spawn };
     }, EXIT);
     if (before) {
@@ -391,12 +402,16 @@ const BOOTED = () => !!(window.game && window.game.scene
         const s = window.game.scene.scenes[0];
         const t = s.heroTile();
         return { map: s.mapId, bag: s.inventory.filter(Boolean).length, tile: t,
-                 facing: s.facing, onExit: !!s.exits.get(t.join(',')) };
+                 facing: s.facing, onExit: !!s.exits.get(t.join(',')),
+                 quests: Object.keys(s.quests).length };
       });
       checks.push([`${before.from} leads to ${before.to}`,
         after.map === before.to, after.map]);
       checks.push(['the bag came across',
         after.bag === before.bag, `${before.bag} -> ${after.bag}`]);
+      checks.push(['and so did the journal',
+        !before.errand || after.quests === before.quests,
+        `${before.quests} quest(s) -> ${after.quests}`]);
       // Against the arrival the doorway declares for the tile we stepped on,
       // not against the tile's own coordinates. Two earlier versions of this
       // check compared coordinates and were both wrong: the first measured the
@@ -417,6 +432,322 @@ const BOOTED = () => !!(window.game && window.game.scene
     } else {
       checks.push([`the map has an exit ${EXIT} to cross`, false, 'none authored']);
     }
+  }
+
+  // --- the errands ----------------------------------------------------------
+  // Take every quest the people on this map can offer and run it to the end.
+  // Nothing below names a quest, a reply or an item: the route through each
+  // conversation is worked out from the choices actually on offer, and the
+  // objectives are whatever content/quests/ says they are - so this keeps
+  // testing the system rather than one errand somebody wrote down here.
+
+  /** Stand next to something and let a frame go by, so the scene's own "what
+   *  is in range" pass catches up before E is pressed. */
+  async function standBy(defId) {
+    const ok = await page.evaluate((id) => {
+      const s = window.game.scene.scenes[0];
+      const it = s.interactables.find((x) => x.id === id);
+      if (!it) return false;
+      // body.reset, not setPosition: a dynamic body writes its own position
+      // back over the sprite, and the hero would never actually be there.
+      s.hero.body.reset(it.sprite.x, it.sprite.y + 10);
+      s.cameras.main.centerOn(s.hero.x, s.hero.y);
+      return true;
+    }, defId);
+    await page.waitForTimeout(160);
+    return ok;
+  }
+
+  /** Run out the lines of the node being read, so the replies are live. A
+   *  choice taken mid-sentence is ignored by the scene, on purpose. */
+  async function readOn() {
+    for (let i = 0; i < 8; i++) {
+      const state = await page.evaluate(() => {
+        const s = window.game.scene.scenes[0];
+        if (!s.dialogue) return 'closed';
+        return s.dialogue.line >= s.dialogue.node.text.length - 1 ? 'ready' : 'reading';
+      });
+      if (state !== 'reading') return state;
+      await page.keyboard.press('KeyE');
+      await page.waitForTimeout(130);
+    }
+    return 'stuck';
+  }
+
+  /** One step of a conversation towards a choice that carries `effect` for
+   *  this quest - taking it if it is on offer now, and otherwise the reply
+   *  that gets closest to one. */
+  const stepToward = (effect, qid) => page.evaluate(([eff, id]) => {
+    const s = window.game.scene.scenes[0];
+    if (!s.dialogue) return { fired: false, why: 'nothing is being said' };
+    const d = s.dialogue.dlg;
+    const distFrom = (start) => {                 // breadth first, by replies
+      const seen = new Set([start]);
+      let frontier = [start];
+      let depth = 0;
+      while (frontier.length) {
+        const next = [];
+        for (const nid of frontier) {
+          for (const c of d.nodes[nid].choices || []) {
+            if (c[eff] === id) return depth;
+            if (c.goto && !seen.has(c.goto)) { seen.add(c.goto); next.push(c.goto); }
+          }
+        }
+        frontier = next;
+        depth += 1;
+      }
+      return Infinity;
+    };
+    const offered = s.dialogue.choices;
+    let pick = -1;
+    let best = Infinity;
+    offered.forEach((c, i) => {
+      if (best === -1) return;
+      if (c[eff] === id) { pick = i; best = -1; return; }
+      const dd = c.goto ? distFrom(c.goto) : Infinity;
+      if (dd < best) { best = dd; pick = i; }
+    });
+    if (pick < 0) {
+      return { fired: false, why: 'no reply leads there',
+               offered: offered.map((c) => c.text) };
+    }
+    const took = offered[pick].text;
+    const fired = offered[pick][eff] === id;
+    s.choose(pick);
+    return { fired, took };
+  }, [effect, qid]);
+
+  /** Walk a conversation until the quest has been started, or handed in. */
+  async function pushThrough(effect, qid) {
+    const said = [];
+    for (let i = 0; i < 8; i++) {
+      if ((await readOn()) === 'closed') break;
+      const step = await stepToward(effect, qid);
+      if (step.took) said.push(step.took);
+      if (step.fired) return { ok: true, said };
+      if (!step.took) return { ok: false, said, why: step.why, offered: step.offered };
+    }
+    return { ok: false, said, why: 'went round in circles' };
+  }
+
+  /** The crossing, without the walk: restart on another map carrying
+   *  everything, exactly as checkExit() does at a map edge. */
+  const goTo = (mapId) => page.evaluate((id) => {
+    const s = window.game.scene.scenes[0];
+    s.scene.restart({
+      map: id,
+      carry: { inventory: s.inventory, weapon: s.weapon, armor: s.armor,
+               level: s.level, xp: s.xp, hp: s.hp, flags: [...s.flags],
+               quests: s.quests },
+    });
+  }, mapId);
+
+  async function waitForMap(mapId) {
+    await page.waitForFunction(
+      (id) => window.game.scene.scenes[0].mapId === id
+           && !!window.game.scene.scenes[0].hero, mapId, { timeout: 20000 });
+    await page.waitForTimeout(250);
+  }
+
+  /** Walk up to something lying on the ground and press E, the whole way
+   *  through the gather animation. */
+  async function gatherOne(defId) {
+    const there = await page.evaluate((id) => {
+      const s = window.game.scene.scenes[0];
+      const p = s.pickups.find((x) => x.id === id);
+      if (!p) return false;
+      s.hero.body.reset(p.sprite.x, p.sprite.y + 6);
+      s.cameras.main.centerOn(s.hero.x, s.hero.y);
+      return true;
+    }, defId);
+    if (!there) return false;
+    await page.waitForTimeout(140);
+    await page.keyboard.press('KeyE');
+    await page.waitForTimeout(650);
+    return true;
+  }
+
+  /** Stand over a creature and hit it until it is not there any more. */
+  const slay = (defId) => page.evaluate((id) => {
+    const s = window.game.scene.scenes[0];
+    const w = s.wanderers.find((a) => a.def.id === id);
+    if (!w) return false;
+    for (let i = 0; i < 80 && s.wanderers.includes(w); i++) {
+      s.hero.body.reset(w.sprite.x, w.sprite.y + s.ts);
+      s.facing = 'up';
+      s.invuln = 900;                 // it is fighting back; this is not that test
+      s.strike();
+    }
+    return !s.wanderers.includes(w);
+  }, defId);
+
+  if (QUEST) {
+    const home = await page.evaluate(() => window.game.scene.scenes[0].mapId);
+    const errands = await page.evaluate(() => {
+      const s = window.game.scene.scenes[0];
+      const m = window.ART.manifest;
+      return Object.entries(m.quests)
+        .filter(([, q]) => q.giver && s.interactables.some((it) => it.id === q.giver))
+        .map(([id, q]) => ({ id, name: q.name, giver: q.giver,
+                             objectives: q.objectives || [], reward: q.reward || {} }));
+    });
+    if (!errands.length) {
+      skipped.push(['--quest', 'nobody on this map has work going']);
+    }
+    for (const q of errands) {
+      // --- take it ---------------------------------------------------------
+      if (await page.evaluate(() => window.game.scene.scenes[0].mapId) !== home) {
+        await goTo(home);
+        await waitForMap(home);
+      }
+      const met = await standBy(q.giver);
+      await page.keyboard.press('KeyE');
+      await page.waitForTimeout(200);
+      const took = await pushThrough('start', q.id);
+      const after = await page.evaluate((id) =>
+        window.game.scene.scenes[0].questState(id), q.id);
+      checks.push([`${q.name}: ${q.giver.split('.')[1]} offers it`,
+        met && took.ok && after !== 'none',
+        `${took.why || ''} said: ${took.said.join(' / ')}`
+        + (took.offered ? ` | offered: ${took.offered.join(' / ')}` : '')]);
+      if (after === 'none') continue;
+      await page.evaluate(() => window.game.scene.scenes[0].closeDialogue());
+
+      // --- do it -----------------------------------------------------------
+      for (const ob of q.objectives) {
+        if (ob.kind === 'talk') {
+          if (await standBy(ob.target)) {
+            await page.keyboard.press('KeyE');
+            await page.waitForTimeout(220);
+            await page.evaluate(() => window.game.scene.scenes[0].closeDialogue());
+          }
+        } else if (ob.kind === 'visit') {
+          await goTo(ob.target);
+          await waitForMap(ob.target);
+        } else if (ob.kind === 'collect') {
+          // Off the ground where the map put it, the way a player would; only
+          // what this map cannot supply is handed over.
+          for (let i = 0; i < (ob.count || 1); i++) {
+            if (!(await gatherOne(ob.target))) {
+              await page.evaluate((id) => window.game.scene.scenes[0].addItem(id), ob.target);
+            }
+          }
+        } else if (ob.kind === 'kill') {
+          for (let i = 0; i < (ob.count || 1); i++) {
+            if (!(await slay(ob.target))) break;
+          }
+        }
+        const done = await page.evaluate(([id, oid]) => {
+          const s = window.game.scene.scenes[0];
+          return s.questProgress(id).find((o) => o.id === oid);
+        }, [q.id, ob.id]);
+        checks.push([`${q.name}: ${ob.text.toLowerCase()}`,
+          !!done && done.met, done ? `${done.have}/${done.need}` : 'no such objective']);
+      }
+      const ready = await page.evaluate((id) =>
+        window.game.scene.scenes[0].questState(id), q.id);
+      checks.push([`${q.name}: ready to hand in`, ready === 'ready', ready]);
+
+      // --- hand it in -------------------------------------------------------
+      if (await page.evaluate(() => window.game.scene.scenes[0].mapId) !== home) {
+        await goTo(home);
+        await waitForMap(home);
+        // The log has to survive the crossing, which is the one thing a scene
+        // restart quietly takes away.
+        const kept = await page.evaluate((id) =>
+          window.game.scene.scenes[0].questState(id), q.id);
+        checks.push([`${q.name}: still in hand after crossing a map edge`,
+          kept === 'ready', kept]);
+      }
+      const before = await page.evaluate(() => {
+        const s = window.game.scene.scenes[0];
+        return { xp: s.xp, level: s.level, inv: s.inventory.filter(Boolean) };
+      });
+      await standBy(q.giver);
+      await page.keyboard.press('KeyE');
+      await page.waitForTimeout(200);
+      const gave = await pushThrough('finish', q.id);
+      const paid = await page.evaluate(([id, reward]) => {
+        const s = window.game.scene.scenes[0];
+        return { state: s.questState(id), xp: s.xp, level: s.level,
+                 inv: s.inventory.filter(Boolean),
+                 holds: reward.give
+                   ? s.countItem(reward.give) > 0 : true,
+                 flag: reward.set ? s.flags.has(reward.set) : true };
+      }, [q.id, q.reward]);
+      await page.evaluate(() => window.game.scene.scenes[0].closeDialogue());
+      checks.push([`${q.name}: handed in and paid`,
+        gave.ok && paid.state === 'done' && paid.holds && paid.flag,
+        `${paid.state}; said: ${gave.said.join(' / ')}`
+        + (gave.offered ? ` | offered: ${gave.offered.join(' / ')}` : '')
+        + `; bag ${JSON.stringify(paid.inv)}`]);
+      // What the errand asked for is what it takes back, without the content
+      // having to say so twice.
+      const owed = q.objectives.filter((o) => o.kind === 'collect' && !o.keep);
+      if (owed.length && paid.state === 'done') {
+        const left = await page.evaluate((ids) => {
+          const s = window.game.scene.scenes[0];
+          return ids.map((id) => s.countItem(id));
+        }, owed.map((o) => o.target));
+        checks.push([`${q.name}: what it asked for was handed over`,
+          left.every((n, i) => n === 0
+            || n < (before.inv.filter((x) => x === owed[i].target).length)),
+          owed.map((o, i) => `${o.target} x${left[i]} left`).join(', ')]);
+      }
+      if (q.reward.xp) {
+        checks.push([`${q.name}: it was worth something`,
+          paid.level > before.level || paid.xp > before.xp,
+          `${before.level}/${before.xp}xp -> ${paid.level}/${paid.xp}xp`]);
+      }
+    }
+  }
+
+  if (flag('--kill')) {
+    // A creature dies only if its definition says how much it can take, and
+    // when it does it has to let go of everything: the lists it was stepped
+    // through, the tile it reserved, the body the hero was colliding with.
+    const before = await page.evaluate(() => {
+      const s = window.game.scene.scenes[0];
+      const w = s.wanderers.find((a) => a.def.hp);
+      if (!w) return null;
+      return { def: w.def.id, hp: w.def.hp, wanderers: s.wanderers.length,
+               penned: s.penned.size, livestock: s.livestock.length };
+    });
+    if (!before) {
+      skipped.push(['--kill', 'nothing on this map can be killed']);
+    } else {
+      const died = await slay(before.def);
+      await page.waitForTimeout(600);
+      const after = await page.evaluate(() => {
+        const s = window.game.scene.scenes[0];
+        return { wanderers: s.wanderers.length, penned: s.penned.size,
+                 livestock: s.livestock.length,
+                 sprites: s.children.list.filter((o) => o.type === 'Sprite'
+                   && !(o.texture && o.texture.key === 'fx')).length };
+      });
+      checks.push([`a ${before.def.split('.')[1]} can be killed`, died,
+        `${before.hp} hp, ${before.wanderers} -> ${after.wanderers} wanderers`]);
+      checks.push(['and it lets go of the ground it stood on',
+        after.penned < before.penned && after.livestock < before.livestock,
+        `penned ${before.penned} -> ${after.penned}, `
+        + `bodies ${before.livestock} -> ${after.livestock}`]);
+    }
+  }
+
+  if (JOURNAL) {
+    await page.evaluate(() => window.game.scene.scenes[0].closeDialogue());
+    await page.keyboard.press('KeyJ');
+    await page.waitForTimeout(350);                 // let the panel slide in
+    const log = await page.evaluate(() => ({
+      open: window.game.scene.scenes[0].questOpen,
+      shown: document.getElementById('journal').classList.contains('open'),
+      cards: document.querySelectorAll('#qlist .quest').length,
+      ticked: document.querySelectorAll('#qlist .quest li.met').length,
+    }));
+    checks.push(['the journal opened on J', log.open && log.shown,
+      `state=${log.open} panel=${log.shown}`]);
+    checks.push(['and lists what has been taken on', log.cards > 0,
+      `${log.cards} quests, ${log.ticked} objectives ticked`]);
   }
 
   if (flag('--boar')) {

@@ -10,6 +10,7 @@
     "attack"
   ],
   "speed": 21,
+  "hp": 26,
   "blocks": true,
   "facing": "down",
   "wander": {

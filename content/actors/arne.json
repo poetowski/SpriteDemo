@@ -4,7 +4,7 @@
   "name": "Arne",
   "speed": 0,
   "blocks": true,
-  "facing": "down",
+  "facing": "right",
   "interact": "dlg.arne_intro",
   "rig": "biped",
   "states": [

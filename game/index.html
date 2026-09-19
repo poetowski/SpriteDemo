@@ -143,6 +143,65 @@
   .gear .worn em { display: block; color: #a58b63; font-style: normal; font-size: 10px; }
   #sheet .hint { color: #d9c7a3; font-size: 11px; }
 
+  /* The journal: the same planks again, from the right - the bag is at your
+     side, the sheet is you, the talk panel is whoever is in front of you, and
+     this is the notebook in your other hand. */
+  #journal {
+    position: absolute; right: 0; top: 0; bottom: 0; width: min(58%, 420px);
+    display: flex; flex-direction: column; gap: 8px; padding: 14px 16px;
+    background:
+      repeating-linear-gradient(180deg, #7a5a38 0 26px, #6a4c2e 26px 28px, #8a683f 28px 30px, #7a5a38 30px 34px);
+    border-left: 4px solid #3d2a17; box-shadow: -6px 0 18px #0007;
+    transform: translateX(104%); transition: transform .22s ease-out;
+  }
+  #journal.open { transform: none; }
+  @media (prefers-reduced-motion: reduce) { #journal { transition: none; } }
+  #journal .title { color: #f1e4c8; font-weight: 600; letter-spacing: .06em;
+                    text-shadow: 0 1px 0 #3d2a17; }
+  #journal .hint { color: #d9c7a3; font-size: 11px; }
+  #qlist { display: flex; flex-direction: column; gap: 7px; overflow: auto; flex: 1; }
+  #qlist .none { color: #d9c7a3; font-size: 12px; }
+  .quest { display: flex; flex-direction: column; gap: 3px; padding: 7px 9px;
+           background: #5e4229; border: 2px solid #4d3520; border-left-width: 4px;
+           border-radius: 3px; }
+  .quest.ready { border-left-color: var(--accent); }
+  .quest.active { border-left-color: #d9c7a3; }
+  .quest.done { border-left-color: #4d3520; opacity: .55; }
+  .quest b { color: #f7efdc; font-size: 13px; font-weight: 600; }
+  .quest .who { color: #d9c7a3; font-size: 10px; letter-spacing: .08em; text-transform: uppercase; }
+  .quest .sum { color: #e6d5b2; font-size: 11px; line-height: 1.4; }
+  .quest ul { margin: 2px 0 0; padding: 0; list-style: none;
+              display: flex; flex-direction: column; gap: 1px; }
+  .quest li { display: flex; gap: 6px; align-items: baseline; color: #e6d5b2; font-size: 12px; }
+  .quest li i { font-style: normal; color: #a58b63; width: 1em; flex: none; }
+  .quest li.met { color: #cfe3ad; }
+  .quest li.met i { color: var(--accent); }
+  .quest li .n { margin-left: auto; color: #a58b63; font-variant-numeric: tabular-nums; }
+  .quest .pay { color: #d9c7a3; font-size: 10px; letter-spacing: .06em; text-transform: uppercase; }
+
+  /* What just happened, said once and gone: taking an errand, ticking one off,
+     finishing it. The log is where you go to look it up; this is so you do not
+     have to while you are in the middle of something. */
+  /* Under the panels, not over them: a toast that lands half on top of the
+     journal it is announcing reads as two things fighting. */
+  #dialogue, #bag, #sheet, #journal { z-index: 2; }
+  #focus { z-index: 3; }
+  #toasts { position: absolute; left: 0; right: 0; top: 0; padding: 10px;
+            display: flex; flex-direction: column; align-items: center; gap: 5px;
+            pointer-events: none; z-index: 1; }
+  .toast { background: #1e2531e6; border: 1px solid #74c46b60; border-left: 3px solid var(--accent);
+           border-radius: 3px; padding: 5px 11px; max-width: 80%;
+           animation: toast 2.8s ease-out forwards; }
+  .toast b { display: block; color: var(--accent); font-size: 10px;
+             letter-spacing: .1em; text-transform: uppercase; }
+  .toast span { color: var(--ink); font-size: 12px; }
+  @keyframes toast {
+    0% { opacity: 0; transform: translateY(-6px); }
+    10%, 78% { opacity: 1; transform: none; }
+    100% { opacity: 0; transform: translateY(-4px); }
+  }
+  @media (prefers-reduced-motion: reduce) { .toast { animation-duration: 2.8s; } }
+
   /* touch controls: a d-pad and the three actions, only on coarse pointers */
   .touch { display: none; gap: 16px; align-items: center; }
   @media (pointer: coarse) { .touch { display: flex; } }
@@ -184,16 +243,23 @@
     </div>
     <div class="hint">&larr; &rarr; choose &middot; E take off &middot; C close</div>
   </div>
+  <div id="journal" aria-hidden="true">
+    <div class="title">JOURNAL</div>
+    <div id="qlist"></div>
+    <div class="hint">J close</div>
+  </div>
+  <div id="toasts"></div>
   <div id="focus"><span>Click to play</span></div>
 </div>
 
 <div class="bar">
   <div>
     <kbd>&larr;</kbd><kbd>&uarr;</kbd><kbd>&darr;</kbd><kbd>&rarr;</kbd> or <kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> move
-    &nbsp; <kbd>E</kbd> talk / take &nbsp; <kbd>Space</kbd> slash &nbsp; <kbd>I</kbd> bag &nbsp; <kbd>C</kbd> sheet &nbsp; <kbd>Q</kbd> swap
+    &nbsp; <kbd>E</kbd> talk / take &nbsp; <kbd>Space</kbd> slash &nbsp; <kbd>I</kbd> bag &nbsp; <kbd>C</kbd> sheet
+    &nbsp; <kbd>J</kbd> journal &nbsp; <kbd>Q</kbd> swap
     &nbsp; <span id="prompt"></span>
   </div>
-  <div><span id="wname">&#9876; no weapon</span> &nbsp; <span id="hud">idle-down</span></div>
+  <div><span id="qlog"></span> &nbsp; <span id="wname">&#9876; no weapon</span> &nbsp; <span id="hud">idle-down</span></div>
 </div>
 
 <div class="touch">
@@ -211,19 +277,90 @@
     <button data-act="swap" aria-label="Swap weapon">Q</button>
     <button data-act="bag" aria-label="Open the bag">I</button>
     <button data-act="sheet" aria-label="Open the character sheet">C</button>
+    <button data-act="journal" aria-label="Open the journal">J</button>
   </div>
 </div>
 
 <script>
   const $ = (s) => document.getElementById(s);
 
-  window.__hud = ({ anim, tile, prompt, verb, bagFull, talking }) => {
+  window.__hud = ({ anim, tile, prompt, verb, bagFull, talking, quests }) => {
     $('hud').textContent = `${anim}  tile ${tile[0]},${tile[1]}`;
     let p = '';
     if (!talking && prompt) {
       p = verb === 'take' && bagFull ? `bag full - ${prompt} stays` : `press E: ${verb} ${prompt}`;
     }
     $('prompt').textContent = p;
+    $('qlog').textContent = quests ? `✦ ${quests} quest${quests === 1 ? '' : 's'}` : '';
+  };
+
+  // The journal. Read-only: a quest is taken and handed in by talking to
+  // someone, so there is nothing here to press - only what is outstanding,
+  // how far along it is, and what it pays.
+  const OBJ_MARK = { collect: '⬦', kill: '⚔', talk: '☰', visit: '⚑' };
+
+  window.__quests = ({ open, quests }) => {
+    const list = $('qlist');
+    list.replaceChildren();
+    if (!quests.length) {
+      const el = document.createElement('div');
+      el.className = 'none';
+      el.textContent = 'Nothing yet. Ask someone whether there is work going.';
+      list.append(el);
+    }
+    for (const q of quests) {
+      const card = document.createElement('div');
+      card.className = `quest ${q.state}`;
+      const name = document.createElement('b');
+      name.textContent = q.name;
+      const who = document.createElement('div');
+      who.className = 'who';
+      who.textContent = [q.giver, { ready: 'ready to hand in', done: 'done',
+                                    active: 'in hand' }[q.state]]
+        .filter(Boolean).join(' · ');
+      const sum = document.createElement('div');
+      sum.className = 'sum';
+      sum.textContent = q.summary;
+      const ul = document.createElement('ul');
+      for (const o of q.objectives) {
+        const li = document.createElement('li');
+        li.className = o.met ? 'met' : '';
+        const mark = document.createElement('i');
+        mark.textContent = o.met ? '✔' : (OBJ_MARK[o.kind] || '◦');
+        li.append(mark, document.createTextNode(o.text));
+        if (o.need > 1) {
+          const n = document.createElement('span');
+          n.className = 'n';
+          n.textContent = `${o.have}/${o.need}`;
+          li.append(n);
+        }
+        ul.append(li);
+      }
+      card.append(name, who, sum, ul);
+      if (q.reward) {
+        const pay = document.createElement('span');
+        pay.className = 'pay';
+        pay.textContent = `pays ${q.reward}`;
+        card.append(pay);
+      }
+      list.append(card);
+    }
+    const panel = $('journal');
+    panel.classList.toggle('open', open);
+    panel.setAttribute('aria-hidden', open ? 'false' : 'true');
+  };
+
+  window.__toast = ({ title, text }) => {
+    const el = document.createElement('div');
+    el.className = 'toast';
+    const b = document.createElement('b');
+    b.textContent = title;
+    const s = document.createElement('span');
+    s.textContent = text;
+    el.append(b, s);
+    $('toasts').append(el);
+    el.addEventListener('animationend', () => el.remove());
+    while ($('toasts').childElementCount > 4) $('toasts').firstElementChild.remove();
   };
 
   // The bag. Icons are the world's own item cells, read straight out of the

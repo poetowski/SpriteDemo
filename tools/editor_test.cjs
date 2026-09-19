@@ -19,8 +19,17 @@ const URL = process.env.EDITOR_URL || 'http://127.0.0.1:8765/';
 const MAP = process.env.EDITOR_TEST_MAP || '_scratch';
 
 let chromium;
-try { ({ chromium } = require('playwright')); }
-catch (e) { ({ chromium } = require('./cdp.cjs')); }
+try {
+  ({ chromium } = require('playwright'));
+} catch (e) {
+  try {
+    // A globally installed Playwright is not on a script's own require path.
+    ({ chromium } = require(path.join(
+      process.env.NODE_PATH || '/opt/node22/lib/node_modules', 'playwright')));
+  } catch (e2) {
+    ({ chromium } = require('./cdp.cjs'));   // or whatever Chrome is installed
+  }
+}
 
 const checks = [];
 const check = (name, ok, detail = '') => checks.push([name, !!ok, detail]);
@@ -75,7 +84,13 @@ function dropScratch() {
   const browser = await chromium.launch();
   const page = await browser.newPage({ viewport: { width: 1400, height: 1000 } });
   const problems = [];
-  page.on('console', (m) => { if (m.type() === 'error') problems.push(m.text()); });
+  // The cross-write check below asks the server to write one map over another
+  // and expects to be refused, which the browser logs as a failed request.
+  // That one is the test working, not the editor breaking.
+  const expected = /409 \(Conflict\)/;
+  page.on('console', (m) => {
+    if (m.type() === 'error' && !expected.test(m.text())) problems.push(m.text());
+  });
   page.on('pageerror', (e) => problems.push(String(e)));
 
   await page.goto(URL);
@@ -581,6 +596,207 @@ function dropScratch() {
         `${loot.solidAndGather} wearing two marks`);
   check('the mark says what it is', loot.titles.every((t) => /gatherable/.test(t)),
         loot.titles.join(' | '));
+
+  // --- the quest board ------------------------------------------------------
+  // The build already refuses a quest the world cannot pay. What this view is
+  // for is the edit in progress: the maps it counts include the one on screen,
+  // unsaved, so erasing the last berry has to show up here before the build
+  // ever sees it.
+  const board = await page.evaluate(async () => {
+    await window.setView('quests');
+    return {
+      quests: window.questsOf().length,
+      cards: document.querySelectorAll('#quests .card').length,
+      broken: document.querySelectorAll('#quests .card.broken').length,
+      short: document.querySelectorAll('#quests .supply.short').length,
+      notes: [...document.querySelectorAll('#quest-notes .note')].map((n) => n.textContent),
+      rows: document.querySelectorAll('#quest-list .dlgline').length,
+      // Every objective names something, and the board says where it is.
+      supplies: [...document.querySelectorAll('#quests .supply')].map((e) => e.textContent),
+    };
+  });
+  check('the quest board lists every quest',
+        board.quests > 0 && board.cards === board.quests && board.rows === board.quests,
+        `${board.cards} cards, ${board.rows} rows, ${board.quests} quests`);
+  check('and every one of them is offered, payable and handed in',
+        board.broken === 0 && board.short === 0
+          && board.notes.some((t) => /offered, can be handed in/.test(t)),
+        `${board.broken} broken, ${board.short} short: ${board.notes.join(' | ')}`);
+
+  // The count is of the world as it stands, not of the world as last built.
+  const live = await page.evaluate(async (m) => {
+    const berries = 'item.berries';
+    const before = window.placementsOf(berries).reduce((n, p) => n + p.n, 0);
+    const carrier = [...window.editor.world.byId.values()]
+      .find((e) => (e.map.entities || []).some((x) => x.def === berries));
+    if (!carrier) return { skipped: true };
+    await window.openMap(carrier.name);
+    let erased = 0;
+    for (const e of [...window.editor.map.entities]) {
+      if (e.def !== berries) continue;
+      window.snapshot();
+      window.erase(e.tile[0], e.tile[1]);
+      erased += 1;
+    }
+    await window.setView('quests');
+    const after = window.placementsOf(berries).reduce((n, p) => n + p.n, 0);
+    for (let i = 0; i < erased; i++) window.undo();
+    await window.setView('quests');
+    const back = window.placementsOf(berries).reduce((n, p) => n + p.n, 0);
+    window.editor.dirty = false;
+    return { map: carrier.name, before, after, back, erased };
+  }, MAP);
+  check('what the board counts is the map on screen, not the last build',
+        !live.skipped && live.erased > 0 && live.after === live.before - live.erased
+          && live.back === live.before,
+        live.skipped ? 'no map carries the item'
+          : `${live.before} -> ${live.after} after erasing ${live.erased} on `
+            + `${live.map}, ${live.back} after undo`);
+
+  // And a quest the world cannot pay has to look like one. Asking for more
+  // than exists is the shape of that failure, so it is what is asked for here.
+  const red = await page.evaluate(async () => {
+    const q = window.questsOf().find((x) => (x.objectives || [])
+      .some((o) => o.kind === 'collect'));
+    if (!q) return { skipped: true };
+    const ob = q.objectives.find((o) => o.kind === 'collect');
+    const was = ob.count;
+    ob.count = 9999;
+    await window.setView('quests');
+    const out = {
+      broken: document.querySelectorAll('#quests .card.broken').length,
+      short: document.querySelectorAll('#quests .supply.short').length,
+      note: [...document.querySelectorAll('#quest-notes .note')]
+        .some((n) => /cannot be finished/.test(n.textContent)),
+    };
+    ob.count = was;
+    await window.setView('quests');
+    return out;
+  });
+  check('a quest the world cannot pay is marked, and said out loud',
+        red.skipped || (red.broken > 0 && red.short > 0 && red.note),
+        `${red.broken} broken cards, ${red.short} short objectives, note=${red.note}`);
+
+  // --- the conversation view -----------------------------------------------
+  // A conversation is a graph; the point of drawing it is that every node
+  // lands somewhere and every reply's arrow has a box at the far end.
+  const talk = await page.evaluate(async () => {
+    const withQuest = Object.values(window.editor.M.dialogue).find((d) =>
+      Object.values(d.nodes).some((n) => (n.choices || [])
+        .some((c) => c.start || c.finish)));
+    const did = (withQuest || Object.values(window.editor.M.dialogue)[0]).id;
+    await window.showDialogue(did);
+    const d = window.editor.M.dialogue[did];
+    const L = window.editor.dlgLayout;
+    const gotos = [];
+    for (const n of Object.values(d.nodes)) {
+      for (const c of n.choices || []) if (c.goto) gotos.push(c.goto);
+    }
+    const cv = document.getElementById('dlg');
+    return {
+      did,
+      nodes: Object.keys(d.nodes).length,
+      boxes: L.boxes.size,
+      entries: [...L.boxes.values()].filter((b) => b.entry).length,
+      landed: gotos.every((g) => L.boxes.has(g)),
+      canvas: [cv.width, cv.height],
+      hidden: cv.hidden,
+      rows: document.querySelectorAll('#dlg-list .dlgline').length,
+      dialogues: Object.keys(window.editor.M.dialogue).length,
+      // No two boxes may sit on top of each other, or the picture lies about
+      // which reply leads where.
+      overlaps: (() => {
+        const bs = [...L.boxes.values()];
+        let n = 0;
+        for (let i = 0; i < bs.length; i++) {
+          for (let j = i + 1; j < bs.length; j++) {
+            const a = bs[i];
+            const b = bs[j];
+            if (a.x < b.x + b.w && b.x < a.x + a.w
+                && a.y < b.y + b.h && b.y < a.y + a.h) n += 1;
+          }
+        }
+        return n;
+      })(),
+    };
+  });
+  check('the conversation view draws every node',
+        !talk.hidden && talk.boxes === talk.nodes && talk.canvas[0] > 40,
+        `${talk.boxes} boxes for ${talk.nodes} nodes in ${talk.did}`);
+  check('every reply lands on a node that is drawn', talk.landed, 'a goto with no box');
+  check('no two nodes are drawn on top of each other', talk.overlaps === 0,
+        `${talk.overlaps} overlapping`);
+  check('the way in is marked', talk.entries > 0, `${talk.entries} entry nodes`);
+  check('and every conversation is listed', talk.rows === talk.dialogues,
+        `${talk.rows} rows for ${talk.dialogues} conversations`);
+
+  // Clicking a node reads it out in full - the conditions and effects that the
+  // boxes only have room to mark.
+  const inspected = await page.evaluate(() => {
+    const L = window.editor.dlgLayout;
+    const d = window.editor.M.dialogue[window.editor.dlgId];
+    const withEffect = [...L.boxes.values()].find((b) => (b.node.choices || [])
+      .some((c) => c.start || c.finish || c.when));
+    const box = withEffect || [...L.boxes.values()][0];
+    const cv = document.getElementById('dlg');
+    const r = cv.getBoundingClientRect();
+    cv.dispatchEvent(new MouseEvent('click', {
+      clientX: r.left + box.x + 10, clientY: r.top + box.y + 10, bubbles: true,
+    }));
+    return { picked: window.editor.dlgNode, wanted: box.nid,
+             head: document.getElementById('dlg-node-head').textContent,
+             lines: document.querySelectorAll('#dlg-node .line').length,
+             replies: document.querySelectorAll('#dlg-node .reply').length,
+             tags: [...document.querySelectorAll('#dlg-node .tag')].map((t) => t.textContent),
+             wantLines: (d.nodes[box.nid].text || []).length,
+             wantReplies: (d.nodes[box.nid].choices || []).length };
+  });
+  check('clicking a node reads the whole of it',
+        inspected.picked === inspected.wanted
+          && inspected.head === inspected.wanted
+          && inspected.lines === inspected.wantLines
+          && inspected.replies === inspected.wantReplies,
+        `${inspected.picked}: ${inspected.lines}/${inspected.wantLines} lines, `
+        + `${inspected.replies}/${inspected.wantReplies} replies`);
+  check('and says what each reply does',
+        inspected.tags.some((t) => /^(starts|hands in) quest\./.test(t))
+          || inspected.tags.length > 0,
+        inspected.tags.join(' | ') || 'no tags');
+
+  // A quest card links to the conversation that offers it, which is the whole
+  // reason the two views are in one tool.
+  const linked = await page.evaluate(async () => {
+    await window.setView('quests');
+    const link = document.querySelector('#quests .card .link');
+    if (!link) return { skipped: true };
+    const wanted = link.textContent;
+    link.click();
+    await new Promise((r) => setTimeout(r, 60));
+    return { wanted, view: window.editor.view, dlg: window.editor.dlgId,
+             node: window.editor.dlgNode };
+  });
+  check('a quest links to the conversation that offers it',
+        linked.skipped
+          || (linked.view === 'dlg'
+              && linked.wanted === `${linked.dlg.replace('dlg.', '')}/${linked.node}`),
+        `${linked.wanted} -> ${linked.dlg}/${linked.node} in ${linked.view}`);
+
+  // Back on the map, anything a quest depends on is marked - because erasing
+  // one of those is the edit that quietly makes an errand impossible.
+  const marked = await page.evaluate(async () => {
+    await window.setView('map');
+    const named = window.questTargets();
+    const givers = window.questsOf().map((q) => q.giver).filter(Boolean);
+    const targets = window.questsOf().flatMap((q) => (q.objectives || [])
+      .filter((o) => o.kind !== 'visit').map((o) => o.target));
+    return { named: [...named.keys()].sort(),
+             wanted: [...new Set([...givers, ...targets])].sort(),
+             why: [...named.values()].every((v) => v.length > 0) };
+  });
+  check('the map marks what the quests depend on',
+        JSON.stringify(marked.named) === JSON.stringify(marked.wanted)
+          && marked.named.length > 0 && marked.why,
+        marked.named.join(', '));
 
   check('no console errors', problems.length === 0, problems.join(' | '));
 

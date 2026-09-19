@@ -3,8 +3,8 @@
 A top-down RPG sandbox with code-generated pixel art. Characters, livestock,
 tiles and props are drawn by parametric Python rigs, exported to spritesheets
 plus `.aseprite` sources, and played in Phaser 3 — with the map, the props, the
-NPCs and their dialogue all loaded from engine-neutral JSON. Sheep and goats
-wander and graze on their own.
+NPCs, their dialogue and the errands they hand out all loaded from
+engine-neutral JSON. Sheep and goats wander and graze on their own.
 
 The world is four 20×20 wildernesses you walk between — fells and pine woods,
 a shieling, a boar that hunts its own patch, and a lake north of it all with an
@@ -22,7 +22,8 @@ node tools/shot.cjs            # boot the game headless, check it, photograph it
 
 Then open `game/index.html` — double-click is enough, no server needed.
 **Arrows / WASD** move · **E** talk / take · **Space** slash · **I** bag ·
-**C** character sheet · **Q** swap weapon On a phone there is a d-pad.
+**C** character sheet · **J** journal · **Q** swap weapon. On a phone there is
+a d-pad.
 
 `game/page.html` is the same game as a single self-contained file, which is what
 gets published when a link is wanted.
@@ -49,7 +50,7 @@ The rule: `tools/` and `content/` are truth. Everything in `build/` and
 content/*.json  +  tools/gen/*.py
         │  generate
 build/atlas/*.png  ·  build/manifest.json  ·  build/aseprite/*.aseprite
-        │  validate   ← 26 gates, all must pass
+        │  validate   ← 32 gates, all must pass
 game/art-embed.js  →  game/index.html + main.js  →  game/page.html
 ```
 
@@ -78,10 +79,16 @@ failure points at an authored file, never at generated output:
 | `map-spawn` | a spawn in water, or inside a wall |
 | `map-exit` | a way to another map that lands nowhere real, or lands on the way back |
 | `actor-hostile` | a creature that attacks with a number missing, or that would drop the chase as it started |
+| `actor-hp` | a creature that can be struck but never killed, or killed by nothing |
 | `dialogue-exists` | an NPC pointing at dialogue that does not exist |
 | `dialogue-shape` | a conversation with no start, or a node that says nothing |
 | `dialogue-links` | a reply pointing at a node that is not there, or writing nobody can reach |
 | `dialogue-effects` | a branch waiting on a flag no choice ever sets, or trading an item that does not exist |
+| `quest-shape` | an errand with no objectives, or an objective of a kind the engine cannot track |
+| `quest-target` | being sent to talk to something with nothing to say, or to kill something that cannot die |
+| `quest-reward` | an errand that pays an item nobody drew |
+| `quest-supply` | fetch three berries where the maps place two — an errand that reads perfectly and cannot be finished |
+| `quest-reach` | an errand nobody offers, or one that can be finished but never handed in |
 | `item-kind` | an item the engine has no idea what to do with, or a weapon with nothing to draw |
 | `item-held` | a weapon the hero could equip but has no frames for - a sprite with holes |
 | `deterministic` | the build drifting between runs |
@@ -174,23 +181,67 @@ something, or only once an NPC has asked you for it.
 **Entry rules** are what make a conversation remember: `start` is either a node
 name or a list of rules, and the first whose condition holds is where you come
 in. The condition language is deliberately tiny — `flag`, `noflag`, `has`,
-`nothas`, and `all` to combine them — small enough that a gate can check every
-branch is reachable and every flag is one some choice actually sets. A choice
-with no `goto` ends the conversation.
+`nothas`, `quest`, and `all` to combine them — small enough that a gate can
+check every branch is reachable and every flag is one some choice actually
+sets. A choice with no `goto` ends the conversation.
 
-Effects run **take, then give, then set**, so trading the last thing in a full
-bag still works; anything given that will not fit drops at your feet rather
-than vanishing.
-
-That is enough for a quest without a quest system. Ask Arne for work and he
-wants iron ore from the quarry; bring him a lump and he trades it for his
-father's key; the key opens the chest in the barn yard, once, and afterwards
-the chest knows it is empty. The flags live in the scene, so the world
-remembers within a session.
+Effects run **finish, take, give, set, start**: handing a quest in is what
+empties the bag, so it goes before anything that tries to fill it, and trading
+the last thing in a full bag still works. Anything given that will not fit
+drops at your feet rather than vanishing.
 
 The panel is the bag's planks, sliding up from the bottom: a speaker plate,
 the line, and the replies numbered 1–4. Arrows or the number keys pick one,
 **E** answers, and on a phone you just tap the reply.
+
+## Errands
+
+Flags alone were enough for one errand — ask Arne for iron ore, bring him a
+lump, get his father's key — but not for keeping track of three of them, or
+for telling the player how far along they are. A quest is a file in
+`content/quests/` and two replies: one that offers it, one that takes it back.
+
+```json
+{ "id": "quest.arne_berries", "name": "A Handful of Berries",
+  "giver": "npc.arne",
+  "objectives": [
+    { "id": "ask",  "kind": "talk",    "target": "npc.goat",
+      "text": "Have a word with the goat" },
+    { "id": "pick", "kind": "collect", "target": "item.berries", "count": 3,
+      "text": "Gather three handfuls of berries" }],
+  "reward": { "xp": 30, "give": "item.coin", "set": "arne.berries_done" } }
+```
+
+The engine knows four kinds of objective — **collect**, **kill**, **talk**,
+**visit** — and nothing about any particular errand. No list of quests exists
+anywhere in `game/main.js`.
+
+**A quest is in one of four states**, and those four words are the whole
+language a conversation has for asking about one: `none`, `active`, `ready`
+(every objective met, not yet handed in) and `done`. A reply asks with
+`"when": { "quest": { "id": "quest.arne_berries", "is": "ready" } }` — one key
+rather than four, `is` may be a list, and that is also how "taken but not
+finished" is said without needing a negation. `"start"` and `"finish"` on a
+reply are the two effects.
+
+**Fetching is counted off the bag rather than remembered**, so putting a berry
+down takes the tick away again and no bookkeeping can drift out of step with
+what you are actually carrying. Handing a quest in takes what it asked for
+without the content having to say so twice.
+
+**A creature dies only if its definition says how much it can take.** `"hp"` on
+an actor is the whole of it: the boar has 18, the elk 26, the troll 60, and the
+sheep have none, so they can be hit all day and only ever bolt. Nothing in the
+engine knows which animals those are — and a `kill` objective on something with
+no `hp` fails a gate, because it is a bounty that can never be collected.
+
+**J** opens the journal: what is outstanding, how far along each objective is,
+and what it pays — planks again, from the right-hand edge. Taking an errand,
+ticking one off and finishing it each say so once in a toast, because by the
+time an objective is met you are usually somewhere else.
+
+Arne stands on the road through Wilderness II and has three things he wants
+doing. The ore is still flags; the berries and the boars are quests.
 
 ## Items, the bag, and the weapon hand
 
@@ -249,6 +300,18 @@ worn, and **E** on it in the bag takes it off again.
   swing played and handed control back. `--map` renders the whole 96×72 world
   as one frame; `--pose slash,1 --page` freezes the strike and photographs the
   page with its bag and buttons.
+- `node tools/shot.cjs --on map.wilderness2 --quest` takes every errand the
+  people on a map can offer and runs each one to the end: it finds its own way
+  through the conversation to the reply that starts the quest, has a word with
+  the goat, picks the berries off the ground, crosses a map edge, kills the
+  boars, comes back and hands it in — then checks the quest is done, the
+  berries are gone, the reward is in the bag and the journal survived the
+  crossing. Nothing in it names a quest, a reply or an item, so it goes on
+  testing the system rather than one errand somebody wrote down in the test.
+- `node tools/editor_test.cjs` drives the editor the same way: it erases the
+  berries on the open map and checks the quest board goes short *before*
+  anything is saved, and that every node of a conversation is drawn, none on
+  top of another, with every reply landing on a box.
 
 ## Engine note
 
