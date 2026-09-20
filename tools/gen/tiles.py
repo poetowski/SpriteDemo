@@ -572,6 +572,57 @@ def straw(seed=0, phase=0):
     return c
 
 
+def cave_floor(seed=0, phase=0):
+    """The floor of a burrow: earth packed hard by something heavy going in
+    and out, with grit and the odd stone trodden into it.
+
+    Darker than tile.dirt on purpose. This is ground with a roof over it and
+    one doorway of daylight at the far end, so earth at open-air brightness
+    under a near-black wall would read as a hole cut in the world rather than
+    as a room you are standing in."""
+    c = Canvas(SIZE, SIZE)
+    c.rect(0, 0, SIZE - 1, SIZE - 1, "DRD")
+    rnd = scatter(0xC0DE + seed * 211)
+    for _ in range(4):                            # where the traffic has worn it
+        _patch(c, rnd, rnd(SIZE), rnd(SIZE), 6, 4, "DR", 5 + rnd(3))
+    for _ in range(8):                            # grit
+        _put(c, rnd(SIZE), rnd(SIZE), "OL")
+    for _ in range(4):                            # small stones, lit along the top
+        x, y = rnd(SIZE), rnd(SIZE)
+        _put(c, x, y, "STD")
+        _put(c, x, y - 1, "ST")
+    for _ in range(5):
+        _put(c, rnd(SIZE), rnd(SIZE), "DRL")
+    return c
+
+
+def cave_wall(seed=0, phase=0):
+    """Earth and rock seen from inside the burrow, with root threads through it.
+
+    Measured against the floor rather than eyeballed, the way plank_wall is:
+    this sits far enough below tile.cave_floor that the tunnel has corners.
+    The roots are the one thing in here that says the hole is under a tree,
+    which is the whole reason the map exists - so they run through the wall
+    rather than being left to prop.roots alone."""
+    c = Canvas(SIZE, SIZE)
+    c.rect(0, 0, SIZE - 1, SIZE - 1, "OL")
+    rnd = scatter(0x8B0E + seed * 293)
+    # _pool rather than _patch: a scatter of stone-coloured pixels reads as
+    # grit on a black wall, not as rock in it. Rock has to be a continuous
+    # mass with a lit top before it reads as something shouldering through.
+    for _ in range(3):
+        cx, cy = rnd(SIZE), rnd(SIZE)
+        _pool(c, cx, cy, 3 + rnd(2), 2 + rnd(2), "STX")
+        _pool(c, cx, cy - 1, 2, 1, "STD")         # caught by what light there is
+    for _ in range(3):                            # root threads, running downward
+        x, y = rnd(SIZE), rnd(SIZE)
+        for i in range(6):
+            _put(c, x + (i // 3), y + i, "WDD")
+    for _ in range(4):
+        _put(c, rnd(SIZE), rnd(SIZE), "STX")
+    return c
+
+
 BASE = {
     "tile.grass": grass,
     "tile.grass_flower": grass_flower,
@@ -594,6 +645,8 @@ BASE = {
     "tile.wood_floor": wood_floor,
     "tile.plank_wall": plank_wall,
     "tile.straw": straw,
+    "tile.cave_floor": cave_floor,
+    "tile.cave_wall": cave_wall,
     "tile.shallow": shallow,
     "tile.water": water,
 }
@@ -603,7 +656,7 @@ TILE_ORDER = list(BASE)
 # so the field changes without anyone having authored it.
 VARIANTS = {"tile.grass": 3, "tile.grass_tall": 2, "tile.water": 2,
             "tile.sand": 2, "tile.leaves": 2, "tile.wood_floor": 2,
-            "tile.straw": 2,
+            "tile.straw": 2, "tile.cave_floor": 3, "tile.cave_wall": 2,
             # Dune needs the most of any base: it is the whole floor of the
             # biome, and one ripple pattern repeated across a map is a rug.
             "tile.dune": 4, "tile.salt": 2, "tile.scrub": 2,

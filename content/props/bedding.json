@@ -1,0 +1,11 @@
+{
+  "id": "prop.bedding",
+  "sprite": "prop.bedding",
+  "footprint": [
+    [
+      0,
+      0
+    ]
+  ],
+  "blocks": false
+}

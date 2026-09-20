@@ -1589,6 +1589,114 @@ def bed_straw():
     return c.outline()
 
 
+# ----------------------------------------------------------- the burrow ---
+# Four props that only make sense underground. They share a constraint the
+# outdoor set does not have: the floor they stand on is dark, so anything drawn
+# in a mid tone sinks into it. Each of these is either paler than the floor or
+# outlined hard against it.
+def roots():
+    """Tree roots broken through the roof of the burrow and left hanging.
+
+    The one prop here drawn from the top of the frame downward instead of up
+    from the base line: a hanging thing is placed by where it is fixed, not by
+    where it ends. The gauges and lengths all differ on purpose - four strands
+    of one width read as rope, which is the failure this shape falls into most
+    easily."""
+    c = Canvas(FRAME, FRAME)
+    # Three pixels across, not one. A single-pixel strand plus the outline
+    # this returns is two parts dark to one part wood, and what comes out is
+    # a crack in the wall rather than a root hanging in front of it.
+    for x0, length, lean in ((6, 20, 1), (12, 14, 0), (18, 24, -1), (25, 11, 1)):
+        x = x0
+        for y in range(length):
+            c.set(x, y, "WD")
+            c.set(x + 1, y, "WD")
+            if y < length - 4:
+                c.set(x + 2, y, "WDD")       # the shaded side of the strand
+            if y % 5 == 0:
+                c.set(x, y, "WDL")           # and a lit one, in patches
+            if y and y % 7 == 0:
+                x += lean                    # a kink, not a curve
+        c.set(x, min(length, FRAME - 1), "WDD")      # a blunt tip, not a point
+    return c.outline()
+
+
+def cave_shroom():
+    """A cluster of pale fungus on the burrow floor - three caps, no two the
+    same height.
+
+    prop.mushroom is a red forest toadstool and reads as woodland at a glance.
+    Down here the cap is salt rather than roof-red: the only thing a hole in
+    the ground gives you to see by is whatever is paler than the dirt."""
+    c = Canvas(FRAME, FRAME)
+    for cx, top, w in ((10, 22, 3), (17, 17, 4), (24, 24, 2)):
+        c.rect(cx - 1, top + 3, cx, BASE_Y, "CLD")           # stem
+        c.col(cx - 1, top + 3, BASE_Y, "CL")
+        _blob(c, top, (w - 2, w, w), "SL", cx=cx - 1)        # cap
+        c.row(cx - 1 - w, cx + w, top + 3, "SLD")            # gills under the rim
+    _shade(c, "SL", "SLL", "SLD")
+    return c.outline()
+
+
+def bone_pile():
+    """What a den leaves behind: a cracked skull and the long bones of
+    something deer-sized, gnawed at the ends and left where they dropped.
+
+    prop.bones is the desert's, and half of that drawing is the sand drift the
+    skull is sunk in. On a cave floor a mound of pale sand reads as something
+    carried in from outside, so this is the same idea with the ground taken
+    away and the bones scattered rather than composed."""
+    c = Canvas(FRAME, FRAME)
+    # Long bones first, so the skull sits over them.
+    for x0, x1, y in ((5, 16, BASE_Y - 1), (9, 21, BASE_Y - 4), (14, 25, BASE_Y)):
+        c.row(x0, x1, y, "CL")
+        c.row(x0, x1, y + 1, "CLD")
+        for x in (x0, x1):                            # knuckled ends
+            c.set(x, y - 1, "CL")
+            c.set(x, y + 1, "CLD")
+    # The skull. A pale mass with two sockets in it is what reads as bone at
+    # this size - a jaw and teeth are below the resolution to bother with.
+    _lobe(c, 20, BASE_Y - 9, 4, "CL")
+    c.rect(15, BASE_Y - 10, 19, BASE_Y - 7, "CL")     # the muzzle
+    _shade(c, "CL", "SLL", "CLD")
+    for x in (17, 21):
+        c.set(x, BASE_Y - 10, "OL")                   # sockets
+        c.set(x, BASE_Y - 9, "OL")
+    return c.outline()
+
+
+def bedding():
+    """A bear's nest: straw and leaf litter dragged into a heap and pressed
+    flat in the middle by whatever sleeps on it.
+
+    prop.bed_straw is a person's - a pallet with a blanket squared off over it,
+    and the blanket is what makes it a bed rather than a pile of straw. Take
+    the blanket away, round the outline off and press a hollow into the centre,
+    and the same material reads as an animal's."""
+    c = Canvas(FRAME, FRAME)
+    # Overlapping discs, so the rim comes out ragged. A clean ellipse reads as
+    # a rug, which is the opposite of what a dragged-together heap looks like.
+    for cx, cy, r in ((10, BASE_Y - 5, 7), (21, BASE_Y - 5, 7),
+                      (16, BASE_Y - 3, 8), (16, BASE_Y - 9, 6)):
+        _lobe(c, cx, cy, r, "TH")
+    for y in range(BASE_Y + 1, FRAME):                # nothing below the base
+        for x in range(FRAME):
+            c.set(x, y, None)
+    rnd = scatter(0x5E77)
+    for _ in range(30):                               # straws, lying every way
+        x, y = rnd(FRAME), rnd(FRAME)
+        if c.get(x, y) == "TH":
+            c.set(x, y, "THD")
+            c.set(x + 1, y, "THD")
+    for _ in range(16):                               # leaf litter through it
+        x, y = rnd(FRAME), rnd(FRAME)
+        if c.get(x, y) in ("TH", "THD"):
+            c.set(x, y, "LF")
+    _lobe(c, 16, BASE_Y - 6, 5, "LFD")                # the hollow, in shadow
+    _shade(c, "TH", "THL", "THD")
+    return c.outline()
+
+
 PROPS = {
     "prop.bush": bush,
     "prop.rock": rock,
@@ -1630,6 +1738,10 @@ PROPS = {
     "prop.dry_bush": dry_bush,
     "prop.bones": bones,
     "prop.urn": urn,
+    "prop.roots": roots,
+    "prop.cave_shroom": cave_shroom,
+    "prop.bone_pile": bone_pile,
+    "prop.bedding": bedding,
 }
 PROP_ORDER = list(PROPS)
 

@@ -1,0 +1,6 @@
+{
+  "id": "tile.cave_floor",
+  "sprite": "tile.cave_floor",
+  "walkable": true,
+  "material": "dirt"
+}

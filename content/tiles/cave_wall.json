@@ -1,0 +1,6 @@
+{
+  "id": "tile.cave_wall",
+  "sprite": "tile.cave_wall",
+  "walkable": false,
+  "material": "stone"
+}

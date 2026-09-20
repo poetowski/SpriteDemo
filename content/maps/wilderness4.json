@@ -683,6 +683,22 @@
         ]
       ],
       "facing": "left"
+    },
+    {
+      "tiles": [
+        [
+          5,
+          16
+        ]
+      ],
+      "to": "map.burrow_interior",
+      "spawns": [
+        [
+          9,
+          27
+        ]
+      ],
+      "facing": "up"
     }
   ]
 }
