@@ -230,6 +230,38 @@ def nomad_armor():
     return c.outline()
 
 
+def desert_flower():
+    """A bloom on a bare stem. The leaves are grey-green rather than grass
+    green - nothing in this biome is the colour of a meadow, and an icon that
+    was would read as picked somewhere else.
+
+    The petals are laid as a disc and lit, not drawn one at a time with a
+    shade pixel beside each: eight petals each carrying their own outline
+    came out as a dark ring with a gold spot in it."""
+    c = Canvas(SIZE, SIZE)
+    c.col(8, 8, 14, "SC")                       # the stem
+    c.col(9, 9, 14, "SCD")
+    # Two small blades close in to the stem. Long ones angled away from it
+    # crossed under the bloom and the whole icon read as a fire laid ready.
+    for k in range(3):
+        c.set(7 - k, 11 + k, "SC")
+        c.set(6 - k, 11 + k, "SCD")
+    for k in range(2):
+        c.set(10 + k, 12 + k, "SC")
+        c.set(11 + k, 12 + k, "SCD")
+    for dy in range(-4, 5):                     # the bloom, as a disc
+        for dx in range(-4, 5):
+            if dx * dx + dy * dy > 17:
+                continue
+            c.set(8 + dx, 6 + dy, "FID" if dx + dy > 2 else "FI")
+    for dx, dy in ((-2, -3), (0, -4), (2, -3), (-3, -1), (3, -1)):
+        c.set(8 + dx, 6 + dy, "FIL")            # lit on the side it faces
+    c.rect(7, 5, 9, 7, "GD")                    # and the eye of it
+    c.set(7, 5, "GDL")
+    c.set(9, 7, "GDD")
+    return c.outline()
+
+
 ITEMS = {
     "item.apple": apple,
     "item.berries": berries,
@@ -248,6 +280,7 @@ ITEMS = {
     "item.mail": mail,
     "item.desert_tunic": desert_tunic,
     "item.nomad_armor": nomad_armor,
+    "item.desert_flower": desert_flower,
 }
 ITEM_ORDER = list(ITEMS)
 

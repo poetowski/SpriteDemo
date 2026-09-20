@@ -1,0 +1,609 @@
+{
+  "id": "map.desert3",
+  "name": "Desert III",
+  "tags": [
+    "desert"
+  ],
+  "size": [
+    30,
+    30
+  ],
+  "tile_size": 16,
+  "spawn": {
+    "tile": [
+      24,
+      13
+    ],
+    "facing": "left"
+  },
+  "legend": {
+    ".": "tile.dune",
+    "o": "tile.oasis",
+    "L": "tile.lily",
+    "c": "tile.scrub",
+    "s": "tile.sandstone"
+  },
+  "ground": [
+    "oooooooooooccc................",
+    "ooooooooooocc.................",
+    "ooooooooooocc.................",
+    "oooooooooooccc....sssss.......",
+    "oooooLLooooocc...ssssss.......",
+    "ooLLLLLoooooocc..ssssss.......",
+    "ooLLLLLooooooccc.ssssss.......",
+    "ooLLLLoooooocc...ssssss.......",
+    "oooooooooocc.....ssssss.......",
+    "ooooooooccc...................",
+    "oooooocc......................",
+    "ooooooocc.....................",
+    "ooooooooccc...................",
+    "ooLLLoooocc...................",
+    "ooLLLLoooocc..................",
+    "ooLLLLooooccc.................",
+    "ooLLLooooocc..................",
+    "ooLLLoooooocc.................",
+    "oooLLoooooooccc...............",
+    "ooooooooooooocc...............",
+    "ooooooooooooocc...............",
+    "oooooLooooooccc...............",
+    "oooLLooooocc..................",
+    "ooLLLooocc....................",
+    "oooLLooccc....................",
+    "ooooooocc.....................",
+    "oooooooocc....................",
+    "oooooooooccc..................",
+    "ooooooooocc...................",
+    "ooooooooocc..................."
+  ],
+  "entities": [
+    {
+      "def": "prop.palm",
+      "tile": [
+        9,
+        27
+      ]
+    },
+    {
+      "def": "prop.palm",
+      "tile": [
+        11,
+        17
+      ]
+    },
+    {
+      "def": "prop.palm",
+      "tile": [
+        9,
+        29
+      ]
+    },
+    {
+      "def": "prop.palm",
+      "tile": [
+        8,
+        24
+      ]
+    },
+    {
+      "def": "prop.palm",
+      "tile": [
+        9,
+        11
+      ]
+    },
+    {
+      "def": "prop.palm",
+      "tile": [
+        13,
+        20
+      ]
+    },
+    {
+      "def": "prop.palm",
+      "tile": [
+        8,
+        10
+      ]
+    },
+    {
+      "def": "prop.palm",
+      "tile": [
+        8,
+        26
+      ]
+    },
+    {
+      "def": "prop.palm",
+      "tile": [
+        12,
+        17
+      ]
+    },
+    {
+      "def": "prop.palm",
+      "tile": [
+        13,
+        18
+      ]
+    },
+    {
+      "def": "prop.palm",
+      "tile": [
+        9,
+        13
+      ]
+    },
+    {
+      "def": "prop.dry_bush",
+      "tile": [
+        10,
+        9
+      ]
+    },
+    {
+      "def": "prop.dry_bush",
+      "tile": [
+        14,
+        18
+      ]
+    },
+    {
+      "def": "prop.dry_bush",
+      "tile": [
+        10,
+        13
+      ]
+    },
+    {
+      "def": "prop.dry_bush",
+      "tile": [
+        11,
+        22
+      ]
+    },
+    {
+      "def": "prop.dry_bush",
+      "tile": [
+        10,
+        23
+      ]
+    },
+    {
+      "def": "item.desert_flower",
+      "tile": [
+        15,
+        19
+      ]
+    },
+    {
+      "def": "item.desert_flower",
+      "tile": [
+        13,
+        21
+      ]
+    },
+    {
+      "def": "item.desert_flower",
+      "tile": [
+        14,
+        6
+      ]
+    },
+    {
+      "def": "item.desert_flower",
+      "tile": [
+        8,
+        11
+      ]
+    },
+    {
+      "def": "item.desert_flower",
+      "tile": [
+        12,
+        27
+      ]
+    },
+    {
+      "def": "item.desert_flower",
+      "tile": [
+        15,
+        4
+      ]
+    },
+    {
+      "def": "item.desert_flower",
+      "tile": [
+        15,
+        5
+      ]
+    },
+    {
+      "def": "item.desert_flower",
+      "tile": [
+        13,
+        13
+      ]
+    },
+    {
+      "def": "item.desert_flower",
+      "tile": [
+        10,
+        29
+      ]
+    },
+    {
+      "def": "item.desert_flower",
+      "tile": [
+        13,
+        22
+      ]
+    },
+    {
+      "def": "item.desert_flower",
+      "tile": [
+        11,
+        2
+      ]
+    },
+    {
+      "def": "item.desert_flower",
+      "tile": [
+        13,
+        19
+      ]
+    },
+    {
+      "def": "item.desert_flower",
+      "tile": [
+        12,
+        21
+      ]
+    },
+    {
+      "def": "item.desert_flower",
+      "tile": [
+        9,
+        9
+      ]
+    },
+    {
+      "def": "npc.elephant",
+      "tile": [
+        9,
+        12
+      ]
+    },
+    {
+      "def": "npc.elephant",
+      "tile": [
+        10,
+        25
+      ]
+    },
+    {
+      "def": "npc.elephant",
+      "tile": [
+        13,
+        23
+      ]
+    },
+    {
+      "def": "npc.giraffe",
+      "tile": [
+        14,
+        2
+      ]
+    },
+    {
+      "def": "npc.giraffe",
+      "tile": [
+        17,
+        5
+      ]
+    },
+    {
+      "def": "npc.giraffe",
+      "tile": [
+        9,
+        28
+      ]
+    },
+    {
+      "def": "npc.zebra",
+      "tile": [
+        27,
+        1
+      ]
+    },
+    {
+      "def": "npc.zebra",
+      "tile": [
+        20,
+        10
+      ]
+    },
+    {
+      "def": "npc.zebra",
+      "tile": [
+        20,
+        5
+      ]
+    },
+    {
+      "def": "npc.zebra",
+      "tile": [
+        22,
+        2
+      ]
+    },
+    {
+      "def": "npc.zebra",
+      "tile": [
+        22,
+        22
+      ]
+    },
+    {
+      "def": "npc.jackal",
+      "tile": [
+        24,
+        4
+      ]
+    },
+    {
+      "def": "npc.jackal",
+      "tile": [
+        22,
+        24
+      ]
+    },
+    {
+      "def": "npc.jackal",
+      "tile": [
+        26,
+        17
+      ]
+    },
+    {
+      "def": "npc.jackal",
+      "tile": [
+        19,
+        27
+      ]
+    },
+    {
+      "def": "prop.cactus",
+      "tile": [
+        25,
+        10
+      ]
+    },
+    {
+      "def": "prop.cactus",
+      "tile": [
+        24,
+        7
+      ]
+    },
+    {
+      "def": "prop.cactus",
+      "tile": [
+        23,
+        13
+      ]
+    },
+    {
+      "def": "prop.cactus",
+      "tile": [
+        27,
+        12
+      ]
+    },
+    {
+      "def": "prop.cactus",
+      "tile": [
+        21,
+        20
+      ]
+    },
+    {
+      "def": "prop.cactus",
+      "tile": [
+        21,
+        19
+      ]
+    },
+    {
+      "def": "prop.cactus",
+      "tile": [
+        20,
+        22
+      ]
+    },
+    {
+      "def": "prop.cactus",
+      "tile": [
+        27,
+        26
+      ]
+    },
+    {
+      "def": "prop.cactus",
+      "tile": [
+        27,
+        27
+      ]
+    },
+    {
+      "def": "prop.cactus",
+      "tile": [
+        24,
+        1
+      ]
+    },
+    {
+      "def": "prop.cactus",
+      "tile": [
+        26,
+        1
+      ]
+    },
+    {
+      "def": "prop.cactus",
+      "tile": [
+        23,
+        0
+      ]
+    },
+    {
+      "def": "prop.obelisk",
+      "tile": [
+        19,
+        7
+      ]
+    },
+    {
+      "def": "prop.bones",
+      "tile": [
+        27,
+        7
+      ]
+    },
+    {
+      "def": "prop.boulder_4",
+      "tile": [
+        16,
+        14
+      ]
+    },
+    {
+      "def": "prop.boulder_2",
+      "tile": [
+        17,
+        16
+      ]
+    }
+  ],
+  "exits": [
+    {
+      "tiles": [
+        [
+          29,
+          6
+        ],
+        [
+          29,
+          7
+        ],
+        [
+          29,
+          8
+        ],
+        [
+          29,
+          9
+        ],
+        [
+          29,
+          10
+        ],
+        [
+          29,
+          11
+        ],
+        [
+          29,
+          12
+        ],
+        [
+          29,
+          13
+        ],
+        [
+          29,
+          14
+        ],
+        [
+          29,
+          15
+        ],
+        [
+          29,
+          16
+        ],
+        [
+          29,
+          17
+        ],
+        [
+          29,
+          18
+        ],
+        [
+          29,
+          19
+        ]
+      ],
+      "to": "map.desert1",
+      "spawns": [
+        [
+          1,
+          6
+        ],
+        [
+          1,
+          7
+        ],
+        [
+          1,
+          8
+        ],
+        [
+          1,
+          9
+        ],
+        [
+          1,
+          10
+        ],
+        [
+          1,
+          11
+        ],
+        [
+          1,
+          12
+        ],
+        [
+          1,
+          13
+        ],
+        [
+          1,
+          14
+        ],
+        [
+          1,
+          15
+        ],
+        [
+          1,
+          16
+        ],
+        [
+          1,
+          17
+        ],
+        [
+          1,
+          18
+        ],
+        [
+          1,
+          19
+        ]
+      ],
+      "facing": "right"
+    }
+  ]
+}

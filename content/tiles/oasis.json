@@ -4,5 +4,6 @@
   "walkable": false,
   "blend": true,
   "blend_over": "tile.dune",
-  "material": "water"
+  "material": "water",
+  "family": "oasis"
 }

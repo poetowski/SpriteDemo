@@ -10,17 +10,19 @@ The world is eight wildernesses you walk between — fells and pine woods, a
 shieling, a boar that hunts its own patch, a lake north of it all with an old
 burrow tree four tiles across, and westernmost a temple under a crag with two
 fires burning and a monk sweeping a step that is already clean — with 55 kinds
-of prop and seventeen kinds of thing to pick up, three of which go in the
+of prop and eighteen kinds of thing to pick up, three of which go in the
 weapon hand and swing.
 
 And there is a second country, which you reach by stepping into the light on
 the temple step: a mythological desert of dunes, salt pans, scrub and oases,
 with a sun gate and a pair of obelisks on a sandstone court, colossi half sunk
 in the sand, elephants at the water, giraffes browsing the fringe, zebras out
-on the pan and jackals working the open ground between. It is two maps now —
-the second sixty tiles square, with a nomad called Ibn Abn keeping a swept
-camp in its north-east corner who will give you a robe cut for the country you
-are standing in. The desert is a **zone**, a tag its maps share, so the editor
+on the pan and jackals working the open ground between. It is three maps now:
+one sixty tiles square, with a nomad called Ibn Abn keeping a swept camp in
+its north-east corner who will give you a robe cut for the country you are
+standing in, and one that is half lake — drifts of water lilies on it, palms
+and elephants along the shore, and desert flowers opening on the damp ground
+behind the reeds. The desert is a **zone**, a tag its maps share, so the editor
 groups it and gives it its own plate on the world atlas, joined to the
 wilderness by an arrow rather than a seam, because a portal says how you get
 somewhere and nothing about where it is.

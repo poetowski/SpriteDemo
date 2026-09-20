@@ -333,6 +333,53 @@ def oasis(seed=0, phase=0):
     return c
 
 
+def lily(seed=0, phase=0):
+    """Pads on the water, which is why it is a terrain and not a prop: nothing
+    may stand on ground it cannot walk on, so a lily laid as an object fails
+    the footprint gate on every tile of the pool it belongs in. Drawn as the
+    surface itself, it is exactly what it looks like - water you cannot cross
+    with things growing on it.
+
+    Built on top of the oasis rather than beside it: the pads have to sit in
+    the same water the rest of the pool is made of, so the base is drawn by
+    `oasis` itself and this only adds what floats.
+
+    It does not blend, and that is deliberate. Lilies share the oasis's
+    `family`, so the autotiler treats a patch of them and the water round it
+    as one ground and neither draws an edge against the other - which is the
+    whole point, because when they were separate families every oasis tile
+    touching a patch drew its *shore* against it and each drift came out
+    ringed in sand in the middle of the lake. Sharing the family also makes
+    this five frames a phase instead of forty-seven."""
+    c = oasis(seed, phase)
+    rnd = scatter(0x1B77 + seed * 397)
+    # Bush green, not the scrub keys. A pad drawn in the desert's own greens
+    # is a khaki disc floating on teal, which reads as sand on the water -
+    # the one thing in this biome that is genuinely lush is the thing growing
+    # in the only water for a day's walk, so it borrows the wilderness green.
+    for i in range(2):
+        # A pad is a disc with a wedge cut out of it. A plain disc reads as a
+        # coin, and at 16px the notch is the whole difference.
+        px, py, r = rnd(SIZE), rnd(SIZE), 3 + rnd(2)
+        notch = rnd(4)
+        for dy in range(-r, r + 1):
+            for dx in range(-r, r + 1):
+                if dx * dx + dy * dy > r * r:
+                    continue
+                if notch == 0 and dx > 0 and abs(dy) < 2: continue
+                if notch == 1 and dx < 0 and abs(dy) < 2: continue
+                if notch == 2 and dy > 0 and abs(dx) < 2: continue
+                if notch == 3 and dy < 0 and abs(dx) < 2: continue
+                _put(c, px + dx, py + dy, "BUD" if dy > 0 else "BU")
+        for k in range(-r + 1, r):                # the rim catching the light
+            _put(c, px + k, py - r + abs(k) // 2, "BUL")
+        if i == 0:                                # one pad in two is flowering
+            _put(c, px, py - 1, "EW")
+            _put(c, px + 1, py - 1, "EW")
+            _put(c, px, py, "FL")
+    return c
+
+
 def portal(seed=0, phase=0):
     """The floor of a gateway: violet light with sigils turning over in it.
 
@@ -541,6 +588,7 @@ BASE = {
     "tile.sandstone": sandstone,
     "tile.scrub": scrub,
     "tile.oasis": oasis,
+    "tile.lily": lily,
     "tile.cobble": cobble,
     "tile.stone": stone,
     "tile.wood_floor": wood_floor,
@@ -559,7 +607,7 @@ VARIANTS = {"tile.grass": 3, "tile.grass_tall": 2, "tile.water": 2,
             # Dune needs the most of any base: it is the whole floor of the
             # biome, and one ripple pattern repeated across a map is a rug.
             "tile.dune": 4, "tile.salt": 2, "tile.scrub": 2,
-            "tile.sandstone": 3, "tile.oasis": 2}
+            "tile.sandstone": 3, "tile.oasis": 2, "tile.lily": 5}
 
 # Tiles drawn in several phases. The art pipeline emits every phase as its own
 # frame and the engine cycles them; the base frame is what the map resolves to.
@@ -567,6 +615,8 @@ VARIANTS = {"tile.grass": 3, "tile.grass_tall": 2, "tile.water": 2,
 # ring breathing, at the same frame time as the water, because one clock for
 # everything that moves on the floor is what keeps the scene from twitching.
 ANIMATED = {"tile.water": 3, "tile.shallow": 2, "tile.oasis": 3,
+            # The pads ride the same water, so they move with it.
+            "tile.lily": 3,
             "tile.portal": 4}
 ANIM_MS = 420
 

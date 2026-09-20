@@ -1,0 +1,7 @@
+{
+  "id": "item.desert_flower",
+  "name": "Desert flower",
+  "sprite": "item.desert_flower",
+  "kind": "material",
+  "description": "It opens for a few days after rain that may not come again for a year. Nobody has explained why it smells of nothing."
+}

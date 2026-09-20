@@ -332,6 +332,15 @@ Ground is authored as plain terrain and drawn with variation and edges:
   the manifest (`maps[id].grid`, `tileset.blocking`) and the `map-grid` gate
   checks it. A new terrain needs a base drawing, an edge style in
   `tiles.STYLE` if it blends, and a content file - never a hand-placed edge.
+  **`family` is the answer whenever two terrains should not edge against each
+  other at all**, and it is easy to reach for the wrong tool first. Lilies
+  blended over the oasis and were kept two clear tiles off every shore, which
+  fixed nothing: the problem was never the lily's edge but the *water's*, and
+  every oasis tile touching a patch drew its shore against it, so each drift
+  came out ringed in sand in the middle of the lake. One shared family and
+  neither draws an edge against the other. It also made the lily five frames
+  a phase instead of forty-seven, because a tile that never meets a different
+  family never needs a transition and does not have to blend at all.
 - **Animated ground.** `tiles.ANIMATED` names tiles drawn in phases (water:
   three). The build emits every phase of every variant and transition as its
   own frame and lists each base index's sequence in `tileset.animated`; the
@@ -371,6 +380,13 @@ pipeline knows there are two biomes:
   `_edge_drift`, which heaps sand on the lee side, because in a desert the
   thing that rubs out an edge is wind. The oasis gets `_edge_oasis`: a wet
   shore and a lit rim, and deliberately no foam, because still water has none.
+
+**Not everything in a desert is desert-coloured.** The lily pads are the
+wilderness's bush green, because they are the one genuinely lush thing in the
+biome - the plant growing in the only water for a day's walk. Drawn in the
+desert's own greens they were a khaki disc on teal, which reads as sand
+floating on the surface. Borrow from the other palette when the *thing* calls
+for it, rather than because the map it sits on does.
 
 **Lapis and gold on sandstone is the whole colour idea**, and it is worth
 saying out loud because it is what makes the built things read as one
