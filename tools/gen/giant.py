@@ -41,6 +41,22 @@ FOOT_Y = 60                    # last opaque row
 # Silhouette flags, read with .get so a new one leaves the others alone.
 SPECIES = {
     "troll": {"tusks": True, "gas": True},
+    # A stone golem is the same mass with nothing hanging off its face and
+    # something growing out of its back instead. No tusks and no gas: both are
+    # the troll's, and a golem that shared them would read as a recoloured
+    # troll however different the stone was.
+    "golem": {"crystals": True},
+}
+
+# Where the crystal comes through him, per view: (x, y, height). They break the
+# silhouette above the shoulder line on purpose - a shard drawn against the
+# back is a coloured patch, and the whole point of them is the shape they make
+# against the sky. Same reason the jackal's ears stand clear of its skull.
+CRYSTALS = {
+    "front": [(18, 25, 7), (21, 22, 5), (45, 25, 7), (42, 22, 5), (24, 24, 4)],
+    "back":  [(20, 28, 8), (25, 24, 6), (31, 22, 9), (38, 25, 7), (43, 29, 6),
+              (28, 34, 4), (35, 36, 4)],
+    "side":  [(20, 27, 8), (25, 23, 6), (17, 33, 5), (29, 25, 4)],
 }
 
 # The mass, row by row from the shoulders down: half-widths of something that
@@ -182,6 +198,27 @@ def _wart(c, x, y, big=False):
             c.set(x + dx, y + dy, "WR")
     if c.get(x, y + (2 if big else 1)) in ("SK", "SKL", "SKS"):
         c.set(x, y + (2 if big else 1), "SKD")         # the shadow it casts
+
+
+def _crystal(c, x, y, h):
+    """A shard coming out of the stone: three pixels wide at the root, one at
+    the point, with a lit face down one side and a dark one down the other.
+    Two flat tones would be a coloured stick - what says crystal is that the
+    two faces meet along the middle of it."""
+    for i in range(h):
+        yy = y - i
+        if i < h - 2:
+            c.rect(x - 1, yy, x + 1, yy, "RC")
+            c.set(x - 1, yy, "RCL")                  # the face turned to the
+            c.set(x + 1, yy, "RCD")                  # light, and the far one
+        else:
+            c.set(x, yy, "RCL")                      # the point, all highlight
+    c.set(x, y + 1, "RCD")                           # a shadow where it grows
+
+
+def _crystals(c, view, bob):
+    for x, y, h in CRYSTALS[view]:
+        _crystal(c, x, y + bob, h)
 
 
 def _lichen(c, cx, cy, r):
@@ -369,7 +406,9 @@ def draw_front(shape, pose):
     _skirt_front(c, bob)
     for side in (-1, 1):
         _arm_front(c, side, bob, pose.get("swing", 0), pose.get("punch", 0))
-    _head_front(c, bob, shape)
+    if shape.get("crystals"):
+        _crystals(c, "front", bob)       # over the arms: on the shoulder, not
+    _head_front(c, bob, shape)           # behind whatever hangs off it
     _shade(c, "SK", "SKL", "SKS")
     c.outline()
     if shape.get("gas"):
@@ -402,6 +441,8 @@ def draw_back(shape, pose):
     for x, y, big in ((20, 34, True), (42, 28, False), (34, 42, False),
                       (25, 39, False)):
         _wart(c, x, y + bob, big)
+    if shape.get("crystals"):
+        _crystals(c, "back", bob)
     _skirt_front(c, bob)
     for side in (-1, 1):
         _arm_front(c, side, bob, pose.get("swing", 0), pose.get("punch", 0),
@@ -458,6 +499,8 @@ def draw_side(shape, pose):
     _lichen(c, 20, 36 + bob, 3)
     for x, y, big in ((26, 27, True), (22, 44, False), (40, 32, False)):
         _wart(c, x, y + bob, big)
+    if shape.get("crystals"):
+        _crystals(c, "side", bob)
 
     c.rect(21, 42 + bob, 46, 47 + bob, "TU")         # the hide, side on
     c.row(21, 46, 42 + bob, "TUL")

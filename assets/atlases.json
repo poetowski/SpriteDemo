@@ -28,8 +28,8 @@
     64
    ],
    "cols": 4,
-   "rows": 31,
-   "count": 124
+   "rows": 35,
+   "count": 140
   },
   "tiles": {
    "image": "atlases/tiles.png",
@@ -78,8 +78,8 @@
     128
    ],
    "cols": 2,
-   "rows": 3,
-   "count": 5
+   "rows": 5,
+   "count": 9
   },
   "items": {
    "image": "atlases/items.png",
@@ -9639,7 +9639,7 @@
     61
    ]
   },
-  "actor.troll/walk/down/0": {
+  "actor.golem/idle/down/0": {
    "atlas": "actors_huge",
    "index": 64,
    "anchor": [
@@ -9647,7 +9647,7 @@
     61
    ]
   },
-  "actor.troll/walk/down/1": {
+  "actor.golem/idle/down/1": {
    "atlas": "actors_huge",
    "index": 65,
    "anchor": [
@@ -9655,7 +9655,7 @@
     61
    ]
   },
-  "actor.troll/walk/down/2": {
+  "actor.golem/idle/down/2": {
    "atlas": "actors_huge",
    "index": 66,
    "anchor": [
@@ -9663,7 +9663,7 @@
     61
    ]
   },
-  "actor.troll/walk/down/3": {
+  "actor.golem/idle/down/3": {
    "atlas": "actors_huge",
    "index": 67,
    "anchor": [
@@ -9671,7 +9671,7 @@
     61
    ]
   },
-  "actor.troll/walk/down/4": {
+  "actor.golem/idle/left/0": {
    "atlas": "actors_huge",
    "index": 68,
    "anchor": [
@@ -9679,7 +9679,7 @@
     61
    ]
   },
-  "actor.troll/walk/down/5": {
+  "actor.golem/idle/left/1": {
    "atlas": "actors_huge",
    "index": 69,
    "anchor": [
@@ -9687,7 +9687,7 @@
     61
    ]
   },
-  "actor.troll/idle/down/0": {
+  "actor.golem/idle/left/2": {
    "atlas": "actors_huge",
    "index": 70,
    "anchor": [
@@ -9695,7 +9695,7 @@
     61
    ]
   },
-  "actor.troll/idle/down/1": {
+  "actor.golem/idle/left/3": {
    "atlas": "actors_huge",
    "index": 71,
    "anchor": [
@@ -9703,7 +9703,7 @@
     61
    ]
   },
-  "actor.troll/idle/down/2": {
+  "actor.golem/idle/right/0": {
    "atlas": "actors_huge",
    "index": 72,
    "anchor": [
@@ -9711,7 +9711,7 @@
     61
    ]
   },
-  "actor.troll/idle/down/3": {
+  "actor.golem/idle/right/1": {
    "atlas": "actors_huge",
    "index": 73,
    "anchor": [
@@ -9719,7 +9719,7 @@
     61
    ]
   },
-  "actor.troll/attack/down/0": {
+  "actor.golem/idle/right/2": {
    "atlas": "actors_huge",
    "index": 74,
    "anchor": [
@@ -9727,7 +9727,7 @@
     61
    ]
   },
-  "actor.troll/attack/down/1": {
+  "actor.golem/idle/right/3": {
    "atlas": "actors_huge",
    "index": 75,
    "anchor": [
@@ -9735,7 +9735,7 @@
     61
    ]
   },
-  "actor.troll/attack/down/2": {
+  "actor.golem/idle/up/0": {
    "atlas": "actors_huge",
    "index": 76,
    "anchor": [
@@ -9743,7 +9743,7 @@
     61
    ]
   },
-  "actor.troll/attack/down/3": {
+  "actor.golem/idle/up/1": {
    "atlas": "actors_huge",
    "index": 77,
    "anchor": [
@@ -9751,7 +9751,7 @@
     61
    ]
   },
-  "actor.troll/attack/down/4": {
+  "actor.golem/idle/up/2": {
    "atlas": "actors_huge",
    "index": 78,
    "anchor": [
@@ -9759,7 +9759,7 @@
     61
    ]
   },
-  "actor.troll/walk/left/0": {
+  "actor.golem/idle/up/3": {
    "atlas": "actors_huge",
    "index": 79,
    "anchor": [
@@ -9767,7 +9767,7 @@
     61
    ]
   },
-  "actor.troll/walk/left/1": {
+  "actor.troll/walk/down/0": {
    "atlas": "actors_huge",
    "index": 80,
    "anchor": [
@@ -9775,7 +9775,7 @@
     61
    ]
   },
-  "actor.troll/walk/left/2": {
+  "actor.troll/walk/down/1": {
    "atlas": "actors_huge",
    "index": 81,
    "anchor": [
@@ -9783,7 +9783,7 @@
     61
    ]
   },
-  "actor.troll/walk/left/3": {
+  "actor.troll/walk/down/2": {
    "atlas": "actors_huge",
    "index": 82,
    "anchor": [
@@ -9791,7 +9791,7 @@
     61
    ]
   },
-  "actor.troll/walk/left/4": {
+  "actor.troll/walk/down/3": {
    "atlas": "actors_huge",
    "index": 83,
    "anchor": [
@@ -9799,7 +9799,7 @@
     61
    ]
   },
-  "actor.troll/walk/left/5": {
+  "actor.troll/walk/down/4": {
    "atlas": "actors_huge",
    "index": 84,
    "anchor": [
@@ -9807,7 +9807,7 @@
     61
    ]
   },
-  "actor.troll/idle/left/0": {
+  "actor.troll/walk/down/5": {
    "atlas": "actors_huge",
    "index": 85,
    "anchor": [
@@ -9815,7 +9815,7 @@
     61
    ]
   },
-  "actor.troll/idle/left/1": {
+  "actor.troll/idle/down/0": {
    "atlas": "actors_huge",
    "index": 86,
    "anchor": [
@@ -9823,7 +9823,7 @@
     61
    ]
   },
-  "actor.troll/idle/left/2": {
+  "actor.troll/idle/down/1": {
    "atlas": "actors_huge",
    "index": 87,
    "anchor": [
@@ -9831,7 +9831,7 @@
     61
    ]
   },
-  "actor.troll/idle/left/3": {
+  "actor.troll/idle/down/2": {
    "atlas": "actors_huge",
    "index": 88,
    "anchor": [
@@ -9839,7 +9839,7 @@
     61
    ]
   },
-  "actor.troll/attack/left/0": {
+  "actor.troll/idle/down/3": {
    "atlas": "actors_huge",
    "index": 89,
    "anchor": [
@@ -9847,7 +9847,7 @@
     61
    ]
   },
-  "actor.troll/attack/left/1": {
+  "actor.troll/attack/down/0": {
    "atlas": "actors_huge",
    "index": 90,
    "anchor": [
@@ -9855,7 +9855,7 @@
     61
    ]
   },
-  "actor.troll/attack/left/2": {
+  "actor.troll/attack/down/1": {
    "atlas": "actors_huge",
    "index": 91,
    "anchor": [
@@ -9863,7 +9863,7 @@
     61
    ]
   },
-  "actor.troll/attack/left/3": {
+  "actor.troll/attack/down/2": {
    "atlas": "actors_huge",
    "index": 92,
    "anchor": [
@@ -9871,7 +9871,7 @@
     61
    ]
   },
-  "actor.troll/attack/left/4": {
+  "actor.troll/attack/down/3": {
    "atlas": "actors_huge",
    "index": 93,
    "anchor": [
@@ -9879,7 +9879,7 @@
     61
    ]
   },
-  "actor.troll/walk/right/0": {
+  "actor.troll/attack/down/4": {
    "atlas": "actors_huge",
    "index": 94,
    "anchor": [
@@ -9887,7 +9887,7 @@
     61
    ]
   },
-  "actor.troll/walk/right/1": {
+  "actor.troll/walk/left/0": {
    "atlas": "actors_huge",
    "index": 95,
    "anchor": [
@@ -9895,7 +9895,7 @@
     61
    ]
   },
-  "actor.troll/walk/right/2": {
+  "actor.troll/walk/left/1": {
    "atlas": "actors_huge",
    "index": 96,
    "anchor": [
@@ -9903,7 +9903,7 @@
     61
    ]
   },
-  "actor.troll/walk/right/3": {
+  "actor.troll/walk/left/2": {
    "atlas": "actors_huge",
    "index": 97,
    "anchor": [
@@ -9911,7 +9911,7 @@
     61
    ]
   },
-  "actor.troll/walk/right/4": {
+  "actor.troll/walk/left/3": {
    "atlas": "actors_huge",
    "index": 98,
    "anchor": [
@@ -9919,7 +9919,7 @@
     61
    ]
   },
-  "actor.troll/walk/right/5": {
+  "actor.troll/walk/left/4": {
    "atlas": "actors_huge",
    "index": 99,
    "anchor": [
@@ -9927,7 +9927,7 @@
     61
    ]
   },
-  "actor.troll/idle/right/0": {
+  "actor.troll/walk/left/5": {
    "atlas": "actors_huge",
    "index": 100,
    "anchor": [
@@ -9935,7 +9935,7 @@
     61
    ]
   },
-  "actor.troll/idle/right/1": {
+  "actor.troll/idle/left/0": {
    "atlas": "actors_huge",
    "index": 101,
    "anchor": [
@@ -9943,7 +9943,7 @@
     61
    ]
   },
-  "actor.troll/idle/right/2": {
+  "actor.troll/idle/left/1": {
    "atlas": "actors_huge",
    "index": 102,
    "anchor": [
@@ -9951,7 +9951,7 @@
     61
    ]
   },
-  "actor.troll/idle/right/3": {
+  "actor.troll/idle/left/2": {
    "atlas": "actors_huge",
    "index": 103,
    "anchor": [
@@ -9959,7 +9959,7 @@
     61
    ]
   },
-  "actor.troll/attack/right/0": {
+  "actor.troll/idle/left/3": {
    "atlas": "actors_huge",
    "index": 104,
    "anchor": [
@@ -9967,7 +9967,7 @@
     61
    ]
   },
-  "actor.troll/attack/right/1": {
+  "actor.troll/attack/left/0": {
    "atlas": "actors_huge",
    "index": 105,
    "anchor": [
@@ -9975,7 +9975,7 @@
     61
    ]
   },
-  "actor.troll/attack/right/2": {
+  "actor.troll/attack/left/1": {
    "atlas": "actors_huge",
    "index": 106,
    "anchor": [
@@ -9983,7 +9983,7 @@
     61
    ]
   },
-  "actor.troll/attack/right/3": {
+  "actor.troll/attack/left/2": {
    "atlas": "actors_huge",
    "index": 107,
    "anchor": [
@@ -9991,7 +9991,7 @@
     61
    ]
   },
-  "actor.troll/attack/right/4": {
+  "actor.troll/attack/left/3": {
    "atlas": "actors_huge",
    "index": 108,
    "anchor": [
@@ -9999,7 +9999,7 @@
     61
    ]
   },
-  "actor.troll/walk/up/0": {
+  "actor.troll/attack/left/4": {
    "atlas": "actors_huge",
    "index": 109,
    "anchor": [
@@ -10007,7 +10007,7 @@
     61
    ]
   },
-  "actor.troll/walk/up/1": {
+  "actor.troll/walk/right/0": {
    "atlas": "actors_huge",
    "index": 110,
    "anchor": [
@@ -10015,7 +10015,7 @@
     61
    ]
   },
-  "actor.troll/walk/up/2": {
+  "actor.troll/walk/right/1": {
    "atlas": "actors_huge",
    "index": 111,
    "anchor": [
@@ -10023,7 +10023,7 @@
     61
    ]
   },
-  "actor.troll/walk/up/3": {
+  "actor.troll/walk/right/2": {
    "atlas": "actors_huge",
    "index": 112,
    "anchor": [
@@ -10031,7 +10031,7 @@
     61
    ]
   },
-  "actor.troll/walk/up/4": {
+  "actor.troll/walk/right/3": {
    "atlas": "actors_huge",
    "index": 113,
    "anchor": [
@@ -10039,7 +10039,7 @@
     61
    ]
   },
-  "actor.troll/walk/up/5": {
+  "actor.troll/walk/right/4": {
    "atlas": "actors_huge",
    "index": 114,
    "anchor": [
@@ -10047,7 +10047,7 @@
     61
    ]
   },
-  "actor.troll/idle/up/0": {
+  "actor.troll/walk/right/5": {
    "atlas": "actors_huge",
    "index": 115,
    "anchor": [
@@ -10055,7 +10055,7 @@
     61
    ]
   },
-  "actor.troll/idle/up/1": {
+  "actor.troll/idle/right/0": {
    "atlas": "actors_huge",
    "index": 116,
    "anchor": [
@@ -10063,7 +10063,7 @@
     61
    ]
   },
-  "actor.troll/idle/up/2": {
+  "actor.troll/idle/right/1": {
    "atlas": "actors_huge",
    "index": 117,
    "anchor": [
@@ -10071,7 +10071,7 @@
     61
    ]
   },
-  "actor.troll/idle/up/3": {
+  "actor.troll/idle/right/2": {
    "atlas": "actors_huge",
    "index": 118,
    "anchor": [
@@ -10079,7 +10079,7 @@
     61
    ]
   },
-  "actor.troll/attack/up/0": {
+  "actor.troll/idle/right/3": {
    "atlas": "actors_huge",
    "index": 119,
    "anchor": [
@@ -10087,7 +10087,7 @@
     61
    ]
   },
-  "actor.troll/attack/up/1": {
+  "actor.troll/attack/right/0": {
    "atlas": "actors_huge",
    "index": 120,
    "anchor": [
@@ -10095,7 +10095,7 @@
     61
    ]
   },
-  "actor.troll/attack/up/2": {
+  "actor.troll/attack/right/1": {
    "atlas": "actors_huge",
    "index": 121,
    "anchor": [
@@ -10103,7 +10103,7 @@
     61
    ]
   },
-  "actor.troll/attack/up/3": {
+  "actor.troll/attack/right/2": {
    "atlas": "actors_huge",
    "index": 122,
    "anchor": [
@@ -10111,9 +10111,137 @@
     61
    ]
   },
-  "actor.troll/attack/up/4": {
+  "actor.troll/attack/right/3": {
    "atlas": "actors_huge",
    "index": 123,
+   "anchor": [
+    24,
+    61
+   ]
+  },
+  "actor.troll/attack/right/4": {
+   "atlas": "actors_huge",
+   "index": 124,
+   "anchor": [
+    24,
+    61
+   ]
+  },
+  "actor.troll/walk/up/0": {
+   "atlas": "actors_huge",
+   "index": 125,
+   "anchor": [
+    24,
+    61
+   ]
+  },
+  "actor.troll/walk/up/1": {
+   "atlas": "actors_huge",
+   "index": 126,
+   "anchor": [
+    24,
+    61
+   ]
+  },
+  "actor.troll/walk/up/2": {
+   "atlas": "actors_huge",
+   "index": 127,
+   "anchor": [
+    24,
+    61
+   ]
+  },
+  "actor.troll/walk/up/3": {
+   "atlas": "actors_huge",
+   "index": 128,
+   "anchor": [
+    24,
+    61
+   ]
+  },
+  "actor.troll/walk/up/4": {
+   "atlas": "actors_huge",
+   "index": 129,
+   "anchor": [
+    24,
+    61
+   ]
+  },
+  "actor.troll/walk/up/5": {
+   "atlas": "actors_huge",
+   "index": 130,
+   "anchor": [
+    24,
+    61
+   ]
+  },
+  "actor.troll/idle/up/0": {
+   "atlas": "actors_huge",
+   "index": 131,
+   "anchor": [
+    24,
+    61
+   ]
+  },
+  "actor.troll/idle/up/1": {
+   "atlas": "actors_huge",
+   "index": 132,
+   "anchor": [
+    24,
+    61
+   ]
+  },
+  "actor.troll/idle/up/2": {
+   "atlas": "actors_huge",
+   "index": 133,
+   "anchor": [
+    24,
+    61
+   ]
+  },
+  "actor.troll/idle/up/3": {
+   "atlas": "actors_huge",
+   "index": 134,
+   "anchor": [
+    24,
+    61
+   ]
+  },
+  "actor.troll/attack/up/0": {
+   "atlas": "actors_huge",
+   "index": 135,
+   "anchor": [
+    24,
+    61
+   ]
+  },
+  "actor.troll/attack/up/1": {
+   "atlas": "actors_huge",
+   "index": 136,
+   "anchor": [
+    24,
+    61
+   ]
+  },
+  "actor.troll/attack/up/2": {
+   "atlas": "actors_huge",
+   "index": 137,
+   "anchor": [
+    24,
+    61
+   ]
+  },
+  "actor.troll/attack/up/3": {
+   "atlas": "actors_huge",
+   "index": 138,
+   "anchor": [
+    24,
+    61
+   ]
+  },
+  "actor.troll/attack/up/4": {
+   "atlas": "actors_huge",
+   "index": 139,
    "anchor": [
     24,
     61
@@ -18783,6 +18911,38 @@
     125
    ]
   },
+  "prop.crystal_gate": {
+   "atlas": "props_vast",
+   "index": 5,
+   "anchor": [
+    56,
+    125
+   ]
+  },
+  "prop.crystal_gate/1": {
+   "atlas": "props_vast",
+   "index": 6,
+   "anchor": [
+    56,
+    125
+   ]
+  },
+  "prop.crystal_gate/2": {
+   "atlas": "props_vast",
+   "index": 7,
+   "anchor": [
+    56,
+    125
+   ]
+  },
+  "prop.crystal_gate/3": {
+   "atlas": "props_vast",
+   "index": 8,
+   "anchor": [
+    56,
+    125
+   ]
+  },
   "item.apple": {
    "atlas": "items",
    "index": 0,
@@ -19799,6 +19959,50 @@
     159
    ],
    "ms": 380,
+   "loop": true
+  },
+  "actor.golem/idle/down": {
+   "atlas": "actors_huge",
+   "frames": [
+    64,
+    65,
+    66,
+    67
+   ],
+   "ms": 310,
+   "loop": true
+  },
+  "actor.golem/idle/left": {
+   "atlas": "actors_huge",
+   "frames": [
+    68,
+    69,
+    70,
+    71
+   ],
+   "ms": 310,
+   "loop": true
+  },
+  "actor.golem/idle/right": {
+   "atlas": "actors_huge",
+   "frames": [
+    72,
+    73,
+    74,
+    75
+   ],
+   "ms": 310,
+   "loop": true
+  },
+  "actor.golem/idle/up": {
+   "atlas": "actors_huge",
+   "frames": [
+    76,
+    77,
+    78,
+    79
+   ],
+   "ms": 310,
    "loop": true
   },
   "actor.hero/walk/down": {
@@ -22840,12 +23044,12 @@
   "actor.troll/walk/down": {
    "atlas": "actors_huge",
    "frames": [
-    64,
-    65,
-    66,
-    67,
-    68,
-    69
+    80,
+    81,
+    82,
+    83,
+    84,
+    85
    ],
    "ms": 153,
    "loop": true
@@ -22853,10 +23057,10 @@
   "actor.troll/idle/down": {
    "atlas": "actors_huge",
    "frames": [
-    70,
-    71,
-    72,
-    73
+    86,
+    87,
+    88,
+    89
    ],
    "ms": 310,
    "loop": true
@@ -22864,11 +23068,11 @@
   "actor.troll/attack/down": {
    "atlas": "actors_huge",
    "frames": [
-    74,
-    75,
-    76,
-    77,
-    78
+    90,
+    91,
+    92,
+    93,
+    94
    ],
    "ms": 136,
    "loop": false
@@ -22876,12 +23080,12 @@
   "actor.troll/walk/left": {
    "atlas": "actors_huge",
    "frames": [
-    79,
-    80,
-    81,
-    82,
-    83,
-    84
+    95,
+    96,
+    97,
+    98,
+    99,
+    100
    ],
    "ms": 153,
    "loop": true
@@ -22889,10 +23093,10 @@
   "actor.troll/idle/left": {
    "atlas": "actors_huge",
    "frames": [
-    85,
-    86,
-    87,
-    88
+    101,
+    102,
+    103,
+    104
    ],
    "ms": 310,
    "loop": true
@@ -22900,11 +23104,11 @@
   "actor.troll/attack/left": {
    "atlas": "actors_huge",
    "frames": [
-    89,
-    90,
-    91,
-    92,
-    93
+    105,
+    106,
+    107,
+    108,
+    109
    ],
    "ms": 136,
    "loop": false
@@ -22912,12 +23116,12 @@
   "actor.troll/walk/right": {
    "atlas": "actors_huge",
    "frames": [
-    94,
-    95,
-    96,
-    97,
-    98,
-    99
+    110,
+    111,
+    112,
+    113,
+    114,
+    115
    ],
    "ms": 153,
    "loop": true
@@ -22925,10 +23129,10 @@
   "actor.troll/idle/right": {
    "atlas": "actors_huge",
    "frames": [
-    100,
-    101,
-    102,
-    103
+    116,
+    117,
+    118,
+    119
    ],
    "ms": 310,
    "loop": true
@@ -22936,11 +23140,11 @@
   "actor.troll/attack/right": {
    "atlas": "actors_huge",
    "frames": [
-    104,
-    105,
-    106,
-    107,
-    108
+    120,
+    121,
+    122,
+    123,
+    124
    ],
    "ms": 136,
    "loop": false
@@ -22948,12 +23152,12 @@
   "actor.troll/walk/up": {
    "atlas": "actors_huge",
    "frames": [
-    109,
-    110,
-    111,
-    112,
-    113,
-    114
+    125,
+    126,
+    127,
+    128,
+    129,
+    130
    ],
    "ms": 153,
    "loop": true
@@ -22961,10 +23165,10 @@
   "actor.troll/idle/up": {
    "atlas": "actors_huge",
    "frames": [
-    115,
-    116,
-    117,
-    118
+    131,
+    132,
+    133,
+    134
    ],
    "ms": 310,
    "loop": true
@@ -22972,11 +23176,11 @@
   "actor.troll/attack/up": {
    "atlas": "actors_huge",
    "frames": [
-    119,
-    120,
-    121,
-    122,
-    123
+    135,
+    136,
+    137,
+    138,
+    139
    ],
    "ms": 136,
    "loop": false
@@ -23182,6 +23386,17 @@
     4
    ],
    "ms": 180,
+   "loop": true
+  },
+  "prop.crystal_gate": {
+   "atlas": "props_vast",
+   "frames": [
+    5,
+    6,
+    7,
+    8
+   ],
+   "ms": 150,
    "loop": true
   }
  },

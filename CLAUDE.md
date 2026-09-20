@@ -77,6 +77,7 @@ node tools/shot.cjs --map    # 3. and shoot the whole world
    node tools/shot.cjs --exit 3 --cross     # ...by its fourth doorway, not its first
    node tools/shot.cjs --on map.wilderness3 --boar   # stand still, get charged
    node tools/shot.cjs --on map.wilderness9 --tile 9,17   # the fen, and a heron over it
+   node tools/shot.cjs --on map.wilderness9 --talk --tile 15,29  # Goor, at the gate
    node tools/shot.cjs --quest              # take every errand on offer and run it
    node tools/shot.cjs --kill               # strike a hostile until it dies
    node tools/shot.cjs --journal            # open the quest log
@@ -226,13 +227,21 @@ how the desert ended up under the world in the interiors band, marked
 "inside", the moment the portal joined it.
 
 **A zone does not have to be an island, and the second one is not.** The
-jungle begins at Wilderness IX, which is joined to Wilderness V by an ordinary
-seam - you walk into it. So the tag is doing its other job there: the map has
-a place on the grid like any other, and what the tag adds is the heading it is
-filed under and the name the zone goes by before there is anything else in it.
-A plate is captioned only when every map on it shares one tag, so the
-wildernesses' plate stays uncaptioned with a jungle map sitting on its
-south-east corner, which is right - that plate really is two countries now.
+jungle begins at Wilderness IX and carries on into Wilderness X, both joined
+to the rest by ordinary seams - you walk into them. So the tag is doing its
+other job there: the maps have places on the grid like any others, and what
+the tag adds is the heading they are filed under and the name the zone goes by
+before there is anything else in it. A plate is captioned only when every map
+on it shares one tag, so the wildernesses' plate stays uncaptioned with two
+jungle maps on its southern corner, which is right - that plate really is two
+countries now.
+
+**The wilderness runs out at X**, and the way on is not another seam. The
+crystal gate on the knoll at the bottom of Wilderness IX is a prop and nothing
+else: no `exits` entry, because it does not go anywhere yet, and Goor standing
+on the court in front of it is the reason rather than an apology for one. A
+gate that is shut is content; a gate that is shut *and unexplained* is a bug
+report waiting to be filed.
 
 `map-tags` keeps the vocabulary usable rather than the tags correct: a list if
 present, non-empty, lowercase, no spaces, no duplicates - so `Desert` and
@@ -565,6 +574,40 @@ fire is four frames from `TEMPLE_FLAME`, all ending in the bowl; the dust is
 drawn *after* `outline()`, because a translucent mote with a hard line round it
 is a pebble in the air.
 
+**The crystal gate** is the third thing this size, and it taught three rules
+that apply to anything drawn as a front elevation rather than as a lump:
+
+- **Anything drawn inside a silhouette has to bring its own edge.** The ring
+  is laid over the two columns, and the first version gave it the same grey as
+  the shafts behind it - so the whole upper half came out as one grey slab
+  with a blue hole in it and there was no ring at all. `outline()` only wraps
+  the *outside* of a sprite; a band a shade lighter with a near-black rim on
+  both its edges is what separates it, which is the same trick the giant rig's
+  `_limb` uses for an arm lying over a belly.
+- **A rune needs a socket.** Drawn as bright strokes laid on the face of the
+  stone, a mark this size is a speck of dirt. Sunk in a near-black cut, the
+  same strokes read as something carved with light coming out of it. What says
+  "written" at 16px is never the shape of the glyph - it is that one angular
+  shape repeats round a band, the way real carved work does.
+- **Light is a glint, not a body.** The crystals turning in the ring were
+  built white with a blue edge and came out as ice cubes floating in a bowl.
+  Blue with one lit facet is a crystal.
+
+Its four frames are also worth copying for anything that rotates: each shard
+advances **a quarter of its own spacing** per frame, so after four frames every
+one has arrived exactly where its neighbour started and the loop closes with
+nothing jumping. Turning each a quarter of the way round the ring instead -
+the obvious thing to do with four frames - is four separate pictures shown in
+sequence, and reads as a stutter.
+
+**Something standing guard in front of a tall prop has to stand south of it.**
+Depth is the anchor row, so a guard placed above a gate eight tiles high is
+drawn behind eight tiles of stone and is simply not in the picture. Goor is
+two rows below the gate's base, which also means the player comes down the
+fen, round the court, and meets him with the ring at his back - the
+composition the encounter needs, arrived at from the depth rule rather than
+in spite of it.
+
 **The boulders are a size ladder**, and that is the point of them: 2, 4, 6, 8
 and 16 tiles, from something you walk round to something a road stops at. A
 field of rock drawn from one rock at one size reads as a repeated stamp however
@@ -731,6 +774,27 @@ so the art covers tile offsets 0 and +1 and the definition says so with
 whatever atlases the manifest lists, the engine reads the frame size and anchor
 off the atlas, and a wanderer's collision body is derived from its footprint -
 `npc.troll` is two tiles of body, not the sheep's one.
+
+**Goor the stone golem is that rig's second species**, and he is the proof the
+flag model holds at this size too: `{"crystals": True}` and a palette variant,
+and nothing else. No tusks and no gas - both are the troll's, and a golem that
+shared them would read as a recoloured troll however different the stone was.
+What he adds is a `CRYSTALS` table of (x, y, height) per view, drawn as shards
+that **break the silhouette above the shoulder line**: laid flat against the
+back they were a coloured patch, and the whole point of them is the shape they
+make against the sky. Same lesson as the jackal's ears.
+
+His value ramp is the troll's lesson applied twice over. He stands on a cobble
+court (luma 92) in a fen (86) with meadow (105) behind him, so the ramp has to
+run well under *and* well over all three rather than sit among them: 32 / 50 /
+73 / 125. And the one warm thing on him is the red crystal, which is also what
+is banked in his eye sockets - whatever is in the stone is also looking at you.
+
+**A guard is a standing thing, not a wandering one.** No `wander` block at all,
+so the engine gives him a static body on each footprint tile exactly like a
+boulder and never steps him; `"states": ["idle"]` is then the whole rig cost,
+because a rig only draws the states its actor declares. `interact` is what
+makes him a person rather than a wall.
 
 **Something that swings rather than just touching you** declares an `attack`
 state, which the rig draws and the engine plays when a hostile lands a blow;

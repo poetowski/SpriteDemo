@@ -169,6 +169,20 @@ PALETTE = {
     "MBD": ((0x23, 0x4c, 0x3a, 255), "wet leaf shade"),
     "MBL": ((0x57, 0x9c, 0x78, 255), "wet leaf light"),
 
+    # --- crystal ----------------------------------------------------------
+    # Two families, and they are a pair on purpose: the blue burns in the gate
+    # and the red grows on the thing standing in front of it, so the only two
+    # saturated colours in that corner of the world are the two sides of one
+    # argument. Neither is in any biome's palette, for the portal's reason -
+    # a crystal painted in the local greens is a rock somebody polished.
+    "CY":  ((0x6c, 0xc8, 0xf4, 255), "crystal"),
+    "CYD": ((0x27, 0x6a, 0xa8, 255), "crystal shade"),
+    "CYL": ((0xea, 0xf8, 0xff, 255), "crystal light"),
+    "CYX": ((0x14, 0x3a, 0x6e, 255), "crystal deep"),
+    "RC":  ((0xe0, 0x44, 0x4e, 255), "red crystal"),
+    "RCD": ((0x8c, 0x1c, 0x2e, 255), "red crystal shade"),
+    "RCL": ((0xff, 0x9a, 0x92, 255), "red crystal light"),
+
     # --- the gateway ------------------------------------------------------
     # A violet that belongs to neither biome, on purpose: the thing joining
     # them is not of either, and a portal drawn in the local greens or the
@@ -338,6 +352,31 @@ VARIANTS = {
         "AH":  (0x3d, 0x33, 0x22, 255),   # the legs it trails behind it
         "HN":  (0xe0, 0xb0, 0x3c, 255),   # the bill
         "HNS": (0xa8, 0x7e, 0x22, 255),
+    },
+    "golem": {
+        # A jungle stone golem on the troll's rig. The value ramp is the whole
+        # of whether he reads at all, and it is the troll's lesson applied
+        # twice over: he stands on a stone court (luma 92) in a fen (86) with
+        # meadow (105) behind him, so the ramp has to run well under *and*
+        # well over all three rather than sit among them. 32 / 50 / 73 / 125.
+        "SK":  (0x42, 0x4e, 0x44, 255),   # wet stone, darker than any ground
+        "SKS": (0x2e, 0x37, 0x30, 255),
+        "SKL": (0x74, 0x84, 0x72, 255),   # and a lit face well over the grass
+        "SKD": (0x1c, 0x22, 0x1d, 255),
+        "MS":  (0x6e, 0x9a, 0x4e, 255),   # moss, growing on the north of him
+        "WR":  (0x4a, 0x57, 0x4a, 255),   # knots in the stone, not warts
+        "MW":  (0x14, 0x10, 0x12, 255),   # the dark in the seam of his mouth
+        # The eyes are the same crystal that grows on his back, which is what
+        # ties the two halves of him together: whatever is in the stone is
+        # also looking at you.
+        "IR":  (0xff, 0x6a, 0x64, 255),
+        "TU":  (0x4a, 0x55, 0x4c, 255),   # a carved band, not a hide
+        "TUS": (0x33, 0x3c, 0x35, 255),
+        "TUL": (0x63, 0x70, 0x62, 255),
+        "BT":  (0x23, 0x2a, 0x24, 255),
+        "BTS": (0x16, 0x1b, 0x17, 255),
+        "HN":  (0x9a, 0xa4, 0x94, 255),   # pale stone where a troll has teeth
+        "HNS": (0x70, 0x79, 0x6d, 255),
     },
     "troll": {
         # Woodland colours: moss and bark, so a troll standing still among the

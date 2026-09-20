@@ -104,6 +104,42 @@ def _post(c, x, y0, y1, key="WD", dark="WDD"):
 ROCK = ("ST", "STL", "STD", "STX")
 
 
+def _rune(c, x, y, key="CYL", dim="CY"):
+    """A mark cut into stone with light in it.
+
+    The socket is the whole of why it reads. Drawn as bright strokes laid on
+    the face, a rune this size is a speck of dirt; sunk in a near-black cut
+    the same strokes read as something carved that light is coming out of,
+    which is the difference between a mark and a smudge. At this size it must
+    not try to be a letter - what has to say "written" is that the same
+    angular shape repeats round the band, the way real carved work does."""
+    for dy in range(-3, 4):
+        for dx in range(-2, 3):
+            c.set(x + dx, y + dy, "STX")               # the cut it sits in
+    for dx, dy in ((0, -2), (0, -1), (0, 0), (0, 1), (0, 2),
+                   (-1, -2), (1, 2), (-1, 1), (1, -1)):
+        c.set(x + dx, y + dy, key)
+    c.set(x + 1, y - 2, dim)
+    c.set(x - 1, y + 2, dim)
+
+
+def _shard(c, x, y, r):
+    """A crystal turning in the gate: a faceted diamond, *blue* with one lit
+    corner rather than white with a blue edge. Built the other way round, a
+    ring of them reads as ice cubes floating in a bowl - the light has to be
+    a glint off one facet, not the body of the thing."""
+    for dy in range(-r, r + 1):
+        for dx in range(-r, r + 1):
+            if abs(dx) + abs(dy) > r:
+                continue
+            c.set(x + dx, y + dy, "CY")
+    for i in range(r):                                 # the facet facing the
+        c.set(x - i, y - (r - 1 - i), "CYL")           # light, along one edge
+    c.set(x, y - r + 1, "CYL")
+    for i in range(r):                                 # and the one away from it
+        c.set(x + i, y + (r - 1 - i), "CYD")
+
+
 def _mass(c, lobes, base_y, key="ST"):
     """A solid lump: overlapping discs, then each column filled between its
     own topmost and bottommost pixel so the gaps where two discs meet close up
@@ -1845,6 +1881,7 @@ ANIMATED_BIG = {
 ANIMATED_HUGE = {}                  # nothing this size moves yet
 ANIMATED_VAST = {
     "prop.temple": (4, 180),        # two fires and the dust off the steps
+    "prop.crystal_gate": (4, 150),  # the crystal turning, and two more fires
 }
 # One table per frame size, because that is how the sheets are built - but the
 # lookup is over all of them, so nothing has to know which class a prop is in
@@ -1879,8 +1916,136 @@ HUGE_PROPS = {
 }
 HUGE_PROP_ORDER = list(HUGE_PROPS)
 
+# The flame on each of the gate's columns, one entry per phase: where it
+# starts and its half-width at each row down. The same idea as TEMPLE_FLAME -
+# shapes that lean, rather than noise, which is what stops a four-frame fire
+# reading as static - and every one of them ends at y 30, in the bowl.
+GATE_FLAME = (
+    (16, (0, 1, 1, 2, 2, 3, 3, 4, 4, 4, 3, 3, 2, 2, 2)),
+    (14, (0, 0, 1, 2, 2, 3, 4, 4, 4, 4, 3, 3, 3, 2, 2, 1, 1)),
+    (18, (0, 1, 2, 2, 3, 3, 4, 4, 4, 3, 2, 2, 2)),
+    (15, (0, 1, 1, 2, 3, 3, 4, 4, 4, 4, 3, 2, 2, 2, 1, 1)),
+)
+# The crystals turning inside the ring: (radius, how many, which way round).
+# Each one advances a *quarter of its own spacing* per frame, so after four
+# frames every shard has arrived exactly where its neighbour started and the
+# loop closes with nothing jumping. Turning each a quarter of the way round
+# the ring instead - the obvious thing to do with four frames - is four
+# separate pictures shown in sequence, and reads as a stutter.
+# (radius, how many, which way round, how big each shard is)
+GATE_RINGS = ((14, 6, 1, 3), (7, 4, -1, 2))
+
+
+def crystal_gate(phase=0):
+    """A gate four tiles by four: a stone ring on a plinth between two burning
+    columns, with crystal turning inside it.
+
+    The colour idea is the whole of it, and it has only three parts: the stone
+    is grey and unpainted, the light in the ring is blue-white, and the one
+    warm thing anywhere near it is the fire on the columns - which is also why
+    the thing standing guard in front of it is red. Nothing here borrows a
+    biome's palette, for the portal tile's reason: a gateway painted in the
+    local greens is a wall somebody built.
+
+    **The ring needs an edge of its own.** It is drawn over the columns, and
+    the first version gave it the same grey as the shafts behind it - so the
+    whole upper half came out as one grey slab with a blue hole in it and
+    there was no ring at all. A band a shade lighter with a near-black rim on
+    both its edges is what separates it, the same trick the giant rig uses for
+    an arm lying over a belly: the outline pass only wraps the silhouette, so
+    anything drawn *inside* one has to bring its own."""
+    c = Canvas(VAST_FRAME, VAST_FRAME)
+    cx, cy = 63, 66
+
+    # --- the plinth, two steps of it ---------------------------------------
+    for x0, x1, y0, y1 in ((30, 97, 114, VAST_BASE_Y), (35, 92, 106, 114)):
+        c.rect(x0, y0, x1, y1, "ST")
+        c.row(x0, x1, y0, "STL")                       # lit along each tread
+        c.row(x0, x1, y1, "STD")
+        for x in range(x0 + 5, x1 - 2, 11):            # the joints between slabs
+            c.col(x, y0 + 1, y1, "STD")
+
+    # --- the two columns ----------------------------------------------------
+    for lx in (39, 88):
+        c.rect(lx - 6, 44, lx + 6, 108, "ST")          # the shaft
+        c.col(lx - 6, 44, 108, "STL")                  # lit down one side and
+        c.col(lx + 6, 44, 108, "STD")                  # shaded down the other
+        for y0, y1 in ((38, 44), (102, 108)):          # capital and base
+            c.rect(lx - 9, y0, lx + 9, y1, "ST")
+            c.row(lx - 9, lx + 9, y0, "STL")
+            c.row(lx - 9, lx + 9, y1, "STD")
+        _rune(c, lx, 99)                               # the only stretch of
+        _rune(c, lx, 41)                               # shaft the ring leaves
+
+    # The ring stands on a block between the columns. Without it the gap under
+    # the ring and between the two bases reads as a doorway of its own, which
+    # is one doorway too many on a thing that is already a way through.
+    c.rect(45, 92, 82, 108, "ST")
+    c.row(45, 82, 92, "STL")
+    c.rect(48, 96, 79, 108, "STD")
+    c.rect(50, 98, 77, 108, "ST")
+
+    # --- the ring -----------------------------------------------------------
+    for y in range(cy - 28, cy + 29):
+        for x in range(cx - 28, cx + 29):
+            d = math.hypot(x - cx, y - cy)
+            if d > 26.6 or d < 18.4:
+                continue
+            if d > 25.4 or d < 19.6:
+                c.set(x, y, "STX")                     # the rim, both edges
+            elif x - cx + (y - cy) < -6:
+                c.set(x, y, "STL")                     # lit round the top left
+            elif x - cx + (y - cy) > 8:
+                c.set(x, y, "STD")
+            else:
+                c.set(x, y, "ST")
+    for i in range(8):                                 # runes carved round it
+        a = i * math.pi / 4 + math.pi / 8
+        _rune(c, round(cx + math.cos(a) * 22.5), round(cy + math.sin(a) * 22.5))
+
+    # --- what is inside it --------------------------------------------------
+    # Deep in the middle and lighter at the rim, because the far side is a long
+    # way off. Built up from the mid blue rather than the dark one, the way the
+    # portal tile is: started from the deep end it is a hole, not a light.
+    for y in range(cy - 20, cy + 21):
+        for x in range(cx - 20, cx + 21):
+            d = math.hypot(x - cx, y - cy)
+            if d > 19.4:
+                continue
+            c.set(x, y, "CYD" if d > 13 else "CYX")
+    for i in range(2):                                 # currents turning in it
+        a0 = i * 3.1 + phase * 0.22
+        for k in range(16):
+            a = a0 + k * 0.17
+            r = 5 + k * 0.85
+            c.set(round(cx + math.cos(a) * r), round(cy + math.sin(a) * r), "CY")
+
+    for radius, count, way, size in GATE_RINGS:
+        step = 2 * math.pi / count
+        for i in range(count):
+            a = i * step + way * phase * step / 4
+            _shard(c, round(cx + math.cos(a) * radius),
+                   round(cy + math.sin(a) * radius), size)
+
+    # --- the bowls, and the fire in them ------------------------------------
+    top, widths = GATE_FLAME[phase % len(GATE_FLAME)]
+    for lx in (39, 88):
+        c.rect(lx - 7, 30, lx + 7, 38, "MT")           # the bowl
+        c.row(lx - 7, lx + 7, 30, "MTL")
+        c.row(lx - 7, lx + 7, 38, "MTD")
+        c.rect(lx - 6, 28, lx + 6, 30, "FID")          # coals banked in it
+        _blob(c, top, widths, "FI", cx=lx - 1)
+    _shade(c, "FI", "FIL", "FID")
+    for lx in (39, 88):
+        c.rect(lx - 2, top + 6, lx + 1, 29, "FIL")     # the hot heart
+
+    c.rect(0, VAST_BASE_Y + 1, VAST_FRAME - 1, VAST_FRAME - 1, None)
+    return c.outline()
+
+
 VAST_PROPS = {
     "prop.boulder_16": boulder_16,
     "prop.temple": temple,
+    "prop.crystal_gate": crystal_gate,
 }
 VAST_PROP_ORDER = list(VAST_PROPS)
