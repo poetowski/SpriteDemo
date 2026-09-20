@@ -61,10 +61,13 @@ node tools/shot.cjs --map    # 3. and shoot the whole world
    search). Useful flags:
 
    ```sh
-   node tools/shot.cjs --tile 33,40         # stand at a tile and look
-   node tools/shot.cjs --talk --tile 33,37  # talk to Arne, check the replies appear
-   node tools/shot.cjs --talk --choose 2 --tile 33,37   # and take the second one
-   node tools/shot.cjs --gather --tile 34,37   # stand by an item, press E, check the bag
+   # Coordinates are per map and these are real ones: the examples used to
+   # name tiles on the 96x72 Riverside map, which has not existed for a long
+   # time, so every one of them pointed off the edge of the world.
+   node tools/shot.cjs --on map.wilderness6 --tile 24,19   # stand at a tile and look
+   node tools/shot.cjs --on map.wilderness2 --talk --tile 13,17  # talk to Arne
+   node tools/shot.cjs --on map.wilderness2 --talk --choose 2 --tile 13,17  # take reply 2
+   node tools/shot.cjs --on map.wilderness2 --gather --tile 4,7  # press E by an item
    node tools/shot.cjs --give item.axe --slash # arm the hero and swing
    node tools/shot.cjs --give item.axe --bag   # open the bag (I), check the cursor moves
    node tools/shot.cjs --pose slash,1 --page   # freeze the strike, shoot the whole page

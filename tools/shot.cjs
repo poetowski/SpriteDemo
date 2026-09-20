@@ -290,9 +290,19 @@ const BOOTED = () => !!(window.game && window.game.scene
     await page.waitForTimeout(600);
     const after = await snapshot();
     checks.push(['gather animation played', mid.anim.includes('/gather/'), mid.anim]);
-    checks.push(['item went into the bag', count(after.inventory) === before + 1
-      && after.pickups === report.pickups - 1,
-      `${JSON.stringify(after.inventory)}, ${after.pickups} left on the ground`]);
+    // Into the bag *or* onto the body. The first weapon and the first armour
+    // you pick up are drawn and worn straight away rather than bagged, so
+    // asserting the bag grew reported a failure for every piece of gear in
+    // the game - the sword and the mail in the Shieling included - while the
+    // pickup was working perfectly. What "gathered" actually means is that
+    // one fewer is lying there and the hero now has it somewhere.
+    const worn = (s) => [s.weapon, s.armor].filter(Boolean).length;
+    checks.push(['the thing left the ground and the hero has it',
+      after.pickups === report.pickups - 1
+      && count(after.inventory) + worn(after) === before + worn(report) + 1,
+      `bag ${JSON.stringify(after.inventory.map((i) => i.id))}, `
+      + `worn ${[after.weapon, after.armor].filter(Boolean).join('+') || 'nothing'}, `
+      + `${after.pickups} left on the ground`]);
     checks.push(['control handed back', after.busy === false, 'still busy']);
   }
   if (BAG) {

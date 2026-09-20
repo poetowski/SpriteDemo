@@ -902,6 +902,13 @@
         11,
         19
       ]
+    },
+    {
+      "def": "item.desert_tunic",
+      "tile": [
+        24,
+        18
+      ]
     }
   ],
   "exits": [
