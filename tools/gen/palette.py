@@ -129,6 +129,46 @@ PALETTE = {
     "LPD": ((0x1d, 0x31, 0x68, 255), "lapis shade"),
     "LPL": ((0x4f, 0x74, 0xc9, 255), "lapis light"),
 
+    # --- the wetland ------------------------------------------------------
+    # The country between the meadow and whatever grows south of it. Its own
+    # family again, for the desert's reason: the grass keys are a dry, yellow
+    # green and there is nothing in them that reads as ground with water
+    # standing in it.
+    #
+    # The one colour idea here is worth saying out loud, because the whole
+    # biome is built on it: **the wetland's green leans blue where the
+    # meadow's leans yellow.** That is what says a different country begins
+    # at the fringe, before a single new prop is placed - and it is the note
+    # the jungle south of here carries on.
+    # Ground with water standing in it is *darker* than turf, and that is the
+    # whole of why this is not a tint of the grass keys: an olive drawn a step
+    # brighter than the meadow reads as a dry field, whatever its hue. Grass
+    # is luma 105, marsh 86, bog 65 - a ladder you can see from across the
+    # map, which is what tells you the ground has changed before you notice
+    # the sedge.
+    "MA":  ((0x4c, 0x61, 0x42, 255), "marsh"),
+    "MAD": ((0x3a, 0x4d, 0x33, 255), "marsh shade"),
+    "MAL": ((0x62, 0x78, 0x52, 255), "marsh light"),
+    "MAX": ((0x2b, 0x38, 0x2a, 255), "marsh peat"),
+    # Peat water, not river water: what stains it is the ground it stands in,
+    # so it is brown-green and much darker than anything the wilderness has.
+    "BG":  ((0x33, 0x45, 0x3e, 255), "bog"),
+    "BGD": ((0x22, 0x30, 0x2c, 255), "bog deep"),
+    "BGL": ((0x5f, 0x7d, 0x74, 255), "bog light"),
+    # Rush and sedge: paler and more golden than anything growing on dry
+    # ground here, which is what makes a reed bed read as a reed bed from a
+    # screen away.
+    "RE":  ((0x8d, 0x9a, 0x4e, 255), "reed"),
+    "RED": ((0x63, 0x6d, 0x33, 255), "reed shade"),
+    "REL": ((0xb6, 0xc0, 0x73, 255), "reed light"),
+    # And the blue-green the leaves take when they never dry out. Measured
+    # against the ground rather than picked for hue: the first pass was a
+    # deep teal at luma 69 standing on marsh at 86, so a bush in the fen was
+    # a hole in it. A plant has to sit *above* the ground it grows out of.
+    "MB":  ((0x3c, 0x77, 0x5b, 255), "wet leaf"),
+    "MBD": ((0x23, 0x4c, 0x3a, 255), "wet leaf shade"),
+    "MBL": ((0x57, 0x9c, 0x78, 255), "wet leaf light"),
+
     # --- the gateway ------------------------------------------------------
     # A violet that belongs to neither biome, on purpose: the thing joining
     # them is not of either, and a portal drawn in the local greens or the
@@ -282,6 +322,22 @@ VARIANTS = {
         "AH":  (0x26, 0x1d, 0x16, 255),
         "HN":  (0xa8, 0x8e, 0x60, 255),   # antlers, browner than a goat's horn
         "HNS": (0x77, 0x62, 0x40, 255),
+    },
+    "heron": {
+        # The bird rig reads the same generic animal keys everything else
+        # does, so a species here is still a palette swap. A grey heron is
+        # three decisions: a pale slate body, the *face* key doing the black
+        # of the crest and the flight feathers, and a bill bright enough to
+        # be the one warm thing on it - at 32px in the air the bill and the
+        # wingtips are most of what you can see.
+        "AB":  (0xb9, 0xc2, 0xc8, 255),
+        "ABS": (0x86, 0x92, 0x9b, 255),
+        "ABL": (0xe6, 0xeb, 0xee, 255),   # the head and neck, near white
+        "AF":  (0x33, 0x3b, 0x45, 255),   # crest and primaries
+        "AFS": (0x1f, 0x25, 0x2d, 255),
+        "AH":  (0x3d, 0x33, 0x22, 255),   # the legs it trails behind it
+        "HN":  (0xe0, 0xb0, 0x3c, 255),   # the bill
+        "HNS": (0xa8, 0x7e, 0x22, 255),
     },
     "troll": {
         # Woodland colours: moss and bark, so a troll standing still among the

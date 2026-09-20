@@ -76,6 +76,7 @@ node tools/shot.cjs --map    # 3. and shoot the whole world
    node tools/shot.cjs --cross              # walk out of the map, check the bag arrives
    node tools/shot.cjs --exit 3 --cross     # ...by its fourth doorway, not its first
    node tools/shot.cjs --on map.wilderness3 --boar   # stand still, get charged
+   node tools/shot.cjs --on map.wilderness9 --tile 9,17   # the fen, and a heron over it
    node tools/shot.cjs --quest              # take every errand on offer and run it
    node tools/shot.cjs --kill               # strike a hostile until it dies
    node tools/shot.cjs --journal            # open the quest log
@@ -224,6 +225,15 @@ the far side of one is filed as an interior unless it carries a tag - which is
 how the desert ended up under the world in the interiors band, marked
 "inside", the moment the portal joined it.
 
+**A zone does not have to be an island, and the second one is not.** The
+jungle begins at Wilderness IX, which is joined to Wilderness V by an ordinary
+seam - you walk into it. So the tag is doing its other job there: the map has
+a place on the grid like any other, and what the tag adds is the heading it is
+filed under and the name the zone goes by before there is anything else in it.
+A plate is captioned only when every map on it shares one tag, so the
+wildernesses' plate stays uncaptioned with a jungle map sitting on its
+south-east corner, which is right - that plate really is two countries now.
+
 `map-tags` keeps the vocabulary usable rather than the tags correct: a list if
 present, non-empty, lowercase, no spaces, no duplicates - so `Desert` and
 `desert` cannot become two zones. The bar lowercases and joins up what you
@@ -310,6 +320,19 @@ short as the modulus, which laid tufts out in diagonal stripes and made grass
 read as hatching. Use `_put` to place detail, so it wraps at the tile edge and
 the tile repeats seamlessly.
 
+**`outline()` decides how thin anything is allowed to be**, and it is the one
+constraint that catches every new plant. A feature one pixel wide gets a black
+border on both sides and comes back as a *hair*: the marsh bush's first spray
+of leaves was a fuzzy black crest where its foliage should have been, and a
+reed bed drawn as six parallel stalks came out as a dark comb. Three pixels
+thick is the thinnest thing that survives, which is why a leaf uses the palm's
+`_frond` rather than a line of pixels. Spacing has the same arithmetic: a
+two-pixel stalk takes a border each side, so two of them five pixels apart
+leave no daylight between and six is the first gap that shows. Work it out
+before drawing eight of anything - and leaves standing clear of a mass want
+the *light* tone, because a spray of shade-coloured ribs on a shade-coloured
+mound is a hedgehog.
+
 ### Ground
 
 Ground is authored as plain terrain and drawn with variation and edges:
@@ -342,7 +365,8 @@ Ground is authored as plain terrain and drawn with variation and edges:
   a phase instead of forty-seven, because a tile that never meets a different
   family never needs a transition and does not have to blend at all.
 - **Animated ground.** `tiles.ANIMATED` names tiles drawn in phases (water:
-  three). The build emits every phase of every variant and transition as its
+  three; a bog: two, because nothing stirs one and all the phases have to do
+  is move the light about on it). The build emits every phase of every variant and transition as its
   own frame and lists each base index's sequence in `tileset.animated`; the
   scene cycles them every `tileset.anim_ms` with `putTileAt`, re-asserting
   collision. Anything that must not flicker between phases (sand, wear) is
@@ -394,6 +418,50 @@ civilisation: the urn, the obelisk, the sun gate and the colossus are all
 sandstone with the same two accents, and the desert tunic is the same idea
 worn. Three colours doing the work of a style guide.
 
+### A third biome, and the first one that has to meet another
+
+The wetland starts on Wilderness IX, and it is a different problem from the
+desert: the desert is reached through a portal, so it never touches the
+meadow and never had to look like anywhere in particular next to it. A
+transition map has that as its whole job. Two terrains, and everything
+interesting about them is in how they meet what is beside them:
+
+- **`tile.marsh` is cut out of the wilderness's own grass.** That is what
+  makes the fringe a transition rather than a join, and its edge style,
+  `_edge_sedge`, is the biome's meaning again: the desert's boundary is
+  drifted over by wind and the river's is cut by water, but what rubs out a
+  fen's edge is *growth*, so the outermost thing in it is a stalk standing
+  out in the turf. Everything it draws goes outside the fen. The first
+  version scattered lit seed heads in a band just inside the boundary, and a
+  band that follows an outline *is* an outline - every patch came out ringed
+  in a dotted yellow line, like something a highlighter had been round.
+- **`tile.bog` shares the marsh's `family` and does not blend at all**, which
+  is the lily's answer to the lily's problem. Drawn as its own family with its
+  own shore, every marsh tile beside a pool saw a different ground next to it
+  and drew *its* edge - against grass, the only thing it knows how to be cut
+  out of - so each pool came out ringed in meadow in the middle of a fen. The
+  pool's shore was never the problem; the marsh's was. **When two terrains
+  ring each other wrongly, look at the edge of the one you were not
+  thinking about.**
+
+That choice has a price, and it is worth knowing which way it runs: a
+terrain with no transitions has a bank on the tile grid, and nothing in the
+pipeline will soften it. You cannot have both - the machinery cannot say
+"edge against grass but not against bog" - so the fringe gets the soft edge,
+because a transition map is mostly fringe. What pays for the banks instead is
+authored: pools built as two lobes with a waist, single-tile bites and a
+tussock left standing in the water, and reeds along the waterline. That is
+where a bank's raggedness belongs anyway.
+
+**Ground with water in it is darker than turf, and that has to be measured.**
+Grass is luma 105, marsh 86, bog 65 - a ladder you can see from across the
+map, which is what tells you the ground has changed before you can make out a
+single blade. The first marsh was an olive a step *brighter* than the meadow
+and it read as a dry field whatever its hue. The one colour idea in the
+biome is that **the wetland's green leans blue where the meadow's leans
+yellow** - which is also the note the jungle south of here carries on - and
+it survives in the hue, not in the value.
+
 ### Adding a key
 
 **Check the name is free first, and the `palette-keys` gate now does it for
@@ -417,6 +485,7 @@ tools/gen/actor.py     the biped rig      (32x32 frame, anchor [16, 29])
 tools/gen/animal.py    the quadruped rig  (same frame, same contract)
 tools/gen/giant.py     the giant rig      (64x64 frame, anchor [24, 61])
 tools/gen/beast.py     the big-quadruped rig (64x64 frame, anchor [24, 61])
+tools/gen/bird.py      the flier rig      (32x32 frame, drawn in the air)
 tools/gen/props.py     props 32x32, structures 48x48, and the 64/128 erratics
 tools/gen/tiles.py     16x16 ground tiles, variants and the blob transitions
 tools/art.py           the art pipeline: draws everything -> assets/
@@ -594,6 +663,48 @@ sheet, same `build_frames`. Three things it taught:
 - The graze pose carries `head_down` beside the elephant's `trunk_down`. Both
   live in the same pose dicts and each animal reads only its own with `.get`,
   so adding the second changed nothing about the first.
+
+**Something that flies** uses the `bird` rig in `tools/gen/bird.py`. It is a
+fourth rig rather than a flag on the quadruped because a bird shares no part
+with one - no barrel on four legs, no head on a neck out front - and it is on
+the *same sheet* as the people and the livestock, because it is the same
+32x32 frame: the frame size is what decides the sheet, not the kind of
+creature. Module, an entry in `RIGS`, `"rig": "bird"` in the content, nothing
+else.
+
+**A flying thing is drawn at the top of the frame and anchored at the bottom
+of it**, and that costs nothing at all. The anchor is the point the sprite is
+placed and sorted by, not a point the art has to touch, so twenty pixels of
+air between the shadow and the bird puts it in the sky while it still stands
+in the tile the engine thinks it is in - every existing rule about depth,
+collision and wandering goes on working. **The shadow is what sells it**: a
+bird with no shadow reads as a sprite that forgot to land. It is small and
+tight rather than scaled to the wingspan, because the thing casting it is a
+long way up, and a stain the width of the tile under something you can see
+daylight through is a dark puddle.
+
+Three things about drawing one at this size:
+
+- **Head on, a wing is edge-on and has no area**, so drawn honestly it is a
+  line - and a line either side of an upright body is a scarecrow, which is
+  exactly what the front and back views were at first. What fixes it is
+  admitting the view is from slightly *above*: from there a wing sweeps back
+  as it goes out, and that curve is the whole difference between a bird and
+  a cross. The beat then only decides how far the tips are flicked over it.
+- **A pair of legs is one line, not two.** A heron's trail behind it, and
+  drawn either side of the tail they picked up an outline each, closed into
+  a single dark block under the body, and the bird came back wearing
+  trousers. Together, with the feet turned out at the end, reads as legs.
+- The engine's third wander state is called `graze` because the first thing
+  that used it was a sheep; it is really "what this creature does when it
+  stops". For a bird that is a long coast, wings flat and losing height.
+  Naming it anything else here would mean teaching `game/main.js` about
+  birds, and nothing in the engine knows what any of these creatures are.
+
+`"blocks": false` is the other half of a bird: a wanderer that claims no tile
+and is never added to the collider, so the hero walks underneath it. Give it
+a big `wander.radius` - the herons on Wilderness IX have 11, against a sheep's
+4 - or it hangs over one spot like an ornament.
 
 **A new face is a palette entry, not a drawing** - `VARIANTS` in
 `tools/gen/palette.py`, and the actor's `sprite` names it (`actor.monk` ->

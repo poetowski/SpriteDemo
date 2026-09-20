@@ -380,6 +380,80 @@ def lily(seed=0, phase=0):
     return c
 
 
+# -------------------------------------------------------------- the wetland --
+# The third biome starts where the meadow gets its feet wet, so unlike the
+# desert it has to *meet* the country next to it: marsh is carved out of the
+# wilderness's grass, which is what makes the fringe a transition rather than
+# a join.
+#
+# The open water is the lily's problem over again, and it took the lily's
+# answer. Drawn as its own family with its own shore, every marsh tile beside
+# a pool saw a different ground next to it and drew *its* edge - against
+# grass, the only thing it knows how to be cut out of - so each pool came out
+# ringed in meadow in the middle of a fen. The pool's shore was never the
+# problem; the marsh's was. One shared family and neither draws an edge
+# against the other, which also means the bog never needs a transition and
+# does not have to blend at all: three variants a phase instead of
+# forty-seven. What keeps the bank from reading as tile grid is the shape it
+# is laid in and the reeds standing along it, which is where a bank's
+# raggedness belongs anyway.
+def marsh(seed=0, phase=0):
+    """Sodden ground: sedge over peat, with the water never far under it.
+
+    The blades are what stops it reading as a dirty lawn - they are the same
+    trick as the grass's, but taller, sparser and leaning, because sedge grows
+    in tufts out of standing mud rather than as a sward."""
+    c = Canvas(SIZE, SIZE)
+    c.rect(0, 0, SIZE - 1, SIZE - 1, "MA")
+    rnd = scatter(0x3A11 + seed * 569)
+    for _ in range(3):                            # broad wet sheets
+        _patch(c, rnd, rnd(SIZE), rnd(SIZE), 7, 5, "MAD", 8 + rnd(4))
+    for _ in range(2):                            # peat showing through them
+        _patch(c, rnd, rnd(SIZE), rnd(SIZE), 5, 3, "MAX", 4 + rnd(3))
+    # Not in every variant. Standing water every sixteen pixels is the oasis's
+    # polka-dot mistake in a different colour, and the open water here is
+    # tile.bog's job - this is only the wet the ground itself holds.
+    if seed % 3 == 1:
+        _pool(c, rnd(SIZE), rnd(SIZE), 2 + rnd(2), 1 + rnd(2), "BGD")
+    for _ in range(8):                            # sedge, standing in it
+        _blade(c, rnd(SIZE), rnd(SIZE), 2 + rnd(2), "MAL")
+    # Two seeding heads, and no more. Six of them and the fen came out speckled
+    # yellow all over, which at map scale is a gravel path with a green cast.
+    for _ in range(2):
+        x, y, h = rnd(SIZE), rnd(SIZE), 2 + rnd(2)
+        _blade(c, x, y, h, "RED")
+        _put(c, x, y - h, "REL")
+    return c
+
+
+def bog(seed=0, phase=0):
+    """Peat water: still, and dark enough that nothing shows through it.
+
+    Not the river's blue. What colours this is the ground it is standing in,
+    so it is brown-green, and the surface is scum and weed rather than
+    ripples - there is nothing moving it. The phases only shift what light
+    gets down to it, which is why two are enough where the river wants three.
+
+    It carries its own texture rather than leaning on a transition, because it
+    has none: every tile of it is a plain tile, so a pool three tiles across
+    is three of these and they have to be worth looking at on their own."""
+    c = Canvas(SIZE, SIZE)
+    c.rect(0, 0, SIZE - 1, SIZE - 1, "BG")
+    rnd = scatter(0x80C1 + seed * 677)
+    for _ in range(3):                            # depth, scattered and wrapped
+        _patch(c, rnd, rnd(SIZE), rnd(SIZE), 7, 5, "BGD", 9 + rnd(5))
+    for _ in range(3):                            # weed lying on the surface
+        _patch(c, rnd, rnd(SIZE), rnd(SIZE), 4, 3, "MAX", 3 + rnd(3))
+    for _ in range(2):                            # and a blade of it standing
+        _blade(c, rnd(SIZE), rnd(SIZE), 1 + rnd(2), "MAD")
+    for i in range(4):
+        x, y = rnd(SIZE), rnd(SIZE)
+        if (i + phase) % 2 == 0:
+            _put(c, x + phase, y, "BGL")
+            _put(c, x + 1 + phase, y, "BGL")
+    return c
+
+
 def portal(seed=0, phase=0):
     """The floor of a gateway: violet light with sigils turning over in it.
 
@@ -640,6 +714,8 @@ BASE = {
     "tile.scrub": scrub,
     "tile.oasis": oasis,
     "tile.lily": lily,
+    "tile.marsh": marsh,
+    "tile.bog": bog,
     "tile.cobble": cobble,
     "tile.stone": stone,
     "tile.wood_floor": wood_floor,
@@ -660,7 +736,10 @@ VARIANTS = {"tile.grass": 3, "tile.grass_tall": 2, "tile.water": 2,
             # Dune needs the most of any base: it is the whole floor of the
             # biome, and one ripple pattern repeated across a map is a rug.
             "tile.dune": 4, "tile.salt": 2, "tile.scrub": 2,
-            "tile.sandstone": 3, "tile.oasis": 2, "tile.lily": 5}
+            "tile.sandstone": 3, "tile.oasis": 2, "tile.lily": 5,
+            # Three, so a marsh tile with a puddle in it is one cell in three
+            # rather than every one of them - see marsh().
+            "tile.marsh": 3, "tile.bog": 3}
 
 # Tiles drawn in several phases. The art pipeline emits every phase as its own
 # frame and the engine cycles them; the base frame is what the map resolves to.
@@ -670,6 +749,9 @@ VARIANTS = {"tile.grass": 3, "tile.grass_tall": 2, "tile.water": 2,
 ANIMATED = {"tile.water": 3, "tile.shallow": 2, "tile.oasis": 3,
             # The pads ride the same water, so they move with it.
             "tile.lily": 3,
+            # Two, not three: nothing stirs a bog, so all the phases have to
+            # do is move the light about on it.
+            "tile.bog": 2,
             "tile.portal": 4}
 ANIM_MS = 420
 
@@ -840,8 +922,30 @@ def _edge_drift(d, which, x, y, over, under, rnd, edge):
     return over
 
 
+def _edge_sedge(d, which, x, y, over, under, rnd, phase):
+    """What rubs out a marsh's edge is *growth*. The desert's boundary is
+    drifted over by wind and the river's is cut by water; a fen simply seeds
+    itself into the turf beside it, so the outermost thing here is a stalk
+    standing in the grass rather than a line where one ground stops and the
+    next begins. Wider than the other soft edges for the same reason - a
+    fringe a pixel deep is a border, and this is supposed to be a margin.
+
+    Everything it draws goes *outside* the fen, in the turf. The first version
+    scattered lit seed heads in a band just inside the boundary instead, and a
+    band that follows the outline is an outline: the whole patch came out ringed
+    in a dotted yellow line, like something a highlighter had been round."""
+    if d < -2.2:
+        return under
+    if d < -0.4:                                  # sedge colonising the turf
+        return "MAD" if (x * 5 + y * 3) % 9 == 0 else under
+    if d < 1.0:                                   # and the turf giving way
+        return under if (x * 3 + y * 5) % 3 == 0 else over
+    return over
+
+
 STYLE = {
     "tile.water": _edge_water,
+    "tile.marsh": _edge_sedge,
     "tile.oasis": _edge_oasis,
     "tile.salt": lambda d, w, x, y, o, u, r, p: _edge_drift(d, w, x, y, o, u, r, "SLD"),
     "tile.scrub": lambda d, w, x, y, o, u, r, p: _edge_soft(d, w, x, y, o, u, r, "SCD"),

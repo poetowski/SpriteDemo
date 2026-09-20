@@ -1,0 +1,8 @@
+{
+  "id": "tile.bog",
+  "sprite": "tile.bog",
+  "walkable": false,
+  "blend": false,
+  "material": "water",
+  "family": "marsh"
+}

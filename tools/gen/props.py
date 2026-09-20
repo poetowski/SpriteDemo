@@ -1697,8 +1697,90 @@ def bedding():
     return c.outline()
 
 
+# ---------------------------------------------------------------- wetland ---
+def marsh_bush():
+    """A bush that never dries out.
+
+    The meadow's bush is a dome, so a dome in the wetland's blue-green would
+    only be the same bush recoloured - and a recolour is exactly what a new
+    biome must not be. This is built the other way about: a broad low mass
+    that spreads instead of climbing, with long leaves arching off the top of
+    it and falling away again. What says the ground under a plant is soft is
+    that the plant is lying down on it.
+
+    A leaf gets the palm's frond rather than a line of pixels, and that is not
+    a stylistic choice: a leaf drawn one pixel wide comes back from outline()
+    as a black hair, and the first version of this had a fuzzy black crest
+    where its foliage was meant to be. Three pixels thick is the thinnest
+    thing that survives being outlined.
+
+    They are also drawn in the *light* tone over the mass rather than the dark
+    one. Leaves standing above a crown are the part of it the sun reaches, and
+    a spray of shade-coloured ribs on a shade-coloured mound is a hedgehog."""
+    c = Canvas(FRAME, FRAME)
+    for cx, cy, r in ((11, 26, 5), (16, 25, 6), (21, 26, 5)):
+        _lobe(c, cx, cy, r, "MB")
+    c.rect(0, BASE_Y + 1, FRAME - 1, FRAME - 1, None)
+    _shade(c, "MB", "MBL", "MBD")
+    for x, y in ((12, 21), (20, 21)):
+        c.set(x, y, None)                         # notches, so it reads as leaf
+    for dx, dy in ((-1.8, -0.8), (-1.0, -1.4), (0.4, -1.5),
+                   (1.3, -1.1), (1.9, -0.5)):
+        _frond(c, 16, 23, dx, dy, 6, "MBL", "MB")
+    for x, y in ((14, 26), (19, 25), (10, 27), (22, 24)):
+        c.set(x, y, "MBD")                        # gaps down into the leaf, so
+    for x, y in ((13, 23), (17, 22)):             # the face is not one flat
+        c.set(x, y, "MBL")                        # slab of the one colour
+    c.row(12, 20, BASE_Y, "MBD")                  # sodden where it meets the mud
+    return c.outline()
+
+
+def reeds(phase=0):
+    """A stand of rush at the water's edge.
+
+    Reeds stand up. Two earlier versions got that wrong in opposite ways: six
+    parallel hairs a pixel wide gave every stalk its own black border and the
+    stand came out as a dark comb, and splaying them out of one root to dodge
+    that gave a solid wedge with fingers on it - a hand, not a reed bed.
+
+    What it takes is spacing, measured against the outline rather than
+    eyeballed. A stalk two pixels wide picks up a border on each side, so two
+    of them five pixels apart leave no daylight between; at six there is a
+    clear pixel of ground, and the stand reads as separate stalks however dark
+    the water behind it. Four tufts is what fits across a tile at that
+    spacing, so each one is a tall stalk with a shorter one beside it rather
+    than a single post, and half of them carry a brown head - the only part of
+    a reed bed anyone can name from across a map."""
+    c = Canvas(FRAME, FRAME)
+    for i, x in enumerate((7, 13, 19, 25)):
+        lean = (x - 16) * 0.035                   # leaning away from the middle
+        h, sh = (17, 11) if i % 2 == 0 else (14, 9)
+        fx = float(x)
+        for k in range(h):                        # the stalk itself
+            fx += lean
+            px = round(fx)
+            c.set(px, BASE_Y - k, "RE")
+            c.set(px - 1, BASE_Y - k, "RED")      # its shaded side
+        for k in range(sh):                       # and a shorter one beside it
+            c.set(round(fx) + 1, BASE_Y - k, "RE" if k % 3 else "RED")
+        px, ty = round(fx), BASE_Y - h + 1
+        if i % 2 == 0:                            # a cattail head on this one
+            c.rect(px - 1, ty - 4, px, ty - 1, "WDD")
+            c.row(px - 1, px, ty - 4, "WD")
+            c.col(px, ty - 3, ty - 1, "WD")
+        else:                                     # a seeding tip on that one
+            c.set(px, ty - 1, "REL")
+            c.set(px - 1, ty, "REL")
+        c.set(round(fx) + 1, BASE_Y - sh, "REL")
+    c.row(11, 21, BASE_Y, "MAX")                  # standing in mud, not on turf
+    c.rect(0, BASE_Y + 1, FRAME - 1, FRAME - 1, None)
+    return c.outline()
+
+
 PROPS = {
     "prop.bush": bush,
+    "prop.marsh_bush": marsh_bush,
+    "prop.reeds": reeds,
     "prop.rock": rock,
     "prop.sign": sign,
     "prop.tree_pine": tree_pine,

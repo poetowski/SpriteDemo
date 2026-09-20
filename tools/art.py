@@ -36,7 +36,7 @@ TOOLS = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(TOOLS)
 sys.path.insert(0, TOOLS)
 
-from gen import (actor, animal, beast, fx as fx_gen, giant,       # noqa: E402
+from gen import (actor, animal, beast, bird, fx as fx_gen, giant,  # noqa: E402
                  items as items_gen, props as props_gen, tiles as tiles_gen)
 from gen.palette import PALETTE, VARIANTS, resolve                   # noqa: E402
 from pipeline import aseprite                                        # noqa: E402
@@ -51,7 +51,8 @@ TAG_COLOR = (0x4f, 0xa5, 0x55)
 # belongs on, so a rig too big for the 32x32 frame gets a sheet of its own
 # rather than padding every hero frame out to the size of the largest thing in
 # the game.
-RIGS = {"biped": actor, "quadruped": animal, "giant": giant, "beast": beast}
+RIGS = {"biped": actor, "quadruped": animal, "giant": giant, "beast": beast,
+        "bird": bird}
 
 
 # ------------------------------------------------------------ what to draw ---
