@@ -21,7 +21,8 @@
     "o": "tile.oasis",
     "l": "tile.salt",
     "c": "tile.scrub",
-    "s": "tile.sandstone"
+    "s": "tile.sandstone",
+    "X": "tile.portal"
   },
   "ground": [
     "...............llll.",
@@ -37,7 +38,7 @@
     ".ccccc.....sssssss..",
     "..cccc.....sssssss..",
     "...........sssssss..",
-    "...........sssssss..",
+    "...........ssXXsss..",
     "............sssss...",
     "....................",
     "........cccc........",
@@ -283,6 +284,32 @@
         9,
         3
       ]
+    }
+  ],
+  "exits": [
+    {
+      "tiles": [
+        [
+          13,
+          13
+        ],
+        [
+          14,
+          13
+        ]
+      ],
+      "to": "map.wilderness7",
+      "spawns": [
+        [
+          7,
+          11
+        ],
+        [
+          8,
+          11
+        ]
+      ],
+      "facing": "up"
     }
   ]
 }

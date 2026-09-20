@@ -19,7 +19,8 @@
     ",": "tile.grass_flower",
     "a": "tile.leaves",
     "c": "tile.gravel",
-    "s": "tile.stone"
+    "s": "tile.stone",
+    "X": "tile.portal"
   },
   "ground": [
     "ssssssss....aa......",
@@ -32,7 +33,7 @@
     "....cccccccccccccccc",
     "....cccccccccccccccc",
     "....cccccccc........",
-    "....cccccccc........",
+    "....cccXXccc........",
     ".....cccccc.........",
     ".....cccccc.........",
     "......cccc..........",
@@ -54,7 +55,7 @@
     {
       "def": "npc.friedrich",
       "tile": [
-        7,
+        6,
         10
       ]
     },
@@ -322,6 +323,30 @@
         ]
       ],
       "facing": "right"
+    },
+    {
+      "tiles": [
+        [
+          7,
+          10
+        ],
+        [
+          8,
+          10
+        ]
+      ],
+      "to": "map.desert1",
+      "spawns": [
+        [
+          13,
+          14
+        ],
+        [
+          14,
+          14
+        ]
+      ],
+      "facing": "up"
     }
   ]
 }

@@ -1,0 +1,6 @@
+{
+  "id": "tile.portal",
+  "sprite": "tile.portal",
+  "walkable": true,
+  "material": "portal"
+}

@@ -333,6 +333,51 @@ def oasis(seed=0, phase=0):
     return c
 
 
+def portal(seed=0, phase=0):
+    """The floor of a gateway: violet light with sigils turning over in it.
+
+    It wraps like the ground textures do, and that is the whole of why. Drawn
+    as a plate with a ring centred in the tile, a two-tile gateway came out as
+    two glowing donuts side by side rather than as one threshold; a seamless
+    surface runs straight across the join, so the pair is one pool of light
+    however wide it is laid.
+
+    Calm, too. Every stroke given a shadow and a spark scattered over the rest
+    made a tile of violet static, and static reads as a rendering fault rather
+    than as magic. Three marks on a quiet field is plenty at 16px.
+    """
+    c = Canvas(SIZE, SIZE)
+    # The mid violet is the base, not the deep one: a portal is a light
+    # source, and built up from the dark end it reads as a hole in the floor
+    # however bright the marks on it are.
+    c.rect(0, 0, SIZE - 1, SIZE - 1, "PO")
+    rnd = scatter(0x51D3 + seed * 613)
+    for _ in range(2):                            # depth under the surface
+        _patch(c, rnd, rnd(SIZE), rnd(SIZE), 7, 5, "POD", 7 + rnd(4))
+
+    # Sigil strokes rather than ripples: angular, and drifting a pixel a
+    # phase, so it reads as something written that is working rather than as
+    # violet water. One lies flat - all of them on the same diagonal came out
+    # as hatching.
+    marks = [(rnd(SIZE), rnd(SIZE), 3 + rnd(3), (1, 0, -1)[i % 3])
+             for i in range(3)]
+    for i, (mx, my, n, dy) in enumerate(marks):
+        ox = mx + phase * (1 if i % 2 else -1)
+        for k in range(n):
+            _put(c, ox + k, my + k * dy, "POL")
+        _put(c, ox + n, my + n * dy - 1, "POL")   # a hook on the end of each
+        _put(c, ox - 1, my - dy, "POD")           # and one dark pixel behind
+
+    # Two sparks, and which two changes with the phase, so the surface is
+    # never quite the same twice without ever being busy.
+    for i in range(6):
+        x, y = rnd(SIZE), rnd(SIZE)
+        if (i + phase * 2) % 6 < 2:
+            _put(c, x, y, "POL")
+            _put(c, x, y + 1, "POX")
+    return c
+
+
 def gravel(seed=0, phase=0):
     """A made road: small stones rolled into the dirt."""
     c = Canvas(SIZE, SIZE)
@@ -487,6 +532,7 @@ BASE = {
     "tile.leaves": leaves,
     "tile.path": path,
     "tile.gravel": gravel,
+    "tile.portal": portal,
     "tile.dirt": dirt,
     "tile.field": field,
     "tile.sand": sand,
@@ -517,7 +563,11 @@ VARIANTS = {"tile.grass": 3, "tile.grass_tall": 2, "tile.water": 2,
 
 # Tiles drawn in several phases. The art pipeline emits every phase as its own
 # frame and the engine cycles them; the base frame is what the map resolves to.
-ANIMATED = {"tile.water": 3, "tile.shallow": 2, "tile.oasis": 3}
+# The portal is the only one of these that is not ground: four phases of a
+# ring breathing, at the same frame time as the water, because one clock for
+# everything that moves on the floor is what keeps the scene from twitching.
+ANIMATED = {"tile.water": 3, "tile.shallow": 2, "tile.oasis": 3,
+            "tile.portal": 4}
 ANIM_MS = 420
 
 

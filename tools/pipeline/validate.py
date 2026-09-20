@@ -5,6 +5,8 @@ class of bug that costs minutes now and weeks at three hundred assets; a failure
 always points at an authored file, never at generated output.
 """
 
+import ast
+import pathlib
 import re
 
 from gen.actor import FACINGS
@@ -43,6 +45,31 @@ def run(content, man, tile_canvases=None):
         elif w != want:
             _fail("art-scale", f"atlas {name!r} is {w}px, the standard is {want}px")
     passed.append("art-scale")
+
+    # 0a - the palette has one entry per key. A dict literal takes the last of
+    #      a repeated key without a word, so a new colour that reuses a name
+    #      silently repaints whatever had it - and the drawing that loses its
+    #      colour is somewhere else entirely, which is the worst kind of bug to
+    #      go looking for. "AR" was added for an arcane violet while it already
+    #      meant the elk's rump patch, and nothing anywhere would have said so.
+    #      Read from the source rather than the dict, because by then it is too
+    #      late to tell.
+    src = pathlib.Path(__file__).resolve().parents[1] / "gen" / "palette.py"
+    for node in ast.walk(ast.parse(src.read_text())):
+        if not (isinstance(node, ast.Assign) and isinstance(node.value, ast.Dict)):
+            continue
+        if not any(getattr(t, "id", None) == "PALETTE" for t in node.targets):
+            continue
+        seen = set()
+        for k in node.value.keys:
+            if not isinstance(k, ast.Constant):
+                continue
+            if k.value in seen:
+                _fail("palette-keys", f"gen/palette.py line {k.lineno}: "
+                                      f"{k.value!r} is already a key; the later "
+                                      f"colour would silently replace the first")
+            seen.add(k.value)
+    passed.append("palette-keys")
 
     # 1 - every ID is well formed and unique within its kind
     for kind, defs in content.items():

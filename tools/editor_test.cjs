@@ -514,11 +514,30 @@ function dropScratch() {
         plates.map((g) => `${g.zone || 'unnamed'} ${g.w}x${g.h} ink=${g.ink}`).join(', '));
 
   // A zone with no way in yet is a thing being built, not a thing forgotten -
-  // and the tag is the only difference between the two, so the note has to say
-  // so quietly rather than in red.
+  // and the tag is the only difference between the two, so when that is the
+  // case the note has to say so quietly rather than in red. It fires on any
+  // tagged map nothing reaches, which is why this is written against the
+  // world as it stands rather than against the desert by name: once a portal
+  // joined the desert there was no such note to find, and a check pinned to
+  // it would have failed for the thing working.
   const zoneNote = world.notes.find((n) => /a zone of its own/.test(n.text));
   check('a tagged map that joins nothing is a zone, not a mistake',
-        zoneNote && !zoneNote.bad, zoneNote ? zoneNote.text : 'no such note');
+        zoneNote ? !zoneNote.bad : true,
+        zoneNote ? zoneNote.text : 'every zone is reachable, so no such note');
+
+  // And a zone reached only by a portal is still a zone. An inland doorway is
+  // how a door into a building looks too, so the map behind one is filed as a
+  // room - which put the whole desert under the world in the interiors band,
+  // marked "inside", the moment it was joined.
+  const filed = await page.evaluate(() => {
+    const inside = window.editor.layout.interiors;
+    return window.editor.world.entries
+      .filter((e) => (e.map.tags || []).length)
+      .map((e) => ({ name: e.map.name, room: inside.has(e.map.id) }));
+  });
+  check('a zone reached by a portal is not filed as a room',
+        filed.length > 0 && filed.every((f) => !f.room),
+        filed.map((f) => `${f.name}: ${f.room ? 'room' : 'zone'}`).join(', '));
 
   // Clicking a map on the atlas opens it.
   const jumped = await page.evaluate(async () => {
@@ -687,6 +706,8 @@ function dropScratch() {
       tiles: g.ex.tiles.length,
       toInterior: window.editor.layout.interiors.has(g.to)
                || window.editor.layout.interiors.has(g.from),
+      toZone: !!((window.editor.world.byId.get(g.to) || {}).map || {}).tags
+           || !!((window.editor.world.byId.get(g.from) || {}).map || {}).tags,
     }));
     return {
       gates: gs,
@@ -704,12 +725,15 @@ function dropScratch() {
         `${gates.rows} rows, ${gates.gates.length} gates`);
   check('both sides of a gate share its number and colour', gates.lookup,
         'wilderness1#0 and wilderness2#0 resolve to the same gate');
-  // A seam leaves by an edge; a door does not, and that is the difference
-  // between the two kinds of crossing rather than a gap in the data. This
-  // asserted an edge on every gate back when every gate was a seam.
-  check('every gate is a seam on an edge or a door into a room',
-        gates.gates.every((g) => g.edge || g.oneWay || g.toInterior),
-        gates.gates.map((g) => `${g.n}:${g.edge || (g.toInterior ? 'door' : '?')}`).join(' '));
+  // A seam leaves by an edge; a door and a portal do not, and that is the
+  // difference between the kinds of crossing rather than a gap in the data.
+  // This asserted an edge on every gate back when every gate was a seam, and
+  // allowed a door once the shed was built; the portal to the desert is the
+  // third kind and the first that leads somewhere as big as where it left.
+  check('every gate is a seam, a door into a room, or a portal to a zone',
+        gates.gates.every((g) => g.edge || g.oneWay || g.toInterior || g.toZone),
+        gates.gates.map((g) => `${g.n}:${g.edge
+          || (g.toInterior ? 'door' : g.toZone ? 'portal' : '?')}`).join(' '));
 
   // --- the rotation when crossing ------------------------------------------
   // Walking off an edge and arriving spun round is the bug this catches. The

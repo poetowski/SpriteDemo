@@ -767,6 +767,12 @@ function interiorsOf(byId) {
   for (const { map } of byId.values()) {
     for (const ex of map.exits || []) {
       if (!byId.has(ex.to) || edgeOf(map, ex.tiles)) continue;
+      // A zone is never a room. An inland doorway usually means a door into
+      // a building, but it is also what a portal looks like - and the map on
+      // the far side of one is a whole country, not a shed. Without this the
+      // desert went under the world in the interiors band the moment it was
+      // joined, marked "inside", which is the opposite of what the tag says.
+      if ((byId.get(ex.to).map.tags || []).length) continue;
       if (!inside.has(ex.to)) {
         inside.set(ex.to, { parent: map.id, door: ex.tiles[0].slice() });
       }
@@ -780,14 +786,23 @@ function interiorsOf(byId) {
   return inside;
 }
 
-/** Maps that reach each other, in either direction, belong on one atlas. */
+/** Maps that lie against each other belong on one atlas.
+ *
+ *  Only a seam counts. A doorway that sits inland joins two maps in the game
+ *  but says nothing about where either of them is, so it cannot place one
+ *  against the other - which is why a door into a room was never a seam, and
+ *  a portal is the same thing at the scale of a country. Counting one as
+ *  adjacency put the desert in the wildernesses' component, where nothing
+ *  could place it, and every map in that component then landed somewhere
+ *  wrong. */
 function componentsOf(byId, inside = new Map()) {
   const outdoor = [...byId.keys()].filter((id) => !inside.has(id));
   const adj = new Map(outdoor.map((id) => [id, new Set()]));
   for (const { map } of byId.values()) {
     if (inside.has(map.id)) continue;
     for (const ex of map.exits || []) {
-      if (!byId.has(ex.to) || inside.has(ex.to)) continue;   // doors are not seams
+      if (!byId.has(ex.to) || inside.has(ex.to)) continue;
+      if (!edgeOf(map, ex.tiles) || !arrivalsOf(ex)) continue;
       adj.get(map.id).add(ex.to);
       adj.get(ex.to).add(map.id);
     }
@@ -973,9 +988,18 @@ function worldNotes() {
       }
       const edge = edgeOf(map, ex.tiles);
       if (!edge) {
-        // Only worth saying when it is not simply a door into a room. An
-        // interior is *supposed* to be entered from the middle of a map.
-        if (!interiors.has(ex.to) && !interiors.has(map.id)) {
+        // Only worth saying when it is neither a door into a room nor a
+        // portal into a zone. Both are *supposed* to be entered from the
+        // middle of a map; what the note is for is a seam somebody drew in
+        // the wrong place.
+        // Either end: a portal out of the desert is as much a portal as the
+        // one into it, and the way back is the untagged half of the pair.
+        const zone = (byId.get(ex.to).map.tags || [])[0] || (map.tags || [])[0];
+        if (zone) {
+          notes.push({ bad: false, html: `<b>${map.name}</b> opens on <b>${zone}</b> `
+            + `at <b>${nameOf(ex.to)}</b> - a portal, drawn as an arrow, since `
+            + "it puts that map nowhere in particular." });
+        } else if (!interiors.has(ex.to) && !interiors.has(map.id)) {
           notes.push({ bad: false, html: `<b>${map.name}</b> has an inland doorway to `
             + `<b>${nameOf(ex.to)}</b> - drawn as an arrow, since it is not a seam.` });
         }

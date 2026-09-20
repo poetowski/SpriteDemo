@@ -48,7 +48,7 @@ node tools/shot.cjs --map    # 3. and shoot the whole world
                              # 4. publish game/page.html (below)
 ```
 
-1. **Build.** All 33 gates must pass. A gate failure names an authored file -
+1. **Build.** All 34 gates must pass. A gate failure names an authored file -
    fix that file, never the generated output. Needs Pillow.
 
 2. **Screenshot.** `tools/shot.cjs` loads `game/index.html` in a headless
@@ -215,6 +215,12 @@ an untagged one is still the red "nothing reaches it", which is the failure
 the view exists for. Getting those two the same way round is the whole value:
 tagging must not be a way to silence the check on a map somebody forgot.
 
+A tag also decides that the map is **not a room**. An inland doorway is what a
+door into a building looks like, and it is also what a portal looks like, so
+the far side of one is filed as an interior unless it carries a tag - which is
+how the desert ended up under the world in the interiors band, marked
+"inside", the moment the portal joined it.
+
 `map-tags` keeps the vocabulary usable rather than the tags correct: a list if
 present, non-empty, lowercase, no spaces, no duplicates - so `Desert` and
 `desert` cannot become two zones. The bar lowercases and joins up what you
@@ -369,6 +375,21 @@ civilisation: the urn, the obelisk, the sun gate and the colossus are all
 sandstone with the same two accents, and the desert tunic is the same idea
 worn. Three colours doing the work of a style guide.
 
+### Adding a key
+
+**Check the name is free first, and the `palette-keys` gate now does it for
+you.** `PALETTE` is a dict literal, so a repeated key takes the last value
+without a word: the portal's violet went in as `AR`, which had meant the elk's
+rump patch since the elk was drawn, and the elk would have quietly turned
+purple with nothing anywhere to say why. The drawing that loses its colour is
+never the one you are editing, which is what makes it worth a gate rather than
+a habit. The violet is `PO` now.
+
+A key also wants to be its own family rather than a shade of an existing one
+when the thing it is for belongs to nothing already here - the portal is
+violet because violet is in neither biome, and a gateway painted in the local
+greens or the local golds reads as a floor tile somebody laid.
+
 ## Where things live
 
 ```
@@ -383,7 +404,7 @@ tools/art.py           the art pipeline: draws everything -> assets/
 tools/build.py         the game build: assets/ + content/ -> build/ + game/
 tools/editor.py        serves the map editor in editor/
 tools/cdp.cjs          drives an installed Chrome when Playwright is absent
-tools/pipeline/        aseprite I/O, atlas packing, autotile, manifest, the 33 gates
+tools/pipeline/        aseprite I/O, atlas packing, autotile, manifest, the 34 gates
 assets/                COMMITTED art library: atlases, atlases.json, .aseprite
 build/                 DERIVED, gitignored - manifest, screenshots
 content/               AUTHORED json - actors, props, tiles, dialogue, quests, maps
@@ -745,6 +766,55 @@ player straight through it, which looks like the two maps flickering. `node
 tools/shot.cjs --cross` walks it for real, crossing at the middle of the band
 where an off-by-one in the pairing would show, and checks the bag arrived and
 the height was kept.
+
+**A portal is an `exits` entry that does not sit on an edge**, and that is the
+whole of it - no engine change, no new field. `checkExit()` matches by tile, so
+an inland doorway has always worked; the shed's door is one. What is new is
+where it leads: the gateway on the temple step in Wilderness VII and the one in
+front of the desert sun gate are two tiles wide each, and each puts you one
+tile short of the other, facing it, so walking north through one and carrying
+on walks you back.
+
+The ground under it is `tile.portal`, and two things about it are worth
+keeping:
+
+- **It wraps, like a ground texture.** The first version was a rune plate with
+  a ring centred in the tile, which at two tiles wide read as two glowing
+  donuts side by side rather than as one threshold. A seamless surface runs
+  straight across the join, so a gateway is one pool of light however wide it
+  is laid. Everything the wrapping rule says about ground applies to anything
+  laid more than one tile wide.
+- **It is built up from the mid violet, not the dark one.** A portal is a
+  light source; started from the dark end it reads as a hole cut in the floor
+  however bright the marks on it are. And it is *calm* - every stroke given a
+  shadow and sparks scattered over the rest made a tile of violet static,
+  which reads as a rendering fault rather than as magic.
+
+**Where a portal can go is decided by what covers it.** The desert end was
+first put north of the sun gate, which is where the user asked for it and
+where it is completely invisible: the gate is a 48px prop anchored at its foot,
+so its art covers the three tiles *behind* it. It is on the court in front
+instead. Check what a tall prop hides before putting anything on the tiles
+above it.
+
+**A portal is not a seam, and the atlas has to be told.** A doorway places one
+map against another; a portal places nothing, because the country it leads to
+is nowhere near. `componentsOf()` therefore joins maps by edge-aligned
+doorways *only* - counting the portal as adjacency put the desert in the
+wildernesses' component, where nothing could place it, and every map in that
+component then landed somewhere wrong. Three more things follow from the same
+fact, all of which broke when the first portal was built:
+
+- A map whose only way in is inland was filed as an **interior**, so the
+  desert went under the world in the interiors band marked "inside" the moment
+  it was joined. A tagged map is never a room: a zone is a whole country
+  however you reach it.
+- The note that reports an inland doorway as an oddity now names a portal as a
+  portal instead - on **either** end, since the way back is the untagged half
+  of the pair.
+- `every gate is a seam, a door into a room, or a portal to a zone` is the
+  check in `editor_test.cjs`; it asserted an edge on every gate when every gate
+  was a seam, and allowed a door once the shed was built.
 
 **Draw the road up to the seam, not into the corner.** A track that runs out
 through the very corner tile reads as having nowhere left to go; ending it a

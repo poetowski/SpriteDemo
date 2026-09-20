@@ -13,12 +13,14 @@ fires burning and a monk sweeping a step that is already clean — with 55 kinds
 of prop and sixteen kinds of thing to pick up, three of which go in the weapon
 hand and swing.
 
-And there is a second country nobody can walk to yet: a mythological desert of
-dunes, a salt pan, scrub and an oasis, with a sun gate and a pair of obelisks
-on a sandstone court, a colossus half sunk in the sand, elephants at the water
-and zebras out on the pan. It is a **zone** — a tag its maps share — which is
-what lets the editor group it and show it as its own plate on the world atlas
-while it waits for a portal.
+And there is a second country, which you reach by stepping into the light on
+the temple step: a mythological desert of dunes, a salt pan, scrub and an
+oasis, with a sun gate and a pair of obelisks on a sandstone court, a colossus
+half sunk in the sand, elephants at the water and zebras out on the pan. It is
+a **zone** — a tag its maps share — so the editor groups it and gives it its
+own plate on the world atlas, joined to the wilderness by an arrow rather than
+a seam, because a portal says how you get somewhere and nothing about where it
+is.
 
 ![the world](build/map.png)
 
@@ -59,7 +61,7 @@ The rule: `tools/` and `content/` are truth. Everything in `build/` and
 content/*.json  +  tools/gen/*.py
         │  generate
 build/atlas/*.png  ·  build/manifest.json  ·  build/aseprite/*.aseprite
-        │  validate   ← 33 gates, all must pass
+        │  validate   ← 34 gates, all must pass
 game/art-embed.js  →  game/index.html + main.js  →  game/page.html
 ```
 
@@ -88,6 +90,7 @@ failure points at an authored file, never at generated output:
 | `map-spawn` | a spawn in water, or inside a wall |
 | `map-exit` | a way to another map that lands nowhere real, or lands on the way back |
 | `map-tags` | `Desert` and `desert` quietly becoming two zones |
+| `palette-keys` | a new colour reusing a key name and silently repainting whatever had it |
 | `actor-hostile` | a creature that attacks with a number missing, or that would drop the chase as it started |
 | `actor-hp` | a creature that can be struck but never killed, or killed by nothing |
 | `dialogue-exists` | an NPC pointing at dialogue that does not exist |

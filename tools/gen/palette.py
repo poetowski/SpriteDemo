@@ -128,6 +128,15 @@ PALETTE = {
     "LP":  ((0x2f, 0x4e, 0x9c, 255), "lapis"),
     "LPD": ((0x1d, 0x31, 0x68, 255), "lapis shade"),
     "LPL": ((0x4f, 0x74, 0xc9, 255), "lapis light"),
+
+    # --- the gateway ------------------------------------------------------
+    # A violet that belongs to neither biome, on purpose: the thing joining
+    # them is not of either, and a portal drawn in the local greens or the
+    # local golds reads as a floor tile somebody laid rather than as magic.
+    "PO":  ((0x8a, 0x4f, 0xd0, 255), "portal"),
+    "POD": ((0x4a, 0x2f, 0x7a, 255), "portal deep"),
+    "POL": ((0xd6, 0xb4, 0xff, 255), "portal light"),
+    "POX": ((0x1b, 0x14, 0x2e, 255), "portal dark"),
 }
 
 # Palette swaps. The frames are identical pixels; only the lookup changes, so a
