@@ -10,8 +10,8 @@ The world is eight wildernesses you walk between — fells and pine woods, a
 shieling, a boar that hunts its own patch, a lake north of it all with an old
 burrow tree four tiles across, and westernmost a temple under a crag with two
 fires burning and a monk sweeping a step that is already clean — with 55 kinds
-of prop and sixteen kinds of thing to pick up, three of which go in the weapon
-hand and swing.
+of prop and seventeen kinds of thing to pick up, three of which go in the
+weapon hand and swing.
 
 And there is a second country, which you reach by stepping into the light on
 the temple step: a mythological desert of dunes, salt pans, scrub and oases,
@@ -310,8 +310,12 @@ thrown out round it. The digits are 3×5 glyphs from `tools/gen/fx.py`, an
 atlas of their own, so they are pixels the same size as the blade that caused
 them rather than text blurred at 3×.
 
-Picking up the first weapon draws it; the sword is by Arne's anvil, the felling
-axe at the woodcutters' camp, the spear in the old tower.
+Picking up the first weapon draws it, and the first armour is worn: the sword
+and the mail shirt are in the shieling, the felling axe lies by a stump in the
+clearing being felled on Wilderness III, the desert tunic at the foot of the
+sixteen-tile boulder on the fell, and the spear beside the bones on Desert I's
+salt pan. Ibn Abn gives you the nomad robe if you ask him what is wrong with
+what you are wearing.
 
 **Armour is worn the same way a weapon is held.** `ARMOURS` in the rig draws a
 mail shirt over the tunic after the torso and before the arms, so sleeves and
