@@ -1,0 +1,10 @@
+{
+  "id": "item.nomad_armor",
+  "name": "Nomad armour",
+  "sprite": "item.nomad_armor",
+  "kind": "armor",
+  "slot": "armor",
+  "worn": "nomad_armor",
+  "defense": 3,
+  "description": "Heavy linen under an indigo mantle. Made for crossing the sand, and it turns a tooth better than it looks."
+}

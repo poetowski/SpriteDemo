@@ -212,6 +212,24 @@ def desert_tunic():
     return c.outline()
 
 
+def nomad_armor():
+    """A hooded travelling robe: the hood is the icon, because a folded robe
+    on its own is a rectangle and every soft thing in the bag would be one."""
+    c = Canvas(SIZE, SIZE)
+    c.rect(3, 6, 12, 14, "CL")                  # the robe, full length
+    c.rect(1, 6, 3, 10, "CL")                   # and long sleeves
+    c.rect(12, 6, 14, 10, "CL")
+    for y in range(8, 14, 2):
+        c.row(3, 12, y, "CLD")
+    c.rect(4, 1, 11, 6, "LP")                   # the indigo hood over it
+    c.row(5, 10, 1, "LPL")
+    c.rect(6, 3, 9, 6, "SKS")                   # a face in the shade of it
+    c.row(4, 11, 6, "LPD")
+    c.row(3, 12, 11, "GD")                      # a sash at the waist
+    c.set(7, 12, "GDL")
+    return c.outline()
+
+
 ITEMS = {
     "item.apple": apple,
     "item.berries": berries,
@@ -229,6 +247,7 @@ ITEMS = {
     "item.spear": spear,
     "item.mail": mail,
     "item.desert_tunic": desert_tunic,
+    "item.nomad_armor": nomad_armor,
 }
 ITEM_ORDER = list(ITEMS)
 

@@ -17,7 +17,7 @@ small quadrupeds do.
 
 import math
 
-from gen.palette import Canvas
+from gen.palette import Canvas, scatter
 
 FRAME = 64
 GROUND_Y = 61                  # the row the feet stand on
@@ -34,11 +34,18 @@ SPECIES = {
     # any angle is mostly ear. "tusks" and a trunk that reaches the ground do
     # the rest; nothing else here needs either.
     "elephant": {"ears": True, "tusks": True, "trunk": True, "tail": True},
+    # A giraffe is the same rig used at its other extreme: the mass is in the
+    # legs and the neck rather than in the barrel, so "neck" does not add a
+    # part to the elephant's body - it replaces the proportions entirely. It
+    # is still the same frame, the same anchor, the same sheet and the same
+    # build_frames, which is the whole of what a rig is.
+    "giraffe": {"neck": True, "ossicones": True, "patches": True,
+                "tail": True, "legs_long": True},
 }
 
 
 # --------------------------------------------------------------- helpers ---
-def _pillar(c, x, top, key, dark, w=7, foot="AH"):
+def _pillar(c, x, top, key, dark, w=7, foot="AH", nails=True):
     """A leg like a column, because that is what one looks like: no taper, a
     flat foot, and toenails. Drawn from `top` to the ground every time - a
     walking elephant lifts a foot barely a pixel, and at this size a leg that
@@ -50,8 +57,11 @@ def _pillar(c, x, top, key, dark, w=7, foot="AH"):
     c.rect(x, top, x + w, FOOT_Y - 2, key)
     c.col(x, top, FOOT_Y - 2, dark)
     c.rect(x - 1, FOOT_Y - 2, x + w + 1, FOOT_Y, foot)
-    for i in range(3):
-        c.set(x + 1 + i * 2, FOOT_Y - 1, "ABL")      # toenails
+    if nails:
+        for i in range(3):
+            c.set(x + 1 + i * 2, FOOT_Y - 1, "ABL")  # toenails
+    else:
+        c.col(x + w // 2, FOOT_Y - 2, FOOT_Y, key)   # or a cloven hoof, split
     return
 
 
@@ -89,14 +99,171 @@ def _ear_side(c, x0, wide, top, deep, key, dark):
     c.col(x0 + 3, top + 2, top + deep - 6, dark)      # and one fold down it
 
 
+def _patches(c, seed, x0, y0, x1, y1, on="AB", key="ABS"):
+    """The coat, as blobs of the shade key laid only over pixels that are
+    already the body tone - so a patch cannot spill off the animal onto the
+    background, which is the same rule as shading inside the silhouette and
+    just as easy to get wrong when the shape is this irregular."""
+    rnd = scatter(0x6C1F + seed * 733)
+    for _ in range((x1 - x0) * (y1 - y0) // 26):
+        px, py, r = x0 + rnd(x1 - x0), y0 + rnd(y1 - y0), 1 + rnd(2)
+        for dy in range(-r, r + 1):
+            for dx in range(-r, r + 1):
+                if abs(dx) + abs(dy) > r:
+                    continue
+                x, y = px + dx, py + dy
+                if 0 <= x < FRAME and 0 <= y < FRAME and c.px[y][x] == on:
+                    c.set(x, y, key)
+
+
+def _neck(c, shape, x0, y0, x1, y1, w):
+    """Shoulder to skull in a straight run, lit down one side. Drawn as a
+    column it read as a chimney: a neck is a line with a thickness, and the
+    lean is what says which way the animal is looking."""
+    n = max(abs(x1 - x0), abs(y1 - y0))
+    for i in range(n + 1):
+        t = i / n
+        x = round(x0 + (x1 - x0) * t)
+        y = round(y0 + (y1 - y0) * t)
+        c.rect(x - w, y, x + w, y, "AB")
+        c.set(x - w, y, "ABS")
+        c.set(x + w, y, "ABL")
+        if i % 3 == 0:                                # the mane, in bristles
+            c.set(x - w - 1, y, "AFS")
+
+
 def _tusk(c, x, y, dx, n):
     for i in range(n):
         c.set(round(x + dx * i), round(y + i * 0.5 - (i * i) * 0.06), "HN")
         c.set(round(x + dx * i), round(y + 1 + i * 0.5 - (i * i) * 0.06), "HNS")
 
 
+# --------------------------------------------------------------- giraffe ---
+def _giraffe_side(shape, pose):
+    """All the height is in the legs and the neck, and the barrel between them
+    is short and slopes down to the rump - which is the one proportion that
+    stops a tall quadruped reading as a horse."""
+    c = Canvas(FRAME, FRAME)
+    bob = pose.get("bob", 0)
+    swing = pose.get("legs", (0, 0, 0, 0))
+    down = pose.get("head_down", 0)
+
+    _pillar(c, 18 + swing[1], 30 + bob, "ABS", "AFS", w=4, nails=False)
+    _pillar(c, 34 + swing[3], 27 + bob, "ABS", "AFS", w=4, nails=False)
+
+    # The barrel: shallow, and higher at the shoulder than at the rump. Most
+    # of a giraffe is leg and neck, and drawn as deep as an elephant's the
+    # whole animal came out a tall horse with a crane on the front.
+    top = 24 + bob
+    c.rect(16, top + 2, 42, 35, "AB")
+    c.row(18, 40, top + 1, "AB")
+    for i in range(6):                                # the back falls away
+        c.row(18 + i * 4, 42, top + 2 - i // 2, "AB")
+    c.row(30, 41, top, "ABL")
+    c.row(17, 41, 35, "ABS")
+    c.rect(14, top + 5, 17, 33, "ABS")                # the rump
+    if shape.get("tail"):
+        c.col(15, 30 + bob, 43, "AFS")
+        c.rect(14, 43, 16, 46, "AFS")                 # with a tuft on it
+
+    _pillar(c, 16 + swing[0], 32 + bob, "AB", "ABS", w=4, nails=False)
+    _pillar(c, 32 + swing[2], 29 + bob, "AB", "ABS", w=4, nails=False)
+
+    hy = 8 + bob + down
+    _neck(c, shape, 40, top + 2, 49, hy + 3, 3)
+    c.rect(47, hy, 55, hy + 6, "AF")                  # the head, small
+    c.row(48, 54, hy, "ABL")
+    c.rect(54, hy + 3, 58, hy + 6, "AF")              # and the muzzle on it
+    c.row(54, 58, hy + 6, "AFS")
+    c.set(52, hy + 2, "OL")                           # the eye
+    c.rect(45, hy + 1, 46, hy + 3, "AF")              # an ear behind it
+    c.set(45, hy + 1, "AFS")
+    if shape.get("ossicones"):
+        for x in (49, 53):                            # two knobs, not horns:
+            c.col(x, hy - 3, hy - 1, "HN")            # blunt, and they end in
+            c.set(x, hy - 3, "HNS")                   # a tuft rather than a tip
+    if shape.get("patches"):
+        _patches(c, 1, 14, top, 43, 36)
+        _patches(c, 2, 38, hy + 2, 50, top + 3)
+    return c.outline()
+
+
+def _giraffe_front(shape, pose):
+    """Head on it is a neck with an animal hanging off the bottom."""
+    c = Canvas(FRAME, FRAME)
+    bob = pose.get("bob", 0)
+    down = pose.get("head_down", 0)
+    spread = pose.get("spread", 0)
+    _pillar(c, 25 - spread, 28 + bob, "ABS", "AFS", w=3, nails=False)
+    _pillar(c, 34 + spread, 28 + bob, "ABS", "AFS", w=3, nails=False)
+    _pillar(c, 22 - spread, 30 + bob, "AB", "ABS", w=3, nails=False)
+    _pillar(c, 37 + spread, 30 + bob, "AB", "ABS", w=3, nails=False)
+
+    c.rect(24, 25 + bob, 39, 34, "AB")                # a narrow chest
+    c.row(26, 37, 24 + bob, "AB")
+    c.row(28, 35, 24 + bob, "ABL")
+
+    hy = 8 + bob + down
+    c.rect(28, hy + 4, 35, 27 + bob, "AB")            # the neck, straight up
+    c.col(28, hy + 4, 27 + bob, "ABS")
+    c.col(35, hy + 4, 27 + bob, "ABL")
+    c.rect(27, hy, 36, hy + 6, "AF")                  # the head
+    c.row(29, 34, hy, "ABL")
+    c.rect(29, hy + 5, 34, hy + 8, "AF")              # muzzle
+    c.row(29, 34, hy + 8, "AFS")
+    c.set(28, hy + 2, "OL")
+    c.set(35, hy + 2, "OL")
+    c.rect(24, hy + 1, 26, hy + 2, "AF")              # ears out to the sides
+    c.rect(37, hy + 1, 39, hy + 2, "AF")
+    if shape.get("ossicones"):
+        for x in (29, 34):
+            c.col(x, hy - 3, hy - 1, "HN")
+            c.set(x, hy - 3, "HNS")
+    if shape.get("patches"):
+        _patches(c, 3, 24, 24 + bob, 40, 35)
+        _patches(c, 4, 28, hy + 6, 36, 27 + bob)
+    return c.outline()
+
+
+def _giraffe_back(shape, pose):
+    """Going away: the rump is the narrow end, and the neck still towers."""
+    c = Canvas(FRAME, FRAME)
+    bob = pose.get("bob", 0)
+    spread = pose.get("spread", 0)
+    _pillar(c, 25 - spread, 28 + bob, "ABS", "AFS", w=3, nails=False)
+    _pillar(c, 34 + spread, 28 + bob, "ABS", "AFS", w=3, nails=False)
+    _pillar(c, 22 - spread, 30 + bob, "AB", "ABS", w=3, nails=False)
+    _pillar(c, 37 + spread, 30 + bob, "AB", "ABS", w=3, nails=False)
+
+    c.rect(24, 24 + bob, 39, 34, "AB")
+    c.row(26, 37, 23 + bob, "AB")
+    c.row(28, 35, 23 + bob, "ABL")
+    c.row(25, 38, 34, "ABS")
+
+    hy = 8 + bob
+    c.rect(28, hy + 4, 35, 25 + bob, "AB")            # the neck
+    c.col(28, hy + 4, 25 + bob, "ABS")
+    c.rect(28, hy, 35, hy + 5, "AF")                  # the back of the skull
+    c.row(29, 34, hy, "ABL")
+    c.rect(25, hy + 1, 27, hy + 2, "AF")
+    c.rect(36, hy + 1, 38, hy + 2, "AF")
+    if shape.get("ossicones"):
+        for x in (29, 34):
+            c.col(x, hy - 3, hy - 1, "HN")
+            c.set(x, hy - 3, "HNS")
+    if shape.get("tail"):
+        c.col(31, 30 + bob, 43, "AFS")
+        c.rect(30, 43, 32, 46, "AFS")
+    if shape.get("patches"):
+        _patches(c, 5, 24, 23 + bob, 40, 35)
+        _patches(c, 6, 28, hy + 5, 36, 25 + bob)
+    return c.outline()
+
+
 # ------------------------------------------------------------- side view ---
 def draw_side(shape, pose):
+    if shape.get("neck"):
+        return _giraffe_side(shape, pose)
     c = Canvas(FRAME, FRAME)
     bob = pose.get("bob", 0)
     swing = pose.get("legs", (0, 0, 0, 0))
@@ -157,6 +324,8 @@ def _legs_front(c, spread, bob):
 
 def draw_front(shape, pose):
     """Head on, an elephant is two ears with an animal between them."""
+    if shape.get("neck"):
+        return _giraffe_front(shape, pose)
     c = Canvas(FRAME, FRAME)
     bob = pose.get("bob", 0)
     drop = pose.get("trunk_down", 0)
@@ -192,6 +361,8 @@ def draw_front(shape, pose):
 
 def draw_back(shape, pose):
     """Going away: rump, tail, and the ears flaring past the shoulders."""
+    if shape.get("neck"):
+        return _giraffe_back(shape, pose)
     c = Canvas(FRAME, FRAME)
     bob = pose.get("bob", 0)
     _legs_front(c, pose.get("spread", 0), bob)
@@ -231,9 +402,12 @@ IDLE = [
     dict(bob=0, legs=(0, 0, 0, 0), spread=0, trunk_down=0),
     dict(bob=-1, legs=(0, 0, 0, 0), spread=0, trunk_down=1),
 ]
-GRAZE = [                       # the trunk down, feeling about
-    dict(bob=0, legs=(0, 0, 0, 0), spread=1, trunk_down=5),
-    dict(bob=0, legs=(0, 0, 0, 0), spread=1, trunk_down=7),
+GRAZE = [                       # the trunk down, feeling about - and for an
+    # animal with a neck instead, the whole head going with it. Both keys live
+    # in the same pose and each rig reads only its own with .get, so adding
+    # the second changed nothing about the elephant.
+    dict(bob=0, legs=(0, 0, 0, 0), spread=1, trunk_down=5, head_down=14),
+    dict(bob=0, legs=(0, 0, 0, 0), spread=1, trunk_down=7, head_down=17),
 ]
 STATES = {"walk": (WALK, 220, True), "idle": (IDLE, 700, True),
           "graze": (GRAZE, 520, True)}

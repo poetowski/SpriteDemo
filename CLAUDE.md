@@ -526,6 +526,17 @@ hidden: head-on the bars are on the *forehead* (the eye row left clear, or the
 face becomes one smudge), and from behind they run *across* the rump, which is
 both where a zebra's are boldest and out of the way of the tail.
 
+**A predator is the same flags plus a `hostile` block**, and the jackal is
+the shortest possible version of one: `prick_ears`, a `brush` of a tail, a
+dark `saddle`, and the boar's numbers tuned a little faster and a little
+weaker. What it needed was ear discipline - at 32px a dog *is* its ears, and
+two rows above the skull is not enough height for a pixel to read as an ear
+rather than as a bump in the outline. They are drawn clear of the body in
+every view, which is the only reason they read. The saddle wanted the
+opposite: painted over the whole back it was a dark slab with legs, and the
+animal lost the sand colour that makes it a desert dog. It is a stripe down
+the spine now.
+
 **An animal bigger than the livestock** uses the `beast` rig in
 `tools/gen/beast.py` - the same four facings, walk, idle and graze, but drawn
 at the giant's size and on the giant's sheet, because the frame size is what
@@ -548,6 +559,23 @@ of them merged into one black plinth the length of the animal, which reads as a
 thing on a stand rather than a thing standing. Narrower, and daylight between
 the front pair and the rear.
 
+**The giraffe is that rig at its other extreme**, and one flag - `neck` -
+switches every view to a different set of proportions rather than adding a
+part to the elephant's. That is still one rig: same frame, same anchor, same
+sheet, same `build_frames`. Three things it taught:
+
+- **Where the mass is, is the animal.** Drawn with a barrel as deep as the
+  elephant's it came out a tall horse with a crane on the front. Most of a
+  giraffe is leg and neck; the body between them is shallow and slopes down
+  to the rump.
+- **A wide front view is a building.** Head on, the first version was two
+  posts under a lintel, and at map scale a group of them read as a colonnade.
+  A giraffe is deep through the chest and narrow across it - the front view
+  had to lose a third of its width before it read as an animal at all.
+- The graze pose carries `head_down` beside the elephant's `trunk_down`. Both
+  live in the same pose dicts and each animal reads only its own with `.get`,
+  so adding the second changed nothing about the first.
+
 **A new face is a palette entry, not a drawing** - `VARIANTS` in
 `tools/gen/palette.py`, and the actor's `sprite` names it (`actor.monk` ->
 variant `monk`). Friedrich is the hero's frames with a saffron robe, and
@@ -555,6 +583,12 @@ variant `monk`). Friedrich is the hero's frames with a saffron robe, and
 pointing `HR` and `HRL` at the skin keys leaves a shaved head with the light
 still on the dome. Nothing in the rig knows there is a bald character, which
 is the whole point of storing keys rather than colours.
+
+**A headcloth is that same trick run the other way.** Ibn Abn the nomad is the
+hair keys pointed at indigo instead of at skin, which puts a wrapped head on a
+character the rig has never heard of - and the robe keys carried down to the
+ankle like the monk's, so his legs are cloth rather than trousers. Two remaps
+and a content file is the whole of a new person.
 
 **A monster bigger than a person** uses the `giant` rig - 48px tall and 32
 wide, drawn in a 64x64 frame on its own sheet, because a creature three tiles
@@ -660,12 +694,19 @@ before the arms. The build bakes one frame set per weapon-and-armour pair for
 every actor with `"wields": true` (that table is the actor's `looks`) and the
 `item-held` gate checks every one is complete.
 
-**A second armour costs a function and a line**, and is worth noting for what
-it does to the sheet: the table is a *product*, so `desert_tunic` alongside
-`mail` doubled the baked hero frame sets rather than adding one. Four weapons
-(none, sword, axe, spear) times three looks (bare, mail, tunic). That is fine
-at this size and would not be at ten of each - which is the reason `looks` is
-a table the build writes rather than something content has to spell out.
+**Another armour costs a function and a line**, and is worth noting for what
+it does to the sheet: the table is a *product*, so each one multiplies the
+baked hero frame sets rather than adding to them. Four weapons (none, sword,
+axe, spear) times four looks (bare, mail, desert tunic, nomad robe) is
+sixteen. That is fine at this size and would not be at ten of each - which is
+the reason `looks` is a table the build writes rather than something content
+has to spell out.
+
+Two cloth armours also have to read apart *as cloth*, which the icon cannot do
+alone: the desert tunic is one bright band at the collar over pale linen, and
+the nomad robe is the reverse - dark at the shoulders under an indigo mantle,
+pale below. Same material, opposite distribution of value, legible at a
+glance in a bag of sixteen slots.
 
 **A conversation** is a file in `content/dialogue/` and an `interact` on the
 thing that says it. It is a graph: `nodes` of `text` joined by `choices`, and

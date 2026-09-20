@@ -1,0 +1,14 @@
+{
+  "id": "npc.ibn_abn",
+  "sprite": "actor.nomad",
+  "rig": "biped",
+  "name": "Ibn Abn",
+  "speed": 0,
+  "blocks": true,
+  "facing": "down",
+  "interact": "dlg.ibn_abn",
+  "states": [
+    "walk",
+    "idle"
+  ]
+}

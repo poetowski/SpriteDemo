@@ -45,6 +45,13 @@ SPECIES = {
     # along the neck.
     "zebra": {"wool": False, "horns": False, "beard": False,
               "tall": 2, "stripes": True, "crest": True},
+    # A jackal is a dog, and at 32px a dog is its ears. They stand up and come
+    # to a point, which nothing else on this rig does - the bear's are round
+    # and on top, the rest are little flaps behind the eye. The brush and the
+    # dark saddle are what stop it reading as a small deer once it moves.
+    "jackal": {"wool": False, "horns": False, "beard": False,
+               "prick_ears": True, "brush": True, "saddle": True,
+               "paws": True},
 }
 
 
@@ -89,9 +96,25 @@ def _side_body(c, bob, shape):
         for i, x in enumerate(range(10, 22, 4)):    # third pixel was a black
             c.col(x, top + 1 + (i % 2), belly - 1, "AFS")   # horse; every
             c.set(x + 1, top + 1 + (i % 2), "AFS")          # fourth is a zebra
+    if shape.get("saddle"):
+        # A stripe down the spine and a little way onto the shoulder, no more.
+        # Painted over the whole back it was a dark slab with legs, and the
+        # animal lost the sandy colour that is the point of it.
+        c.row(9, 20, top, "AFS")
+        c.row(10, 19, top + 1, "AFS")
+        c.col(16, top, top + 3, "AFS")
+        c.col(17, top, top + 3, "AFS")
     if shape.get("rump"):                       # the pale patch a deer shows
         c.rect(8, top + 2, 11, belly - 1, "AR")  # you as it goes away
-    if shape.get("stub_tail"):                  # barely there, and that is the
+    if shape.get("brush"):
+        # Thick and carried low. A one-pixel tail on a lean animal reads as a
+        # piece of wire, and the brush is half of why a jackal is not a fox.
+        for i, y in enumerate(range(19 + bob - tall, 25 + bob - tall)):
+            c.rect(5 - (i > 2), y, 8 - (i > 3), y, "AB")
+            c.set(5 - (i > 2), y, "ABS")
+            c.set(8 - (i > 3), y, "AFS")            # a dark edge where it
+        c.col(8, 19 + bob - tall, 21 + bob - tall, "AFS")   # leaves the rump
+    elif shape.get("stub_tail"):                  # barely there, and that is the
         c.rect(7 - bulk, 21 + bob, 8 - bulk, 22 + bob, "ABS")     # look of it
     else:
         c.rect(6, 19 + bob - tall, 7, 21 + bob - tall, "ABS")     # tail
@@ -121,6 +144,15 @@ def _side_head(c, bob, shape, down=0, lunge=0):
         c.rect(hx, hy - 3, hx + 2, hy - 1, "AF")       # behind it
         c.set(hx, hy - 3, "AFS")
         c.set(hx + 2, hy - 3, "AFS")
+    elif shape.get("prick_ears"):
+        # A triangle standing clear of the skull. At 32px a dog is its ears,
+        # so this is the one part worth three pixels of width.
+        c.rect(hx - 1, hy - 1, hx + 2, hy - 1, "AF")
+        c.rect(hx - 1, hy - 2, hx + 1, hy - 2, "AF")
+        c.rect(hx - 1, hy - 3, hx, hy - 3, "AF")
+        c.set(hx - 1, hy - 4, "AF")
+        c.set(hx, hy - 2, "AB")                     # lit inside the cup
+        c.set(hx - 1, hy - 4, "AFS")
     else:
         c.rect(hx - 1, hy + 1, hx, hy + 1, "AF")    # ear
     if shape["horns"]:
@@ -231,6 +263,18 @@ def draw_front(shape, pose):
         c.rect(19, top, 21, top + 2, "AF")
         c.set(10, top, "AFS")
         c.set(21, top, "AFS")
+    elif shape.get("prick_ears"):
+        # Wide at the base and outside the skull rather than on top of it:
+        # drawn two pixels wide against the head they vanished into it, and a
+        # jackal without ears is a small dog of no particular kind.
+        for i in range(5):
+            c.rect(10 + (i < 2), hy - 8 + i, 12, hy - 8 + i, "AF")
+            c.rect(19, hy - 8 + i, 21 - (i < 2), hy - 8 + i, "AF")
+        for i in range(3):                              # lit inside the cup
+            c.set(11, hy - 6 + i, "AB")
+            c.set(20, hy - 6 + i, "AB")
+        c.set(11, hy - 8, "AFS")
+        c.set(20, hy - 8, "AFS")
     else:
         c.rect(10, hy + 1, 11, hy + 2, "AF")            # ears
         c.rect(20, hy + 1, 21, hy + 2, "AF")
@@ -303,7 +347,15 @@ def draw_back(shape, pose):
         for x, y in ((13, 18), (18, 18), (13, 23), (18, 23)):
             c.set(x, y + bob - tall, "AB")     # corners off, so it is a patch
 
-    if shape.get("stub_tail"):
+    if shape.get("saddle"):
+        c.rect(14, 15 + bob - tall, 17, 22 + bob - tall, "AFS")
+    if shape.get("brush"):                     # end on it is the widest thing
+        for i, y in enumerate(range(17 + bob - tall, 25 + bob - tall)):
+            w = 2 - (i > 5)
+            c.rect(15 - w, y, 16 + w, y, "ABS")
+            c.set(15 - w, y, "AFS")
+            c.set(16 + w, y, "AFS")
+    elif shape.get("stub_tail"):
         c.rect(15, 20 + bob - tall, 16, 21 + bob - tall, "ABS")
     else:
         c.rect(15, 16 + bob - tall, 16, 20 + bob - tall, "ABS")  # tail
@@ -314,6 +366,12 @@ def draw_back(shape, pose):
     if shape.get("round_ears"):                              # still the widest
         c.rect(10, 11 + bob - tall, 12, 13 + bob - tall, "AF")   # thing on it
         c.rect(19, 11 + bob - tall, 21, 13 + bob - tall, "AF")
+    elif shape.get("prick_ears"):
+        for i in range(4):
+            c.rect(11 + i // 3, 10 + bob - tall + i, 12, 10 + bob - tall + i, "AF")
+            c.rect(19, 10 + bob - tall + i, 20 - i // 3, 10 + bob - tall + i, "AF")
+        c.set(11, 10 + bob - tall, "AFS")
+        c.set(20, 10 + bob - tall, "AFS")
     else:
         c.rect(11, 13 + bob - tall, 12, 14 + bob - tall, "AF")   # ear tips, over
         c.rect(19, 13 + bob - tall, 20, 14 + bob - tall, "AF")   # the shoulders

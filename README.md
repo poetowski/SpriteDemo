@@ -14,13 +14,16 @@ of prop and sixteen kinds of thing to pick up, three of which go in the weapon
 hand and swing.
 
 And there is a second country, which you reach by stepping into the light on
-the temple step: a mythological desert of dunes, a salt pan, scrub and an
-oasis, with a sun gate and a pair of obelisks on a sandstone court, a colossus
-half sunk in the sand, elephants at the water and zebras out on the pan. It is
-a **zone** — a tag its maps share — so the editor groups it and gives it its
-own plate on the world atlas, joined to the wilderness by an arrow rather than
-a seam, because a portal says how you get somewhere and nothing about where it
-is.
+the temple step: a mythological desert of dunes, salt pans, scrub and oases,
+with a sun gate and a pair of obelisks on a sandstone court, colossi half sunk
+in the sand, elephants at the water, giraffes browsing the fringe, zebras out
+on the pan and jackals working the open ground between. It is two maps now —
+the second sixty tiles square, with a nomad called Ibn Abn keeping a swept
+camp in its north-east corner who will give you a robe cut for the country you
+are standing in. The desert is a **zone**, a tag its maps share, so the editor
+groups it and gives it its own plate on the world atlas, joined to the
+wilderness by an arrow rather than a seam, because a portal says how you get
+somewhere and nothing about where it is.
 
 ![the world](build/map.png)
 
@@ -124,22 +127,25 @@ knows there is a bald character.
 **Four rigs, one contract.** `tools/gen/actor.py` is the biped; `animal.py` is
 the quadruped (walk, idle and a head-down `graze`); `giant.py` is the monster —
 three tiles tall, two wide, with a slow `attack` its own frames draw; and
-`beast.py` is the elephant, a quadruped at the giant's size because one drawn
-in the frame the sheep share comes out the size of a bear. All four share the
+`beast.py` is for animals too big for the livestock frame — the elephant and
+the giraffe — because one drawn in the frame the sheep share comes out the
+size of a bear. All four share the
 same ground line, the same anchor rule and the same `build_frames()` shape, so
 the atlas, the anchors and the depth sorting treat them identically. A goat is
 the sheep rig with horns, a beard, a smooth back and a tan palette — which
 species an actor uses is a `"rig"` field in `content/`, not a pipeline change,
 and a rig at a new size is two constants and an entry in `RIGS`.
 
-**A species is a set of silhouette flags**, which is what keeps six animals on
-one rig without any of them reading as a recolour of another. `SPECIES` in
+**A species is a set of silhouette flags**, which is what keeps seven animals
+on one rig without any of them reading as a recolour of another. `SPECIES` in
 `animal.py`: the boar bristles and has tusks, the elk is `tall` with antlers, a
 mane and a pale rump, the bear has `bulk`, a shoulder `hump`, round ears on
 top of the skull instead of behind it, flat paws, a stub tail and a pale blunt
-muzzle borrowing the horn keys, and the zebra is `stripes` and `crest` and
-nothing else. Every flag is read with `.get`, so adding one for a new animal
-leaves the others alone.
+muzzle borrowing the horn keys, the zebra is `stripes` and `crest` and nothing
+else, and the jackal is `prick_ears`, a `brush` of a tail and a dark `saddle`.
+Every flag is read with `.get`, so adding one for a new animal leaves the
+others alone. The `beast` rig does the same at its own size: an elephant and a
+giraffe off one set of functions, told apart by `neck`.
 
 A zebra is also the clearest case of why the palette stores keys: it is a
 **white** animal with black on it, so the head key is white and it is the

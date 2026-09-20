@@ -167,6 +167,27 @@ VARIANTS = {
         "BT":  (0x6b, 0x4c, 0x2c, 255),   # sandals
         "BTS": (0x49, 0x33, 0x1d, 255),
     },
+    "nomad": {
+        # A headcloth is a remap too, the same trick as the monk's bald head
+        # run the other way: the rig draws a crown of hair over the skull, so
+        # pointing the hair keys at indigo puts a wrapped head on a character
+        # nothing in the rig knows about. Indigo on undyed linen is the whole
+        # of the look, and it is the one colour scheme in the game that is not
+        # in either biome's palette - which is the point of a man who crosses
+        # both.
+        "HR":  (0x2f, 0x3e, 0x7a, 255),
+        "HRL": (0x49, 0x5d, 0xa8, 255),
+        "TU":  (0xd8, 0xcd, 0xb4, 255),   # undyed robe
+        "TUS": (0xab, 0xa0, 0x88, 255),
+        "TUL": (0xf0, 0xe8, 0xd2, 255),
+        "PN":  (0xc6, 0xba, 0x9e, 255),   # and down to the ankle, like the
+        "PNS": (0x9c, 0x90, 0x77, 255),   # monk's, so the legs are robe
+        "BT":  (0x7d, 0x5f, 0x3a, 255),   # sandals
+        "BTS": (0x55, 0x3f, 0x25, 255),
+        "SK":  (0xd9, 0xa4, 0x6e, 255),   # and weathered by the sun he lives in
+        "SKS": (0xad, 0x7c, 0x4e, 255),
+        "SKL": (0xf0, 0xc4, 0x92, 255),
+    },
     "sheep": {},                          # the base animal palette is the sheep
     "goat": {
         "AB":  (0xa8, 0x82, 0x52, 255),   # tan coat instead of wool
@@ -223,6 +244,29 @@ VARIANTS = {
         "AH":  (0x2e, 0x2c, 0x2b, 255),
         "HN":  (0xe4, 0xdd, 0xc8, 255),   # tusks
         "HNS": (0xb8, 0xb0, 0x9a, 255),
+    },
+    "giraffe": {
+        # The opposite problem to the elephant: here the *shade* key is the
+        # coat pattern rather than a shadow, so it has to be a long way off
+        # the body tone or the patches disappear and it is a tall camel.
+        "AB":  (0xe0, 0xb4, 0x6a, 255),
+        "ABS": (0x96, 0x60, 0x2a, 255),   # the patches
+        "ABL": (0xf4, 0xd8, 0xa4, 255),
+        "AF":  (0xd6, 0xa8, 0x5e, 255),
+        "AFS": (0x7a, 0x4c, 0x1f, 255),
+        "AH":  (0x4a, 0x33, 0x1c, 255),
+        "HN":  (0x8a, 0x6a, 0x40, 255),   # the ossicones, horn-coloured but
+        "HNS": (0x5e, 0x46, 0x28, 255),   # dull - they are skin over bone
+    },
+    "jackal": {
+        # Sand with a dark saddle and black-tipped ears: a dog you see against
+        # dune, so it is built out of the ground it hunts on.
+        "AB":  (0xc2, 0xa2, 0x70, 255),
+        "ABS": (0x8a, 0x6e, 0x46, 255),
+        "ABL": (0xdd, 0xc2, 0x94, 255),
+        "AF":  (0x7c, 0x62, 0x3e, 255),
+        "AFS": (0x4a, 0x39, 0x24, 255),
+        "AH":  (0x2c, 0x22, 0x16, 255),
     },
     "elk": {
         # A bull elk is two animals of colour: a tawny body and a much darker

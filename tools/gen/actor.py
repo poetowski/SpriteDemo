@@ -200,7 +200,32 @@ def desert_tunic(c, direction, dy=0):
     c.set(x0 + 2, b - 1, "LPL")
 
 
-ARMOURS = {"mail": mail, "desert_tunic": desert_tunic}
+def nomad_armor(c, direction, dy=0):
+    """A travelling robe: heavy linen with an indigo mantle over the shoulders
+    and a sash. Where the desert tunic is one bright band at the collar, this
+    is dark at the top and pale below - the two read apart at a glance even
+    though both are cloth, which is the only thing that matters in a bag."""
+    t = TORSO_TOP + dy
+    b = BELT_Y + dy
+    x0, x1 = (13, 19) if direction == "right" else (12, 19)
+    c.rect(x0, t, x1, b - 1, "CL")                 # the robe
+    for y in range(t + 4, b - 1):                  # woven, as a dither - a
+        for x in range(x0, x1 + 1):                # dark row every other line
+            if (x * 2 + y) % 4 == 0:               # is a striped shirt
+                c.set(x, y, "CLD")
+    c.rect(x0, t, x1, t + 3, "LP")                 # the mantle over it
+    c.row(x0, x1, t, "LPL")
+    c.row(x0, x1, t + 3, "LPD")
+    c.rect(x0 - 1, t, x0, t + 2, "LP")             # over the shoulder seams
+    c.rect(x1, t, x1 + 1, t + 2, "LP")
+    c.set(x0 - 1, t + 2, "LPD")
+    c.set(x1 + 1, t + 2, "LPD")
+    c.row(x0, x1, b - 1, "GD")                     # and a sash at the waist
+    c.set(x0 + 2, b - 1, "GDL")
+
+
+ARMOURS = {"mail": mail, "desert_tunic": desert_tunic,
+           "nomad_armor": nomad_armor}
 
 
 def draw_weapon(c, hx, hy, aim, name):

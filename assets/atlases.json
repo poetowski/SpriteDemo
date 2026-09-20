@@ -18,8 +18,8 @@
     32
    ],
    "cols": 6,
-   "rows": 142,
-   "count": 848
+   "rows": 183,
+   "count": 1096
   },
   "actors_huge": {
    "image": "atlases/actors_huge.png",
@@ -28,8 +28,8 @@
     64
    ],
    "cols": 4,
-   "rows": 23,
-   "count": 92
+   "rows": 31,
+   "count": 124
   },
   "tiles": {
    "image": "atlases/tiles.png",
@@ -88,8 +88,8 @@
     16
    ],
    "cols": 8,
-   "rows": 2,
-   "count": 16
+   "rows": 3,
+   "count": 17
   },
   "fx": {
    "image": "atlases/fx.png",
@@ -2919,7 +2919,7 @@
     29
    ]
   },
-  "actor.hero_desert_tunic/walk/down/0": {
+  "actor.hero_axe_nomad_armor/walk/down/0": {
    "atlas": "actors",
    "index": 352,
    "anchor": [
@@ -2927,7 +2927,7 @@
     29
    ]
   },
-  "actor.hero_desert_tunic/walk/down/1": {
+  "actor.hero_axe_nomad_armor/walk/down/1": {
    "atlas": "actors",
    "index": 353,
    "anchor": [
@@ -2935,7 +2935,7 @@
     29
    ]
   },
-  "actor.hero_desert_tunic/walk/down/2": {
+  "actor.hero_axe_nomad_armor/walk/down/2": {
    "atlas": "actors",
    "index": 354,
    "anchor": [
@@ -2943,7 +2943,7 @@
     29
    ]
   },
-  "actor.hero_desert_tunic/walk/down/3": {
+  "actor.hero_axe_nomad_armor/walk/down/3": {
    "atlas": "actors",
    "index": 355,
    "anchor": [
@@ -2951,7 +2951,7 @@
     29
    ]
   },
-  "actor.hero_desert_tunic/idle/down/0": {
+  "actor.hero_axe_nomad_armor/idle/down/0": {
    "atlas": "actors",
    "index": 356,
    "anchor": [
@@ -2959,7 +2959,7 @@
     29
    ]
   },
-  "actor.hero_desert_tunic/idle/down/1": {
+  "actor.hero_axe_nomad_armor/idle/down/1": {
    "atlas": "actors",
    "index": 357,
    "anchor": [
@@ -2967,7 +2967,7 @@
     29
    ]
   },
-  "actor.hero_desert_tunic/gather/down/0": {
+  "actor.hero_axe_nomad_armor/gather/down/0": {
    "atlas": "actors",
    "index": 358,
    "anchor": [
@@ -2975,7 +2975,7 @@
     29
    ]
   },
-  "actor.hero_desert_tunic/gather/down/1": {
+  "actor.hero_axe_nomad_armor/gather/down/1": {
    "atlas": "actors",
    "index": 359,
    "anchor": [
@@ -2983,7 +2983,7 @@
     29
    ]
   },
-  "actor.hero_desert_tunic/gather/down/2": {
+  "actor.hero_axe_nomad_armor/gather/down/2": {
    "atlas": "actors",
    "index": 360,
    "anchor": [
@@ -2991,7 +2991,7 @@
     29
    ]
   },
-  "actor.hero_desert_tunic/walk/left/0": {
+  "actor.hero_axe_nomad_armor/slash/down/0": {
    "atlas": "actors",
    "index": 361,
    "anchor": [
@@ -2999,7 +2999,7 @@
     29
    ]
   },
-  "actor.hero_desert_tunic/walk/left/1": {
+  "actor.hero_axe_nomad_armor/slash/down/1": {
    "atlas": "actors",
    "index": 362,
    "anchor": [
@@ -3007,7 +3007,7 @@
     29
    ]
   },
-  "actor.hero_desert_tunic/walk/left/2": {
+  "actor.hero_axe_nomad_armor/slash/down/2": {
    "atlas": "actors",
    "index": 363,
    "anchor": [
@@ -3015,7 +3015,7 @@
     29
    ]
   },
-  "actor.hero_desert_tunic/walk/left/3": {
+  "actor.hero_axe_nomad_armor/slash/down/3": {
    "atlas": "actors",
    "index": 364,
    "anchor": [
@@ -3023,7 +3023,7 @@
     29
    ]
   },
-  "actor.hero_desert_tunic/idle/left/0": {
+  "actor.hero_axe_nomad_armor/walk/left/0": {
    "atlas": "actors",
    "index": 365,
    "anchor": [
@@ -3031,7 +3031,7 @@
     29
    ]
   },
-  "actor.hero_desert_tunic/idle/left/1": {
+  "actor.hero_axe_nomad_armor/walk/left/1": {
    "atlas": "actors",
    "index": 366,
    "anchor": [
@@ -3039,7 +3039,7 @@
     29
    ]
   },
-  "actor.hero_desert_tunic/gather/left/0": {
+  "actor.hero_axe_nomad_armor/walk/left/2": {
    "atlas": "actors",
    "index": 367,
    "anchor": [
@@ -3047,7 +3047,7 @@
     29
    ]
   },
-  "actor.hero_desert_tunic/gather/left/1": {
+  "actor.hero_axe_nomad_armor/walk/left/3": {
    "atlas": "actors",
    "index": 368,
    "anchor": [
@@ -3055,7 +3055,7 @@
     29
    ]
   },
-  "actor.hero_desert_tunic/gather/left/2": {
+  "actor.hero_axe_nomad_armor/idle/left/0": {
    "atlas": "actors",
    "index": 369,
    "anchor": [
@@ -3063,7 +3063,7 @@
     29
    ]
   },
-  "actor.hero_desert_tunic/walk/right/0": {
+  "actor.hero_axe_nomad_armor/idle/left/1": {
    "atlas": "actors",
    "index": 370,
    "anchor": [
@@ -3071,7 +3071,7 @@
     29
    ]
   },
-  "actor.hero_desert_tunic/walk/right/1": {
+  "actor.hero_axe_nomad_armor/gather/left/0": {
    "atlas": "actors",
    "index": 371,
    "anchor": [
@@ -3079,7 +3079,7 @@
     29
    ]
   },
-  "actor.hero_desert_tunic/walk/right/2": {
+  "actor.hero_axe_nomad_armor/gather/left/1": {
    "atlas": "actors",
    "index": 372,
    "anchor": [
@@ -3087,7 +3087,7 @@
     29
    ]
   },
-  "actor.hero_desert_tunic/walk/right/3": {
+  "actor.hero_axe_nomad_armor/gather/left/2": {
    "atlas": "actors",
    "index": 373,
    "anchor": [
@@ -3095,7 +3095,7 @@
     29
    ]
   },
-  "actor.hero_desert_tunic/idle/right/0": {
+  "actor.hero_axe_nomad_armor/slash/left/0": {
    "atlas": "actors",
    "index": 374,
    "anchor": [
@@ -3103,7 +3103,7 @@
     29
    ]
   },
-  "actor.hero_desert_tunic/idle/right/1": {
+  "actor.hero_axe_nomad_armor/slash/left/1": {
    "atlas": "actors",
    "index": 375,
    "anchor": [
@@ -3111,7 +3111,7 @@
     29
    ]
   },
-  "actor.hero_desert_tunic/gather/right/0": {
+  "actor.hero_axe_nomad_armor/slash/left/2": {
    "atlas": "actors",
    "index": 376,
    "anchor": [
@@ -3119,7 +3119,7 @@
     29
    ]
   },
-  "actor.hero_desert_tunic/gather/right/1": {
+  "actor.hero_axe_nomad_armor/slash/left/3": {
    "atlas": "actors",
    "index": 377,
    "anchor": [
@@ -3127,7 +3127,7 @@
     29
    ]
   },
-  "actor.hero_desert_tunic/gather/right/2": {
+  "actor.hero_axe_nomad_armor/walk/right/0": {
    "atlas": "actors",
    "index": 378,
    "anchor": [
@@ -3135,7 +3135,7 @@
     29
    ]
   },
-  "actor.hero_desert_tunic/walk/up/0": {
+  "actor.hero_axe_nomad_armor/walk/right/1": {
    "atlas": "actors",
    "index": 379,
    "anchor": [
@@ -3143,7 +3143,7 @@
     29
    ]
   },
-  "actor.hero_desert_tunic/walk/up/1": {
+  "actor.hero_axe_nomad_armor/walk/right/2": {
    "atlas": "actors",
    "index": 380,
    "anchor": [
@@ -3151,7 +3151,7 @@
     29
    ]
   },
-  "actor.hero_desert_tunic/walk/up/2": {
+  "actor.hero_axe_nomad_armor/walk/right/3": {
    "atlas": "actors",
    "index": 381,
    "anchor": [
@@ -3159,7 +3159,7 @@
     29
    ]
   },
-  "actor.hero_desert_tunic/walk/up/3": {
+  "actor.hero_axe_nomad_armor/idle/right/0": {
    "atlas": "actors",
    "index": 382,
    "anchor": [
@@ -3167,7 +3167,7 @@
     29
    ]
   },
-  "actor.hero_desert_tunic/idle/up/0": {
+  "actor.hero_axe_nomad_armor/idle/right/1": {
    "atlas": "actors",
    "index": 383,
    "anchor": [
@@ -3175,7 +3175,7 @@
     29
    ]
   },
-  "actor.hero_desert_tunic/idle/up/1": {
+  "actor.hero_axe_nomad_armor/gather/right/0": {
    "atlas": "actors",
    "index": 384,
    "anchor": [
@@ -3183,7 +3183,7 @@
     29
    ]
   },
-  "actor.hero_desert_tunic/gather/up/0": {
+  "actor.hero_axe_nomad_armor/gather/right/1": {
    "atlas": "actors",
    "index": 385,
    "anchor": [
@@ -3191,7 +3191,7 @@
     29
    ]
   },
-  "actor.hero_desert_tunic/gather/up/1": {
+  "actor.hero_axe_nomad_armor/gather/right/2": {
    "atlas": "actors",
    "index": 386,
    "anchor": [
@@ -3199,7 +3199,7 @@
     29
    ]
   },
-  "actor.hero_desert_tunic/gather/up/2": {
+  "actor.hero_axe_nomad_armor/slash/right/0": {
    "atlas": "actors",
    "index": 387,
    "anchor": [
@@ -3207,7 +3207,7 @@
     29
    ]
   },
-  "actor.hero_mail/walk/down/0": {
+  "actor.hero_axe_nomad_armor/slash/right/1": {
    "atlas": "actors",
    "index": 388,
    "anchor": [
@@ -3215,7 +3215,7 @@
     29
    ]
   },
-  "actor.hero_mail/walk/down/1": {
+  "actor.hero_axe_nomad_armor/slash/right/2": {
    "atlas": "actors",
    "index": 389,
    "anchor": [
@@ -3223,7 +3223,7 @@
     29
    ]
   },
-  "actor.hero_mail/walk/down/2": {
+  "actor.hero_axe_nomad_armor/slash/right/3": {
    "atlas": "actors",
    "index": 390,
    "anchor": [
@@ -3231,7 +3231,7 @@
     29
    ]
   },
-  "actor.hero_mail/walk/down/3": {
+  "actor.hero_axe_nomad_armor/walk/up/0": {
    "atlas": "actors",
    "index": 391,
    "anchor": [
@@ -3239,7 +3239,7 @@
     29
    ]
   },
-  "actor.hero_mail/idle/down/0": {
+  "actor.hero_axe_nomad_armor/walk/up/1": {
    "atlas": "actors",
    "index": 392,
    "anchor": [
@@ -3247,7 +3247,7 @@
     29
    ]
   },
-  "actor.hero_mail/idle/down/1": {
+  "actor.hero_axe_nomad_armor/walk/up/2": {
    "atlas": "actors",
    "index": 393,
    "anchor": [
@@ -3255,7 +3255,7 @@
     29
    ]
   },
-  "actor.hero_mail/gather/down/0": {
+  "actor.hero_axe_nomad_armor/walk/up/3": {
    "atlas": "actors",
    "index": 394,
    "anchor": [
@@ -3263,7 +3263,7 @@
     29
    ]
   },
-  "actor.hero_mail/gather/down/1": {
+  "actor.hero_axe_nomad_armor/idle/up/0": {
    "atlas": "actors",
    "index": 395,
    "anchor": [
@@ -3271,7 +3271,7 @@
     29
    ]
   },
-  "actor.hero_mail/gather/down/2": {
+  "actor.hero_axe_nomad_armor/idle/up/1": {
    "atlas": "actors",
    "index": 396,
    "anchor": [
@@ -3279,7 +3279,7 @@
     29
    ]
   },
-  "actor.hero_mail/walk/left/0": {
+  "actor.hero_axe_nomad_armor/gather/up/0": {
    "atlas": "actors",
    "index": 397,
    "anchor": [
@@ -3287,7 +3287,7 @@
     29
    ]
   },
-  "actor.hero_mail/walk/left/1": {
+  "actor.hero_axe_nomad_armor/gather/up/1": {
    "atlas": "actors",
    "index": 398,
    "anchor": [
@@ -3295,7 +3295,7 @@
     29
    ]
   },
-  "actor.hero_mail/walk/left/2": {
+  "actor.hero_axe_nomad_armor/gather/up/2": {
    "atlas": "actors",
    "index": 399,
    "anchor": [
@@ -3303,7 +3303,7 @@
     29
    ]
   },
-  "actor.hero_mail/walk/left/3": {
+  "actor.hero_axe_nomad_armor/slash/up/0": {
    "atlas": "actors",
    "index": 400,
    "anchor": [
@@ -3311,7 +3311,7 @@
     29
    ]
   },
-  "actor.hero_mail/idle/left/0": {
+  "actor.hero_axe_nomad_armor/slash/up/1": {
    "atlas": "actors",
    "index": 401,
    "anchor": [
@@ -3319,7 +3319,7 @@
     29
    ]
   },
-  "actor.hero_mail/idle/left/1": {
+  "actor.hero_axe_nomad_armor/slash/up/2": {
    "atlas": "actors",
    "index": 402,
    "anchor": [
@@ -3327,7 +3327,7 @@
     29
    ]
   },
-  "actor.hero_mail/gather/left/0": {
+  "actor.hero_axe_nomad_armor/slash/up/3": {
    "atlas": "actors",
    "index": 403,
    "anchor": [
@@ -3335,7 +3335,7 @@
     29
    ]
   },
-  "actor.hero_mail/gather/left/1": {
+  "actor.hero_desert_tunic/walk/down/0": {
    "atlas": "actors",
    "index": 404,
    "anchor": [
@@ -3343,7 +3343,7 @@
     29
    ]
   },
-  "actor.hero_mail/gather/left/2": {
+  "actor.hero_desert_tunic/walk/down/1": {
    "atlas": "actors",
    "index": 405,
    "anchor": [
@@ -3351,7 +3351,7 @@
     29
    ]
   },
-  "actor.hero_mail/walk/right/0": {
+  "actor.hero_desert_tunic/walk/down/2": {
    "atlas": "actors",
    "index": 406,
    "anchor": [
@@ -3359,7 +3359,7 @@
     29
    ]
   },
-  "actor.hero_mail/walk/right/1": {
+  "actor.hero_desert_tunic/walk/down/3": {
    "atlas": "actors",
    "index": 407,
    "anchor": [
@@ -3367,7 +3367,7 @@
     29
    ]
   },
-  "actor.hero_mail/walk/right/2": {
+  "actor.hero_desert_tunic/idle/down/0": {
    "atlas": "actors",
    "index": 408,
    "anchor": [
@@ -3375,7 +3375,7 @@
     29
    ]
   },
-  "actor.hero_mail/walk/right/3": {
+  "actor.hero_desert_tunic/idle/down/1": {
    "atlas": "actors",
    "index": 409,
    "anchor": [
@@ -3383,7 +3383,7 @@
     29
    ]
   },
-  "actor.hero_mail/idle/right/0": {
+  "actor.hero_desert_tunic/gather/down/0": {
    "atlas": "actors",
    "index": 410,
    "anchor": [
@@ -3391,7 +3391,7 @@
     29
    ]
   },
-  "actor.hero_mail/idle/right/1": {
+  "actor.hero_desert_tunic/gather/down/1": {
    "atlas": "actors",
    "index": 411,
    "anchor": [
@@ -3399,7 +3399,7 @@
     29
    ]
   },
-  "actor.hero_mail/gather/right/0": {
+  "actor.hero_desert_tunic/gather/down/2": {
    "atlas": "actors",
    "index": 412,
    "anchor": [
@@ -3407,7 +3407,7 @@
     29
    ]
   },
-  "actor.hero_mail/gather/right/1": {
+  "actor.hero_desert_tunic/walk/left/0": {
    "atlas": "actors",
    "index": 413,
    "anchor": [
@@ -3415,7 +3415,7 @@
     29
    ]
   },
-  "actor.hero_mail/gather/right/2": {
+  "actor.hero_desert_tunic/walk/left/1": {
    "atlas": "actors",
    "index": 414,
    "anchor": [
@@ -3423,7 +3423,7 @@
     29
    ]
   },
-  "actor.hero_mail/walk/up/0": {
+  "actor.hero_desert_tunic/walk/left/2": {
    "atlas": "actors",
    "index": 415,
    "anchor": [
@@ -3431,7 +3431,7 @@
     29
    ]
   },
-  "actor.hero_mail/walk/up/1": {
+  "actor.hero_desert_tunic/walk/left/3": {
    "atlas": "actors",
    "index": 416,
    "anchor": [
@@ -3439,7 +3439,7 @@
     29
    ]
   },
-  "actor.hero_mail/walk/up/2": {
+  "actor.hero_desert_tunic/idle/left/0": {
    "atlas": "actors",
    "index": 417,
    "anchor": [
@@ -3447,7 +3447,7 @@
     29
    ]
   },
-  "actor.hero_mail/walk/up/3": {
+  "actor.hero_desert_tunic/idle/left/1": {
    "atlas": "actors",
    "index": 418,
    "anchor": [
@@ -3455,7 +3455,7 @@
     29
    ]
   },
-  "actor.hero_mail/idle/up/0": {
+  "actor.hero_desert_tunic/gather/left/0": {
    "atlas": "actors",
    "index": 419,
    "anchor": [
@@ -3463,7 +3463,7 @@
     29
    ]
   },
-  "actor.hero_mail/idle/up/1": {
+  "actor.hero_desert_tunic/gather/left/1": {
    "atlas": "actors",
    "index": 420,
    "anchor": [
@@ -3471,7 +3471,7 @@
     29
    ]
   },
-  "actor.hero_mail/gather/up/0": {
+  "actor.hero_desert_tunic/gather/left/2": {
    "atlas": "actors",
    "index": 421,
    "anchor": [
@@ -3479,7 +3479,7 @@
     29
    ]
   },
-  "actor.hero_mail/gather/up/1": {
+  "actor.hero_desert_tunic/walk/right/0": {
    "atlas": "actors",
    "index": 422,
    "anchor": [
@@ -3487,7 +3487,7 @@
     29
    ]
   },
-  "actor.hero_mail/gather/up/2": {
+  "actor.hero_desert_tunic/walk/right/1": {
    "atlas": "actors",
    "index": 423,
    "anchor": [
@@ -3495,7 +3495,7 @@
     29
    ]
   },
-  "actor.hero_spear/walk/down/0": {
+  "actor.hero_desert_tunic/walk/right/2": {
    "atlas": "actors",
    "index": 424,
    "anchor": [
@@ -3503,7 +3503,7 @@
     29
    ]
   },
-  "actor.hero_spear/walk/down/1": {
+  "actor.hero_desert_tunic/walk/right/3": {
    "atlas": "actors",
    "index": 425,
    "anchor": [
@@ -3511,7 +3511,7 @@
     29
    ]
   },
-  "actor.hero_spear/walk/down/2": {
+  "actor.hero_desert_tunic/idle/right/0": {
    "atlas": "actors",
    "index": 426,
    "anchor": [
@@ -3519,7 +3519,7 @@
     29
    ]
   },
-  "actor.hero_spear/walk/down/3": {
+  "actor.hero_desert_tunic/idle/right/1": {
    "atlas": "actors",
    "index": 427,
    "anchor": [
@@ -3527,7 +3527,7 @@
     29
    ]
   },
-  "actor.hero_spear/idle/down/0": {
+  "actor.hero_desert_tunic/gather/right/0": {
    "atlas": "actors",
    "index": 428,
    "anchor": [
@@ -3535,7 +3535,7 @@
     29
    ]
   },
-  "actor.hero_spear/idle/down/1": {
+  "actor.hero_desert_tunic/gather/right/1": {
    "atlas": "actors",
    "index": 429,
    "anchor": [
@@ -3543,7 +3543,7 @@
     29
    ]
   },
-  "actor.hero_spear/gather/down/0": {
+  "actor.hero_desert_tunic/gather/right/2": {
    "atlas": "actors",
    "index": 430,
    "anchor": [
@@ -3551,7 +3551,7 @@
     29
    ]
   },
-  "actor.hero_spear/gather/down/1": {
+  "actor.hero_desert_tunic/walk/up/0": {
    "atlas": "actors",
    "index": 431,
    "anchor": [
@@ -3559,7 +3559,7 @@
     29
    ]
   },
-  "actor.hero_spear/gather/down/2": {
+  "actor.hero_desert_tunic/walk/up/1": {
    "atlas": "actors",
    "index": 432,
    "anchor": [
@@ -3567,7 +3567,7 @@
     29
    ]
   },
-  "actor.hero_spear/slash/down/0": {
+  "actor.hero_desert_tunic/walk/up/2": {
    "atlas": "actors",
    "index": 433,
    "anchor": [
@@ -3575,7 +3575,7 @@
     29
    ]
   },
-  "actor.hero_spear/slash/down/1": {
+  "actor.hero_desert_tunic/walk/up/3": {
    "atlas": "actors",
    "index": 434,
    "anchor": [
@@ -3583,7 +3583,7 @@
     29
    ]
   },
-  "actor.hero_spear/slash/down/2": {
+  "actor.hero_desert_tunic/idle/up/0": {
    "atlas": "actors",
    "index": 435,
    "anchor": [
@@ -3591,7 +3591,7 @@
     29
    ]
   },
-  "actor.hero_spear/slash/down/3": {
+  "actor.hero_desert_tunic/idle/up/1": {
    "atlas": "actors",
    "index": 436,
    "anchor": [
@@ -3599,7 +3599,7 @@
     29
    ]
   },
-  "actor.hero_spear/walk/left/0": {
+  "actor.hero_desert_tunic/gather/up/0": {
    "atlas": "actors",
    "index": 437,
    "anchor": [
@@ -3607,7 +3607,7 @@
     29
    ]
   },
-  "actor.hero_spear/walk/left/1": {
+  "actor.hero_desert_tunic/gather/up/1": {
    "atlas": "actors",
    "index": 438,
    "anchor": [
@@ -3615,7 +3615,7 @@
     29
    ]
   },
-  "actor.hero_spear/walk/left/2": {
+  "actor.hero_desert_tunic/gather/up/2": {
    "atlas": "actors",
    "index": 439,
    "anchor": [
@@ -3623,7 +3623,7 @@
     29
    ]
   },
-  "actor.hero_spear/walk/left/3": {
+  "actor.hero_mail/walk/down/0": {
    "atlas": "actors",
    "index": 440,
    "anchor": [
@@ -3631,7 +3631,7 @@
     29
    ]
   },
-  "actor.hero_spear/idle/left/0": {
+  "actor.hero_mail/walk/down/1": {
    "atlas": "actors",
    "index": 441,
    "anchor": [
@@ -3639,7 +3639,7 @@
     29
    ]
   },
-  "actor.hero_spear/idle/left/1": {
+  "actor.hero_mail/walk/down/2": {
    "atlas": "actors",
    "index": 442,
    "anchor": [
@@ -3647,7 +3647,7 @@
     29
    ]
   },
-  "actor.hero_spear/gather/left/0": {
+  "actor.hero_mail/walk/down/3": {
    "atlas": "actors",
    "index": 443,
    "anchor": [
@@ -3655,7 +3655,7 @@
     29
    ]
   },
-  "actor.hero_spear/gather/left/1": {
+  "actor.hero_mail/idle/down/0": {
    "atlas": "actors",
    "index": 444,
    "anchor": [
@@ -3663,7 +3663,7 @@
     29
    ]
   },
-  "actor.hero_spear/gather/left/2": {
+  "actor.hero_mail/idle/down/1": {
    "atlas": "actors",
    "index": 445,
    "anchor": [
@@ -3671,7 +3671,7 @@
     29
    ]
   },
-  "actor.hero_spear/slash/left/0": {
+  "actor.hero_mail/gather/down/0": {
    "atlas": "actors",
    "index": 446,
    "anchor": [
@@ -3679,7 +3679,7 @@
     29
    ]
   },
-  "actor.hero_spear/slash/left/1": {
+  "actor.hero_mail/gather/down/1": {
    "atlas": "actors",
    "index": 447,
    "anchor": [
@@ -3687,7 +3687,7 @@
     29
    ]
   },
-  "actor.hero_spear/slash/left/2": {
+  "actor.hero_mail/gather/down/2": {
    "atlas": "actors",
    "index": 448,
    "anchor": [
@@ -3695,7 +3695,7 @@
     29
    ]
   },
-  "actor.hero_spear/slash/left/3": {
+  "actor.hero_mail/walk/left/0": {
    "atlas": "actors",
    "index": 449,
    "anchor": [
@@ -3703,7 +3703,7 @@
     29
    ]
   },
-  "actor.hero_spear/walk/right/0": {
+  "actor.hero_mail/walk/left/1": {
    "atlas": "actors",
    "index": 450,
    "anchor": [
@@ -3711,7 +3711,7 @@
     29
    ]
   },
-  "actor.hero_spear/walk/right/1": {
+  "actor.hero_mail/walk/left/2": {
    "atlas": "actors",
    "index": 451,
    "anchor": [
@@ -3719,7 +3719,7 @@
     29
    ]
   },
-  "actor.hero_spear/walk/right/2": {
+  "actor.hero_mail/walk/left/3": {
    "atlas": "actors",
    "index": 452,
    "anchor": [
@@ -3727,7 +3727,7 @@
     29
    ]
   },
-  "actor.hero_spear/walk/right/3": {
+  "actor.hero_mail/idle/left/0": {
    "atlas": "actors",
    "index": 453,
    "anchor": [
@@ -3735,7 +3735,7 @@
     29
    ]
   },
-  "actor.hero_spear/idle/right/0": {
+  "actor.hero_mail/idle/left/1": {
    "atlas": "actors",
    "index": 454,
    "anchor": [
@@ -3743,7 +3743,7 @@
     29
    ]
   },
-  "actor.hero_spear/idle/right/1": {
+  "actor.hero_mail/gather/left/0": {
    "atlas": "actors",
    "index": 455,
    "anchor": [
@@ -3751,7 +3751,7 @@
     29
    ]
   },
-  "actor.hero_spear/gather/right/0": {
+  "actor.hero_mail/gather/left/1": {
    "atlas": "actors",
    "index": 456,
    "anchor": [
@@ -3759,7 +3759,7 @@
     29
    ]
   },
-  "actor.hero_spear/gather/right/1": {
+  "actor.hero_mail/gather/left/2": {
    "atlas": "actors",
    "index": 457,
    "anchor": [
@@ -3767,7 +3767,7 @@
     29
    ]
   },
-  "actor.hero_spear/gather/right/2": {
+  "actor.hero_mail/walk/right/0": {
    "atlas": "actors",
    "index": 458,
    "anchor": [
@@ -3775,7 +3775,7 @@
     29
    ]
   },
-  "actor.hero_spear/slash/right/0": {
+  "actor.hero_mail/walk/right/1": {
    "atlas": "actors",
    "index": 459,
    "anchor": [
@@ -3783,7 +3783,7 @@
     29
    ]
   },
-  "actor.hero_spear/slash/right/1": {
+  "actor.hero_mail/walk/right/2": {
    "atlas": "actors",
    "index": 460,
    "anchor": [
@@ -3791,7 +3791,7 @@
     29
    ]
   },
-  "actor.hero_spear/slash/right/2": {
+  "actor.hero_mail/walk/right/3": {
    "atlas": "actors",
    "index": 461,
    "anchor": [
@@ -3799,7 +3799,7 @@
     29
    ]
   },
-  "actor.hero_spear/slash/right/3": {
+  "actor.hero_mail/idle/right/0": {
    "atlas": "actors",
    "index": 462,
    "anchor": [
@@ -3807,7 +3807,7 @@
     29
    ]
   },
-  "actor.hero_spear/walk/up/0": {
+  "actor.hero_mail/idle/right/1": {
    "atlas": "actors",
    "index": 463,
    "anchor": [
@@ -3815,7 +3815,7 @@
     29
    ]
   },
-  "actor.hero_spear/walk/up/1": {
+  "actor.hero_mail/gather/right/0": {
    "atlas": "actors",
    "index": 464,
    "anchor": [
@@ -3823,7 +3823,7 @@
     29
    ]
   },
-  "actor.hero_spear/walk/up/2": {
+  "actor.hero_mail/gather/right/1": {
    "atlas": "actors",
    "index": 465,
    "anchor": [
@@ -3831,7 +3831,7 @@
     29
    ]
   },
-  "actor.hero_spear/walk/up/3": {
+  "actor.hero_mail/gather/right/2": {
    "atlas": "actors",
    "index": 466,
    "anchor": [
@@ -3839,7 +3839,7 @@
     29
    ]
   },
-  "actor.hero_spear/idle/up/0": {
+  "actor.hero_mail/walk/up/0": {
    "atlas": "actors",
    "index": 467,
    "anchor": [
@@ -3847,7 +3847,7 @@
     29
    ]
   },
-  "actor.hero_spear/idle/up/1": {
+  "actor.hero_mail/walk/up/1": {
    "atlas": "actors",
    "index": 468,
    "anchor": [
@@ -3855,7 +3855,7 @@
     29
    ]
   },
-  "actor.hero_spear/gather/up/0": {
+  "actor.hero_mail/walk/up/2": {
    "atlas": "actors",
    "index": 469,
    "anchor": [
@@ -3863,7 +3863,7 @@
     29
    ]
   },
-  "actor.hero_spear/gather/up/1": {
+  "actor.hero_mail/walk/up/3": {
    "atlas": "actors",
    "index": 470,
    "anchor": [
@@ -3871,7 +3871,7 @@
     29
    ]
   },
-  "actor.hero_spear/gather/up/2": {
+  "actor.hero_mail/idle/up/0": {
    "atlas": "actors",
    "index": 471,
    "anchor": [
@@ -3879,7 +3879,7 @@
     29
    ]
   },
-  "actor.hero_spear/slash/up/0": {
+  "actor.hero_mail/idle/up/1": {
    "atlas": "actors",
    "index": 472,
    "anchor": [
@@ -3887,7 +3887,7 @@
     29
    ]
   },
-  "actor.hero_spear/slash/up/1": {
+  "actor.hero_mail/gather/up/0": {
    "atlas": "actors",
    "index": 473,
    "anchor": [
@@ -3895,7 +3895,7 @@
     29
    ]
   },
-  "actor.hero_spear/slash/up/2": {
+  "actor.hero_mail/gather/up/1": {
    "atlas": "actors",
    "index": 474,
    "anchor": [
@@ -3903,7 +3903,7 @@
     29
    ]
   },
-  "actor.hero_spear/slash/up/3": {
+  "actor.hero_mail/gather/up/2": {
    "atlas": "actors",
    "index": 475,
    "anchor": [
@@ -3911,7 +3911,7 @@
     29
    ]
   },
-  "actor.hero_spear_desert_tunic/walk/down/0": {
+  "actor.hero_nomad_armor/walk/down/0": {
    "atlas": "actors",
    "index": 476,
    "anchor": [
@@ -3919,7 +3919,7 @@
     29
    ]
   },
-  "actor.hero_spear_desert_tunic/walk/down/1": {
+  "actor.hero_nomad_armor/walk/down/1": {
    "atlas": "actors",
    "index": 477,
    "anchor": [
@@ -3927,7 +3927,7 @@
     29
    ]
   },
-  "actor.hero_spear_desert_tunic/walk/down/2": {
+  "actor.hero_nomad_armor/walk/down/2": {
    "atlas": "actors",
    "index": 478,
    "anchor": [
@@ -3935,7 +3935,7 @@
     29
    ]
   },
-  "actor.hero_spear_desert_tunic/walk/down/3": {
+  "actor.hero_nomad_armor/walk/down/3": {
    "atlas": "actors",
    "index": 479,
    "anchor": [
@@ -3943,7 +3943,7 @@
     29
    ]
   },
-  "actor.hero_spear_desert_tunic/idle/down/0": {
+  "actor.hero_nomad_armor/idle/down/0": {
    "atlas": "actors",
    "index": 480,
    "anchor": [
@@ -3951,7 +3951,7 @@
     29
    ]
   },
-  "actor.hero_spear_desert_tunic/idle/down/1": {
+  "actor.hero_nomad_armor/idle/down/1": {
    "atlas": "actors",
    "index": 481,
    "anchor": [
@@ -3959,7 +3959,7 @@
     29
    ]
   },
-  "actor.hero_spear_desert_tunic/gather/down/0": {
+  "actor.hero_nomad_armor/gather/down/0": {
    "atlas": "actors",
    "index": 482,
    "anchor": [
@@ -3967,7 +3967,7 @@
     29
    ]
   },
-  "actor.hero_spear_desert_tunic/gather/down/1": {
+  "actor.hero_nomad_armor/gather/down/1": {
    "atlas": "actors",
    "index": 483,
    "anchor": [
@@ -3975,7 +3975,7 @@
     29
    ]
   },
-  "actor.hero_spear_desert_tunic/gather/down/2": {
+  "actor.hero_nomad_armor/gather/down/2": {
    "atlas": "actors",
    "index": 484,
    "anchor": [
@@ -3983,7 +3983,7 @@
     29
    ]
   },
-  "actor.hero_spear_desert_tunic/slash/down/0": {
+  "actor.hero_nomad_armor/walk/left/0": {
    "atlas": "actors",
    "index": 485,
    "anchor": [
@@ -3991,7 +3991,7 @@
     29
    ]
   },
-  "actor.hero_spear_desert_tunic/slash/down/1": {
+  "actor.hero_nomad_armor/walk/left/1": {
    "atlas": "actors",
    "index": 486,
    "anchor": [
@@ -3999,7 +3999,7 @@
     29
    ]
   },
-  "actor.hero_spear_desert_tunic/slash/down/2": {
+  "actor.hero_nomad_armor/walk/left/2": {
    "atlas": "actors",
    "index": 487,
    "anchor": [
@@ -4007,7 +4007,7 @@
     29
    ]
   },
-  "actor.hero_spear_desert_tunic/slash/down/3": {
+  "actor.hero_nomad_armor/walk/left/3": {
    "atlas": "actors",
    "index": 488,
    "anchor": [
@@ -4015,7 +4015,7 @@
     29
    ]
   },
-  "actor.hero_spear_desert_tunic/walk/left/0": {
+  "actor.hero_nomad_armor/idle/left/0": {
    "atlas": "actors",
    "index": 489,
    "anchor": [
@@ -4023,7 +4023,7 @@
     29
    ]
   },
-  "actor.hero_spear_desert_tunic/walk/left/1": {
+  "actor.hero_nomad_armor/idle/left/1": {
    "atlas": "actors",
    "index": 490,
    "anchor": [
@@ -4031,7 +4031,7 @@
     29
    ]
   },
-  "actor.hero_spear_desert_tunic/walk/left/2": {
+  "actor.hero_nomad_armor/gather/left/0": {
    "atlas": "actors",
    "index": 491,
    "anchor": [
@@ -4039,7 +4039,7 @@
     29
    ]
   },
-  "actor.hero_spear_desert_tunic/walk/left/3": {
+  "actor.hero_nomad_armor/gather/left/1": {
    "atlas": "actors",
    "index": 492,
    "anchor": [
@@ -4047,7 +4047,7 @@
     29
    ]
   },
-  "actor.hero_spear_desert_tunic/idle/left/0": {
+  "actor.hero_nomad_armor/gather/left/2": {
    "atlas": "actors",
    "index": 493,
    "anchor": [
@@ -4055,7 +4055,7 @@
     29
    ]
   },
-  "actor.hero_spear_desert_tunic/idle/left/1": {
+  "actor.hero_nomad_armor/walk/right/0": {
    "atlas": "actors",
    "index": 494,
    "anchor": [
@@ -4063,7 +4063,7 @@
     29
    ]
   },
-  "actor.hero_spear_desert_tunic/gather/left/0": {
+  "actor.hero_nomad_armor/walk/right/1": {
    "atlas": "actors",
    "index": 495,
    "anchor": [
@@ -4071,7 +4071,7 @@
     29
    ]
   },
-  "actor.hero_spear_desert_tunic/gather/left/1": {
+  "actor.hero_nomad_armor/walk/right/2": {
    "atlas": "actors",
    "index": 496,
    "anchor": [
@@ -4079,7 +4079,7 @@
     29
    ]
   },
-  "actor.hero_spear_desert_tunic/gather/left/2": {
+  "actor.hero_nomad_armor/walk/right/3": {
    "atlas": "actors",
    "index": 497,
    "anchor": [
@@ -4087,7 +4087,7 @@
     29
    ]
   },
-  "actor.hero_spear_desert_tunic/slash/left/0": {
+  "actor.hero_nomad_armor/idle/right/0": {
    "atlas": "actors",
    "index": 498,
    "anchor": [
@@ -4095,7 +4095,7 @@
     29
    ]
   },
-  "actor.hero_spear_desert_tunic/slash/left/1": {
+  "actor.hero_nomad_armor/idle/right/1": {
    "atlas": "actors",
    "index": 499,
    "anchor": [
@@ -4103,7 +4103,7 @@
     29
    ]
   },
-  "actor.hero_spear_desert_tunic/slash/left/2": {
+  "actor.hero_nomad_armor/gather/right/0": {
    "atlas": "actors",
    "index": 500,
    "anchor": [
@@ -4111,7 +4111,7 @@
     29
    ]
   },
-  "actor.hero_spear_desert_tunic/slash/left/3": {
+  "actor.hero_nomad_armor/gather/right/1": {
    "atlas": "actors",
    "index": 501,
    "anchor": [
@@ -4119,7 +4119,7 @@
     29
    ]
   },
-  "actor.hero_spear_desert_tunic/walk/right/0": {
+  "actor.hero_nomad_armor/gather/right/2": {
    "atlas": "actors",
    "index": 502,
    "anchor": [
@@ -4127,7 +4127,7 @@
     29
    ]
   },
-  "actor.hero_spear_desert_tunic/walk/right/1": {
+  "actor.hero_nomad_armor/walk/up/0": {
    "atlas": "actors",
    "index": 503,
    "anchor": [
@@ -4135,7 +4135,7 @@
     29
    ]
   },
-  "actor.hero_spear_desert_tunic/walk/right/2": {
+  "actor.hero_nomad_armor/walk/up/1": {
    "atlas": "actors",
    "index": 504,
    "anchor": [
@@ -4143,7 +4143,7 @@
     29
    ]
   },
-  "actor.hero_spear_desert_tunic/walk/right/3": {
+  "actor.hero_nomad_armor/walk/up/2": {
    "atlas": "actors",
    "index": 505,
    "anchor": [
@@ -4151,7 +4151,7 @@
     29
    ]
   },
-  "actor.hero_spear_desert_tunic/idle/right/0": {
+  "actor.hero_nomad_armor/walk/up/3": {
    "atlas": "actors",
    "index": 506,
    "anchor": [
@@ -4159,7 +4159,7 @@
     29
    ]
   },
-  "actor.hero_spear_desert_tunic/idle/right/1": {
+  "actor.hero_nomad_armor/idle/up/0": {
    "atlas": "actors",
    "index": 507,
    "anchor": [
@@ -4167,7 +4167,7 @@
     29
    ]
   },
-  "actor.hero_spear_desert_tunic/gather/right/0": {
+  "actor.hero_nomad_armor/idle/up/1": {
    "atlas": "actors",
    "index": 508,
    "anchor": [
@@ -4175,7 +4175,7 @@
     29
    ]
   },
-  "actor.hero_spear_desert_tunic/gather/right/1": {
+  "actor.hero_nomad_armor/gather/up/0": {
    "atlas": "actors",
    "index": 509,
    "anchor": [
@@ -4183,7 +4183,7 @@
     29
    ]
   },
-  "actor.hero_spear_desert_tunic/gather/right/2": {
+  "actor.hero_nomad_armor/gather/up/1": {
    "atlas": "actors",
    "index": 510,
    "anchor": [
@@ -4191,7 +4191,7 @@
     29
    ]
   },
-  "actor.hero_spear_desert_tunic/slash/right/0": {
+  "actor.hero_nomad_armor/gather/up/2": {
    "atlas": "actors",
    "index": 511,
    "anchor": [
@@ -4199,7 +4199,7 @@
     29
    ]
   },
-  "actor.hero_spear_desert_tunic/slash/right/1": {
+  "actor.hero_spear/walk/down/0": {
    "atlas": "actors",
    "index": 512,
    "anchor": [
@@ -4207,7 +4207,7 @@
     29
    ]
   },
-  "actor.hero_spear_desert_tunic/slash/right/2": {
+  "actor.hero_spear/walk/down/1": {
    "atlas": "actors",
    "index": 513,
    "anchor": [
@@ -4215,7 +4215,7 @@
     29
    ]
   },
-  "actor.hero_spear_desert_tunic/slash/right/3": {
+  "actor.hero_spear/walk/down/2": {
    "atlas": "actors",
    "index": 514,
    "anchor": [
@@ -4223,7 +4223,7 @@
     29
    ]
   },
-  "actor.hero_spear_desert_tunic/walk/up/0": {
+  "actor.hero_spear/walk/down/3": {
    "atlas": "actors",
    "index": 515,
    "anchor": [
@@ -4231,7 +4231,7 @@
     29
    ]
   },
-  "actor.hero_spear_desert_tunic/walk/up/1": {
+  "actor.hero_spear/idle/down/0": {
    "atlas": "actors",
    "index": 516,
    "anchor": [
@@ -4239,7 +4239,7 @@
     29
    ]
   },
-  "actor.hero_spear_desert_tunic/walk/up/2": {
+  "actor.hero_spear/idle/down/1": {
    "atlas": "actors",
    "index": 517,
    "anchor": [
@@ -4247,7 +4247,7 @@
     29
    ]
   },
-  "actor.hero_spear_desert_tunic/walk/up/3": {
+  "actor.hero_spear/gather/down/0": {
    "atlas": "actors",
    "index": 518,
    "anchor": [
@@ -4255,7 +4255,7 @@
     29
    ]
   },
-  "actor.hero_spear_desert_tunic/idle/up/0": {
+  "actor.hero_spear/gather/down/1": {
    "atlas": "actors",
    "index": 519,
    "anchor": [
@@ -4263,7 +4263,7 @@
     29
    ]
   },
-  "actor.hero_spear_desert_tunic/idle/up/1": {
+  "actor.hero_spear/gather/down/2": {
    "atlas": "actors",
    "index": 520,
    "anchor": [
@@ -4271,7 +4271,7 @@
     29
    ]
   },
-  "actor.hero_spear_desert_tunic/gather/up/0": {
+  "actor.hero_spear/slash/down/0": {
    "atlas": "actors",
    "index": 521,
    "anchor": [
@@ -4279,7 +4279,7 @@
     29
    ]
   },
-  "actor.hero_spear_desert_tunic/gather/up/1": {
+  "actor.hero_spear/slash/down/1": {
    "atlas": "actors",
    "index": 522,
    "anchor": [
@@ -4287,7 +4287,7 @@
     29
    ]
   },
-  "actor.hero_spear_desert_tunic/gather/up/2": {
+  "actor.hero_spear/slash/down/2": {
    "atlas": "actors",
    "index": 523,
    "anchor": [
@@ -4295,7 +4295,7 @@
     29
    ]
   },
-  "actor.hero_spear_desert_tunic/slash/up/0": {
+  "actor.hero_spear/slash/down/3": {
    "atlas": "actors",
    "index": 524,
    "anchor": [
@@ -4303,7 +4303,7 @@
     29
    ]
   },
-  "actor.hero_spear_desert_tunic/slash/up/1": {
+  "actor.hero_spear/walk/left/0": {
    "atlas": "actors",
    "index": 525,
    "anchor": [
@@ -4311,7 +4311,7 @@
     29
    ]
   },
-  "actor.hero_spear_desert_tunic/slash/up/2": {
+  "actor.hero_spear/walk/left/1": {
    "atlas": "actors",
    "index": 526,
    "anchor": [
@@ -4319,7 +4319,7 @@
     29
    ]
   },
-  "actor.hero_spear_desert_tunic/slash/up/3": {
+  "actor.hero_spear/walk/left/2": {
    "atlas": "actors",
    "index": 527,
    "anchor": [
@@ -4327,7 +4327,7 @@
     29
    ]
   },
-  "actor.hero_spear_mail/walk/down/0": {
+  "actor.hero_spear/walk/left/3": {
    "atlas": "actors",
    "index": 528,
    "anchor": [
@@ -4335,7 +4335,7 @@
     29
    ]
   },
-  "actor.hero_spear_mail/walk/down/1": {
+  "actor.hero_spear/idle/left/0": {
    "atlas": "actors",
    "index": 529,
    "anchor": [
@@ -4343,7 +4343,7 @@
     29
    ]
   },
-  "actor.hero_spear_mail/walk/down/2": {
+  "actor.hero_spear/idle/left/1": {
    "atlas": "actors",
    "index": 530,
    "anchor": [
@@ -4351,7 +4351,7 @@
     29
    ]
   },
-  "actor.hero_spear_mail/walk/down/3": {
+  "actor.hero_spear/gather/left/0": {
    "atlas": "actors",
    "index": 531,
    "anchor": [
@@ -4359,7 +4359,7 @@
     29
    ]
   },
-  "actor.hero_spear_mail/idle/down/0": {
+  "actor.hero_spear/gather/left/1": {
    "atlas": "actors",
    "index": 532,
    "anchor": [
@@ -4367,7 +4367,7 @@
     29
    ]
   },
-  "actor.hero_spear_mail/idle/down/1": {
+  "actor.hero_spear/gather/left/2": {
    "atlas": "actors",
    "index": 533,
    "anchor": [
@@ -4375,7 +4375,7 @@
     29
    ]
   },
-  "actor.hero_spear_mail/gather/down/0": {
+  "actor.hero_spear/slash/left/0": {
    "atlas": "actors",
    "index": 534,
    "anchor": [
@@ -4383,7 +4383,7 @@
     29
    ]
   },
-  "actor.hero_spear_mail/gather/down/1": {
+  "actor.hero_spear/slash/left/1": {
    "atlas": "actors",
    "index": 535,
    "anchor": [
@@ -4391,7 +4391,7 @@
     29
    ]
   },
-  "actor.hero_spear_mail/gather/down/2": {
+  "actor.hero_spear/slash/left/2": {
    "atlas": "actors",
    "index": 536,
    "anchor": [
@@ -4399,7 +4399,7 @@
     29
    ]
   },
-  "actor.hero_spear_mail/slash/down/0": {
+  "actor.hero_spear/slash/left/3": {
    "atlas": "actors",
    "index": 537,
    "anchor": [
@@ -4407,7 +4407,7 @@
     29
    ]
   },
-  "actor.hero_spear_mail/slash/down/1": {
+  "actor.hero_spear/walk/right/0": {
    "atlas": "actors",
    "index": 538,
    "anchor": [
@@ -4415,7 +4415,7 @@
     29
    ]
   },
-  "actor.hero_spear_mail/slash/down/2": {
+  "actor.hero_spear/walk/right/1": {
    "atlas": "actors",
    "index": 539,
    "anchor": [
@@ -4423,7 +4423,7 @@
     29
    ]
   },
-  "actor.hero_spear_mail/slash/down/3": {
+  "actor.hero_spear/walk/right/2": {
    "atlas": "actors",
    "index": 540,
    "anchor": [
@@ -4431,7 +4431,7 @@
     29
    ]
   },
-  "actor.hero_spear_mail/walk/left/0": {
+  "actor.hero_spear/walk/right/3": {
    "atlas": "actors",
    "index": 541,
    "anchor": [
@@ -4439,7 +4439,7 @@
     29
    ]
   },
-  "actor.hero_spear_mail/walk/left/1": {
+  "actor.hero_spear/idle/right/0": {
    "atlas": "actors",
    "index": 542,
    "anchor": [
@@ -4447,7 +4447,7 @@
     29
    ]
   },
-  "actor.hero_spear_mail/walk/left/2": {
+  "actor.hero_spear/idle/right/1": {
    "atlas": "actors",
    "index": 543,
    "anchor": [
@@ -4455,7 +4455,7 @@
     29
    ]
   },
-  "actor.hero_spear_mail/walk/left/3": {
+  "actor.hero_spear/gather/right/0": {
    "atlas": "actors",
    "index": 544,
    "anchor": [
@@ -4463,7 +4463,7 @@
     29
    ]
   },
-  "actor.hero_spear_mail/idle/left/0": {
+  "actor.hero_spear/gather/right/1": {
    "atlas": "actors",
    "index": 545,
    "anchor": [
@@ -4471,7 +4471,7 @@
     29
    ]
   },
-  "actor.hero_spear_mail/idle/left/1": {
+  "actor.hero_spear/gather/right/2": {
    "atlas": "actors",
    "index": 546,
    "anchor": [
@@ -4479,7 +4479,7 @@
     29
    ]
   },
-  "actor.hero_spear_mail/gather/left/0": {
+  "actor.hero_spear/slash/right/0": {
    "atlas": "actors",
    "index": 547,
    "anchor": [
@@ -4487,7 +4487,7 @@
     29
    ]
   },
-  "actor.hero_spear_mail/gather/left/1": {
+  "actor.hero_spear/slash/right/1": {
    "atlas": "actors",
    "index": 548,
    "anchor": [
@@ -4495,7 +4495,7 @@
     29
    ]
   },
-  "actor.hero_spear_mail/gather/left/2": {
+  "actor.hero_spear/slash/right/2": {
    "atlas": "actors",
    "index": 549,
    "anchor": [
@@ -4503,7 +4503,7 @@
     29
    ]
   },
-  "actor.hero_spear_mail/slash/left/0": {
+  "actor.hero_spear/slash/right/3": {
    "atlas": "actors",
    "index": 550,
    "anchor": [
@@ -4511,7 +4511,7 @@
     29
    ]
   },
-  "actor.hero_spear_mail/slash/left/1": {
+  "actor.hero_spear/walk/up/0": {
    "atlas": "actors",
    "index": 551,
    "anchor": [
@@ -4519,7 +4519,7 @@
     29
    ]
   },
-  "actor.hero_spear_mail/slash/left/2": {
+  "actor.hero_spear/walk/up/1": {
    "atlas": "actors",
    "index": 552,
    "anchor": [
@@ -4527,7 +4527,7 @@
     29
    ]
   },
-  "actor.hero_spear_mail/slash/left/3": {
+  "actor.hero_spear/walk/up/2": {
    "atlas": "actors",
    "index": 553,
    "anchor": [
@@ -4535,7 +4535,7 @@
     29
    ]
   },
-  "actor.hero_spear_mail/walk/right/0": {
+  "actor.hero_spear/walk/up/3": {
    "atlas": "actors",
    "index": 554,
    "anchor": [
@@ -4543,7 +4543,7 @@
     29
    ]
   },
-  "actor.hero_spear_mail/walk/right/1": {
+  "actor.hero_spear/idle/up/0": {
    "atlas": "actors",
    "index": 555,
    "anchor": [
@@ -4551,7 +4551,7 @@
     29
    ]
   },
-  "actor.hero_spear_mail/walk/right/2": {
+  "actor.hero_spear/idle/up/1": {
    "atlas": "actors",
    "index": 556,
    "anchor": [
@@ -4559,7 +4559,7 @@
     29
    ]
   },
-  "actor.hero_spear_mail/walk/right/3": {
+  "actor.hero_spear/gather/up/0": {
    "atlas": "actors",
    "index": 557,
    "anchor": [
@@ -4567,7 +4567,7 @@
     29
    ]
   },
-  "actor.hero_spear_mail/idle/right/0": {
+  "actor.hero_spear/gather/up/1": {
    "atlas": "actors",
    "index": 558,
    "anchor": [
@@ -4575,7 +4575,7 @@
     29
    ]
   },
-  "actor.hero_spear_mail/idle/right/1": {
+  "actor.hero_spear/gather/up/2": {
    "atlas": "actors",
    "index": 559,
    "anchor": [
@@ -4583,7 +4583,7 @@
     29
    ]
   },
-  "actor.hero_spear_mail/gather/right/0": {
+  "actor.hero_spear/slash/up/0": {
    "atlas": "actors",
    "index": 560,
    "anchor": [
@@ -4591,7 +4591,7 @@
     29
    ]
   },
-  "actor.hero_spear_mail/gather/right/1": {
+  "actor.hero_spear/slash/up/1": {
    "atlas": "actors",
    "index": 561,
    "anchor": [
@@ -4599,7 +4599,7 @@
     29
    ]
   },
-  "actor.hero_spear_mail/gather/right/2": {
+  "actor.hero_spear/slash/up/2": {
    "atlas": "actors",
    "index": 562,
    "anchor": [
@@ -4607,7 +4607,7 @@
     29
    ]
   },
-  "actor.hero_spear_mail/slash/right/0": {
+  "actor.hero_spear/slash/up/3": {
    "atlas": "actors",
    "index": 563,
    "anchor": [
@@ -4615,7 +4615,7 @@
     29
    ]
   },
-  "actor.hero_spear_mail/slash/right/1": {
+  "actor.hero_spear_desert_tunic/walk/down/0": {
    "atlas": "actors",
    "index": 564,
    "anchor": [
@@ -4623,7 +4623,7 @@
     29
    ]
   },
-  "actor.hero_spear_mail/slash/right/2": {
+  "actor.hero_spear_desert_tunic/walk/down/1": {
    "atlas": "actors",
    "index": 565,
    "anchor": [
@@ -4631,7 +4631,7 @@
     29
    ]
   },
-  "actor.hero_spear_mail/slash/right/3": {
+  "actor.hero_spear_desert_tunic/walk/down/2": {
    "atlas": "actors",
    "index": 566,
    "anchor": [
@@ -4639,7 +4639,7 @@
     29
    ]
   },
-  "actor.hero_spear_mail/walk/up/0": {
+  "actor.hero_spear_desert_tunic/walk/down/3": {
    "atlas": "actors",
    "index": 567,
    "anchor": [
@@ -4647,7 +4647,7 @@
     29
    ]
   },
-  "actor.hero_spear_mail/walk/up/1": {
+  "actor.hero_spear_desert_tunic/idle/down/0": {
    "atlas": "actors",
    "index": 568,
    "anchor": [
@@ -4655,7 +4655,7 @@
     29
    ]
   },
-  "actor.hero_spear_mail/walk/up/2": {
+  "actor.hero_spear_desert_tunic/idle/down/1": {
    "atlas": "actors",
    "index": 569,
    "anchor": [
@@ -4663,7 +4663,7 @@
     29
    ]
   },
-  "actor.hero_spear_mail/walk/up/3": {
+  "actor.hero_spear_desert_tunic/gather/down/0": {
    "atlas": "actors",
    "index": 570,
    "anchor": [
@@ -4671,7 +4671,7 @@
     29
    ]
   },
-  "actor.hero_spear_mail/idle/up/0": {
+  "actor.hero_spear_desert_tunic/gather/down/1": {
    "atlas": "actors",
    "index": 571,
    "anchor": [
@@ -4679,7 +4679,7 @@
     29
    ]
   },
-  "actor.hero_spear_mail/idle/up/1": {
+  "actor.hero_spear_desert_tunic/gather/down/2": {
    "atlas": "actors",
    "index": 572,
    "anchor": [
@@ -4687,7 +4687,7 @@
     29
    ]
   },
-  "actor.hero_spear_mail/gather/up/0": {
+  "actor.hero_spear_desert_tunic/slash/down/0": {
    "atlas": "actors",
    "index": 573,
    "anchor": [
@@ -4695,7 +4695,7 @@
     29
    ]
   },
-  "actor.hero_spear_mail/gather/up/1": {
+  "actor.hero_spear_desert_tunic/slash/down/1": {
    "atlas": "actors",
    "index": 574,
    "anchor": [
@@ -4703,7 +4703,7 @@
     29
    ]
   },
-  "actor.hero_spear_mail/gather/up/2": {
+  "actor.hero_spear_desert_tunic/slash/down/2": {
    "atlas": "actors",
    "index": 575,
    "anchor": [
@@ -4711,7 +4711,7 @@
     29
    ]
   },
-  "actor.hero_spear_mail/slash/up/0": {
+  "actor.hero_spear_desert_tunic/slash/down/3": {
    "atlas": "actors",
    "index": 576,
    "anchor": [
@@ -4719,7 +4719,7 @@
     29
    ]
   },
-  "actor.hero_spear_mail/slash/up/1": {
+  "actor.hero_spear_desert_tunic/walk/left/0": {
    "atlas": "actors",
    "index": 577,
    "anchor": [
@@ -4727,7 +4727,7 @@
     29
    ]
   },
-  "actor.hero_spear_mail/slash/up/2": {
+  "actor.hero_spear_desert_tunic/walk/left/1": {
    "atlas": "actors",
    "index": 578,
    "anchor": [
@@ -4735,7 +4735,7 @@
     29
    ]
   },
-  "actor.hero_spear_mail/slash/up/3": {
+  "actor.hero_spear_desert_tunic/walk/left/2": {
    "atlas": "actors",
    "index": 579,
    "anchor": [
@@ -4743,7 +4743,7 @@
     29
    ]
   },
-  "actor.hero_sword/walk/down/0": {
+  "actor.hero_spear_desert_tunic/walk/left/3": {
    "atlas": "actors",
    "index": 580,
    "anchor": [
@@ -4751,7 +4751,7 @@
     29
    ]
   },
-  "actor.hero_sword/walk/down/1": {
+  "actor.hero_spear_desert_tunic/idle/left/0": {
    "atlas": "actors",
    "index": 581,
    "anchor": [
@@ -4759,7 +4759,7 @@
     29
    ]
   },
-  "actor.hero_sword/walk/down/2": {
+  "actor.hero_spear_desert_tunic/idle/left/1": {
    "atlas": "actors",
    "index": 582,
    "anchor": [
@@ -4767,7 +4767,7 @@
     29
    ]
   },
-  "actor.hero_sword/walk/down/3": {
+  "actor.hero_spear_desert_tunic/gather/left/0": {
    "atlas": "actors",
    "index": 583,
    "anchor": [
@@ -4775,7 +4775,7 @@
     29
    ]
   },
-  "actor.hero_sword/idle/down/0": {
+  "actor.hero_spear_desert_tunic/gather/left/1": {
    "atlas": "actors",
    "index": 584,
    "anchor": [
@@ -4783,7 +4783,7 @@
     29
    ]
   },
-  "actor.hero_sword/idle/down/1": {
+  "actor.hero_spear_desert_tunic/gather/left/2": {
    "atlas": "actors",
    "index": 585,
    "anchor": [
@@ -4791,7 +4791,7 @@
     29
    ]
   },
-  "actor.hero_sword/gather/down/0": {
+  "actor.hero_spear_desert_tunic/slash/left/0": {
    "atlas": "actors",
    "index": 586,
    "anchor": [
@@ -4799,7 +4799,7 @@
     29
    ]
   },
-  "actor.hero_sword/gather/down/1": {
+  "actor.hero_spear_desert_tunic/slash/left/1": {
    "atlas": "actors",
    "index": 587,
    "anchor": [
@@ -4807,7 +4807,7 @@
     29
    ]
   },
-  "actor.hero_sword/gather/down/2": {
+  "actor.hero_spear_desert_tunic/slash/left/2": {
    "atlas": "actors",
    "index": 588,
    "anchor": [
@@ -4815,7 +4815,7 @@
     29
    ]
   },
-  "actor.hero_sword/slash/down/0": {
+  "actor.hero_spear_desert_tunic/slash/left/3": {
    "atlas": "actors",
    "index": 589,
    "anchor": [
@@ -4823,7 +4823,7 @@
     29
    ]
   },
-  "actor.hero_sword/slash/down/1": {
+  "actor.hero_spear_desert_tunic/walk/right/0": {
    "atlas": "actors",
    "index": 590,
    "anchor": [
@@ -4831,7 +4831,7 @@
     29
    ]
   },
-  "actor.hero_sword/slash/down/2": {
+  "actor.hero_spear_desert_tunic/walk/right/1": {
    "atlas": "actors",
    "index": 591,
    "anchor": [
@@ -4839,7 +4839,7 @@
     29
    ]
   },
-  "actor.hero_sword/slash/down/3": {
+  "actor.hero_spear_desert_tunic/walk/right/2": {
    "atlas": "actors",
    "index": 592,
    "anchor": [
@@ -4847,7 +4847,7 @@
     29
    ]
   },
-  "actor.hero_sword/walk/left/0": {
+  "actor.hero_spear_desert_tunic/walk/right/3": {
    "atlas": "actors",
    "index": 593,
    "anchor": [
@@ -4855,7 +4855,7 @@
     29
    ]
   },
-  "actor.hero_sword/walk/left/1": {
+  "actor.hero_spear_desert_tunic/idle/right/0": {
    "atlas": "actors",
    "index": 594,
    "anchor": [
@@ -4863,7 +4863,7 @@
     29
    ]
   },
-  "actor.hero_sword/walk/left/2": {
+  "actor.hero_spear_desert_tunic/idle/right/1": {
    "atlas": "actors",
    "index": 595,
    "anchor": [
@@ -4871,7 +4871,7 @@
     29
    ]
   },
-  "actor.hero_sword/walk/left/3": {
+  "actor.hero_spear_desert_tunic/gather/right/0": {
    "atlas": "actors",
    "index": 596,
    "anchor": [
@@ -4879,7 +4879,7 @@
     29
    ]
   },
-  "actor.hero_sword/idle/left/0": {
+  "actor.hero_spear_desert_tunic/gather/right/1": {
    "atlas": "actors",
    "index": 597,
    "anchor": [
@@ -4887,7 +4887,7 @@
     29
    ]
   },
-  "actor.hero_sword/idle/left/1": {
+  "actor.hero_spear_desert_tunic/gather/right/2": {
    "atlas": "actors",
    "index": 598,
    "anchor": [
@@ -4895,7 +4895,7 @@
     29
    ]
   },
-  "actor.hero_sword/gather/left/0": {
+  "actor.hero_spear_desert_tunic/slash/right/0": {
    "atlas": "actors",
    "index": 599,
    "anchor": [
@@ -4903,7 +4903,7 @@
     29
    ]
   },
-  "actor.hero_sword/gather/left/1": {
+  "actor.hero_spear_desert_tunic/slash/right/1": {
    "atlas": "actors",
    "index": 600,
    "anchor": [
@@ -4911,7 +4911,7 @@
     29
    ]
   },
-  "actor.hero_sword/gather/left/2": {
+  "actor.hero_spear_desert_tunic/slash/right/2": {
    "atlas": "actors",
    "index": 601,
    "anchor": [
@@ -4919,7 +4919,7 @@
     29
    ]
   },
-  "actor.hero_sword/slash/left/0": {
+  "actor.hero_spear_desert_tunic/slash/right/3": {
    "atlas": "actors",
    "index": 602,
    "anchor": [
@@ -4927,7 +4927,7 @@
     29
    ]
   },
-  "actor.hero_sword/slash/left/1": {
+  "actor.hero_spear_desert_tunic/walk/up/0": {
    "atlas": "actors",
    "index": 603,
    "anchor": [
@@ -4935,7 +4935,7 @@
     29
    ]
   },
-  "actor.hero_sword/slash/left/2": {
+  "actor.hero_spear_desert_tunic/walk/up/1": {
    "atlas": "actors",
    "index": 604,
    "anchor": [
@@ -4943,7 +4943,7 @@
     29
    ]
   },
-  "actor.hero_sword/slash/left/3": {
+  "actor.hero_spear_desert_tunic/walk/up/2": {
    "atlas": "actors",
    "index": 605,
    "anchor": [
@@ -4951,7 +4951,7 @@
     29
    ]
   },
-  "actor.hero_sword/walk/right/0": {
+  "actor.hero_spear_desert_tunic/walk/up/3": {
    "atlas": "actors",
    "index": 606,
    "anchor": [
@@ -4959,7 +4959,7 @@
     29
    ]
   },
-  "actor.hero_sword/walk/right/1": {
+  "actor.hero_spear_desert_tunic/idle/up/0": {
    "atlas": "actors",
    "index": 607,
    "anchor": [
@@ -4967,7 +4967,7 @@
     29
    ]
   },
-  "actor.hero_sword/walk/right/2": {
+  "actor.hero_spear_desert_tunic/idle/up/1": {
    "atlas": "actors",
    "index": 608,
    "anchor": [
@@ -4975,7 +4975,7 @@
     29
    ]
   },
-  "actor.hero_sword/walk/right/3": {
+  "actor.hero_spear_desert_tunic/gather/up/0": {
    "atlas": "actors",
    "index": 609,
    "anchor": [
@@ -4983,7 +4983,7 @@
     29
    ]
   },
-  "actor.hero_sword/idle/right/0": {
+  "actor.hero_spear_desert_tunic/gather/up/1": {
    "atlas": "actors",
    "index": 610,
    "anchor": [
@@ -4991,7 +4991,7 @@
     29
    ]
   },
-  "actor.hero_sword/idle/right/1": {
+  "actor.hero_spear_desert_tunic/gather/up/2": {
    "atlas": "actors",
    "index": 611,
    "anchor": [
@@ -4999,7 +4999,7 @@
     29
    ]
   },
-  "actor.hero_sword/gather/right/0": {
+  "actor.hero_spear_desert_tunic/slash/up/0": {
    "atlas": "actors",
    "index": 612,
    "anchor": [
@@ -5007,7 +5007,7 @@
     29
    ]
   },
-  "actor.hero_sword/gather/right/1": {
+  "actor.hero_spear_desert_tunic/slash/up/1": {
    "atlas": "actors",
    "index": 613,
    "anchor": [
@@ -5015,7 +5015,7 @@
     29
    ]
   },
-  "actor.hero_sword/gather/right/2": {
+  "actor.hero_spear_desert_tunic/slash/up/2": {
    "atlas": "actors",
    "index": 614,
    "anchor": [
@@ -5023,7 +5023,7 @@
     29
    ]
   },
-  "actor.hero_sword/slash/right/0": {
+  "actor.hero_spear_desert_tunic/slash/up/3": {
    "atlas": "actors",
    "index": 615,
    "anchor": [
@@ -5031,7 +5031,7 @@
     29
    ]
   },
-  "actor.hero_sword/slash/right/1": {
+  "actor.hero_spear_mail/walk/down/0": {
    "atlas": "actors",
    "index": 616,
    "anchor": [
@@ -5039,7 +5039,7 @@
     29
    ]
   },
-  "actor.hero_sword/slash/right/2": {
+  "actor.hero_spear_mail/walk/down/1": {
    "atlas": "actors",
    "index": 617,
    "anchor": [
@@ -5047,7 +5047,7 @@
     29
    ]
   },
-  "actor.hero_sword/slash/right/3": {
+  "actor.hero_spear_mail/walk/down/2": {
    "atlas": "actors",
    "index": 618,
    "anchor": [
@@ -5055,7 +5055,7 @@
     29
    ]
   },
-  "actor.hero_sword/walk/up/0": {
+  "actor.hero_spear_mail/walk/down/3": {
    "atlas": "actors",
    "index": 619,
    "anchor": [
@@ -5063,7 +5063,7 @@
     29
    ]
   },
-  "actor.hero_sword/walk/up/1": {
+  "actor.hero_spear_mail/idle/down/0": {
    "atlas": "actors",
    "index": 620,
    "anchor": [
@@ -5071,7 +5071,7 @@
     29
    ]
   },
-  "actor.hero_sword/walk/up/2": {
+  "actor.hero_spear_mail/idle/down/1": {
    "atlas": "actors",
    "index": 621,
    "anchor": [
@@ -5079,7 +5079,7 @@
     29
    ]
   },
-  "actor.hero_sword/walk/up/3": {
+  "actor.hero_spear_mail/gather/down/0": {
    "atlas": "actors",
    "index": 622,
    "anchor": [
@@ -5087,7 +5087,7 @@
     29
    ]
   },
-  "actor.hero_sword/idle/up/0": {
+  "actor.hero_spear_mail/gather/down/1": {
    "atlas": "actors",
    "index": 623,
    "anchor": [
@@ -5095,7 +5095,7 @@
     29
    ]
   },
-  "actor.hero_sword/idle/up/1": {
+  "actor.hero_spear_mail/gather/down/2": {
    "atlas": "actors",
    "index": 624,
    "anchor": [
@@ -5103,7 +5103,7 @@
     29
    ]
   },
-  "actor.hero_sword/gather/up/0": {
+  "actor.hero_spear_mail/slash/down/0": {
    "atlas": "actors",
    "index": 625,
    "anchor": [
@@ -5111,7 +5111,7 @@
     29
    ]
   },
-  "actor.hero_sword/gather/up/1": {
+  "actor.hero_spear_mail/slash/down/1": {
    "atlas": "actors",
    "index": 626,
    "anchor": [
@@ -5119,7 +5119,7 @@
     29
    ]
   },
-  "actor.hero_sword/gather/up/2": {
+  "actor.hero_spear_mail/slash/down/2": {
    "atlas": "actors",
    "index": 627,
    "anchor": [
@@ -5127,7 +5127,7 @@
     29
    ]
   },
-  "actor.hero_sword/slash/up/0": {
+  "actor.hero_spear_mail/slash/down/3": {
    "atlas": "actors",
    "index": 628,
    "anchor": [
@@ -5135,7 +5135,7 @@
     29
    ]
   },
-  "actor.hero_sword/slash/up/1": {
+  "actor.hero_spear_mail/walk/left/0": {
    "atlas": "actors",
    "index": 629,
    "anchor": [
@@ -5143,7 +5143,7 @@
     29
    ]
   },
-  "actor.hero_sword/slash/up/2": {
+  "actor.hero_spear_mail/walk/left/1": {
    "atlas": "actors",
    "index": 630,
    "anchor": [
@@ -5151,7 +5151,7 @@
     29
    ]
   },
-  "actor.hero_sword/slash/up/3": {
+  "actor.hero_spear_mail/walk/left/2": {
    "atlas": "actors",
    "index": 631,
    "anchor": [
@@ -5159,7 +5159,7 @@
     29
    ]
   },
-  "actor.hero_sword_desert_tunic/walk/down/0": {
+  "actor.hero_spear_mail/walk/left/3": {
    "atlas": "actors",
    "index": 632,
    "anchor": [
@@ -5167,7 +5167,7 @@
     29
    ]
   },
-  "actor.hero_sword_desert_tunic/walk/down/1": {
+  "actor.hero_spear_mail/idle/left/0": {
    "atlas": "actors",
    "index": 633,
    "anchor": [
@@ -5175,7 +5175,7 @@
     29
    ]
   },
-  "actor.hero_sword_desert_tunic/walk/down/2": {
+  "actor.hero_spear_mail/idle/left/1": {
    "atlas": "actors",
    "index": 634,
    "anchor": [
@@ -5183,7 +5183,7 @@
     29
    ]
   },
-  "actor.hero_sword_desert_tunic/walk/down/3": {
+  "actor.hero_spear_mail/gather/left/0": {
    "atlas": "actors",
    "index": 635,
    "anchor": [
@@ -5191,7 +5191,7 @@
     29
    ]
   },
-  "actor.hero_sword_desert_tunic/idle/down/0": {
+  "actor.hero_spear_mail/gather/left/1": {
    "atlas": "actors",
    "index": 636,
    "anchor": [
@@ -5199,7 +5199,7 @@
     29
    ]
   },
-  "actor.hero_sword_desert_tunic/idle/down/1": {
+  "actor.hero_spear_mail/gather/left/2": {
    "atlas": "actors",
    "index": 637,
    "anchor": [
@@ -5207,7 +5207,7 @@
     29
    ]
   },
-  "actor.hero_sword_desert_tunic/gather/down/0": {
+  "actor.hero_spear_mail/slash/left/0": {
    "atlas": "actors",
    "index": 638,
    "anchor": [
@@ -5215,7 +5215,7 @@
     29
    ]
   },
-  "actor.hero_sword_desert_tunic/gather/down/1": {
+  "actor.hero_spear_mail/slash/left/1": {
    "atlas": "actors",
    "index": 639,
    "anchor": [
@@ -5223,7 +5223,7 @@
     29
    ]
   },
-  "actor.hero_sword_desert_tunic/gather/down/2": {
+  "actor.hero_spear_mail/slash/left/2": {
    "atlas": "actors",
    "index": 640,
    "anchor": [
@@ -5231,7 +5231,7 @@
     29
    ]
   },
-  "actor.hero_sword_desert_tunic/slash/down/0": {
+  "actor.hero_spear_mail/slash/left/3": {
    "atlas": "actors",
    "index": 641,
    "anchor": [
@@ -5239,7 +5239,7 @@
     29
    ]
   },
-  "actor.hero_sword_desert_tunic/slash/down/1": {
+  "actor.hero_spear_mail/walk/right/0": {
    "atlas": "actors",
    "index": 642,
    "anchor": [
@@ -5247,7 +5247,7 @@
     29
    ]
   },
-  "actor.hero_sword_desert_tunic/slash/down/2": {
+  "actor.hero_spear_mail/walk/right/1": {
    "atlas": "actors",
    "index": 643,
    "anchor": [
@@ -5255,7 +5255,7 @@
     29
    ]
   },
-  "actor.hero_sword_desert_tunic/slash/down/3": {
+  "actor.hero_spear_mail/walk/right/2": {
    "atlas": "actors",
    "index": 644,
    "anchor": [
@@ -5263,7 +5263,7 @@
     29
    ]
   },
-  "actor.hero_sword_desert_tunic/walk/left/0": {
+  "actor.hero_spear_mail/walk/right/3": {
    "atlas": "actors",
    "index": 645,
    "anchor": [
@@ -5271,7 +5271,7 @@
     29
    ]
   },
-  "actor.hero_sword_desert_tunic/walk/left/1": {
+  "actor.hero_spear_mail/idle/right/0": {
    "atlas": "actors",
    "index": 646,
    "anchor": [
@@ -5279,7 +5279,7 @@
     29
    ]
   },
-  "actor.hero_sword_desert_tunic/walk/left/2": {
+  "actor.hero_spear_mail/idle/right/1": {
    "atlas": "actors",
    "index": 647,
    "anchor": [
@@ -5287,7 +5287,7 @@
     29
    ]
   },
-  "actor.hero_sword_desert_tunic/walk/left/3": {
+  "actor.hero_spear_mail/gather/right/0": {
    "atlas": "actors",
    "index": 648,
    "anchor": [
@@ -5295,7 +5295,7 @@
     29
    ]
   },
-  "actor.hero_sword_desert_tunic/idle/left/0": {
+  "actor.hero_spear_mail/gather/right/1": {
    "atlas": "actors",
    "index": 649,
    "anchor": [
@@ -5303,7 +5303,7 @@
     29
    ]
   },
-  "actor.hero_sword_desert_tunic/idle/left/1": {
+  "actor.hero_spear_mail/gather/right/2": {
    "atlas": "actors",
    "index": 650,
    "anchor": [
@@ -5311,7 +5311,7 @@
     29
    ]
   },
-  "actor.hero_sword_desert_tunic/gather/left/0": {
+  "actor.hero_spear_mail/slash/right/0": {
    "atlas": "actors",
    "index": 651,
    "anchor": [
@@ -5319,7 +5319,7 @@
     29
    ]
   },
-  "actor.hero_sword_desert_tunic/gather/left/1": {
+  "actor.hero_spear_mail/slash/right/1": {
    "atlas": "actors",
    "index": 652,
    "anchor": [
@@ -5327,7 +5327,7 @@
     29
    ]
   },
-  "actor.hero_sword_desert_tunic/gather/left/2": {
+  "actor.hero_spear_mail/slash/right/2": {
    "atlas": "actors",
    "index": 653,
    "anchor": [
@@ -5335,7 +5335,7 @@
     29
    ]
   },
-  "actor.hero_sword_desert_tunic/slash/left/0": {
+  "actor.hero_spear_mail/slash/right/3": {
    "atlas": "actors",
    "index": 654,
    "anchor": [
@@ -5343,7 +5343,7 @@
     29
    ]
   },
-  "actor.hero_sword_desert_tunic/slash/left/1": {
+  "actor.hero_spear_mail/walk/up/0": {
    "atlas": "actors",
    "index": 655,
    "anchor": [
@@ -5351,7 +5351,7 @@
     29
    ]
   },
-  "actor.hero_sword_desert_tunic/slash/left/2": {
+  "actor.hero_spear_mail/walk/up/1": {
    "atlas": "actors",
    "index": 656,
    "anchor": [
@@ -5359,7 +5359,7 @@
     29
    ]
   },
-  "actor.hero_sword_desert_tunic/slash/left/3": {
+  "actor.hero_spear_mail/walk/up/2": {
    "atlas": "actors",
    "index": 657,
    "anchor": [
@@ -5367,7 +5367,7 @@
     29
    ]
   },
-  "actor.hero_sword_desert_tunic/walk/right/0": {
+  "actor.hero_spear_mail/walk/up/3": {
    "atlas": "actors",
    "index": 658,
    "anchor": [
@@ -5375,7 +5375,7 @@
     29
    ]
   },
-  "actor.hero_sword_desert_tunic/walk/right/1": {
+  "actor.hero_spear_mail/idle/up/0": {
    "atlas": "actors",
    "index": 659,
    "anchor": [
@@ -5383,7 +5383,7 @@
     29
    ]
   },
-  "actor.hero_sword_desert_tunic/walk/right/2": {
+  "actor.hero_spear_mail/idle/up/1": {
    "atlas": "actors",
    "index": 660,
    "anchor": [
@@ -5391,7 +5391,7 @@
     29
    ]
   },
-  "actor.hero_sword_desert_tunic/walk/right/3": {
+  "actor.hero_spear_mail/gather/up/0": {
    "atlas": "actors",
    "index": 661,
    "anchor": [
@@ -5399,7 +5399,7 @@
     29
    ]
   },
-  "actor.hero_sword_desert_tunic/idle/right/0": {
+  "actor.hero_spear_mail/gather/up/1": {
    "atlas": "actors",
    "index": 662,
    "anchor": [
@@ -5407,7 +5407,7 @@
     29
    ]
   },
-  "actor.hero_sword_desert_tunic/idle/right/1": {
+  "actor.hero_spear_mail/gather/up/2": {
    "atlas": "actors",
    "index": 663,
    "anchor": [
@@ -5415,7 +5415,7 @@
     29
    ]
   },
-  "actor.hero_sword_desert_tunic/gather/right/0": {
+  "actor.hero_spear_mail/slash/up/0": {
    "atlas": "actors",
    "index": 664,
    "anchor": [
@@ -5423,7 +5423,7 @@
     29
    ]
   },
-  "actor.hero_sword_desert_tunic/gather/right/1": {
+  "actor.hero_spear_mail/slash/up/1": {
    "atlas": "actors",
    "index": 665,
    "anchor": [
@@ -5431,7 +5431,7 @@
     29
    ]
   },
-  "actor.hero_sword_desert_tunic/gather/right/2": {
+  "actor.hero_spear_mail/slash/up/2": {
    "atlas": "actors",
    "index": 666,
    "anchor": [
@@ -5439,7 +5439,7 @@
     29
    ]
   },
-  "actor.hero_sword_desert_tunic/slash/right/0": {
+  "actor.hero_spear_mail/slash/up/3": {
    "atlas": "actors",
    "index": 667,
    "anchor": [
@@ -5447,7 +5447,7 @@
     29
    ]
   },
-  "actor.hero_sword_desert_tunic/slash/right/1": {
+  "actor.hero_spear_nomad_armor/walk/down/0": {
    "atlas": "actors",
    "index": 668,
    "anchor": [
@@ -5455,7 +5455,7 @@
     29
    ]
   },
-  "actor.hero_sword_desert_tunic/slash/right/2": {
+  "actor.hero_spear_nomad_armor/walk/down/1": {
    "atlas": "actors",
    "index": 669,
    "anchor": [
@@ -5463,7 +5463,7 @@
     29
    ]
   },
-  "actor.hero_sword_desert_tunic/slash/right/3": {
+  "actor.hero_spear_nomad_armor/walk/down/2": {
    "atlas": "actors",
    "index": 670,
    "anchor": [
@@ -5471,7 +5471,7 @@
     29
    ]
   },
-  "actor.hero_sword_desert_tunic/walk/up/0": {
+  "actor.hero_spear_nomad_armor/walk/down/3": {
    "atlas": "actors",
    "index": 671,
    "anchor": [
@@ -5479,7 +5479,7 @@
     29
    ]
   },
-  "actor.hero_sword_desert_tunic/walk/up/1": {
+  "actor.hero_spear_nomad_armor/idle/down/0": {
    "atlas": "actors",
    "index": 672,
    "anchor": [
@@ -5487,7 +5487,7 @@
     29
    ]
   },
-  "actor.hero_sword_desert_tunic/walk/up/2": {
+  "actor.hero_spear_nomad_armor/idle/down/1": {
    "atlas": "actors",
    "index": 673,
    "anchor": [
@@ -5495,7 +5495,7 @@
     29
    ]
   },
-  "actor.hero_sword_desert_tunic/walk/up/3": {
+  "actor.hero_spear_nomad_armor/gather/down/0": {
    "atlas": "actors",
    "index": 674,
    "anchor": [
@@ -5503,7 +5503,7 @@
     29
    ]
   },
-  "actor.hero_sword_desert_tunic/idle/up/0": {
+  "actor.hero_spear_nomad_armor/gather/down/1": {
    "atlas": "actors",
    "index": 675,
    "anchor": [
@@ -5511,7 +5511,7 @@
     29
    ]
   },
-  "actor.hero_sword_desert_tunic/idle/up/1": {
+  "actor.hero_spear_nomad_armor/gather/down/2": {
    "atlas": "actors",
    "index": 676,
    "anchor": [
@@ -5519,7 +5519,7 @@
     29
    ]
   },
-  "actor.hero_sword_desert_tunic/gather/up/0": {
+  "actor.hero_spear_nomad_armor/slash/down/0": {
    "atlas": "actors",
    "index": 677,
    "anchor": [
@@ -5527,7 +5527,7 @@
     29
    ]
   },
-  "actor.hero_sword_desert_tunic/gather/up/1": {
+  "actor.hero_spear_nomad_armor/slash/down/1": {
    "atlas": "actors",
    "index": 678,
    "anchor": [
@@ -5535,7 +5535,7 @@
     29
    ]
   },
-  "actor.hero_sword_desert_tunic/gather/up/2": {
+  "actor.hero_spear_nomad_armor/slash/down/2": {
    "atlas": "actors",
    "index": 679,
    "anchor": [
@@ -5543,7 +5543,7 @@
     29
    ]
   },
-  "actor.hero_sword_desert_tunic/slash/up/0": {
+  "actor.hero_spear_nomad_armor/slash/down/3": {
    "atlas": "actors",
    "index": 680,
    "anchor": [
@@ -5551,7 +5551,7 @@
     29
    ]
   },
-  "actor.hero_sword_desert_tunic/slash/up/1": {
+  "actor.hero_spear_nomad_armor/walk/left/0": {
    "atlas": "actors",
    "index": 681,
    "anchor": [
@@ -5559,7 +5559,7 @@
     29
    ]
   },
-  "actor.hero_sword_desert_tunic/slash/up/2": {
+  "actor.hero_spear_nomad_armor/walk/left/1": {
    "atlas": "actors",
    "index": 682,
    "anchor": [
@@ -5567,7 +5567,7 @@
     29
    ]
   },
-  "actor.hero_sword_desert_tunic/slash/up/3": {
+  "actor.hero_spear_nomad_armor/walk/left/2": {
    "atlas": "actors",
    "index": 683,
    "anchor": [
@@ -5575,7 +5575,7 @@
     29
    ]
   },
-  "actor.hero_sword_mail/walk/down/0": {
+  "actor.hero_spear_nomad_armor/walk/left/3": {
    "atlas": "actors",
    "index": 684,
    "anchor": [
@@ -5583,7 +5583,7 @@
     29
    ]
   },
-  "actor.hero_sword_mail/walk/down/1": {
+  "actor.hero_spear_nomad_armor/idle/left/0": {
    "atlas": "actors",
    "index": 685,
    "anchor": [
@@ -5591,7 +5591,7 @@
     29
    ]
   },
-  "actor.hero_sword_mail/walk/down/2": {
+  "actor.hero_spear_nomad_armor/idle/left/1": {
    "atlas": "actors",
    "index": 686,
    "anchor": [
@@ -5599,7 +5599,7 @@
     29
    ]
   },
-  "actor.hero_sword_mail/walk/down/3": {
+  "actor.hero_spear_nomad_armor/gather/left/0": {
    "atlas": "actors",
    "index": 687,
    "anchor": [
@@ -5607,7 +5607,7 @@
     29
    ]
   },
-  "actor.hero_sword_mail/idle/down/0": {
+  "actor.hero_spear_nomad_armor/gather/left/1": {
    "atlas": "actors",
    "index": 688,
    "anchor": [
@@ -5615,7 +5615,7 @@
     29
    ]
   },
-  "actor.hero_sword_mail/idle/down/1": {
+  "actor.hero_spear_nomad_armor/gather/left/2": {
    "atlas": "actors",
    "index": 689,
    "anchor": [
@@ -5623,7 +5623,7 @@
     29
    ]
   },
-  "actor.hero_sword_mail/gather/down/0": {
+  "actor.hero_spear_nomad_armor/slash/left/0": {
    "atlas": "actors",
    "index": 690,
    "anchor": [
@@ -5631,7 +5631,7 @@
     29
    ]
   },
-  "actor.hero_sword_mail/gather/down/1": {
+  "actor.hero_spear_nomad_armor/slash/left/1": {
    "atlas": "actors",
    "index": 691,
    "anchor": [
@@ -5639,7 +5639,7 @@
     29
    ]
   },
-  "actor.hero_sword_mail/gather/down/2": {
+  "actor.hero_spear_nomad_armor/slash/left/2": {
    "atlas": "actors",
    "index": 692,
    "anchor": [
@@ -5647,7 +5647,7 @@
     29
    ]
   },
-  "actor.hero_sword_mail/slash/down/0": {
+  "actor.hero_spear_nomad_armor/slash/left/3": {
    "atlas": "actors",
    "index": 693,
    "anchor": [
@@ -5655,7 +5655,7 @@
     29
    ]
   },
-  "actor.hero_sword_mail/slash/down/1": {
+  "actor.hero_spear_nomad_armor/walk/right/0": {
    "atlas": "actors",
    "index": 694,
    "anchor": [
@@ -5663,7 +5663,7 @@
     29
    ]
   },
-  "actor.hero_sword_mail/slash/down/2": {
+  "actor.hero_spear_nomad_armor/walk/right/1": {
    "atlas": "actors",
    "index": 695,
    "anchor": [
@@ -5671,7 +5671,7 @@
     29
    ]
   },
-  "actor.hero_sword_mail/slash/down/3": {
+  "actor.hero_spear_nomad_armor/walk/right/2": {
    "atlas": "actors",
    "index": 696,
    "anchor": [
@@ -5679,7 +5679,7 @@
     29
    ]
   },
-  "actor.hero_sword_mail/walk/left/0": {
+  "actor.hero_spear_nomad_armor/walk/right/3": {
    "atlas": "actors",
    "index": 697,
    "anchor": [
@@ -5687,7 +5687,7 @@
     29
    ]
   },
-  "actor.hero_sword_mail/walk/left/1": {
+  "actor.hero_spear_nomad_armor/idle/right/0": {
    "atlas": "actors",
    "index": 698,
    "anchor": [
@@ -5695,7 +5695,7 @@
     29
    ]
   },
-  "actor.hero_sword_mail/walk/left/2": {
+  "actor.hero_spear_nomad_armor/idle/right/1": {
    "atlas": "actors",
    "index": 699,
    "anchor": [
@@ -5703,7 +5703,7 @@
     29
    ]
   },
-  "actor.hero_sword_mail/walk/left/3": {
+  "actor.hero_spear_nomad_armor/gather/right/0": {
    "atlas": "actors",
    "index": 700,
    "anchor": [
@@ -5711,7 +5711,7 @@
     29
    ]
   },
-  "actor.hero_sword_mail/idle/left/0": {
+  "actor.hero_spear_nomad_armor/gather/right/1": {
    "atlas": "actors",
    "index": 701,
    "anchor": [
@@ -5719,7 +5719,7 @@
     29
    ]
   },
-  "actor.hero_sword_mail/idle/left/1": {
+  "actor.hero_spear_nomad_armor/gather/right/2": {
    "atlas": "actors",
    "index": 702,
    "anchor": [
@@ -5727,7 +5727,7 @@
     29
    ]
   },
-  "actor.hero_sword_mail/gather/left/0": {
+  "actor.hero_spear_nomad_armor/slash/right/0": {
    "atlas": "actors",
    "index": 703,
    "anchor": [
@@ -5735,7 +5735,7 @@
     29
    ]
   },
-  "actor.hero_sword_mail/gather/left/1": {
+  "actor.hero_spear_nomad_armor/slash/right/1": {
    "atlas": "actors",
    "index": 704,
    "anchor": [
@@ -5743,7 +5743,7 @@
     29
    ]
   },
-  "actor.hero_sword_mail/gather/left/2": {
+  "actor.hero_spear_nomad_armor/slash/right/2": {
    "atlas": "actors",
    "index": 705,
    "anchor": [
@@ -5751,7 +5751,7 @@
     29
    ]
   },
-  "actor.hero_sword_mail/slash/left/0": {
+  "actor.hero_spear_nomad_armor/slash/right/3": {
    "atlas": "actors",
    "index": 706,
    "anchor": [
@@ -5759,7 +5759,7 @@
     29
    ]
   },
-  "actor.hero_sword_mail/slash/left/1": {
+  "actor.hero_spear_nomad_armor/walk/up/0": {
    "atlas": "actors",
    "index": 707,
    "anchor": [
@@ -5767,7 +5767,7 @@
     29
    ]
   },
-  "actor.hero_sword_mail/slash/left/2": {
+  "actor.hero_spear_nomad_armor/walk/up/1": {
    "atlas": "actors",
    "index": 708,
    "anchor": [
@@ -5775,7 +5775,7 @@
     29
    ]
   },
-  "actor.hero_sword_mail/slash/left/3": {
+  "actor.hero_spear_nomad_armor/walk/up/2": {
    "atlas": "actors",
    "index": 709,
    "anchor": [
@@ -5783,7 +5783,7 @@
     29
    ]
   },
-  "actor.hero_sword_mail/walk/right/0": {
+  "actor.hero_spear_nomad_armor/walk/up/3": {
    "atlas": "actors",
    "index": 710,
    "anchor": [
@@ -5791,7 +5791,7 @@
     29
    ]
   },
-  "actor.hero_sword_mail/walk/right/1": {
+  "actor.hero_spear_nomad_armor/idle/up/0": {
    "atlas": "actors",
    "index": 711,
    "anchor": [
@@ -5799,7 +5799,7 @@
     29
    ]
   },
-  "actor.hero_sword_mail/walk/right/2": {
+  "actor.hero_spear_nomad_armor/idle/up/1": {
    "atlas": "actors",
    "index": 712,
    "anchor": [
@@ -5807,7 +5807,7 @@
     29
    ]
   },
-  "actor.hero_sword_mail/walk/right/3": {
+  "actor.hero_spear_nomad_armor/gather/up/0": {
    "atlas": "actors",
    "index": 713,
    "anchor": [
@@ -5815,7 +5815,7 @@
     29
    ]
   },
-  "actor.hero_sword_mail/idle/right/0": {
+  "actor.hero_spear_nomad_armor/gather/up/1": {
    "atlas": "actors",
    "index": 714,
    "anchor": [
@@ -5823,7 +5823,7 @@
     29
    ]
   },
-  "actor.hero_sword_mail/idle/right/1": {
+  "actor.hero_spear_nomad_armor/gather/up/2": {
    "atlas": "actors",
    "index": 715,
    "anchor": [
@@ -5831,7 +5831,7 @@
     29
    ]
   },
-  "actor.hero_sword_mail/gather/right/0": {
+  "actor.hero_spear_nomad_armor/slash/up/0": {
    "atlas": "actors",
    "index": 716,
    "anchor": [
@@ -5839,7 +5839,7 @@
     29
    ]
   },
-  "actor.hero_sword_mail/gather/right/1": {
+  "actor.hero_spear_nomad_armor/slash/up/1": {
    "atlas": "actors",
    "index": 717,
    "anchor": [
@@ -5847,7 +5847,7 @@
     29
    ]
   },
-  "actor.hero_sword_mail/gather/right/2": {
+  "actor.hero_spear_nomad_armor/slash/up/2": {
    "atlas": "actors",
    "index": 718,
    "anchor": [
@@ -5855,7 +5855,7 @@
     29
    ]
   },
-  "actor.hero_sword_mail/slash/right/0": {
+  "actor.hero_spear_nomad_armor/slash/up/3": {
    "atlas": "actors",
    "index": 719,
    "anchor": [
@@ -5863,7 +5863,7 @@
     29
    ]
   },
-  "actor.hero_sword_mail/slash/right/1": {
+  "actor.hero_sword/walk/down/0": {
    "atlas": "actors",
    "index": 720,
    "anchor": [
@@ -5871,7 +5871,7 @@
     29
    ]
   },
-  "actor.hero_sword_mail/slash/right/2": {
+  "actor.hero_sword/walk/down/1": {
    "atlas": "actors",
    "index": 721,
    "anchor": [
@@ -5879,7 +5879,7 @@
     29
    ]
   },
-  "actor.hero_sword_mail/slash/right/3": {
+  "actor.hero_sword/walk/down/2": {
    "atlas": "actors",
    "index": 722,
    "anchor": [
@@ -5887,7 +5887,7 @@
     29
    ]
   },
-  "actor.hero_sword_mail/walk/up/0": {
+  "actor.hero_sword/walk/down/3": {
    "atlas": "actors",
    "index": 723,
    "anchor": [
@@ -5895,7 +5895,7 @@
     29
    ]
   },
-  "actor.hero_sword_mail/walk/up/1": {
+  "actor.hero_sword/idle/down/0": {
    "atlas": "actors",
    "index": 724,
    "anchor": [
@@ -5903,7 +5903,7 @@
     29
    ]
   },
-  "actor.hero_sword_mail/walk/up/2": {
+  "actor.hero_sword/idle/down/1": {
    "atlas": "actors",
    "index": 725,
    "anchor": [
@@ -5911,7 +5911,7 @@
     29
    ]
   },
-  "actor.hero_sword_mail/walk/up/3": {
+  "actor.hero_sword/gather/down/0": {
    "atlas": "actors",
    "index": 726,
    "anchor": [
@@ -5919,7 +5919,7 @@
     29
    ]
   },
-  "actor.hero_sword_mail/idle/up/0": {
+  "actor.hero_sword/gather/down/1": {
    "atlas": "actors",
    "index": 727,
    "anchor": [
@@ -5927,7 +5927,7 @@
     29
    ]
   },
-  "actor.hero_sword_mail/idle/up/1": {
+  "actor.hero_sword/gather/down/2": {
    "atlas": "actors",
    "index": 728,
    "anchor": [
@@ -5935,7 +5935,7 @@
     29
    ]
   },
-  "actor.hero_sword_mail/gather/up/0": {
+  "actor.hero_sword/slash/down/0": {
    "atlas": "actors",
    "index": 729,
    "anchor": [
@@ -5943,7 +5943,7 @@
     29
    ]
   },
-  "actor.hero_sword_mail/gather/up/1": {
+  "actor.hero_sword/slash/down/1": {
    "atlas": "actors",
    "index": 730,
    "anchor": [
@@ -5951,7 +5951,7 @@
     29
    ]
   },
-  "actor.hero_sword_mail/gather/up/2": {
+  "actor.hero_sword/slash/down/2": {
    "atlas": "actors",
    "index": 731,
    "anchor": [
@@ -5959,7 +5959,7 @@
     29
    ]
   },
-  "actor.hero_sword_mail/slash/up/0": {
+  "actor.hero_sword/slash/down/3": {
    "atlas": "actors",
    "index": 732,
    "anchor": [
@@ -5967,7 +5967,7 @@
     29
    ]
   },
-  "actor.hero_sword_mail/slash/up/1": {
+  "actor.hero_sword/walk/left/0": {
    "atlas": "actors",
    "index": 733,
    "anchor": [
@@ -5975,7 +5975,7 @@
     29
    ]
   },
-  "actor.hero_sword_mail/slash/up/2": {
+  "actor.hero_sword/walk/left/1": {
    "atlas": "actors",
    "index": 734,
    "anchor": [
@@ -5983,7 +5983,7 @@
     29
    ]
   },
-  "actor.hero_sword_mail/slash/up/3": {
+  "actor.hero_sword/walk/left/2": {
    "atlas": "actors",
    "index": 735,
    "anchor": [
@@ -5991,7 +5991,7 @@
     29
    ]
   },
-  "actor.monk/walk/down/0": {
+  "actor.hero_sword/walk/left/3": {
    "atlas": "actors",
    "index": 736,
    "anchor": [
@@ -5999,7 +5999,7 @@
     29
    ]
   },
-  "actor.monk/walk/down/1": {
+  "actor.hero_sword/idle/left/0": {
    "atlas": "actors",
    "index": 737,
    "anchor": [
@@ -6007,7 +6007,7 @@
     29
    ]
   },
-  "actor.monk/walk/down/2": {
+  "actor.hero_sword/idle/left/1": {
    "atlas": "actors",
    "index": 738,
    "anchor": [
@@ -6015,7 +6015,7 @@
     29
    ]
   },
-  "actor.monk/walk/down/3": {
+  "actor.hero_sword/gather/left/0": {
    "atlas": "actors",
    "index": 739,
    "anchor": [
@@ -6023,7 +6023,7 @@
     29
    ]
   },
-  "actor.monk/idle/down/0": {
+  "actor.hero_sword/gather/left/1": {
    "atlas": "actors",
    "index": 740,
    "anchor": [
@@ -6031,7 +6031,7 @@
     29
    ]
   },
-  "actor.monk/idle/down/1": {
+  "actor.hero_sword/gather/left/2": {
    "atlas": "actors",
    "index": 741,
    "anchor": [
@@ -6039,7 +6039,7 @@
     29
    ]
   },
-  "actor.monk/walk/left/0": {
+  "actor.hero_sword/slash/left/0": {
    "atlas": "actors",
    "index": 742,
    "anchor": [
@@ -6047,7 +6047,7 @@
     29
    ]
   },
-  "actor.monk/walk/left/1": {
+  "actor.hero_sword/slash/left/1": {
    "atlas": "actors",
    "index": 743,
    "anchor": [
@@ -6055,7 +6055,7 @@
     29
    ]
   },
-  "actor.monk/walk/left/2": {
+  "actor.hero_sword/slash/left/2": {
    "atlas": "actors",
    "index": 744,
    "anchor": [
@@ -6063,7 +6063,7 @@
     29
    ]
   },
-  "actor.monk/walk/left/3": {
+  "actor.hero_sword/slash/left/3": {
    "atlas": "actors",
    "index": 745,
    "anchor": [
@@ -6071,7 +6071,7 @@
     29
    ]
   },
-  "actor.monk/idle/left/0": {
+  "actor.hero_sword/walk/right/0": {
    "atlas": "actors",
    "index": 746,
    "anchor": [
@@ -6079,7 +6079,7 @@
     29
    ]
   },
-  "actor.monk/idle/left/1": {
+  "actor.hero_sword/walk/right/1": {
    "atlas": "actors",
    "index": 747,
    "anchor": [
@@ -6087,7 +6087,7 @@
     29
    ]
   },
-  "actor.monk/walk/right/0": {
+  "actor.hero_sword/walk/right/2": {
    "atlas": "actors",
    "index": 748,
    "anchor": [
@@ -6095,7 +6095,7 @@
     29
    ]
   },
-  "actor.monk/walk/right/1": {
+  "actor.hero_sword/walk/right/3": {
    "atlas": "actors",
    "index": 749,
    "anchor": [
@@ -6103,7 +6103,7 @@
     29
    ]
   },
-  "actor.monk/walk/right/2": {
+  "actor.hero_sword/idle/right/0": {
    "atlas": "actors",
    "index": 750,
    "anchor": [
@@ -6111,7 +6111,7 @@
     29
    ]
   },
-  "actor.monk/walk/right/3": {
+  "actor.hero_sword/idle/right/1": {
    "atlas": "actors",
    "index": 751,
    "anchor": [
@@ -6119,7 +6119,7 @@
     29
    ]
   },
-  "actor.monk/idle/right/0": {
+  "actor.hero_sword/gather/right/0": {
    "atlas": "actors",
    "index": 752,
    "anchor": [
@@ -6127,7 +6127,7 @@
     29
    ]
   },
-  "actor.monk/idle/right/1": {
+  "actor.hero_sword/gather/right/1": {
    "atlas": "actors",
    "index": 753,
    "anchor": [
@@ -6135,7 +6135,7 @@
     29
    ]
   },
-  "actor.monk/walk/up/0": {
+  "actor.hero_sword/gather/right/2": {
    "atlas": "actors",
    "index": 754,
    "anchor": [
@@ -6143,7 +6143,7 @@
     29
    ]
   },
-  "actor.monk/walk/up/1": {
+  "actor.hero_sword/slash/right/0": {
    "atlas": "actors",
    "index": 755,
    "anchor": [
@@ -6151,7 +6151,7 @@
     29
    ]
   },
-  "actor.monk/walk/up/2": {
+  "actor.hero_sword/slash/right/1": {
    "atlas": "actors",
    "index": 756,
    "anchor": [
@@ -6159,7 +6159,7 @@
     29
    ]
   },
-  "actor.monk/walk/up/3": {
+  "actor.hero_sword/slash/right/2": {
    "atlas": "actors",
    "index": 757,
    "anchor": [
@@ -6167,7 +6167,7 @@
     29
    ]
   },
-  "actor.monk/idle/up/0": {
+  "actor.hero_sword/slash/right/3": {
    "atlas": "actors",
    "index": 758,
    "anchor": [
@@ -6175,7 +6175,7 @@
     29
    ]
   },
-  "actor.monk/idle/up/1": {
+  "actor.hero_sword/walk/up/0": {
    "atlas": "actors",
    "index": 759,
    "anchor": [
@@ -6183,7 +6183,7 @@
     29
    ]
   },
-  "actor.sheep/walk/down/0": {
+  "actor.hero_sword/walk/up/1": {
    "atlas": "actors",
    "index": 760,
    "anchor": [
@@ -6191,7 +6191,7 @@
     29
    ]
   },
-  "actor.sheep/walk/down/1": {
+  "actor.hero_sword/walk/up/2": {
    "atlas": "actors",
    "index": 761,
    "anchor": [
@@ -6199,7 +6199,7 @@
     29
    ]
   },
-  "actor.sheep/walk/down/2": {
+  "actor.hero_sword/walk/up/3": {
    "atlas": "actors",
    "index": 762,
    "anchor": [
@@ -6207,7 +6207,7 @@
     29
    ]
   },
-  "actor.sheep/walk/down/3": {
+  "actor.hero_sword/idle/up/0": {
    "atlas": "actors",
    "index": 763,
    "anchor": [
@@ -6215,7 +6215,7 @@
     29
    ]
   },
-  "actor.sheep/idle/down/0": {
+  "actor.hero_sword/idle/up/1": {
    "atlas": "actors",
    "index": 764,
    "anchor": [
@@ -6223,7 +6223,7 @@
     29
    ]
   },
-  "actor.sheep/idle/down/1": {
+  "actor.hero_sword/gather/up/0": {
    "atlas": "actors",
    "index": 765,
    "anchor": [
@@ -6231,7 +6231,7 @@
     29
    ]
   },
-  "actor.sheep/graze/down/0": {
+  "actor.hero_sword/gather/up/1": {
    "atlas": "actors",
    "index": 766,
    "anchor": [
@@ -6239,7 +6239,7 @@
     29
    ]
   },
-  "actor.sheep/graze/down/1": {
+  "actor.hero_sword/gather/up/2": {
    "atlas": "actors",
    "index": 767,
    "anchor": [
@@ -6247,7 +6247,7 @@
     29
    ]
   },
-  "actor.sheep/walk/left/0": {
+  "actor.hero_sword/slash/up/0": {
    "atlas": "actors",
    "index": 768,
    "anchor": [
@@ -6255,7 +6255,7 @@
     29
    ]
   },
-  "actor.sheep/walk/left/1": {
+  "actor.hero_sword/slash/up/1": {
    "atlas": "actors",
    "index": 769,
    "anchor": [
@@ -6263,7 +6263,7 @@
     29
    ]
   },
-  "actor.sheep/walk/left/2": {
+  "actor.hero_sword/slash/up/2": {
    "atlas": "actors",
    "index": 770,
    "anchor": [
@@ -6271,7 +6271,7 @@
     29
    ]
   },
-  "actor.sheep/walk/left/3": {
+  "actor.hero_sword/slash/up/3": {
    "atlas": "actors",
    "index": 771,
    "anchor": [
@@ -6279,7 +6279,7 @@
     29
    ]
   },
-  "actor.sheep/idle/left/0": {
+  "actor.hero_sword_desert_tunic/walk/down/0": {
    "atlas": "actors",
    "index": 772,
    "anchor": [
@@ -6287,7 +6287,7 @@
     29
    ]
   },
-  "actor.sheep/idle/left/1": {
+  "actor.hero_sword_desert_tunic/walk/down/1": {
    "atlas": "actors",
    "index": 773,
    "anchor": [
@@ -6295,7 +6295,7 @@
     29
    ]
   },
-  "actor.sheep/graze/left/0": {
+  "actor.hero_sword_desert_tunic/walk/down/2": {
    "atlas": "actors",
    "index": 774,
    "anchor": [
@@ -6303,7 +6303,7 @@
     29
    ]
   },
-  "actor.sheep/graze/left/1": {
+  "actor.hero_sword_desert_tunic/walk/down/3": {
    "atlas": "actors",
    "index": 775,
    "anchor": [
@@ -6311,7 +6311,7 @@
     29
    ]
   },
-  "actor.sheep/walk/right/0": {
+  "actor.hero_sword_desert_tunic/idle/down/0": {
    "atlas": "actors",
    "index": 776,
    "anchor": [
@@ -6319,7 +6319,7 @@
     29
    ]
   },
-  "actor.sheep/walk/right/1": {
+  "actor.hero_sword_desert_tunic/idle/down/1": {
    "atlas": "actors",
    "index": 777,
    "anchor": [
@@ -6327,7 +6327,7 @@
     29
    ]
   },
-  "actor.sheep/walk/right/2": {
+  "actor.hero_sword_desert_tunic/gather/down/0": {
    "atlas": "actors",
    "index": 778,
    "anchor": [
@@ -6335,7 +6335,7 @@
     29
    ]
   },
-  "actor.sheep/walk/right/3": {
+  "actor.hero_sword_desert_tunic/gather/down/1": {
    "atlas": "actors",
    "index": 779,
    "anchor": [
@@ -6343,7 +6343,7 @@
     29
    ]
   },
-  "actor.sheep/idle/right/0": {
+  "actor.hero_sword_desert_tunic/gather/down/2": {
    "atlas": "actors",
    "index": 780,
    "anchor": [
@@ -6351,7 +6351,7 @@
     29
    ]
   },
-  "actor.sheep/idle/right/1": {
+  "actor.hero_sword_desert_tunic/slash/down/0": {
    "atlas": "actors",
    "index": 781,
    "anchor": [
@@ -6359,7 +6359,7 @@
     29
    ]
   },
-  "actor.sheep/graze/right/0": {
+  "actor.hero_sword_desert_tunic/slash/down/1": {
    "atlas": "actors",
    "index": 782,
    "anchor": [
@@ -6367,7 +6367,7 @@
     29
    ]
   },
-  "actor.sheep/graze/right/1": {
+  "actor.hero_sword_desert_tunic/slash/down/2": {
    "atlas": "actors",
    "index": 783,
    "anchor": [
@@ -6375,7 +6375,7 @@
     29
    ]
   },
-  "actor.sheep/walk/up/0": {
+  "actor.hero_sword_desert_tunic/slash/down/3": {
    "atlas": "actors",
    "index": 784,
    "anchor": [
@@ -6383,7 +6383,7 @@
     29
    ]
   },
-  "actor.sheep/walk/up/1": {
+  "actor.hero_sword_desert_tunic/walk/left/0": {
    "atlas": "actors",
    "index": 785,
    "anchor": [
@@ -6391,7 +6391,7 @@
     29
    ]
   },
-  "actor.sheep/walk/up/2": {
+  "actor.hero_sword_desert_tunic/walk/left/1": {
    "atlas": "actors",
    "index": 786,
    "anchor": [
@@ -6399,7 +6399,7 @@
     29
    ]
   },
-  "actor.sheep/walk/up/3": {
+  "actor.hero_sword_desert_tunic/walk/left/2": {
    "atlas": "actors",
    "index": 787,
    "anchor": [
@@ -6407,7 +6407,7 @@
     29
    ]
   },
-  "actor.sheep/idle/up/0": {
+  "actor.hero_sword_desert_tunic/walk/left/3": {
    "atlas": "actors",
    "index": 788,
    "anchor": [
@@ -6415,7 +6415,7 @@
     29
    ]
   },
-  "actor.sheep/idle/up/1": {
+  "actor.hero_sword_desert_tunic/idle/left/0": {
    "atlas": "actors",
    "index": 789,
    "anchor": [
@@ -6423,7 +6423,7 @@
     29
    ]
   },
-  "actor.sheep/graze/up/0": {
+  "actor.hero_sword_desert_tunic/idle/left/1": {
    "atlas": "actors",
    "index": 790,
    "anchor": [
@@ -6431,7 +6431,7 @@
     29
    ]
   },
-  "actor.sheep/graze/up/1": {
+  "actor.hero_sword_desert_tunic/gather/left/0": {
    "atlas": "actors",
    "index": 791,
    "anchor": [
@@ -6439,7 +6439,7 @@
     29
    ]
   },
-  "actor.smith/walk/down/0": {
+  "actor.hero_sword_desert_tunic/gather/left/1": {
    "atlas": "actors",
    "index": 792,
    "anchor": [
@@ -6447,7 +6447,7 @@
     29
    ]
   },
-  "actor.smith/walk/down/1": {
+  "actor.hero_sword_desert_tunic/gather/left/2": {
    "atlas": "actors",
    "index": 793,
    "anchor": [
@@ -6455,7 +6455,7 @@
     29
    ]
   },
-  "actor.smith/walk/down/2": {
+  "actor.hero_sword_desert_tunic/slash/left/0": {
    "atlas": "actors",
    "index": 794,
    "anchor": [
@@ -6463,7 +6463,7 @@
     29
    ]
   },
-  "actor.smith/walk/down/3": {
+  "actor.hero_sword_desert_tunic/slash/left/1": {
    "atlas": "actors",
    "index": 795,
    "anchor": [
@@ -6471,7 +6471,7 @@
     29
    ]
   },
-  "actor.smith/idle/down/0": {
+  "actor.hero_sword_desert_tunic/slash/left/2": {
    "atlas": "actors",
    "index": 796,
    "anchor": [
@@ -6479,7 +6479,7 @@
     29
    ]
   },
-  "actor.smith/idle/down/1": {
+  "actor.hero_sword_desert_tunic/slash/left/3": {
    "atlas": "actors",
    "index": 797,
    "anchor": [
@@ -6487,7 +6487,7 @@
     29
    ]
   },
-  "actor.smith/walk/left/0": {
+  "actor.hero_sword_desert_tunic/walk/right/0": {
    "atlas": "actors",
    "index": 798,
    "anchor": [
@@ -6495,7 +6495,7 @@
     29
    ]
   },
-  "actor.smith/walk/left/1": {
+  "actor.hero_sword_desert_tunic/walk/right/1": {
    "atlas": "actors",
    "index": 799,
    "anchor": [
@@ -6503,7 +6503,7 @@
     29
    ]
   },
-  "actor.smith/walk/left/2": {
+  "actor.hero_sword_desert_tunic/walk/right/2": {
    "atlas": "actors",
    "index": 800,
    "anchor": [
@@ -6511,7 +6511,7 @@
     29
    ]
   },
-  "actor.smith/walk/left/3": {
+  "actor.hero_sword_desert_tunic/walk/right/3": {
    "atlas": "actors",
    "index": 801,
    "anchor": [
@@ -6519,7 +6519,7 @@
     29
    ]
   },
-  "actor.smith/idle/left/0": {
+  "actor.hero_sword_desert_tunic/idle/right/0": {
    "atlas": "actors",
    "index": 802,
    "anchor": [
@@ -6527,7 +6527,7 @@
     29
    ]
   },
-  "actor.smith/idle/left/1": {
+  "actor.hero_sword_desert_tunic/idle/right/1": {
    "atlas": "actors",
    "index": 803,
    "anchor": [
@@ -6535,7 +6535,7 @@
     29
    ]
   },
-  "actor.smith/walk/right/0": {
+  "actor.hero_sword_desert_tunic/gather/right/0": {
    "atlas": "actors",
    "index": 804,
    "anchor": [
@@ -6543,7 +6543,7 @@
     29
    ]
   },
-  "actor.smith/walk/right/1": {
+  "actor.hero_sword_desert_tunic/gather/right/1": {
    "atlas": "actors",
    "index": 805,
    "anchor": [
@@ -6551,7 +6551,7 @@
     29
    ]
   },
-  "actor.smith/walk/right/2": {
+  "actor.hero_sword_desert_tunic/gather/right/2": {
    "atlas": "actors",
    "index": 806,
    "anchor": [
@@ -6559,7 +6559,7 @@
     29
    ]
   },
-  "actor.smith/walk/right/3": {
+  "actor.hero_sword_desert_tunic/slash/right/0": {
    "atlas": "actors",
    "index": 807,
    "anchor": [
@@ -6567,7 +6567,7 @@
     29
    ]
   },
-  "actor.smith/idle/right/0": {
+  "actor.hero_sword_desert_tunic/slash/right/1": {
    "atlas": "actors",
    "index": 808,
    "anchor": [
@@ -6575,7 +6575,7 @@
     29
    ]
   },
-  "actor.smith/idle/right/1": {
+  "actor.hero_sword_desert_tunic/slash/right/2": {
    "atlas": "actors",
    "index": 809,
    "anchor": [
@@ -6583,7 +6583,7 @@
     29
    ]
   },
-  "actor.smith/walk/up/0": {
+  "actor.hero_sword_desert_tunic/slash/right/3": {
    "atlas": "actors",
    "index": 810,
    "anchor": [
@@ -6591,7 +6591,7 @@
     29
    ]
   },
-  "actor.smith/walk/up/1": {
+  "actor.hero_sword_desert_tunic/walk/up/0": {
    "atlas": "actors",
    "index": 811,
    "anchor": [
@@ -6599,7 +6599,7 @@
     29
    ]
   },
-  "actor.smith/walk/up/2": {
+  "actor.hero_sword_desert_tunic/walk/up/1": {
    "atlas": "actors",
    "index": 812,
    "anchor": [
@@ -6607,7 +6607,7 @@
     29
    ]
   },
-  "actor.smith/walk/up/3": {
+  "actor.hero_sword_desert_tunic/walk/up/2": {
    "atlas": "actors",
    "index": 813,
    "anchor": [
@@ -6615,7 +6615,7 @@
     29
    ]
   },
-  "actor.smith/idle/up/0": {
+  "actor.hero_sword_desert_tunic/walk/up/3": {
    "atlas": "actors",
    "index": 814,
    "anchor": [
@@ -6623,7 +6623,7 @@
     29
    ]
   },
-  "actor.smith/idle/up/1": {
+  "actor.hero_sword_desert_tunic/idle/up/0": {
    "atlas": "actors",
    "index": 815,
    "anchor": [
@@ -6631,7 +6631,7 @@
     29
    ]
   },
-  "actor.zebra/walk/down/0": {
+  "actor.hero_sword_desert_tunic/idle/up/1": {
    "atlas": "actors",
    "index": 816,
    "anchor": [
@@ -6639,7 +6639,7 @@
     29
    ]
   },
-  "actor.zebra/walk/down/1": {
+  "actor.hero_sword_desert_tunic/gather/up/0": {
    "atlas": "actors",
    "index": 817,
    "anchor": [
@@ -6647,7 +6647,7 @@
     29
    ]
   },
-  "actor.zebra/walk/down/2": {
+  "actor.hero_sword_desert_tunic/gather/up/1": {
    "atlas": "actors",
    "index": 818,
    "anchor": [
@@ -6655,7 +6655,7 @@
     29
    ]
   },
-  "actor.zebra/walk/down/3": {
+  "actor.hero_sword_desert_tunic/gather/up/2": {
    "atlas": "actors",
    "index": 819,
    "anchor": [
@@ -6663,7 +6663,7 @@
     29
    ]
   },
-  "actor.zebra/idle/down/0": {
+  "actor.hero_sword_desert_tunic/slash/up/0": {
    "atlas": "actors",
    "index": 820,
    "anchor": [
@@ -6671,7 +6671,7 @@
     29
    ]
   },
-  "actor.zebra/idle/down/1": {
+  "actor.hero_sword_desert_tunic/slash/up/1": {
    "atlas": "actors",
    "index": 821,
    "anchor": [
@@ -6679,7 +6679,7 @@
     29
    ]
   },
-  "actor.zebra/graze/down/0": {
+  "actor.hero_sword_desert_tunic/slash/up/2": {
    "atlas": "actors",
    "index": 822,
    "anchor": [
@@ -6687,7 +6687,7 @@
     29
    ]
   },
-  "actor.zebra/graze/down/1": {
+  "actor.hero_sword_desert_tunic/slash/up/3": {
    "atlas": "actors",
    "index": 823,
    "anchor": [
@@ -6695,7 +6695,7 @@
     29
    ]
   },
-  "actor.zebra/walk/left/0": {
+  "actor.hero_sword_mail/walk/down/0": {
    "atlas": "actors",
    "index": 824,
    "anchor": [
@@ -6703,7 +6703,7 @@
     29
    ]
   },
-  "actor.zebra/walk/left/1": {
+  "actor.hero_sword_mail/walk/down/1": {
    "atlas": "actors",
    "index": 825,
    "anchor": [
@@ -6711,7 +6711,7 @@
     29
    ]
   },
-  "actor.zebra/walk/left/2": {
+  "actor.hero_sword_mail/walk/down/2": {
    "atlas": "actors",
    "index": 826,
    "anchor": [
@@ -6719,7 +6719,7 @@
     29
    ]
   },
-  "actor.zebra/walk/left/3": {
+  "actor.hero_sword_mail/walk/down/3": {
    "atlas": "actors",
    "index": 827,
    "anchor": [
@@ -6727,7 +6727,7 @@
     29
    ]
   },
-  "actor.zebra/idle/left/0": {
+  "actor.hero_sword_mail/idle/down/0": {
    "atlas": "actors",
    "index": 828,
    "anchor": [
@@ -6735,7 +6735,7 @@
     29
    ]
   },
-  "actor.zebra/idle/left/1": {
+  "actor.hero_sword_mail/idle/down/1": {
    "atlas": "actors",
    "index": 829,
    "anchor": [
@@ -6743,7 +6743,7 @@
     29
    ]
   },
-  "actor.zebra/graze/left/0": {
+  "actor.hero_sword_mail/gather/down/0": {
    "atlas": "actors",
    "index": 830,
    "anchor": [
@@ -6751,7 +6751,7 @@
     29
    ]
   },
-  "actor.zebra/graze/left/1": {
+  "actor.hero_sword_mail/gather/down/1": {
    "atlas": "actors",
    "index": 831,
    "anchor": [
@@ -6759,7 +6759,7 @@
     29
    ]
   },
-  "actor.zebra/walk/right/0": {
+  "actor.hero_sword_mail/gather/down/2": {
    "atlas": "actors",
    "index": 832,
    "anchor": [
@@ -6767,7 +6767,7 @@
     29
    ]
   },
-  "actor.zebra/walk/right/1": {
+  "actor.hero_sword_mail/slash/down/0": {
    "atlas": "actors",
    "index": 833,
    "anchor": [
@@ -6775,7 +6775,7 @@
     29
    ]
   },
-  "actor.zebra/walk/right/2": {
+  "actor.hero_sword_mail/slash/down/1": {
    "atlas": "actors",
    "index": 834,
    "anchor": [
@@ -6783,7 +6783,7 @@
     29
    ]
   },
-  "actor.zebra/walk/right/3": {
+  "actor.hero_sword_mail/slash/down/2": {
    "atlas": "actors",
    "index": 835,
    "anchor": [
@@ -6791,7 +6791,7 @@
     29
    ]
   },
-  "actor.zebra/idle/right/0": {
+  "actor.hero_sword_mail/slash/down/3": {
    "atlas": "actors",
    "index": 836,
    "anchor": [
@@ -6799,7 +6799,7 @@
     29
    ]
   },
-  "actor.zebra/idle/right/1": {
+  "actor.hero_sword_mail/walk/left/0": {
    "atlas": "actors",
    "index": 837,
    "anchor": [
@@ -6807,7 +6807,7 @@
     29
    ]
   },
-  "actor.zebra/graze/right/0": {
+  "actor.hero_sword_mail/walk/left/1": {
    "atlas": "actors",
    "index": 838,
    "anchor": [
@@ -6815,7 +6815,7 @@
     29
    ]
   },
-  "actor.zebra/graze/right/1": {
+  "actor.hero_sword_mail/walk/left/2": {
    "atlas": "actors",
    "index": 839,
    "anchor": [
@@ -6823,7 +6823,7 @@
     29
    ]
   },
-  "actor.zebra/walk/up/0": {
+  "actor.hero_sword_mail/walk/left/3": {
    "atlas": "actors",
    "index": 840,
    "anchor": [
@@ -6831,7 +6831,7 @@
     29
    ]
   },
-  "actor.zebra/walk/up/1": {
+  "actor.hero_sword_mail/idle/left/0": {
    "atlas": "actors",
    "index": 841,
    "anchor": [
@@ -6839,7 +6839,7 @@
     29
    ]
   },
-  "actor.zebra/walk/up/2": {
+  "actor.hero_sword_mail/idle/left/1": {
    "atlas": "actors",
    "index": 842,
    "anchor": [
@@ -6847,7 +6847,7 @@
     29
    ]
   },
-  "actor.zebra/walk/up/3": {
+  "actor.hero_sword_mail/gather/left/0": {
    "atlas": "actors",
    "index": 843,
    "anchor": [
@@ -6855,7 +6855,7 @@
     29
    ]
   },
-  "actor.zebra/idle/up/0": {
+  "actor.hero_sword_mail/gather/left/1": {
    "atlas": "actors",
    "index": 844,
    "anchor": [
@@ -6863,7 +6863,7 @@
     29
    ]
   },
-  "actor.zebra/idle/up/1": {
+  "actor.hero_sword_mail/gather/left/2": {
    "atlas": "actors",
    "index": 845,
    "anchor": [
@@ -6871,7 +6871,7 @@
     29
    ]
   },
-  "actor.zebra/graze/up/0": {
+  "actor.hero_sword_mail/slash/left/0": {
    "atlas": "actors",
    "index": 846,
    "anchor": [
@@ -6879,9 +6879,1993 @@
     29
    ]
   },
-  "actor.zebra/graze/up/1": {
+  "actor.hero_sword_mail/slash/left/1": {
    "atlas": "actors",
    "index": 847,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.hero_sword_mail/slash/left/2": {
+   "atlas": "actors",
+   "index": 848,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.hero_sword_mail/slash/left/3": {
+   "atlas": "actors",
+   "index": 849,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.hero_sword_mail/walk/right/0": {
+   "atlas": "actors",
+   "index": 850,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.hero_sword_mail/walk/right/1": {
+   "atlas": "actors",
+   "index": 851,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.hero_sword_mail/walk/right/2": {
+   "atlas": "actors",
+   "index": 852,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.hero_sword_mail/walk/right/3": {
+   "atlas": "actors",
+   "index": 853,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.hero_sword_mail/idle/right/0": {
+   "atlas": "actors",
+   "index": 854,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.hero_sword_mail/idle/right/1": {
+   "atlas": "actors",
+   "index": 855,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.hero_sword_mail/gather/right/0": {
+   "atlas": "actors",
+   "index": 856,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.hero_sword_mail/gather/right/1": {
+   "atlas": "actors",
+   "index": 857,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.hero_sword_mail/gather/right/2": {
+   "atlas": "actors",
+   "index": 858,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.hero_sword_mail/slash/right/0": {
+   "atlas": "actors",
+   "index": 859,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.hero_sword_mail/slash/right/1": {
+   "atlas": "actors",
+   "index": 860,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.hero_sword_mail/slash/right/2": {
+   "atlas": "actors",
+   "index": 861,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.hero_sword_mail/slash/right/3": {
+   "atlas": "actors",
+   "index": 862,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.hero_sword_mail/walk/up/0": {
+   "atlas": "actors",
+   "index": 863,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.hero_sword_mail/walk/up/1": {
+   "atlas": "actors",
+   "index": 864,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.hero_sword_mail/walk/up/2": {
+   "atlas": "actors",
+   "index": 865,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.hero_sword_mail/walk/up/3": {
+   "atlas": "actors",
+   "index": 866,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.hero_sword_mail/idle/up/0": {
+   "atlas": "actors",
+   "index": 867,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.hero_sword_mail/idle/up/1": {
+   "atlas": "actors",
+   "index": 868,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.hero_sword_mail/gather/up/0": {
+   "atlas": "actors",
+   "index": 869,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.hero_sword_mail/gather/up/1": {
+   "atlas": "actors",
+   "index": 870,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.hero_sword_mail/gather/up/2": {
+   "atlas": "actors",
+   "index": 871,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.hero_sword_mail/slash/up/0": {
+   "atlas": "actors",
+   "index": 872,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.hero_sword_mail/slash/up/1": {
+   "atlas": "actors",
+   "index": 873,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.hero_sword_mail/slash/up/2": {
+   "atlas": "actors",
+   "index": 874,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.hero_sword_mail/slash/up/3": {
+   "atlas": "actors",
+   "index": 875,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.hero_sword_nomad_armor/walk/down/0": {
+   "atlas": "actors",
+   "index": 876,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.hero_sword_nomad_armor/walk/down/1": {
+   "atlas": "actors",
+   "index": 877,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.hero_sword_nomad_armor/walk/down/2": {
+   "atlas": "actors",
+   "index": 878,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.hero_sword_nomad_armor/walk/down/3": {
+   "atlas": "actors",
+   "index": 879,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.hero_sword_nomad_armor/idle/down/0": {
+   "atlas": "actors",
+   "index": 880,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.hero_sword_nomad_armor/idle/down/1": {
+   "atlas": "actors",
+   "index": 881,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.hero_sword_nomad_armor/gather/down/0": {
+   "atlas": "actors",
+   "index": 882,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.hero_sword_nomad_armor/gather/down/1": {
+   "atlas": "actors",
+   "index": 883,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.hero_sword_nomad_armor/gather/down/2": {
+   "atlas": "actors",
+   "index": 884,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.hero_sword_nomad_armor/slash/down/0": {
+   "atlas": "actors",
+   "index": 885,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.hero_sword_nomad_armor/slash/down/1": {
+   "atlas": "actors",
+   "index": 886,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.hero_sword_nomad_armor/slash/down/2": {
+   "atlas": "actors",
+   "index": 887,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.hero_sword_nomad_armor/slash/down/3": {
+   "atlas": "actors",
+   "index": 888,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.hero_sword_nomad_armor/walk/left/0": {
+   "atlas": "actors",
+   "index": 889,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.hero_sword_nomad_armor/walk/left/1": {
+   "atlas": "actors",
+   "index": 890,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.hero_sword_nomad_armor/walk/left/2": {
+   "atlas": "actors",
+   "index": 891,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.hero_sword_nomad_armor/walk/left/3": {
+   "atlas": "actors",
+   "index": 892,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.hero_sword_nomad_armor/idle/left/0": {
+   "atlas": "actors",
+   "index": 893,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.hero_sword_nomad_armor/idle/left/1": {
+   "atlas": "actors",
+   "index": 894,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.hero_sword_nomad_armor/gather/left/0": {
+   "atlas": "actors",
+   "index": 895,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.hero_sword_nomad_armor/gather/left/1": {
+   "atlas": "actors",
+   "index": 896,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.hero_sword_nomad_armor/gather/left/2": {
+   "atlas": "actors",
+   "index": 897,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.hero_sword_nomad_armor/slash/left/0": {
+   "atlas": "actors",
+   "index": 898,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.hero_sword_nomad_armor/slash/left/1": {
+   "atlas": "actors",
+   "index": 899,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.hero_sword_nomad_armor/slash/left/2": {
+   "atlas": "actors",
+   "index": 900,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.hero_sword_nomad_armor/slash/left/3": {
+   "atlas": "actors",
+   "index": 901,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.hero_sword_nomad_armor/walk/right/0": {
+   "atlas": "actors",
+   "index": 902,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.hero_sword_nomad_armor/walk/right/1": {
+   "atlas": "actors",
+   "index": 903,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.hero_sword_nomad_armor/walk/right/2": {
+   "atlas": "actors",
+   "index": 904,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.hero_sword_nomad_armor/walk/right/3": {
+   "atlas": "actors",
+   "index": 905,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.hero_sword_nomad_armor/idle/right/0": {
+   "atlas": "actors",
+   "index": 906,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.hero_sword_nomad_armor/idle/right/1": {
+   "atlas": "actors",
+   "index": 907,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.hero_sword_nomad_armor/gather/right/0": {
+   "atlas": "actors",
+   "index": 908,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.hero_sword_nomad_armor/gather/right/1": {
+   "atlas": "actors",
+   "index": 909,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.hero_sword_nomad_armor/gather/right/2": {
+   "atlas": "actors",
+   "index": 910,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.hero_sword_nomad_armor/slash/right/0": {
+   "atlas": "actors",
+   "index": 911,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.hero_sword_nomad_armor/slash/right/1": {
+   "atlas": "actors",
+   "index": 912,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.hero_sword_nomad_armor/slash/right/2": {
+   "atlas": "actors",
+   "index": 913,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.hero_sword_nomad_armor/slash/right/3": {
+   "atlas": "actors",
+   "index": 914,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.hero_sword_nomad_armor/walk/up/0": {
+   "atlas": "actors",
+   "index": 915,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.hero_sword_nomad_armor/walk/up/1": {
+   "atlas": "actors",
+   "index": 916,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.hero_sword_nomad_armor/walk/up/2": {
+   "atlas": "actors",
+   "index": 917,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.hero_sword_nomad_armor/walk/up/3": {
+   "atlas": "actors",
+   "index": 918,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.hero_sword_nomad_armor/idle/up/0": {
+   "atlas": "actors",
+   "index": 919,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.hero_sword_nomad_armor/idle/up/1": {
+   "atlas": "actors",
+   "index": 920,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.hero_sword_nomad_armor/gather/up/0": {
+   "atlas": "actors",
+   "index": 921,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.hero_sword_nomad_armor/gather/up/1": {
+   "atlas": "actors",
+   "index": 922,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.hero_sword_nomad_armor/gather/up/2": {
+   "atlas": "actors",
+   "index": 923,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.hero_sword_nomad_armor/slash/up/0": {
+   "atlas": "actors",
+   "index": 924,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.hero_sword_nomad_armor/slash/up/1": {
+   "atlas": "actors",
+   "index": 925,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.hero_sword_nomad_armor/slash/up/2": {
+   "atlas": "actors",
+   "index": 926,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.hero_sword_nomad_armor/slash/up/3": {
+   "atlas": "actors",
+   "index": 927,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.jackal/walk/down/0": {
+   "atlas": "actors",
+   "index": 928,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.jackal/walk/down/1": {
+   "atlas": "actors",
+   "index": 929,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.jackal/walk/down/2": {
+   "atlas": "actors",
+   "index": 930,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.jackal/walk/down/3": {
+   "atlas": "actors",
+   "index": 931,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.jackal/idle/down/0": {
+   "atlas": "actors",
+   "index": 932,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.jackal/idle/down/1": {
+   "atlas": "actors",
+   "index": 933,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.jackal/graze/down/0": {
+   "atlas": "actors",
+   "index": 934,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.jackal/graze/down/1": {
+   "atlas": "actors",
+   "index": 935,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.jackal/walk/left/0": {
+   "atlas": "actors",
+   "index": 936,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.jackal/walk/left/1": {
+   "atlas": "actors",
+   "index": 937,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.jackal/walk/left/2": {
+   "atlas": "actors",
+   "index": 938,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.jackal/walk/left/3": {
+   "atlas": "actors",
+   "index": 939,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.jackal/idle/left/0": {
+   "atlas": "actors",
+   "index": 940,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.jackal/idle/left/1": {
+   "atlas": "actors",
+   "index": 941,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.jackal/graze/left/0": {
+   "atlas": "actors",
+   "index": 942,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.jackal/graze/left/1": {
+   "atlas": "actors",
+   "index": 943,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.jackal/walk/right/0": {
+   "atlas": "actors",
+   "index": 944,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.jackal/walk/right/1": {
+   "atlas": "actors",
+   "index": 945,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.jackal/walk/right/2": {
+   "atlas": "actors",
+   "index": 946,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.jackal/walk/right/3": {
+   "atlas": "actors",
+   "index": 947,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.jackal/idle/right/0": {
+   "atlas": "actors",
+   "index": 948,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.jackal/idle/right/1": {
+   "atlas": "actors",
+   "index": 949,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.jackal/graze/right/0": {
+   "atlas": "actors",
+   "index": 950,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.jackal/graze/right/1": {
+   "atlas": "actors",
+   "index": 951,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.jackal/walk/up/0": {
+   "atlas": "actors",
+   "index": 952,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.jackal/walk/up/1": {
+   "atlas": "actors",
+   "index": 953,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.jackal/walk/up/2": {
+   "atlas": "actors",
+   "index": 954,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.jackal/walk/up/3": {
+   "atlas": "actors",
+   "index": 955,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.jackal/idle/up/0": {
+   "atlas": "actors",
+   "index": 956,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.jackal/idle/up/1": {
+   "atlas": "actors",
+   "index": 957,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.jackal/graze/up/0": {
+   "atlas": "actors",
+   "index": 958,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.jackal/graze/up/1": {
+   "atlas": "actors",
+   "index": 959,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.monk/walk/down/0": {
+   "atlas": "actors",
+   "index": 960,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.monk/walk/down/1": {
+   "atlas": "actors",
+   "index": 961,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.monk/walk/down/2": {
+   "atlas": "actors",
+   "index": 962,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.monk/walk/down/3": {
+   "atlas": "actors",
+   "index": 963,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.monk/idle/down/0": {
+   "atlas": "actors",
+   "index": 964,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.monk/idle/down/1": {
+   "atlas": "actors",
+   "index": 965,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.monk/walk/left/0": {
+   "atlas": "actors",
+   "index": 966,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.monk/walk/left/1": {
+   "atlas": "actors",
+   "index": 967,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.monk/walk/left/2": {
+   "atlas": "actors",
+   "index": 968,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.monk/walk/left/3": {
+   "atlas": "actors",
+   "index": 969,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.monk/idle/left/0": {
+   "atlas": "actors",
+   "index": 970,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.monk/idle/left/1": {
+   "atlas": "actors",
+   "index": 971,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.monk/walk/right/0": {
+   "atlas": "actors",
+   "index": 972,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.monk/walk/right/1": {
+   "atlas": "actors",
+   "index": 973,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.monk/walk/right/2": {
+   "atlas": "actors",
+   "index": 974,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.monk/walk/right/3": {
+   "atlas": "actors",
+   "index": 975,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.monk/idle/right/0": {
+   "atlas": "actors",
+   "index": 976,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.monk/idle/right/1": {
+   "atlas": "actors",
+   "index": 977,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.monk/walk/up/0": {
+   "atlas": "actors",
+   "index": 978,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.monk/walk/up/1": {
+   "atlas": "actors",
+   "index": 979,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.monk/walk/up/2": {
+   "atlas": "actors",
+   "index": 980,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.monk/walk/up/3": {
+   "atlas": "actors",
+   "index": 981,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.monk/idle/up/0": {
+   "atlas": "actors",
+   "index": 982,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.monk/idle/up/1": {
+   "atlas": "actors",
+   "index": 983,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.nomad/walk/down/0": {
+   "atlas": "actors",
+   "index": 984,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.nomad/walk/down/1": {
+   "atlas": "actors",
+   "index": 985,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.nomad/walk/down/2": {
+   "atlas": "actors",
+   "index": 986,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.nomad/walk/down/3": {
+   "atlas": "actors",
+   "index": 987,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.nomad/idle/down/0": {
+   "atlas": "actors",
+   "index": 988,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.nomad/idle/down/1": {
+   "atlas": "actors",
+   "index": 989,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.nomad/walk/left/0": {
+   "atlas": "actors",
+   "index": 990,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.nomad/walk/left/1": {
+   "atlas": "actors",
+   "index": 991,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.nomad/walk/left/2": {
+   "atlas": "actors",
+   "index": 992,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.nomad/walk/left/3": {
+   "atlas": "actors",
+   "index": 993,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.nomad/idle/left/0": {
+   "atlas": "actors",
+   "index": 994,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.nomad/idle/left/1": {
+   "atlas": "actors",
+   "index": 995,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.nomad/walk/right/0": {
+   "atlas": "actors",
+   "index": 996,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.nomad/walk/right/1": {
+   "atlas": "actors",
+   "index": 997,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.nomad/walk/right/2": {
+   "atlas": "actors",
+   "index": 998,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.nomad/walk/right/3": {
+   "atlas": "actors",
+   "index": 999,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.nomad/idle/right/0": {
+   "atlas": "actors",
+   "index": 1000,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.nomad/idle/right/1": {
+   "atlas": "actors",
+   "index": 1001,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.nomad/walk/up/0": {
+   "atlas": "actors",
+   "index": 1002,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.nomad/walk/up/1": {
+   "atlas": "actors",
+   "index": 1003,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.nomad/walk/up/2": {
+   "atlas": "actors",
+   "index": 1004,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.nomad/walk/up/3": {
+   "atlas": "actors",
+   "index": 1005,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.nomad/idle/up/0": {
+   "atlas": "actors",
+   "index": 1006,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.nomad/idle/up/1": {
+   "atlas": "actors",
+   "index": 1007,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.sheep/walk/down/0": {
+   "atlas": "actors",
+   "index": 1008,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.sheep/walk/down/1": {
+   "atlas": "actors",
+   "index": 1009,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.sheep/walk/down/2": {
+   "atlas": "actors",
+   "index": 1010,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.sheep/walk/down/3": {
+   "atlas": "actors",
+   "index": 1011,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.sheep/idle/down/0": {
+   "atlas": "actors",
+   "index": 1012,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.sheep/idle/down/1": {
+   "atlas": "actors",
+   "index": 1013,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.sheep/graze/down/0": {
+   "atlas": "actors",
+   "index": 1014,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.sheep/graze/down/1": {
+   "atlas": "actors",
+   "index": 1015,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.sheep/walk/left/0": {
+   "atlas": "actors",
+   "index": 1016,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.sheep/walk/left/1": {
+   "atlas": "actors",
+   "index": 1017,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.sheep/walk/left/2": {
+   "atlas": "actors",
+   "index": 1018,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.sheep/walk/left/3": {
+   "atlas": "actors",
+   "index": 1019,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.sheep/idle/left/0": {
+   "atlas": "actors",
+   "index": 1020,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.sheep/idle/left/1": {
+   "atlas": "actors",
+   "index": 1021,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.sheep/graze/left/0": {
+   "atlas": "actors",
+   "index": 1022,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.sheep/graze/left/1": {
+   "atlas": "actors",
+   "index": 1023,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.sheep/walk/right/0": {
+   "atlas": "actors",
+   "index": 1024,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.sheep/walk/right/1": {
+   "atlas": "actors",
+   "index": 1025,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.sheep/walk/right/2": {
+   "atlas": "actors",
+   "index": 1026,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.sheep/walk/right/3": {
+   "atlas": "actors",
+   "index": 1027,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.sheep/idle/right/0": {
+   "atlas": "actors",
+   "index": 1028,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.sheep/idle/right/1": {
+   "atlas": "actors",
+   "index": 1029,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.sheep/graze/right/0": {
+   "atlas": "actors",
+   "index": 1030,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.sheep/graze/right/1": {
+   "atlas": "actors",
+   "index": 1031,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.sheep/walk/up/0": {
+   "atlas": "actors",
+   "index": 1032,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.sheep/walk/up/1": {
+   "atlas": "actors",
+   "index": 1033,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.sheep/walk/up/2": {
+   "atlas": "actors",
+   "index": 1034,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.sheep/walk/up/3": {
+   "atlas": "actors",
+   "index": 1035,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.sheep/idle/up/0": {
+   "atlas": "actors",
+   "index": 1036,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.sheep/idle/up/1": {
+   "atlas": "actors",
+   "index": 1037,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.sheep/graze/up/0": {
+   "atlas": "actors",
+   "index": 1038,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.sheep/graze/up/1": {
+   "atlas": "actors",
+   "index": 1039,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.smith/walk/down/0": {
+   "atlas": "actors",
+   "index": 1040,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.smith/walk/down/1": {
+   "atlas": "actors",
+   "index": 1041,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.smith/walk/down/2": {
+   "atlas": "actors",
+   "index": 1042,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.smith/walk/down/3": {
+   "atlas": "actors",
+   "index": 1043,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.smith/idle/down/0": {
+   "atlas": "actors",
+   "index": 1044,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.smith/idle/down/1": {
+   "atlas": "actors",
+   "index": 1045,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.smith/walk/left/0": {
+   "atlas": "actors",
+   "index": 1046,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.smith/walk/left/1": {
+   "atlas": "actors",
+   "index": 1047,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.smith/walk/left/2": {
+   "atlas": "actors",
+   "index": 1048,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.smith/walk/left/3": {
+   "atlas": "actors",
+   "index": 1049,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.smith/idle/left/0": {
+   "atlas": "actors",
+   "index": 1050,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.smith/idle/left/1": {
+   "atlas": "actors",
+   "index": 1051,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.smith/walk/right/0": {
+   "atlas": "actors",
+   "index": 1052,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.smith/walk/right/1": {
+   "atlas": "actors",
+   "index": 1053,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.smith/walk/right/2": {
+   "atlas": "actors",
+   "index": 1054,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.smith/walk/right/3": {
+   "atlas": "actors",
+   "index": 1055,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.smith/idle/right/0": {
+   "atlas": "actors",
+   "index": 1056,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.smith/idle/right/1": {
+   "atlas": "actors",
+   "index": 1057,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.smith/walk/up/0": {
+   "atlas": "actors",
+   "index": 1058,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.smith/walk/up/1": {
+   "atlas": "actors",
+   "index": 1059,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.smith/walk/up/2": {
+   "atlas": "actors",
+   "index": 1060,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.smith/walk/up/3": {
+   "atlas": "actors",
+   "index": 1061,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.smith/idle/up/0": {
+   "atlas": "actors",
+   "index": 1062,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.smith/idle/up/1": {
+   "atlas": "actors",
+   "index": 1063,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.zebra/walk/down/0": {
+   "atlas": "actors",
+   "index": 1064,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.zebra/walk/down/1": {
+   "atlas": "actors",
+   "index": 1065,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.zebra/walk/down/2": {
+   "atlas": "actors",
+   "index": 1066,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.zebra/walk/down/3": {
+   "atlas": "actors",
+   "index": 1067,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.zebra/idle/down/0": {
+   "atlas": "actors",
+   "index": 1068,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.zebra/idle/down/1": {
+   "atlas": "actors",
+   "index": 1069,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.zebra/graze/down/0": {
+   "atlas": "actors",
+   "index": 1070,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.zebra/graze/down/1": {
+   "atlas": "actors",
+   "index": 1071,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.zebra/walk/left/0": {
+   "atlas": "actors",
+   "index": 1072,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.zebra/walk/left/1": {
+   "atlas": "actors",
+   "index": 1073,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.zebra/walk/left/2": {
+   "atlas": "actors",
+   "index": 1074,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.zebra/walk/left/3": {
+   "atlas": "actors",
+   "index": 1075,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.zebra/idle/left/0": {
+   "atlas": "actors",
+   "index": 1076,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.zebra/idle/left/1": {
+   "atlas": "actors",
+   "index": 1077,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.zebra/graze/left/0": {
+   "atlas": "actors",
+   "index": 1078,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.zebra/graze/left/1": {
+   "atlas": "actors",
+   "index": 1079,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.zebra/walk/right/0": {
+   "atlas": "actors",
+   "index": 1080,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.zebra/walk/right/1": {
+   "atlas": "actors",
+   "index": 1081,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.zebra/walk/right/2": {
+   "atlas": "actors",
+   "index": 1082,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.zebra/walk/right/3": {
+   "atlas": "actors",
+   "index": 1083,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.zebra/idle/right/0": {
+   "atlas": "actors",
+   "index": 1084,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.zebra/idle/right/1": {
+   "atlas": "actors",
+   "index": 1085,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.zebra/graze/right/0": {
+   "atlas": "actors",
+   "index": 1086,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.zebra/graze/right/1": {
+   "atlas": "actors",
+   "index": 1087,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.zebra/walk/up/0": {
+   "atlas": "actors",
+   "index": 1088,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.zebra/walk/up/1": {
+   "atlas": "actors",
+   "index": 1089,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.zebra/walk/up/2": {
+   "atlas": "actors",
+   "index": 1090,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.zebra/walk/up/3": {
+   "atlas": "actors",
+   "index": 1091,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.zebra/idle/up/0": {
+   "atlas": "actors",
+   "index": 1092,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.zebra/idle/up/1": {
+   "atlas": "actors",
+   "index": 1093,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.zebra/graze/up/0": {
+   "atlas": "actors",
+   "index": 1094,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "actor.zebra/graze/up/1": {
+   "atlas": "actors",
+   "index": 1095,
    "anchor": [
     16,
     29
@@ -7143,7 +9127,7 @@
     61
    ]
   },
-  "actor.troll/walk/down/0": {
+  "actor.giraffe/walk/down/0": {
    "atlas": "actors_huge",
    "index": 32,
    "anchor": [
@@ -7151,7 +9135,7 @@
     61
    ]
   },
-  "actor.troll/walk/down/1": {
+  "actor.giraffe/walk/down/1": {
    "atlas": "actors_huge",
    "index": 33,
    "anchor": [
@@ -7159,7 +9143,7 @@
     61
    ]
   },
-  "actor.troll/walk/down/2": {
+  "actor.giraffe/walk/down/2": {
    "atlas": "actors_huge",
    "index": 34,
    "anchor": [
@@ -7167,7 +9151,7 @@
     61
    ]
   },
-  "actor.troll/walk/down/3": {
+  "actor.giraffe/walk/down/3": {
    "atlas": "actors_huge",
    "index": 35,
    "anchor": [
@@ -7175,7 +9159,7 @@
     61
    ]
   },
-  "actor.troll/walk/down/4": {
+  "actor.giraffe/idle/down/0": {
    "atlas": "actors_huge",
    "index": 36,
    "anchor": [
@@ -7183,7 +9167,7 @@
     61
    ]
   },
-  "actor.troll/walk/down/5": {
+  "actor.giraffe/idle/down/1": {
    "atlas": "actors_huge",
    "index": 37,
    "anchor": [
@@ -7191,7 +9175,7 @@
     61
    ]
   },
-  "actor.troll/idle/down/0": {
+  "actor.giraffe/graze/down/0": {
    "atlas": "actors_huge",
    "index": 38,
    "anchor": [
@@ -7199,7 +9183,7 @@
     61
    ]
   },
-  "actor.troll/idle/down/1": {
+  "actor.giraffe/graze/down/1": {
    "atlas": "actors_huge",
    "index": 39,
    "anchor": [
@@ -7207,7 +9191,7 @@
     61
    ]
   },
-  "actor.troll/idle/down/2": {
+  "actor.giraffe/walk/left/0": {
    "atlas": "actors_huge",
    "index": 40,
    "anchor": [
@@ -7215,7 +9199,7 @@
     61
    ]
   },
-  "actor.troll/idle/down/3": {
+  "actor.giraffe/walk/left/1": {
    "atlas": "actors_huge",
    "index": 41,
    "anchor": [
@@ -7223,7 +9207,7 @@
     61
    ]
   },
-  "actor.troll/attack/down/0": {
+  "actor.giraffe/walk/left/2": {
    "atlas": "actors_huge",
    "index": 42,
    "anchor": [
@@ -7231,7 +9215,7 @@
     61
    ]
   },
-  "actor.troll/attack/down/1": {
+  "actor.giraffe/walk/left/3": {
    "atlas": "actors_huge",
    "index": 43,
    "anchor": [
@@ -7239,7 +9223,7 @@
     61
    ]
   },
-  "actor.troll/attack/down/2": {
+  "actor.giraffe/idle/left/0": {
    "atlas": "actors_huge",
    "index": 44,
    "anchor": [
@@ -7247,7 +9231,7 @@
     61
    ]
   },
-  "actor.troll/attack/down/3": {
+  "actor.giraffe/idle/left/1": {
    "atlas": "actors_huge",
    "index": 45,
    "anchor": [
@@ -7255,7 +9239,7 @@
     61
    ]
   },
-  "actor.troll/attack/down/4": {
+  "actor.giraffe/graze/left/0": {
    "atlas": "actors_huge",
    "index": 46,
    "anchor": [
@@ -7263,7 +9247,7 @@
     61
    ]
   },
-  "actor.troll/walk/left/0": {
+  "actor.giraffe/graze/left/1": {
    "atlas": "actors_huge",
    "index": 47,
    "anchor": [
@@ -7271,7 +9255,7 @@
     61
    ]
   },
-  "actor.troll/walk/left/1": {
+  "actor.giraffe/walk/right/0": {
    "atlas": "actors_huge",
    "index": 48,
    "anchor": [
@@ -7279,7 +9263,7 @@
     61
    ]
   },
-  "actor.troll/walk/left/2": {
+  "actor.giraffe/walk/right/1": {
    "atlas": "actors_huge",
    "index": 49,
    "anchor": [
@@ -7287,7 +9271,7 @@
     61
    ]
   },
-  "actor.troll/walk/left/3": {
+  "actor.giraffe/walk/right/2": {
    "atlas": "actors_huge",
    "index": 50,
    "anchor": [
@@ -7295,7 +9279,7 @@
     61
    ]
   },
-  "actor.troll/walk/left/4": {
+  "actor.giraffe/walk/right/3": {
    "atlas": "actors_huge",
    "index": 51,
    "anchor": [
@@ -7303,7 +9287,7 @@
     61
    ]
   },
-  "actor.troll/walk/left/5": {
+  "actor.giraffe/idle/right/0": {
    "atlas": "actors_huge",
    "index": 52,
    "anchor": [
@@ -7311,7 +9295,7 @@
     61
    ]
   },
-  "actor.troll/idle/left/0": {
+  "actor.giraffe/idle/right/1": {
    "atlas": "actors_huge",
    "index": 53,
    "anchor": [
@@ -7319,7 +9303,7 @@
     61
    ]
   },
-  "actor.troll/idle/left/1": {
+  "actor.giraffe/graze/right/0": {
    "atlas": "actors_huge",
    "index": 54,
    "anchor": [
@@ -7327,7 +9311,7 @@
     61
    ]
   },
-  "actor.troll/idle/left/2": {
+  "actor.giraffe/graze/right/1": {
    "atlas": "actors_huge",
    "index": 55,
    "anchor": [
@@ -7335,7 +9319,7 @@
     61
    ]
   },
-  "actor.troll/idle/left/3": {
+  "actor.giraffe/walk/up/0": {
    "atlas": "actors_huge",
    "index": 56,
    "anchor": [
@@ -7343,7 +9327,7 @@
     61
    ]
   },
-  "actor.troll/attack/left/0": {
+  "actor.giraffe/walk/up/1": {
    "atlas": "actors_huge",
    "index": 57,
    "anchor": [
@@ -7351,7 +9335,7 @@
     61
    ]
   },
-  "actor.troll/attack/left/1": {
+  "actor.giraffe/walk/up/2": {
    "atlas": "actors_huge",
    "index": 58,
    "anchor": [
@@ -7359,7 +9343,7 @@
     61
    ]
   },
-  "actor.troll/attack/left/2": {
+  "actor.giraffe/walk/up/3": {
    "atlas": "actors_huge",
    "index": 59,
    "anchor": [
@@ -7367,7 +9351,7 @@
     61
    ]
   },
-  "actor.troll/attack/left/3": {
+  "actor.giraffe/idle/up/0": {
    "atlas": "actors_huge",
    "index": 60,
    "anchor": [
@@ -7375,7 +9359,7 @@
     61
    ]
   },
-  "actor.troll/attack/left/4": {
+  "actor.giraffe/idle/up/1": {
    "atlas": "actors_huge",
    "index": 61,
    "anchor": [
@@ -7383,7 +9367,7 @@
     61
    ]
   },
-  "actor.troll/walk/right/0": {
+  "actor.giraffe/graze/up/0": {
    "atlas": "actors_huge",
    "index": 62,
    "anchor": [
@@ -7391,7 +9375,7 @@
     61
    ]
   },
-  "actor.troll/walk/right/1": {
+  "actor.giraffe/graze/up/1": {
    "atlas": "actors_huge",
    "index": 63,
    "anchor": [
@@ -7399,7 +9383,7 @@
     61
    ]
   },
-  "actor.troll/walk/right/2": {
+  "actor.troll/walk/down/0": {
    "atlas": "actors_huge",
    "index": 64,
    "anchor": [
@@ -7407,7 +9391,7 @@
     61
    ]
   },
-  "actor.troll/walk/right/3": {
+  "actor.troll/walk/down/1": {
    "atlas": "actors_huge",
    "index": 65,
    "anchor": [
@@ -7415,7 +9399,7 @@
     61
    ]
   },
-  "actor.troll/walk/right/4": {
+  "actor.troll/walk/down/2": {
    "atlas": "actors_huge",
    "index": 66,
    "anchor": [
@@ -7423,7 +9407,7 @@
     61
    ]
   },
-  "actor.troll/walk/right/5": {
+  "actor.troll/walk/down/3": {
    "atlas": "actors_huge",
    "index": 67,
    "anchor": [
@@ -7431,7 +9415,7 @@
     61
    ]
   },
-  "actor.troll/idle/right/0": {
+  "actor.troll/walk/down/4": {
    "atlas": "actors_huge",
    "index": 68,
    "anchor": [
@@ -7439,7 +9423,7 @@
     61
    ]
   },
-  "actor.troll/idle/right/1": {
+  "actor.troll/walk/down/5": {
    "atlas": "actors_huge",
    "index": 69,
    "anchor": [
@@ -7447,7 +9431,7 @@
     61
    ]
   },
-  "actor.troll/idle/right/2": {
+  "actor.troll/idle/down/0": {
    "atlas": "actors_huge",
    "index": 70,
    "anchor": [
@@ -7455,7 +9439,7 @@
     61
    ]
   },
-  "actor.troll/idle/right/3": {
+  "actor.troll/idle/down/1": {
    "atlas": "actors_huge",
    "index": 71,
    "anchor": [
@@ -7463,7 +9447,7 @@
     61
    ]
   },
-  "actor.troll/attack/right/0": {
+  "actor.troll/idle/down/2": {
    "atlas": "actors_huge",
    "index": 72,
    "anchor": [
@@ -7471,7 +9455,7 @@
     61
    ]
   },
-  "actor.troll/attack/right/1": {
+  "actor.troll/idle/down/3": {
    "atlas": "actors_huge",
    "index": 73,
    "anchor": [
@@ -7479,7 +9463,7 @@
     61
    ]
   },
-  "actor.troll/attack/right/2": {
+  "actor.troll/attack/down/0": {
    "atlas": "actors_huge",
    "index": 74,
    "anchor": [
@@ -7487,7 +9471,7 @@
     61
    ]
   },
-  "actor.troll/attack/right/3": {
+  "actor.troll/attack/down/1": {
    "atlas": "actors_huge",
    "index": 75,
    "anchor": [
@@ -7495,7 +9479,7 @@
     61
    ]
   },
-  "actor.troll/attack/right/4": {
+  "actor.troll/attack/down/2": {
    "atlas": "actors_huge",
    "index": 76,
    "anchor": [
@@ -7503,7 +9487,7 @@
     61
    ]
   },
-  "actor.troll/walk/up/0": {
+  "actor.troll/attack/down/3": {
    "atlas": "actors_huge",
    "index": 77,
    "anchor": [
@@ -7511,7 +9495,7 @@
     61
    ]
   },
-  "actor.troll/walk/up/1": {
+  "actor.troll/attack/down/4": {
    "atlas": "actors_huge",
    "index": 78,
    "anchor": [
@@ -7519,7 +9503,7 @@
     61
    ]
   },
-  "actor.troll/walk/up/2": {
+  "actor.troll/walk/left/0": {
    "atlas": "actors_huge",
    "index": 79,
    "anchor": [
@@ -7527,7 +9511,7 @@
     61
    ]
   },
-  "actor.troll/walk/up/3": {
+  "actor.troll/walk/left/1": {
    "atlas": "actors_huge",
    "index": 80,
    "anchor": [
@@ -7535,7 +9519,7 @@
     61
    ]
   },
-  "actor.troll/walk/up/4": {
+  "actor.troll/walk/left/2": {
    "atlas": "actors_huge",
    "index": 81,
    "anchor": [
@@ -7543,7 +9527,7 @@
     61
    ]
   },
-  "actor.troll/walk/up/5": {
+  "actor.troll/walk/left/3": {
    "atlas": "actors_huge",
    "index": 82,
    "anchor": [
@@ -7551,7 +9535,7 @@
     61
    ]
   },
-  "actor.troll/idle/up/0": {
+  "actor.troll/walk/left/4": {
    "atlas": "actors_huge",
    "index": 83,
    "anchor": [
@@ -7559,7 +9543,7 @@
     61
    ]
   },
-  "actor.troll/idle/up/1": {
+  "actor.troll/walk/left/5": {
    "atlas": "actors_huge",
    "index": 84,
    "anchor": [
@@ -7567,7 +9551,7 @@
     61
    ]
   },
-  "actor.troll/idle/up/2": {
+  "actor.troll/idle/left/0": {
    "atlas": "actors_huge",
    "index": 85,
    "anchor": [
@@ -7575,7 +9559,7 @@
     61
    ]
   },
-  "actor.troll/idle/up/3": {
+  "actor.troll/idle/left/1": {
    "atlas": "actors_huge",
    "index": 86,
    "anchor": [
@@ -7583,7 +9567,7 @@
     61
    ]
   },
-  "actor.troll/attack/up/0": {
+  "actor.troll/idle/left/2": {
    "atlas": "actors_huge",
    "index": 87,
    "anchor": [
@@ -7591,7 +9575,7 @@
     61
    ]
   },
-  "actor.troll/attack/up/1": {
+  "actor.troll/idle/left/3": {
    "atlas": "actors_huge",
    "index": 88,
    "anchor": [
@@ -7599,7 +9583,7 @@
     61
    ]
   },
-  "actor.troll/attack/up/2": {
+  "actor.troll/attack/left/0": {
    "atlas": "actors_huge",
    "index": 89,
    "anchor": [
@@ -7607,7 +9591,7 @@
     61
    ]
   },
-  "actor.troll/attack/up/3": {
+  "actor.troll/attack/left/1": {
    "atlas": "actors_huge",
    "index": 90,
    "anchor": [
@@ -7615,9 +9599,265 @@
     61
    ]
   },
-  "actor.troll/attack/up/4": {
+  "actor.troll/attack/left/2": {
    "atlas": "actors_huge",
    "index": 91,
+   "anchor": [
+    24,
+    61
+   ]
+  },
+  "actor.troll/attack/left/3": {
+   "atlas": "actors_huge",
+   "index": 92,
+   "anchor": [
+    24,
+    61
+   ]
+  },
+  "actor.troll/attack/left/4": {
+   "atlas": "actors_huge",
+   "index": 93,
+   "anchor": [
+    24,
+    61
+   ]
+  },
+  "actor.troll/walk/right/0": {
+   "atlas": "actors_huge",
+   "index": 94,
+   "anchor": [
+    24,
+    61
+   ]
+  },
+  "actor.troll/walk/right/1": {
+   "atlas": "actors_huge",
+   "index": 95,
+   "anchor": [
+    24,
+    61
+   ]
+  },
+  "actor.troll/walk/right/2": {
+   "atlas": "actors_huge",
+   "index": 96,
+   "anchor": [
+    24,
+    61
+   ]
+  },
+  "actor.troll/walk/right/3": {
+   "atlas": "actors_huge",
+   "index": 97,
+   "anchor": [
+    24,
+    61
+   ]
+  },
+  "actor.troll/walk/right/4": {
+   "atlas": "actors_huge",
+   "index": 98,
+   "anchor": [
+    24,
+    61
+   ]
+  },
+  "actor.troll/walk/right/5": {
+   "atlas": "actors_huge",
+   "index": 99,
+   "anchor": [
+    24,
+    61
+   ]
+  },
+  "actor.troll/idle/right/0": {
+   "atlas": "actors_huge",
+   "index": 100,
+   "anchor": [
+    24,
+    61
+   ]
+  },
+  "actor.troll/idle/right/1": {
+   "atlas": "actors_huge",
+   "index": 101,
+   "anchor": [
+    24,
+    61
+   ]
+  },
+  "actor.troll/idle/right/2": {
+   "atlas": "actors_huge",
+   "index": 102,
+   "anchor": [
+    24,
+    61
+   ]
+  },
+  "actor.troll/idle/right/3": {
+   "atlas": "actors_huge",
+   "index": 103,
+   "anchor": [
+    24,
+    61
+   ]
+  },
+  "actor.troll/attack/right/0": {
+   "atlas": "actors_huge",
+   "index": 104,
+   "anchor": [
+    24,
+    61
+   ]
+  },
+  "actor.troll/attack/right/1": {
+   "atlas": "actors_huge",
+   "index": 105,
+   "anchor": [
+    24,
+    61
+   ]
+  },
+  "actor.troll/attack/right/2": {
+   "atlas": "actors_huge",
+   "index": 106,
+   "anchor": [
+    24,
+    61
+   ]
+  },
+  "actor.troll/attack/right/3": {
+   "atlas": "actors_huge",
+   "index": 107,
+   "anchor": [
+    24,
+    61
+   ]
+  },
+  "actor.troll/attack/right/4": {
+   "atlas": "actors_huge",
+   "index": 108,
+   "anchor": [
+    24,
+    61
+   ]
+  },
+  "actor.troll/walk/up/0": {
+   "atlas": "actors_huge",
+   "index": 109,
+   "anchor": [
+    24,
+    61
+   ]
+  },
+  "actor.troll/walk/up/1": {
+   "atlas": "actors_huge",
+   "index": 110,
+   "anchor": [
+    24,
+    61
+   ]
+  },
+  "actor.troll/walk/up/2": {
+   "atlas": "actors_huge",
+   "index": 111,
+   "anchor": [
+    24,
+    61
+   ]
+  },
+  "actor.troll/walk/up/3": {
+   "atlas": "actors_huge",
+   "index": 112,
+   "anchor": [
+    24,
+    61
+   ]
+  },
+  "actor.troll/walk/up/4": {
+   "atlas": "actors_huge",
+   "index": 113,
+   "anchor": [
+    24,
+    61
+   ]
+  },
+  "actor.troll/walk/up/5": {
+   "atlas": "actors_huge",
+   "index": 114,
+   "anchor": [
+    24,
+    61
+   ]
+  },
+  "actor.troll/idle/up/0": {
+   "atlas": "actors_huge",
+   "index": 115,
+   "anchor": [
+    24,
+    61
+   ]
+  },
+  "actor.troll/idle/up/1": {
+   "atlas": "actors_huge",
+   "index": 116,
+   "anchor": [
+    24,
+    61
+   ]
+  },
+  "actor.troll/idle/up/2": {
+   "atlas": "actors_huge",
+   "index": 117,
+   "anchor": [
+    24,
+    61
+   ]
+  },
+  "actor.troll/idle/up/3": {
+   "atlas": "actors_huge",
+   "index": 118,
+   "anchor": [
+    24,
+    61
+   ]
+  },
+  "actor.troll/attack/up/0": {
+   "atlas": "actors_huge",
+   "index": 119,
+   "anchor": [
+    24,
+    61
+   ]
+  },
+  "actor.troll/attack/up/1": {
+   "atlas": "actors_huge",
+   "index": 120,
+   "anchor": [
+    24,
+    61
+   ]
+  },
+  "actor.troll/attack/up/2": {
+   "atlas": "actors_huge",
+   "index": 121,
+   "anchor": [
+    24,
+    61
+   ]
+  },
+  "actor.troll/attack/up/3": {
+   "atlas": "actors_huge",
+   "index": 122,
+   "anchor": [
+    24,
+    61
+   ]
+  },
+  "actor.troll/attack/up/4": {
+   "atlas": "actors_huge",
+   "index": 123,
    "anchor": [
     24,
     61
@@ -15767,6 +18007,14 @@
     14
    ]
   },
+  "item.nomad_armor": {
+   "atlas": "items",
+   "index": 16,
+   "anchor": [
+    8,
+    14
+   ]
+  },
   "fx.0": {
    "atlas": "fx",
    "index": 0,
@@ -16408,6 +18656,122 @@
    ],
    "ms": 110,
    "loop": false
+  },
+  "actor.giraffe/walk/down": {
+   "atlas": "actors_huge",
+   "frames": [
+    32,
+    33,
+    34,
+    35
+   ],
+   "ms": 220,
+   "loop": true
+  },
+  "actor.giraffe/idle/down": {
+   "atlas": "actors_huge",
+   "frames": [
+    36,
+    37
+   ],
+   "ms": 700,
+   "loop": true
+  },
+  "actor.giraffe/graze/down": {
+   "atlas": "actors_huge",
+   "frames": [
+    38,
+    39
+   ],
+   "ms": 520,
+   "loop": true
+  },
+  "actor.giraffe/walk/left": {
+   "atlas": "actors_huge",
+   "frames": [
+    40,
+    41,
+    42,
+    43
+   ],
+   "ms": 220,
+   "loop": true
+  },
+  "actor.giraffe/idle/left": {
+   "atlas": "actors_huge",
+   "frames": [
+    44,
+    45
+   ],
+   "ms": 700,
+   "loop": true
+  },
+  "actor.giraffe/graze/left": {
+   "atlas": "actors_huge",
+   "frames": [
+    46,
+    47
+   ],
+   "ms": 520,
+   "loop": true
+  },
+  "actor.giraffe/walk/right": {
+   "atlas": "actors_huge",
+   "frames": [
+    48,
+    49,
+    50,
+    51
+   ],
+   "ms": 220,
+   "loop": true
+  },
+  "actor.giraffe/idle/right": {
+   "atlas": "actors_huge",
+   "frames": [
+    52,
+    53
+   ],
+   "ms": 700,
+   "loop": true
+  },
+  "actor.giraffe/graze/right": {
+   "atlas": "actors_huge",
+   "frames": [
+    54,
+    55
+   ],
+   "ms": 520,
+   "loop": true
+  },
+  "actor.giraffe/walk/up": {
+   "atlas": "actors_huge",
+   "frames": [
+    56,
+    57,
+    58,
+    59
+   ],
+   "ms": 220,
+   "loop": true
+  },
+  "actor.giraffe/idle/up": {
+   "atlas": "actors_huge",
+   "frames": [
+    60,
+    61
+   ],
+   "ms": 700,
+   "loop": true
+  },
+  "actor.giraffe/graze/up": {
+   "atlas": "actors_huge",
+   "frames": [
+    62,
+    63
+   ],
+   "ms": 520,
+   "loop": true
   },
   "actor.goat/walk/down": {
    "atlas": "actors",
@@ -17137,7 +19501,7 @@
    "ms": 90,
    "loop": false
   },
-  "actor.hero_desert_tunic/walk/down": {
+  "actor.hero_axe_nomad_armor/walk/down": {
    "atlas": "actors",
    "frames": [
     352,
@@ -17148,7 +19512,7 @@
    "ms": 120,
    "loop": true
   },
-  "actor.hero_desert_tunic/idle/down": {
+  "actor.hero_axe_nomad_armor/idle/down": {
    "atlas": "actors",
    "frames": [
     356,
@@ -17157,7 +19521,7 @@
    "ms": 500,
    "loop": true
   },
-  "actor.hero_desert_tunic/gather/down": {
+  "actor.hero_axe_nomad_armor/gather/down": {
    "atlas": "actors",
    "frames": [
     358,
@@ -17167,7 +19531,7 @@
    "ms": 140,
    "loop": false
   },
-  "actor.hero_desert_tunic/walk/left": {
+  "actor.hero_axe_nomad_armor/slash/down": {
    "atlas": "actors",
    "frames": [
     361,
@@ -17175,14 +19539,178 @@
     363,
     364
    ],
+   "ms": 90,
+   "loop": false
+  },
+  "actor.hero_axe_nomad_armor/walk/left": {
+   "atlas": "actors",
+   "frames": [
+    365,
+    366,
+    367,
+    368
+   ],
+   "ms": 120,
+   "loop": true
+  },
+  "actor.hero_axe_nomad_armor/idle/left": {
+   "atlas": "actors",
+   "frames": [
+    369,
+    370
+   ],
+   "ms": 500,
+   "loop": true
+  },
+  "actor.hero_axe_nomad_armor/gather/left": {
+   "atlas": "actors",
+   "frames": [
+    371,
+    372,
+    373
+   ],
+   "ms": 140,
+   "loop": false
+  },
+  "actor.hero_axe_nomad_armor/slash/left": {
+   "atlas": "actors",
+   "frames": [
+    374,
+    375,
+    376,
+    377
+   ],
+   "ms": 90,
+   "loop": false
+  },
+  "actor.hero_axe_nomad_armor/walk/right": {
+   "atlas": "actors",
+   "frames": [
+    378,
+    379,
+    380,
+    381
+   ],
+   "ms": 120,
+   "loop": true
+  },
+  "actor.hero_axe_nomad_armor/idle/right": {
+   "atlas": "actors",
+   "frames": [
+    382,
+    383
+   ],
+   "ms": 500,
+   "loop": true
+  },
+  "actor.hero_axe_nomad_armor/gather/right": {
+   "atlas": "actors",
+   "frames": [
+    384,
+    385,
+    386
+   ],
+   "ms": 140,
+   "loop": false
+  },
+  "actor.hero_axe_nomad_armor/slash/right": {
+   "atlas": "actors",
+   "frames": [
+    387,
+    388,
+    389,
+    390
+   ],
+   "ms": 90,
+   "loop": false
+  },
+  "actor.hero_axe_nomad_armor/walk/up": {
+   "atlas": "actors",
+   "frames": [
+    391,
+    392,
+    393,
+    394
+   ],
+   "ms": 120,
+   "loop": true
+  },
+  "actor.hero_axe_nomad_armor/idle/up": {
+   "atlas": "actors",
+   "frames": [
+    395,
+    396
+   ],
+   "ms": 500,
+   "loop": true
+  },
+  "actor.hero_axe_nomad_armor/gather/up": {
+   "atlas": "actors",
+   "frames": [
+    397,
+    398,
+    399
+   ],
+   "ms": 140,
+   "loop": false
+  },
+  "actor.hero_axe_nomad_armor/slash/up": {
+   "atlas": "actors",
+   "frames": [
+    400,
+    401,
+    402,
+    403
+   ],
+   "ms": 90,
+   "loop": false
+  },
+  "actor.hero_desert_tunic/walk/down": {
+   "atlas": "actors",
+   "frames": [
+    404,
+    405,
+    406,
+    407
+   ],
+   "ms": 120,
+   "loop": true
+  },
+  "actor.hero_desert_tunic/idle/down": {
+   "atlas": "actors",
+   "frames": [
+    408,
+    409
+   ],
+   "ms": 500,
+   "loop": true
+  },
+  "actor.hero_desert_tunic/gather/down": {
+   "atlas": "actors",
+   "frames": [
+    410,
+    411,
+    412
+   ],
+   "ms": 140,
+   "loop": false
+  },
+  "actor.hero_desert_tunic/walk/left": {
+   "atlas": "actors",
+   "frames": [
+    413,
+    414,
+    415,
+    416
+   ],
    "ms": 120,
    "loop": true
   },
   "actor.hero_desert_tunic/idle/left": {
    "atlas": "actors",
    "frames": [
-    365,
-    366
+    417,
+    418
    ],
    "ms": 500,
    "loop": true
@@ -17190,9 +19718,9 @@
   "actor.hero_desert_tunic/gather/left": {
    "atlas": "actors",
    "frames": [
-    367,
-    368,
-    369
+    419,
+    420,
+    421
    ],
    "ms": 140,
    "loop": false
@@ -17200,10 +19728,10 @@
   "actor.hero_desert_tunic/walk/right": {
    "atlas": "actors",
    "frames": [
-    370,
-    371,
-    372,
-    373
+    422,
+    423,
+    424,
+    425
    ],
    "ms": 120,
    "loop": true
@@ -17211,8 +19739,8 @@
   "actor.hero_desert_tunic/idle/right": {
    "atlas": "actors",
    "frames": [
-    374,
-    375
+    426,
+    427
    ],
    "ms": 500,
    "loop": true
@@ -17220,9 +19748,9 @@
   "actor.hero_desert_tunic/gather/right": {
    "atlas": "actors",
    "frames": [
-    376,
-    377,
-    378
+    428,
+    429,
+    430
    ],
    "ms": 140,
    "loop": false
@@ -17230,10 +19758,10 @@
   "actor.hero_desert_tunic/walk/up": {
    "atlas": "actors",
    "frames": [
-    379,
-    380,
-    381,
-    382
+    431,
+    432,
+    433,
+    434
    ],
    "ms": 120,
    "loop": true
@@ -17241,8 +19769,8 @@
   "actor.hero_desert_tunic/idle/up": {
    "atlas": "actors",
    "frames": [
-    383,
-    384
+    435,
+    436
    ],
    "ms": 500,
    "loop": true
@@ -17250,9 +19778,9 @@
   "actor.hero_desert_tunic/gather/up": {
    "atlas": "actors",
    "frames": [
-    385,
-    386,
-    387
+    437,
+    438,
+    439
    ],
    "ms": 140,
    "loop": false
@@ -17260,10 +19788,10 @@
   "actor.hero_mail/walk/down": {
    "atlas": "actors",
    "frames": [
-    388,
-    389,
-    390,
-    391
+    440,
+    441,
+    442,
+    443
    ],
    "ms": 120,
    "loop": true
@@ -17271,8 +19799,8 @@
   "actor.hero_mail/idle/down": {
    "atlas": "actors",
    "frames": [
-    392,
-    393
+    444,
+    445
    ],
    "ms": 500,
    "loop": true
@@ -17280,9 +19808,9 @@
   "actor.hero_mail/gather/down": {
    "atlas": "actors",
    "frames": [
-    394,
-    395,
-    396
+    446,
+    447,
+    448
    ],
    "ms": 140,
    "loop": false
@@ -17290,10 +19818,10 @@
   "actor.hero_mail/walk/left": {
    "atlas": "actors",
    "frames": [
-    397,
-    398,
-    399,
-    400
+    449,
+    450,
+    451,
+    452
    ],
    "ms": 120,
    "loop": true
@@ -17301,8 +19829,8 @@
   "actor.hero_mail/idle/left": {
    "atlas": "actors",
    "frames": [
-    401,
-    402
+    453,
+    454
    ],
    "ms": 500,
    "loop": true
@@ -17310,9 +19838,9 @@
   "actor.hero_mail/gather/left": {
    "atlas": "actors",
    "frames": [
-    403,
-    404,
-    405
+    455,
+    456,
+    457
    ],
    "ms": 140,
    "loop": false
@@ -17320,10 +19848,10 @@
   "actor.hero_mail/walk/right": {
    "atlas": "actors",
    "frames": [
-    406,
-    407,
-    408,
-    409
+    458,
+    459,
+    460,
+    461
    ],
    "ms": 120,
    "loop": true
@@ -17331,8 +19859,8 @@
   "actor.hero_mail/idle/right": {
    "atlas": "actors",
    "frames": [
-    410,
-    411
+    462,
+    463
    ],
    "ms": 500,
    "loop": true
@@ -17340,9 +19868,9 @@
   "actor.hero_mail/gather/right": {
    "atlas": "actors",
    "frames": [
-    412,
-    413,
-    414
+    464,
+    465,
+    466
    ],
    "ms": 140,
    "loop": false
@@ -17350,10 +19878,10 @@
   "actor.hero_mail/walk/up": {
    "atlas": "actors",
    "frames": [
-    415,
-    416,
-    417,
-    418
+    467,
+    468,
+    469,
+    470
    ],
    "ms": 120,
    "loop": true
@@ -17361,8 +19889,8 @@
   "actor.hero_mail/idle/up": {
    "atlas": "actors",
    "frames": [
-    419,
-    420
+    471,
+    472
    ],
    "ms": 500,
    "loop": true
@@ -17370,178 +19898,14 @@
   "actor.hero_mail/gather/up": {
    "atlas": "actors",
    "frames": [
-    421,
-    422,
-    423
-   ],
-   "ms": 140,
-   "loop": false
-  },
-  "actor.hero_spear/walk/down": {
-   "atlas": "actors",
-   "frames": [
-    424,
-    425,
-    426,
-    427
-   ],
-   "ms": 120,
-   "loop": true
-  },
-  "actor.hero_spear/idle/down": {
-   "atlas": "actors",
-   "frames": [
-    428,
-    429
-   ],
-   "ms": 500,
-   "loop": true
-  },
-  "actor.hero_spear/gather/down": {
-   "atlas": "actors",
-   "frames": [
-    430,
-    431,
-    432
-   ],
-   "ms": 140,
-   "loop": false
-  },
-  "actor.hero_spear/slash/down": {
-   "atlas": "actors",
-   "frames": [
-    433,
-    434,
-    435,
-    436
-   ],
-   "ms": 90,
-   "loop": false
-  },
-  "actor.hero_spear/walk/left": {
-   "atlas": "actors",
-   "frames": [
-    437,
-    438,
-    439,
-    440
-   ],
-   "ms": 120,
-   "loop": true
-  },
-  "actor.hero_spear/idle/left": {
-   "atlas": "actors",
-   "frames": [
-    441,
-    442
-   ],
-   "ms": 500,
-   "loop": true
-  },
-  "actor.hero_spear/gather/left": {
-   "atlas": "actors",
-   "frames": [
-    443,
-    444,
-    445
-   ],
-   "ms": 140,
-   "loop": false
-  },
-  "actor.hero_spear/slash/left": {
-   "atlas": "actors",
-   "frames": [
-    446,
-    447,
-    448,
-    449
-   ],
-   "ms": 90,
-   "loop": false
-  },
-  "actor.hero_spear/walk/right": {
-   "atlas": "actors",
-   "frames": [
-    450,
-    451,
-    452,
-    453
-   ],
-   "ms": 120,
-   "loop": true
-  },
-  "actor.hero_spear/idle/right": {
-   "atlas": "actors",
-   "frames": [
-    454,
-    455
-   ],
-   "ms": 500,
-   "loop": true
-  },
-  "actor.hero_spear/gather/right": {
-   "atlas": "actors",
-   "frames": [
-    456,
-    457,
-    458
-   ],
-   "ms": 140,
-   "loop": false
-  },
-  "actor.hero_spear/slash/right": {
-   "atlas": "actors",
-   "frames": [
-    459,
-    460,
-    461,
-    462
-   ],
-   "ms": 90,
-   "loop": false
-  },
-  "actor.hero_spear/walk/up": {
-   "atlas": "actors",
-   "frames": [
-    463,
-    464,
-    465,
-    466
-   ],
-   "ms": 120,
-   "loop": true
-  },
-  "actor.hero_spear/idle/up": {
-   "atlas": "actors",
-   "frames": [
-    467,
-    468
-   ],
-   "ms": 500,
-   "loop": true
-  },
-  "actor.hero_spear/gather/up": {
-   "atlas": "actors",
-   "frames": [
-    469,
-    470,
-    471
-   ],
-   "ms": 140,
-   "loop": false
-  },
-  "actor.hero_spear/slash/up": {
-   "atlas": "actors",
-   "frames": [
-    472,
     473,
     474,
     475
    ],
-   "ms": 90,
+   "ms": 140,
    "loop": false
   },
-  "actor.hero_spear_desert_tunic/walk/down": {
+  "actor.hero_nomad_armor/walk/down": {
    "atlas": "actors",
    "frames": [
     476,
@@ -17552,7 +19916,7 @@
    "ms": 120,
    "loop": true
   },
-  "actor.hero_spear_desert_tunic/idle/down": {
+  "actor.hero_nomad_armor/idle/down": {
    "atlas": "actors",
    "frames": [
     480,
@@ -17561,7 +19925,7 @@
    "ms": 500,
    "loop": true
   },
-  "actor.hero_spear_desert_tunic/gather/down": {
+  "actor.hero_nomad_armor/gather/down": {
    "atlas": "actors",
    "frames": [
     482,
@@ -17571,7 +19935,7 @@
    "ms": 140,
    "loop": false
   },
-  "actor.hero_spear_desert_tunic/slash/down": {
+  "actor.hero_nomad_armor/walk/left": {
    "atlas": "actors",
    "frames": [
     485,
@@ -17579,16 +19943,300 @@
     487,
     488
    ],
+   "ms": 120,
+   "loop": true
+  },
+  "actor.hero_nomad_armor/idle/left": {
+   "atlas": "actors",
+   "frames": [
+    489,
+    490
+   ],
+   "ms": 500,
+   "loop": true
+  },
+  "actor.hero_nomad_armor/gather/left": {
+   "atlas": "actors",
+   "frames": [
+    491,
+    492,
+    493
+   ],
+   "ms": 140,
+   "loop": false
+  },
+  "actor.hero_nomad_armor/walk/right": {
+   "atlas": "actors",
+   "frames": [
+    494,
+    495,
+    496,
+    497
+   ],
+   "ms": 120,
+   "loop": true
+  },
+  "actor.hero_nomad_armor/idle/right": {
+   "atlas": "actors",
+   "frames": [
+    498,
+    499
+   ],
+   "ms": 500,
+   "loop": true
+  },
+  "actor.hero_nomad_armor/gather/right": {
+   "atlas": "actors",
+   "frames": [
+    500,
+    501,
+    502
+   ],
+   "ms": 140,
+   "loop": false
+  },
+  "actor.hero_nomad_armor/walk/up": {
+   "atlas": "actors",
+   "frames": [
+    503,
+    504,
+    505,
+    506
+   ],
+   "ms": 120,
+   "loop": true
+  },
+  "actor.hero_nomad_armor/idle/up": {
+   "atlas": "actors",
+   "frames": [
+    507,
+    508
+   ],
+   "ms": 500,
+   "loop": true
+  },
+  "actor.hero_nomad_armor/gather/up": {
+   "atlas": "actors",
+   "frames": [
+    509,
+    510,
+    511
+   ],
+   "ms": 140,
+   "loop": false
+  },
+  "actor.hero_spear/walk/down": {
+   "atlas": "actors",
+   "frames": [
+    512,
+    513,
+    514,
+    515
+   ],
+   "ms": 120,
+   "loop": true
+  },
+  "actor.hero_spear/idle/down": {
+   "atlas": "actors",
+   "frames": [
+    516,
+    517
+   ],
+   "ms": 500,
+   "loop": true
+  },
+  "actor.hero_spear/gather/down": {
+   "atlas": "actors",
+   "frames": [
+    518,
+    519,
+    520
+   ],
+   "ms": 140,
+   "loop": false
+  },
+  "actor.hero_spear/slash/down": {
+   "atlas": "actors",
+   "frames": [
+    521,
+    522,
+    523,
+    524
+   ],
+   "ms": 90,
+   "loop": false
+  },
+  "actor.hero_spear/walk/left": {
+   "atlas": "actors",
+   "frames": [
+    525,
+    526,
+    527,
+    528
+   ],
+   "ms": 120,
+   "loop": true
+  },
+  "actor.hero_spear/idle/left": {
+   "atlas": "actors",
+   "frames": [
+    529,
+    530
+   ],
+   "ms": 500,
+   "loop": true
+  },
+  "actor.hero_spear/gather/left": {
+   "atlas": "actors",
+   "frames": [
+    531,
+    532,
+    533
+   ],
+   "ms": 140,
+   "loop": false
+  },
+  "actor.hero_spear/slash/left": {
+   "atlas": "actors",
+   "frames": [
+    534,
+    535,
+    536,
+    537
+   ],
+   "ms": 90,
+   "loop": false
+  },
+  "actor.hero_spear/walk/right": {
+   "atlas": "actors",
+   "frames": [
+    538,
+    539,
+    540,
+    541
+   ],
+   "ms": 120,
+   "loop": true
+  },
+  "actor.hero_spear/idle/right": {
+   "atlas": "actors",
+   "frames": [
+    542,
+    543
+   ],
+   "ms": 500,
+   "loop": true
+  },
+  "actor.hero_spear/gather/right": {
+   "atlas": "actors",
+   "frames": [
+    544,
+    545,
+    546
+   ],
+   "ms": 140,
+   "loop": false
+  },
+  "actor.hero_spear/slash/right": {
+   "atlas": "actors",
+   "frames": [
+    547,
+    548,
+    549,
+    550
+   ],
+   "ms": 90,
+   "loop": false
+  },
+  "actor.hero_spear/walk/up": {
+   "atlas": "actors",
+   "frames": [
+    551,
+    552,
+    553,
+    554
+   ],
+   "ms": 120,
+   "loop": true
+  },
+  "actor.hero_spear/idle/up": {
+   "atlas": "actors",
+   "frames": [
+    555,
+    556
+   ],
+   "ms": 500,
+   "loop": true
+  },
+  "actor.hero_spear/gather/up": {
+   "atlas": "actors",
+   "frames": [
+    557,
+    558,
+    559
+   ],
+   "ms": 140,
+   "loop": false
+  },
+  "actor.hero_spear/slash/up": {
+   "atlas": "actors",
+   "frames": [
+    560,
+    561,
+    562,
+    563
+   ],
+   "ms": 90,
+   "loop": false
+  },
+  "actor.hero_spear_desert_tunic/walk/down": {
+   "atlas": "actors",
+   "frames": [
+    564,
+    565,
+    566,
+    567
+   ],
+   "ms": 120,
+   "loop": true
+  },
+  "actor.hero_spear_desert_tunic/idle/down": {
+   "atlas": "actors",
+   "frames": [
+    568,
+    569
+   ],
+   "ms": 500,
+   "loop": true
+  },
+  "actor.hero_spear_desert_tunic/gather/down": {
+   "atlas": "actors",
+   "frames": [
+    570,
+    571,
+    572
+   ],
+   "ms": 140,
+   "loop": false
+  },
+  "actor.hero_spear_desert_tunic/slash/down": {
+   "atlas": "actors",
+   "frames": [
+    573,
+    574,
+    575,
+    576
+   ],
    "ms": 90,
    "loop": false
   },
   "actor.hero_spear_desert_tunic/walk/left": {
    "atlas": "actors",
    "frames": [
-    489,
-    490,
-    491,
-    492
+    577,
+    578,
+    579,
+    580
    ],
    "ms": 120,
    "loop": true
@@ -17596,8 +20244,8 @@
   "actor.hero_spear_desert_tunic/idle/left": {
    "atlas": "actors",
    "frames": [
-    493,
-    494
+    581,
+    582
    ],
    "ms": 500,
    "loop": true
@@ -17605,9 +20253,9 @@
   "actor.hero_spear_desert_tunic/gather/left": {
    "atlas": "actors",
    "frames": [
-    495,
-    496,
-    497
+    583,
+    584,
+    585
    ],
    "ms": 140,
    "loop": false
@@ -17615,10 +20263,10 @@
   "actor.hero_spear_desert_tunic/slash/left": {
    "atlas": "actors",
    "frames": [
-    498,
-    499,
-    500,
-    501
+    586,
+    587,
+    588,
+    589
    ],
    "ms": 90,
    "loop": false
@@ -17626,10 +20274,10 @@
   "actor.hero_spear_desert_tunic/walk/right": {
    "atlas": "actors",
    "frames": [
-    502,
-    503,
-    504,
-    505
+    590,
+    591,
+    592,
+    593
    ],
    "ms": 120,
    "loop": true
@@ -17637,8 +20285,8 @@
   "actor.hero_spear_desert_tunic/idle/right": {
    "atlas": "actors",
    "frames": [
-    506,
-    507
+    594,
+    595
    ],
    "ms": 500,
    "loop": true
@@ -17646,9 +20294,9 @@
   "actor.hero_spear_desert_tunic/gather/right": {
    "atlas": "actors",
    "frames": [
-    508,
-    509,
-    510
+    596,
+    597,
+    598
    ],
    "ms": 140,
    "loop": false
@@ -17656,10 +20304,10 @@
   "actor.hero_spear_desert_tunic/slash/right": {
    "atlas": "actors",
    "frames": [
-    511,
-    512,
-    513,
-    514
+    599,
+    600,
+    601,
+    602
    ],
    "ms": 90,
    "loop": false
@@ -17667,10 +20315,10 @@
   "actor.hero_spear_desert_tunic/walk/up": {
    "atlas": "actors",
    "frames": [
-    515,
-    516,
-    517,
-    518
+    603,
+    604,
+    605,
+    606
    ],
    "ms": 120,
    "loop": true
@@ -17678,8 +20326,8 @@
   "actor.hero_spear_desert_tunic/idle/up": {
    "atlas": "actors",
    "frames": [
-    519,
-    520
+    607,
+    608
    ],
    "ms": 500,
    "loop": true
@@ -17687,9 +20335,9 @@
   "actor.hero_spear_desert_tunic/gather/up": {
    "atlas": "actors",
    "frames": [
-    521,
-    522,
-    523
+    609,
+    610,
+    611
    ],
    "ms": 140,
    "loop": false
@@ -17697,10 +20345,10 @@
   "actor.hero_spear_desert_tunic/slash/up": {
    "atlas": "actors",
    "frames": [
-    524,
-    525,
-    526,
-    527
+    612,
+    613,
+    614,
+    615
    ],
    "ms": 90,
    "loop": false
@@ -17708,10 +20356,10 @@
   "actor.hero_spear_mail/walk/down": {
    "atlas": "actors",
    "frames": [
-    528,
-    529,
-    530,
-    531
+    616,
+    617,
+    618,
+    619
    ],
    "ms": 120,
    "loop": true
@@ -17719,8 +20367,8 @@
   "actor.hero_spear_mail/idle/down": {
    "atlas": "actors",
    "frames": [
-    532,
-    533
+    620,
+    621
    ],
    "ms": 500,
    "loop": true
@@ -17728,9 +20376,9 @@
   "actor.hero_spear_mail/gather/down": {
    "atlas": "actors",
    "frames": [
-    534,
-    535,
-    536
+    622,
+    623,
+    624
    ],
    "ms": 140,
    "loop": false
@@ -17738,10 +20386,10 @@
   "actor.hero_spear_mail/slash/down": {
    "atlas": "actors",
    "frames": [
-    537,
-    538,
-    539,
-    540
+    625,
+    626,
+    627,
+    628
    ],
    "ms": 90,
    "loop": false
@@ -17749,10 +20397,10 @@
   "actor.hero_spear_mail/walk/left": {
    "atlas": "actors",
    "frames": [
-    541,
-    542,
-    543,
-    544
+    629,
+    630,
+    631,
+    632
    ],
    "ms": 120,
    "loop": true
@@ -17760,8 +20408,8 @@
   "actor.hero_spear_mail/idle/left": {
    "atlas": "actors",
    "frames": [
-    545,
-    546
+    633,
+    634
    ],
    "ms": 500,
    "loop": true
@@ -17769,9 +20417,9 @@
   "actor.hero_spear_mail/gather/left": {
    "atlas": "actors",
    "frames": [
-    547,
-    548,
-    549
+    635,
+    636,
+    637
    ],
    "ms": 140,
    "loop": false
@@ -17779,10 +20427,10 @@
   "actor.hero_spear_mail/slash/left": {
    "atlas": "actors",
    "frames": [
-    550,
-    551,
-    552,
-    553
+    638,
+    639,
+    640,
+    641
    ],
    "ms": 90,
    "loop": false
@@ -17790,10 +20438,10 @@
   "actor.hero_spear_mail/walk/right": {
    "atlas": "actors",
    "frames": [
-    554,
-    555,
-    556,
-    557
+    642,
+    643,
+    644,
+    645
    ],
    "ms": 120,
    "loop": true
@@ -17801,8 +20449,8 @@
   "actor.hero_spear_mail/idle/right": {
    "atlas": "actors",
    "frames": [
-    558,
-    559
+    646,
+    647
    ],
    "ms": 500,
    "loop": true
@@ -17810,9 +20458,9 @@
   "actor.hero_spear_mail/gather/right": {
    "atlas": "actors",
    "frames": [
-    560,
-    561,
-    562
+    648,
+    649,
+    650
    ],
    "ms": 140,
    "loop": false
@@ -17820,10 +20468,10 @@
   "actor.hero_spear_mail/slash/right": {
    "atlas": "actors",
    "frames": [
-    563,
-    564,
-    565,
-    566
+    651,
+    652,
+    653,
+    654
    ],
    "ms": 90,
    "loop": false
@@ -17831,10 +20479,10 @@
   "actor.hero_spear_mail/walk/up": {
    "atlas": "actors",
    "frames": [
-    567,
-    568,
-    569,
-    570
+    655,
+    656,
+    657,
+    658
    ],
    "ms": 120,
    "loop": true
@@ -17842,8 +20490,8 @@
   "actor.hero_spear_mail/idle/up": {
    "atlas": "actors",
    "frames": [
-    571,
-    572
+    659,
+    660
    ],
    "ms": 500,
    "loop": true
@@ -17851,9 +20499,9 @@
   "actor.hero_spear_mail/gather/up": {
    "atlas": "actors",
    "frames": [
-    573,
-    574,
-    575
+    661,
+    662,
+    663
    ],
    "ms": 140,
    "loop": false
@@ -17861,10 +20509,174 @@
   "actor.hero_spear_mail/slash/up": {
    "atlas": "actors",
    "frames": [
-    576,
-    577,
-    578,
-    579
+    664,
+    665,
+    666,
+    667
+   ],
+   "ms": 90,
+   "loop": false
+  },
+  "actor.hero_spear_nomad_armor/walk/down": {
+   "atlas": "actors",
+   "frames": [
+    668,
+    669,
+    670,
+    671
+   ],
+   "ms": 120,
+   "loop": true
+  },
+  "actor.hero_spear_nomad_armor/idle/down": {
+   "atlas": "actors",
+   "frames": [
+    672,
+    673
+   ],
+   "ms": 500,
+   "loop": true
+  },
+  "actor.hero_spear_nomad_armor/gather/down": {
+   "atlas": "actors",
+   "frames": [
+    674,
+    675,
+    676
+   ],
+   "ms": 140,
+   "loop": false
+  },
+  "actor.hero_spear_nomad_armor/slash/down": {
+   "atlas": "actors",
+   "frames": [
+    677,
+    678,
+    679,
+    680
+   ],
+   "ms": 90,
+   "loop": false
+  },
+  "actor.hero_spear_nomad_armor/walk/left": {
+   "atlas": "actors",
+   "frames": [
+    681,
+    682,
+    683,
+    684
+   ],
+   "ms": 120,
+   "loop": true
+  },
+  "actor.hero_spear_nomad_armor/idle/left": {
+   "atlas": "actors",
+   "frames": [
+    685,
+    686
+   ],
+   "ms": 500,
+   "loop": true
+  },
+  "actor.hero_spear_nomad_armor/gather/left": {
+   "atlas": "actors",
+   "frames": [
+    687,
+    688,
+    689
+   ],
+   "ms": 140,
+   "loop": false
+  },
+  "actor.hero_spear_nomad_armor/slash/left": {
+   "atlas": "actors",
+   "frames": [
+    690,
+    691,
+    692,
+    693
+   ],
+   "ms": 90,
+   "loop": false
+  },
+  "actor.hero_spear_nomad_armor/walk/right": {
+   "atlas": "actors",
+   "frames": [
+    694,
+    695,
+    696,
+    697
+   ],
+   "ms": 120,
+   "loop": true
+  },
+  "actor.hero_spear_nomad_armor/idle/right": {
+   "atlas": "actors",
+   "frames": [
+    698,
+    699
+   ],
+   "ms": 500,
+   "loop": true
+  },
+  "actor.hero_spear_nomad_armor/gather/right": {
+   "atlas": "actors",
+   "frames": [
+    700,
+    701,
+    702
+   ],
+   "ms": 140,
+   "loop": false
+  },
+  "actor.hero_spear_nomad_armor/slash/right": {
+   "atlas": "actors",
+   "frames": [
+    703,
+    704,
+    705,
+    706
+   ],
+   "ms": 90,
+   "loop": false
+  },
+  "actor.hero_spear_nomad_armor/walk/up": {
+   "atlas": "actors",
+   "frames": [
+    707,
+    708,
+    709,
+    710
+   ],
+   "ms": 120,
+   "loop": true
+  },
+  "actor.hero_spear_nomad_armor/idle/up": {
+   "atlas": "actors",
+   "frames": [
+    711,
+    712
+   ],
+   "ms": 500,
+   "loop": true
+  },
+  "actor.hero_spear_nomad_armor/gather/up": {
+   "atlas": "actors",
+   "frames": [
+    713,
+    714,
+    715
+   ],
+   "ms": 140,
+   "loop": false
+  },
+  "actor.hero_spear_nomad_armor/slash/up": {
+   "atlas": "actors",
+   "frames": [
+    716,
+    717,
+    718,
+    719
    ],
    "ms": 90,
    "loop": false
@@ -17872,10 +20684,10 @@
   "actor.hero_sword/walk/down": {
    "atlas": "actors",
    "frames": [
-    580,
-    581,
-    582,
-    583
+    720,
+    721,
+    722,
+    723
    ],
    "ms": 120,
    "loop": true
@@ -17883,8 +20695,8 @@
   "actor.hero_sword/idle/down": {
    "atlas": "actors",
    "frames": [
-    584,
-    585
+    724,
+    725
    ],
    "ms": 500,
    "loop": true
@@ -17892,9 +20704,9 @@
   "actor.hero_sword/gather/down": {
    "atlas": "actors",
    "frames": [
-    586,
-    587,
-    588
+    726,
+    727,
+    728
    ],
    "ms": 140,
    "loop": false
@@ -17902,10 +20714,10 @@
   "actor.hero_sword/slash/down": {
    "atlas": "actors",
    "frames": [
-    589,
-    590,
-    591,
-    592
+    729,
+    730,
+    731,
+    732
    ],
    "ms": 90,
    "loop": false
@@ -17913,10 +20725,10 @@
   "actor.hero_sword/walk/left": {
    "atlas": "actors",
    "frames": [
-    593,
-    594,
-    595,
-    596
+    733,
+    734,
+    735,
+    736
    ],
    "ms": 120,
    "loop": true
@@ -17924,8 +20736,8 @@
   "actor.hero_sword/idle/left": {
    "atlas": "actors",
    "frames": [
-    597,
-    598
+    737,
+    738
    ],
    "ms": 500,
    "loop": true
@@ -17933,9 +20745,9 @@
   "actor.hero_sword/gather/left": {
    "atlas": "actors",
    "frames": [
-    599,
-    600,
-    601
+    739,
+    740,
+    741
    ],
    "ms": 140,
    "loop": false
@@ -17943,10 +20755,10 @@
   "actor.hero_sword/slash/left": {
    "atlas": "actors",
    "frames": [
-    602,
-    603,
-    604,
-    605
+    742,
+    743,
+    744,
+    745
    ],
    "ms": 90,
    "loop": false
@@ -17954,10 +20766,10 @@
   "actor.hero_sword/walk/right": {
    "atlas": "actors",
    "frames": [
-    606,
-    607,
-    608,
-    609
+    746,
+    747,
+    748,
+    749
    ],
    "ms": 120,
    "loop": true
@@ -17965,8 +20777,8 @@
   "actor.hero_sword/idle/right": {
    "atlas": "actors",
    "frames": [
-    610,
-    611
+    750,
+    751
    ],
    "ms": 500,
    "loop": true
@@ -17974,9 +20786,9 @@
   "actor.hero_sword/gather/right": {
    "atlas": "actors",
    "frames": [
-    612,
-    613,
-    614
+    752,
+    753,
+    754
    ],
    "ms": 140,
    "loop": false
@@ -17984,10 +20796,10 @@
   "actor.hero_sword/slash/right": {
    "atlas": "actors",
    "frames": [
-    615,
-    616,
-    617,
-    618
+    755,
+    756,
+    757,
+    758
    ],
    "ms": 90,
    "loop": false
@@ -17995,10 +20807,10 @@
   "actor.hero_sword/walk/up": {
    "atlas": "actors",
    "frames": [
-    619,
-    620,
-    621,
-    622
+    759,
+    760,
+    761,
+    762
    ],
    "ms": 120,
    "loop": true
@@ -18006,8 +20818,8 @@
   "actor.hero_sword/idle/up": {
    "atlas": "actors",
    "frames": [
-    623,
-    624
+    763,
+    764
    ],
    "ms": 500,
    "loop": true
@@ -18015,9 +20827,9 @@
   "actor.hero_sword/gather/up": {
    "atlas": "actors",
    "frames": [
-    625,
-    626,
-    627
+    765,
+    766,
+    767
    ],
    "ms": 140,
    "loop": false
@@ -18025,10 +20837,10 @@
   "actor.hero_sword/slash/up": {
    "atlas": "actors",
    "frames": [
-    628,
-    629,
-    630,
-    631
+    768,
+    769,
+    770,
+    771
    ],
    "ms": 90,
    "loop": false
@@ -18036,10 +20848,10 @@
   "actor.hero_sword_desert_tunic/walk/down": {
    "atlas": "actors",
    "frames": [
-    632,
-    633,
-    634,
-    635
+    772,
+    773,
+    774,
+    775
    ],
    "ms": 120,
    "loop": true
@@ -18047,8 +20859,8 @@
   "actor.hero_sword_desert_tunic/idle/down": {
    "atlas": "actors",
    "frames": [
-    636,
-    637
+    776,
+    777
    ],
    "ms": 500,
    "loop": true
@@ -18056,9 +20868,9 @@
   "actor.hero_sword_desert_tunic/gather/down": {
    "atlas": "actors",
    "frames": [
-    638,
-    639,
-    640
+    778,
+    779,
+    780
    ],
    "ms": 140,
    "loop": false
@@ -18066,10 +20878,10 @@
   "actor.hero_sword_desert_tunic/slash/down": {
    "atlas": "actors",
    "frames": [
-    641,
-    642,
-    643,
-    644
+    781,
+    782,
+    783,
+    784
    ],
    "ms": 90,
    "loop": false
@@ -18077,10 +20889,10 @@
   "actor.hero_sword_desert_tunic/walk/left": {
    "atlas": "actors",
    "frames": [
-    645,
-    646,
-    647,
-    648
+    785,
+    786,
+    787,
+    788
    ],
    "ms": 120,
    "loop": true
@@ -18088,8 +20900,8 @@
   "actor.hero_sword_desert_tunic/idle/left": {
    "atlas": "actors",
    "frames": [
-    649,
-    650
+    789,
+    790
    ],
    "ms": 500,
    "loop": true
@@ -18097,9 +20909,9 @@
   "actor.hero_sword_desert_tunic/gather/left": {
    "atlas": "actors",
    "frames": [
-    651,
-    652,
-    653
+    791,
+    792,
+    793
    ],
    "ms": 140,
    "loop": false
@@ -18107,477 +20919,15 @@
   "actor.hero_sword_desert_tunic/slash/left": {
    "atlas": "actors",
    "frames": [
-    654,
-    655,
-    656,
-    657
+    794,
+    795,
+    796,
+    797
    ],
    "ms": 90,
    "loop": false
   },
   "actor.hero_sword_desert_tunic/walk/right": {
-   "atlas": "actors",
-   "frames": [
-    658,
-    659,
-    660,
-    661
-   ],
-   "ms": 120,
-   "loop": true
-  },
-  "actor.hero_sword_desert_tunic/idle/right": {
-   "atlas": "actors",
-   "frames": [
-    662,
-    663
-   ],
-   "ms": 500,
-   "loop": true
-  },
-  "actor.hero_sword_desert_tunic/gather/right": {
-   "atlas": "actors",
-   "frames": [
-    664,
-    665,
-    666
-   ],
-   "ms": 140,
-   "loop": false
-  },
-  "actor.hero_sword_desert_tunic/slash/right": {
-   "atlas": "actors",
-   "frames": [
-    667,
-    668,
-    669,
-    670
-   ],
-   "ms": 90,
-   "loop": false
-  },
-  "actor.hero_sword_desert_tunic/walk/up": {
-   "atlas": "actors",
-   "frames": [
-    671,
-    672,
-    673,
-    674
-   ],
-   "ms": 120,
-   "loop": true
-  },
-  "actor.hero_sword_desert_tunic/idle/up": {
-   "atlas": "actors",
-   "frames": [
-    675,
-    676
-   ],
-   "ms": 500,
-   "loop": true
-  },
-  "actor.hero_sword_desert_tunic/gather/up": {
-   "atlas": "actors",
-   "frames": [
-    677,
-    678,
-    679
-   ],
-   "ms": 140,
-   "loop": false
-  },
-  "actor.hero_sword_desert_tunic/slash/up": {
-   "atlas": "actors",
-   "frames": [
-    680,
-    681,
-    682,
-    683
-   ],
-   "ms": 90,
-   "loop": false
-  },
-  "actor.hero_sword_mail/walk/down": {
-   "atlas": "actors",
-   "frames": [
-    684,
-    685,
-    686,
-    687
-   ],
-   "ms": 120,
-   "loop": true
-  },
-  "actor.hero_sword_mail/idle/down": {
-   "atlas": "actors",
-   "frames": [
-    688,
-    689
-   ],
-   "ms": 500,
-   "loop": true
-  },
-  "actor.hero_sword_mail/gather/down": {
-   "atlas": "actors",
-   "frames": [
-    690,
-    691,
-    692
-   ],
-   "ms": 140,
-   "loop": false
-  },
-  "actor.hero_sword_mail/slash/down": {
-   "atlas": "actors",
-   "frames": [
-    693,
-    694,
-    695,
-    696
-   ],
-   "ms": 90,
-   "loop": false
-  },
-  "actor.hero_sword_mail/walk/left": {
-   "atlas": "actors",
-   "frames": [
-    697,
-    698,
-    699,
-    700
-   ],
-   "ms": 120,
-   "loop": true
-  },
-  "actor.hero_sword_mail/idle/left": {
-   "atlas": "actors",
-   "frames": [
-    701,
-    702
-   ],
-   "ms": 500,
-   "loop": true
-  },
-  "actor.hero_sword_mail/gather/left": {
-   "atlas": "actors",
-   "frames": [
-    703,
-    704,
-    705
-   ],
-   "ms": 140,
-   "loop": false
-  },
-  "actor.hero_sword_mail/slash/left": {
-   "atlas": "actors",
-   "frames": [
-    706,
-    707,
-    708,
-    709
-   ],
-   "ms": 90,
-   "loop": false
-  },
-  "actor.hero_sword_mail/walk/right": {
-   "atlas": "actors",
-   "frames": [
-    710,
-    711,
-    712,
-    713
-   ],
-   "ms": 120,
-   "loop": true
-  },
-  "actor.hero_sword_mail/idle/right": {
-   "atlas": "actors",
-   "frames": [
-    714,
-    715
-   ],
-   "ms": 500,
-   "loop": true
-  },
-  "actor.hero_sword_mail/gather/right": {
-   "atlas": "actors",
-   "frames": [
-    716,
-    717,
-    718
-   ],
-   "ms": 140,
-   "loop": false
-  },
-  "actor.hero_sword_mail/slash/right": {
-   "atlas": "actors",
-   "frames": [
-    719,
-    720,
-    721,
-    722
-   ],
-   "ms": 90,
-   "loop": false
-  },
-  "actor.hero_sword_mail/walk/up": {
-   "atlas": "actors",
-   "frames": [
-    723,
-    724,
-    725,
-    726
-   ],
-   "ms": 120,
-   "loop": true
-  },
-  "actor.hero_sword_mail/idle/up": {
-   "atlas": "actors",
-   "frames": [
-    727,
-    728
-   ],
-   "ms": 500,
-   "loop": true
-  },
-  "actor.hero_sword_mail/gather/up": {
-   "atlas": "actors",
-   "frames": [
-    729,
-    730,
-    731
-   ],
-   "ms": 140,
-   "loop": false
-  },
-  "actor.hero_sword_mail/slash/up": {
-   "atlas": "actors",
-   "frames": [
-    732,
-    733,
-    734,
-    735
-   ],
-   "ms": 90,
-   "loop": false
-  },
-  "actor.monk/walk/down": {
-   "atlas": "actors",
-   "frames": [
-    736,
-    737,
-    738,
-    739
-   ],
-   "ms": 120,
-   "loop": true
-  },
-  "actor.monk/idle/down": {
-   "atlas": "actors",
-   "frames": [
-    740,
-    741
-   ],
-   "ms": 500,
-   "loop": true
-  },
-  "actor.monk/walk/left": {
-   "atlas": "actors",
-   "frames": [
-    742,
-    743,
-    744,
-    745
-   ],
-   "ms": 120,
-   "loop": true
-  },
-  "actor.monk/idle/left": {
-   "atlas": "actors",
-   "frames": [
-    746,
-    747
-   ],
-   "ms": 500,
-   "loop": true
-  },
-  "actor.monk/walk/right": {
-   "atlas": "actors",
-   "frames": [
-    748,
-    749,
-    750,
-    751
-   ],
-   "ms": 120,
-   "loop": true
-  },
-  "actor.monk/idle/right": {
-   "atlas": "actors",
-   "frames": [
-    752,
-    753
-   ],
-   "ms": 500,
-   "loop": true
-  },
-  "actor.monk/walk/up": {
-   "atlas": "actors",
-   "frames": [
-    754,
-    755,
-    756,
-    757
-   ],
-   "ms": 120,
-   "loop": true
-  },
-  "actor.monk/idle/up": {
-   "atlas": "actors",
-   "frames": [
-    758,
-    759
-   ],
-   "ms": 500,
-   "loop": true
-  },
-  "actor.sheep/walk/down": {
-   "atlas": "actors",
-   "frames": [
-    760,
-    761,
-    762,
-    763
-   ],
-   "ms": 150,
-   "loop": true
-  },
-  "actor.sheep/idle/down": {
-   "atlas": "actors",
-   "frames": [
-    764,
-    765
-   ],
-   "ms": 600,
-   "loop": true
-  },
-  "actor.sheep/graze/down": {
-   "atlas": "actors",
-   "frames": [
-    766,
-    767
-   ],
-   "ms": 380,
-   "loop": true
-  },
-  "actor.sheep/walk/left": {
-   "atlas": "actors",
-   "frames": [
-    768,
-    769,
-    770,
-    771
-   ],
-   "ms": 150,
-   "loop": true
-  },
-  "actor.sheep/idle/left": {
-   "atlas": "actors",
-   "frames": [
-    772,
-    773
-   ],
-   "ms": 600,
-   "loop": true
-  },
-  "actor.sheep/graze/left": {
-   "atlas": "actors",
-   "frames": [
-    774,
-    775
-   ],
-   "ms": 380,
-   "loop": true
-  },
-  "actor.sheep/walk/right": {
-   "atlas": "actors",
-   "frames": [
-    776,
-    777,
-    778,
-    779
-   ],
-   "ms": 150,
-   "loop": true
-  },
-  "actor.sheep/idle/right": {
-   "atlas": "actors",
-   "frames": [
-    780,
-    781
-   ],
-   "ms": 600,
-   "loop": true
-  },
-  "actor.sheep/graze/right": {
-   "atlas": "actors",
-   "frames": [
-    782,
-    783
-   ],
-   "ms": 380,
-   "loop": true
-  },
-  "actor.sheep/walk/up": {
-   "atlas": "actors",
-   "frames": [
-    784,
-    785,
-    786,
-    787
-   ],
-   "ms": 150,
-   "loop": true
-  },
-  "actor.sheep/idle/up": {
-   "atlas": "actors",
-   "frames": [
-    788,
-    789
-   ],
-   "ms": 600,
-   "loop": true
-  },
-  "actor.sheep/graze/up": {
-   "atlas": "actors",
-   "frames": [
-    790,
-    791
-   ],
-   "ms": 380,
-   "loop": true
-  },
-  "actor.smith/walk/down": {
-   "atlas": "actors",
-   "frames": [
-    792,
-    793,
-    794,
-    795
-   ],
-   "ms": 120,
-   "loop": true
-  },
-  "actor.smith/idle/down": {
-   "atlas": "actors",
-   "frames": [
-    796,
-    797
-   ],
-   "ms": 500,
-   "loop": true
-  },
-  "actor.smith/walk/left": {
    "atlas": "actors",
    "frames": [
     798,
@@ -18588,7 +20938,7 @@
    "ms": 120,
    "loop": true
   },
-  "actor.smith/idle/left": {
+  "actor.hero_sword_desert_tunic/idle/right": {
    "atlas": "actors",
    "frames": [
     802,
@@ -18597,220 +20947,69 @@
    "ms": 500,
    "loop": true
   },
-  "actor.smith/walk/right": {
+  "actor.hero_sword_desert_tunic/gather/right": {
    "atlas": "actors",
    "frames": [
     804,
     805,
-    806,
-    807
+    806
    ],
-   "ms": 120,
-   "loop": true
+   "ms": 140,
+   "loop": false
   },
-  "actor.smith/idle/right": {
+  "actor.hero_sword_desert_tunic/slash/right": {
    "atlas": "actors",
    "frames": [
+    807,
     808,
-    809
+    809,
+    810
    ],
-   "ms": 500,
-   "loop": true
+   "ms": 90,
+   "loop": false
   },
-  "actor.smith/walk/up": {
+  "actor.hero_sword_desert_tunic/walk/up": {
    "atlas": "actors",
    "frames": [
-    810,
     811,
     812,
-    813
+    813,
+    814
    ],
    "ms": 120,
    "loop": true
   },
-  "actor.smith/idle/up": {
+  "actor.hero_sword_desert_tunic/idle/up": {
    "atlas": "actors",
    "frames": [
-    814,
-    815
+    815,
+    816
    ],
    "ms": 500,
    "loop": true
   },
-  "actor.troll/walk/down": {
-   "atlas": "actors_huge",
-   "frames": [
-    32,
-    33,
-    34,
-    35,
-    36,
-    37
-   ],
-   "ms": 153,
-   "loop": true
-  },
-  "actor.troll/idle/down": {
-   "atlas": "actors_huge",
-   "frames": [
-    38,
-    39,
-    40,
-    41
-   ],
-   "ms": 310,
-   "loop": true
-  },
-  "actor.troll/attack/down": {
-   "atlas": "actors_huge",
-   "frames": [
-    42,
-    43,
-    44,
-    45,
-    46
-   ],
-   "ms": 136,
-   "loop": false
-  },
-  "actor.troll/walk/left": {
-   "atlas": "actors_huge",
-   "frames": [
-    47,
-    48,
-    49,
-    50,
-    51,
-    52
-   ],
-   "ms": 153,
-   "loop": true
-  },
-  "actor.troll/idle/left": {
-   "atlas": "actors_huge",
-   "frames": [
-    53,
-    54,
-    55,
-    56
-   ],
-   "ms": 310,
-   "loop": true
-  },
-  "actor.troll/attack/left": {
-   "atlas": "actors_huge",
-   "frames": [
-    57,
-    58,
-    59,
-    60,
-    61
-   ],
-   "ms": 136,
-   "loop": false
-  },
-  "actor.troll/walk/right": {
-   "atlas": "actors_huge",
-   "frames": [
-    62,
-    63,
-    64,
-    65,
-    66,
-    67
-   ],
-   "ms": 153,
-   "loop": true
-  },
-  "actor.troll/idle/right": {
-   "atlas": "actors_huge",
-   "frames": [
-    68,
-    69,
-    70,
-    71
-   ],
-   "ms": 310,
-   "loop": true
-  },
-  "actor.troll/attack/right": {
-   "atlas": "actors_huge",
-   "frames": [
-    72,
-    73,
-    74,
-    75,
-    76
-   ],
-   "ms": 136,
-   "loop": false
-  },
-  "actor.troll/walk/up": {
-   "atlas": "actors_huge",
-   "frames": [
-    77,
-    78,
-    79,
-    80,
-    81,
-    82
-   ],
-   "ms": 153,
-   "loop": true
-  },
-  "actor.troll/idle/up": {
-   "atlas": "actors_huge",
-   "frames": [
-    83,
-    84,
-    85,
-    86
-   ],
-   "ms": 310,
-   "loop": true
-  },
-  "actor.troll/attack/up": {
-   "atlas": "actors_huge",
-   "frames": [
-    87,
-    88,
-    89,
-    90,
-    91
-   ],
-   "ms": 136,
-   "loop": false
-  },
-  "actor.zebra/walk/down": {
+  "actor.hero_sword_desert_tunic/gather/up": {
    "atlas": "actors",
    "frames": [
-    816,
     817,
     818,
     819
    ],
-   "ms": 150,
-   "loop": true
+   "ms": 140,
+   "loop": false
   },
-  "actor.zebra/idle/down": {
+  "actor.hero_sword_desert_tunic/slash/up": {
    "atlas": "actors",
    "frames": [
     820,
-    821
-   ],
-   "ms": 600,
-   "loop": true
-  },
-  "actor.zebra/graze/down": {
-   "atlas": "actors",
-   "frames": [
+    821,
     822,
     823
    ],
-   "ms": 380,
-   "loop": true
+   "ms": 90,
+   "loop": false
   },
-  "actor.zebra/walk/left": {
+  "actor.hero_sword_mail/walk/down": {
    "atlas": "actors",
    "frames": [
     824,
@@ -18818,14 +21017,987 @@
     826,
     827
    ],
+   "ms": 120,
+   "loop": true
+  },
+  "actor.hero_sword_mail/idle/down": {
+   "atlas": "actors",
+   "frames": [
+    828,
+    829
+   ],
+   "ms": 500,
+   "loop": true
+  },
+  "actor.hero_sword_mail/gather/down": {
+   "atlas": "actors",
+   "frames": [
+    830,
+    831,
+    832
+   ],
+   "ms": 140,
+   "loop": false
+  },
+  "actor.hero_sword_mail/slash/down": {
+   "atlas": "actors",
+   "frames": [
+    833,
+    834,
+    835,
+    836
+   ],
+   "ms": 90,
+   "loop": false
+  },
+  "actor.hero_sword_mail/walk/left": {
+   "atlas": "actors",
+   "frames": [
+    837,
+    838,
+    839,
+    840
+   ],
+   "ms": 120,
+   "loop": true
+  },
+  "actor.hero_sword_mail/idle/left": {
+   "atlas": "actors",
+   "frames": [
+    841,
+    842
+   ],
+   "ms": 500,
+   "loop": true
+  },
+  "actor.hero_sword_mail/gather/left": {
+   "atlas": "actors",
+   "frames": [
+    843,
+    844,
+    845
+   ],
+   "ms": 140,
+   "loop": false
+  },
+  "actor.hero_sword_mail/slash/left": {
+   "atlas": "actors",
+   "frames": [
+    846,
+    847,
+    848,
+    849
+   ],
+   "ms": 90,
+   "loop": false
+  },
+  "actor.hero_sword_mail/walk/right": {
+   "atlas": "actors",
+   "frames": [
+    850,
+    851,
+    852,
+    853
+   ],
+   "ms": 120,
+   "loop": true
+  },
+  "actor.hero_sword_mail/idle/right": {
+   "atlas": "actors",
+   "frames": [
+    854,
+    855
+   ],
+   "ms": 500,
+   "loop": true
+  },
+  "actor.hero_sword_mail/gather/right": {
+   "atlas": "actors",
+   "frames": [
+    856,
+    857,
+    858
+   ],
+   "ms": 140,
+   "loop": false
+  },
+  "actor.hero_sword_mail/slash/right": {
+   "atlas": "actors",
+   "frames": [
+    859,
+    860,
+    861,
+    862
+   ],
+   "ms": 90,
+   "loop": false
+  },
+  "actor.hero_sword_mail/walk/up": {
+   "atlas": "actors",
+   "frames": [
+    863,
+    864,
+    865,
+    866
+   ],
+   "ms": 120,
+   "loop": true
+  },
+  "actor.hero_sword_mail/idle/up": {
+   "atlas": "actors",
+   "frames": [
+    867,
+    868
+   ],
+   "ms": 500,
+   "loop": true
+  },
+  "actor.hero_sword_mail/gather/up": {
+   "atlas": "actors",
+   "frames": [
+    869,
+    870,
+    871
+   ],
+   "ms": 140,
+   "loop": false
+  },
+  "actor.hero_sword_mail/slash/up": {
+   "atlas": "actors",
+   "frames": [
+    872,
+    873,
+    874,
+    875
+   ],
+   "ms": 90,
+   "loop": false
+  },
+  "actor.hero_sword_nomad_armor/walk/down": {
+   "atlas": "actors",
+   "frames": [
+    876,
+    877,
+    878,
+    879
+   ],
+   "ms": 120,
+   "loop": true
+  },
+  "actor.hero_sword_nomad_armor/idle/down": {
+   "atlas": "actors",
+   "frames": [
+    880,
+    881
+   ],
+   "ms": 500,
+   "loop": true
+  },
+  "actor.hero_sword_nomad_armor/gather/down": {
+   "atlas": "actors",
+   "frames": [
+    882,
+    883,
+    884
+   ],
+   "ms": 140,
+   "loop": false
+  },
+  "actor.hero_sword_nomad_armor/slash/down": {
+   "atlas": "actors",
+   "frames": [
+    885,
+    886,
+    887,
+    888
+   ],
+   "ms": 90,
+   "loop": false
+  },
+  "actor.hero_sword_nomad_armor/walk/left": {
+   "atlas": "actors",
+   "frames": [
+    889,
+    890,
+    891,
+    892
+   ],
+   "ms": 120,
+   "loop": true
+  },
+  "actor.hero_sword_nomad_armor/idle/left": {
+   "atlas": "actors",
+   "frames": [
+    893,
+    894
+   ],
+   "ms": 500,
+   "loop": true
+  },
+  "actor.hero_sword_nomad_armor/gather/left": {
+   "atlas": "actors",
+   "frames": [
+    895,
+    896,
+    897
+   ],
+   "ms": 140,
+   "loop": false
+  },
+  "actor.hero_sword_nomad_armor/slash/left": {
+   "atlas": "actors",
+   "frames": [
+    898,
+    899,
+    900,
+    901
+   ],
+   "ms": 90,
+   "loop": false
+  },
+  "actor.hero_sword_nomad_armor/walk/right": {
+   "atlas": "actors",
+   "frames": [
+    902,
+    903,
+    904,
+    905
+   ],
+   "ms": 120,
+   "loop": true
+  },
+  "actor.hero_sword_nomad_armor/idle/right": {
+   "atlas": "actors",
+   "frames": [
+    906,
+    907
+   ],
+   "ms": 500,
+   "loop": true
+  },
+  "actor.hero_sword_nomad_armor/gather/right": {
+   "atlas": "actors",
+   "frames": [
+    908,
+    909,
+    910
+   ],
+   "ms": 140,
+   "loop": false
+  },
+  "actor.hero_sword_nomad_armor/slash/right": {
+   "atlas": "actors",
+   "frames": [
+    911,
+    912,
+    913,
+    914
+   ],
+   "ms": 90,
+   "loop": false
+  },
+  "actor.hero_sword_nomad_armor/walk/up": {
+   "atlas": "actors",
+   "frames": [
+    915,
+    916,
+    917,
+    918
+   ],
+   "ms": 120,
+   "loop": true
+  },
+  "actor.hero_sword_nomad_armor/idle/up": {
+   "atlas": "actors",
+   "frames": [
+    919,
+    920
+   ],
+   "ms": 500,
+   "loop": true
+  },
+  "actor.hero_sword_nomad_armor/gather/up": {
+   "atlas": "actors",
+   "frames": [
+    921,
+    922,
+    923
+   ],
+   "ms": 140,
+   "loop": false
+  },
+  "actor.hero_sword_nomad_armor/slash/up": {
+   "atlas": "actors",
+   "frames": [
+    924,
+    925,
+    926,
+    927
+   ],
+   "ms": 90,
+   "loop": false
+  },
+  "actor.jackal/walk/down": {
+   "atlas": "actors",
+   "frames": [
+    928,
+    929,
+    930,
+    931
+   ],
+   "ms": 150,
+   "loop": true
+  },
+  "actor.jackal/idle/down": {
+   "atlas": "actors",
+   "frames": [
+    932,
+    933
+   ],
+   "ms": 600,
+   "loop": true
+  },
+  "actor.jackal/graze/down": {
+   "atlas": "actors",
+   "frames": [
+    934,
+    935
+   ],
+   "ms": 380,
+   "loop": true
+  },
+  "actor.jackal/walk/left": {
+   "atlas": "actors",
+   "frames": [
+    936,
+    937,
+    938,
+    939
+   ],
+   "ms": 150,
+   "loop": true
+  },
+  "actor.jackal/idle/left": {
+   "atlas": "actors",
+   "frames": [
+    940,
+    941
+   ],
+   "ms": 600,
+   "loop": true
+  },
+  "actor.jackal/graze/left": {
+   "atlas": "actors",
+   "frames": [
+    942,
+    943
+   ],
+   "ms": 380,
+   "loop": true
+  },
+  "actor.jackal/walk/right": {
+   "atlas": "actors",
+   "frames": [
+    944,
+    945,
+    946,
+    947
+   ],
+   "ms": 150,
+   "loop": true
+  },
+  "actor.jackal/idle/right": {
+   "atlas": "actors",
+   "frames": [
+    948,
+    949
+   ],
+   "ms": 600,
+   "loop": true
+  },
+  "actor.jackal/graze/right": {
+   "atlas": "actors",
+   "frames": [
+    950,
+    951
+   ],
+   "ms": 380,
+   "loop": true
+  },
+  "actor.jackal/walk/up": {
+   "atlas": "actors",
+   "frames": [
+    952,
+    953,
+    954,
+    955
+   ],
+   "ms": 150,
+   "loop": true
+  },
+  "actor.jackal/idle/up": {
+   "atlas": "actors",
+   "frames": [
+    956,
+    957
+   ],
+   "ms": 600,
+   "loop": true
+  },
+  "actor.jackal/graze/up": {
+   "atlas": "actors",
+   "frames": [
+    958,
+    959
+   ],
+   "ms": 380,
+   "loop": true
+  },
+  "actor.monk/walk/down": {
+   "atlas": "actors",
+   "frames": [
+    960,
+    961,
+    962,
+    963
+   ],
+   "ms": 120,
+   "loop": true
+  },
+  "actor.monk/idle/down": {
+   "atlas": "actors",
+   "frames": [
+    964,
+    965
+   ],
+   "ms": 500,
+   "loop": true
+  },
+  "actor.monk/walk/left": {
+   "atlas": "actors",
+   "frames": [
+    966,
+    967,
+    968,
+    969
+   ],
+   "ms": 120,
+   "loop": true
+  },
+  "actor.monk/idle/left": {
+   "atlas": "actors",
+   "frames": [
+    970,
+    971
+   ],
+   "ms": 500,
+   "loop": true
+  },
+  "actor.monk/walk/right": {
+   "atlas": "actors",
+   "frames": [
+    972,
+    973,
+    974,
+    975
+   ],
+   "ms": 120,
+   "loop": true
+  },
+  "actor.monk/idle/right": {
+   "atlas": "actors",
+   "frames": [
+    976,
+    977
+   ],
+   "ms": 500,
+   "loop": true
+  },
+  "actor.monk/walk/up": {
+   "atlas": "actors",
+   "frames": [
+    978,
+    979,
+    980,
+    981
+   ],
+   "ms": 120,
+   "loop": true
+  },
+  "actor.monk/idle/up": {
+   "atlas": "actors",
+   "frames": [
+    982,
+    983
+   ],
+   "ms": 500,
+   "loop": true
+  },
+  "actor.nomad/walk/down": {
+   "atlas": "actors",
+   "frames": [
+    984,
+    985,
+    986,
+    987
+   ],
+   "ms": 120,
+   "loop": true
+  },
+  "actor.nomad/idle/down": {
+   "atlas": "actors",
+   "frames": [
+    988,
+    989
+   ],
+   "ms": 500,
+   "loop": true
+  },
+  "actor.nomad/walk/left": {
+   "atlas": "actors",
+   "frames": [
+    990,
+    991,
+    992,
+    993
+   ],
+   "ms": 120,
+   "loop": true
+  },
+  "actor.nomad/idle/left": {
+   "atlas": "actors",
+   "frames": [
+    994,
+    995
+   ],
+   "ms": 500,
+   "loop": true
+  },
+  "actor.nomad/walk/right": {
+   "atlas": "actors",
+   "frames": [
+    996,
+    997,
+    998,
+    999
+   ],
+   "ms": 120,
+   "loop": true
+  },
+  "actor.nomad/idle/right": {
+   "atlas": "actors",
+   "frames": [
+    1000,
+    1001
+   ],
+   "ms": 500,
+   "loop": true
+  },
+  "actor.nomad/walk/up": {
+   "atlas": "actors",
+   "frames": [
+    1002,
+    1003,
+    1004,
+    1005
+   ],
+   "ms": 120,
+   "loop": true
+  },
+  "actor.nomad/idle/up": {
+   "atlas": "actors",
+   "frames": [
+    1006,
+    1007
+   ],
+   "ms": 500,
+   "loop": true
+  },
+  "actor.sheep/walk/down": {
+   "atlas": "actors",
+   "frames": [
+    1008,
+    1009,
+    1010,
+    1011
+   ],
+   "ms": 150,
+   "loop": true
+  },
+  "actor.sheep/idle/down": {
+   "atlas": "actors",
+   "frames": [
+    1012,
+    1013
+   ],
+   "ms": 600,
+   "loop": true
+  },
+  "actor.sheep/graze/down": {
+   "atlas": "actors",
+   "frames": [
+    1014,
+    1015
+   ],
+   "ms": 380,
+   "loop": true
+  },
+  "actor.sheep/walk/left": {
+   "atlas": "actors",
+   "frames": [
+    1016,
+    1017,
+    1018,
+    1019
+   ],
+   "ms": 150,
+   "loop": true
+  },
+  "actor.sheep/idle/left": {
+   "atlas": "actors",
+   "frames": [
+    1020,
+    1021
+   ],
+   "ms": 600,
+   "loop": true
+  },
+  "actor.sheep/graze/left": {
+   "atlas": "actors",
+   "frames": [
+    1022,
+    1023
+   ],
+   "ms": 380,
+   "loop": true
+  },
+  "actor.sheep/walk/right": {
+   "atlas": "actors",
+   "frames": [
+    1024,
+    1025,
+    1026,
+    1027
+   ],
+   "ms": 150,
+   "loop": true
+  },
+  "actor.sheep/idle/right": {
+   "atlas": "actors",
+   "frames": [
+    1028,
+    1029
+   ],
+   "ms": 600,
+   "loop": true
+  },
+  "actor.sheep/graze/right": {
+   "atlas": "actors",
+   "frames": [
+    1030,
+    1031
+   ],
+   "ms": 380,
+   "loop": true
+  },
+  "actor.sheep/walk/up": {
+   "atlas": "actors",
+   "frames": [
+    1032,
+    1033,
+    1034,
+    1035
+   ],
+   "ms": 150,
+   "loop": true
+  },
+  "actor.sheep/idle/up": {
+   "atlas": "actors",
+   "frames": [
+    1036,
+    1037
+   ],
+   "ms": 600,
+   "loop": true
+  },
+  "actor.sheep/graze/up": {
+   "atlas": "actors",
+   "frames": [
+    1038,
+    1039
+   ],
+   "ms": 380,
+   "loop": true
+  },
+  "actor.smith/walk/down": {
+   "atlas": "actors",
+   "frames": [
+    1040,
+    1041,
+    1042,
+    1043
+   ],
+   "ms": 120,
+   "loop": true
+  },
+  "actor.smith/idle/down": {
+   "atlas": "actors",
+   "frames": [
+    1044,
+    1045
+   ],
+   "ms": 500,
+   "loop": true
+  },
+  "actor.smith/walk/left": {
+   "atlas": "actors",
+   "frames": [
+    1046,
+    1047,
+    1048,
+    1049
+   ],
+   "ms": 120,
+   "loop": true
+  },
+  "actor.smith/idle/left": {
+   "atlas": "actors",
+   "frames": [
+    1050,
+    1051
+   ],
+   "ms": 500,
+   "loop": true
+  },
+  "actor.smith/walk/right": {
+   "atlas": "actors",
+   "frames": [
+    1052,
+    1053,
+    1054,
+    1055
+   ],
+   "ms": 120,
+   "loop": true
+  },
+  "actor.smith/idle/right": {
+   "atlas": "actors",
+   "frames": [
+    1056,
+    1057
+   ],
+   "ms": 500,
+   "loop": true
+  },
+  "actor.smith/walk/up": {
+   "atlas": "actors",
+   "frames": [
+    1058,
+    1059,
+    1060,
+    1061
+   ],
+   "ms": 120,
+   "loop": true
+  },
+  "actor.smith/idle/up": {
+   "atlas": "actors",
+   "frames": [
+    1062,
+    1063
+   ],
+   "ms": 500,
+   "loop": true
+  },
+  "actor.troll/walk/down": {
+   "atlas": "actors_huge",
+   "frames": [
+    64,
+    65,
+    66,
+    67,
+    68,
+    69
+   ],
+   "ms": 153,
+   "loop": true
+  },
+  "actor.troll/idle/down": {
+   "atlas": "actors_huge",
+   "frames": [
+    70,
+    71,
+    72,
+    73
+   ],
+   "ms": 310,
+   "loop": true
+  },
+  "actor.troll/attack/down": {
+   "atlas": "actors_huge",
+   "frames": [
+    74,
+    75,
+    76,
+    77,
+    78
+   ],
+   "ms": 136,
+   "loop": false
+  },
+  "actor.troll/walk/left": {
+   "atlas": "actors_huge",
+   "frames": [
+    79,
+    80,
+    81,
+    82,
+    83,
+    84
+   ],
+   "ms": 153,
+   "loop": true
+  },
+  "actor.troll/idle/left": {
+   "atlas": "actors_huge",
+   "frames": [
+    85,
+    86,
+    87,
+    88
+   ],
+   "ms": 310,
+   "loop": true
+  },
+  "actor.troll/attack/left": {
+   "atlas": "actors_huge",
+   "frames": [
+    89,
+    90,
+    91,
+    92,
+    93
+   ],
+   "ms": 136,
+   "loop": false
+  },
+  "actor.troll/walk/right": {
+   "atlas": "actors_huge",
+   "frames": [
+    94,
+    95,
+    96,
+    97,
+    98,
+    99
+   ],
+   "ms": 153,
+   "loop": true
+  },
+  "actor.troll/idle/right": {
+   "atlas": "actors_huge",
+   "frames": [
+    100,
+    101,
+    102,
+    103
+   ],
+   "ms": 310,
+   "loop": true
+  },
+  "actor.troll/attack/right": {
+   "atlas": "actors_huge",
+   "frames": [
+    104,
+    105,
+    106,
+    107,
+    108
+   ],
+   "ms": 136,
+   "loop": false
+  },
+  "actor.troll/walk/up": {
+   "atlas": "actors_huge",
+   "frames": [
+    109,
+    110,
+    111,
+    112,
+    113,
+    114
+   ],
+   "ms": 153,
+   "loop": true
+  },
+  "actor.troll/idle/up": {
+   "atlas": "actors_huge",
+   "frames": [
+    115,
+    116,
+    117,
+    118
+   ],
+   "ms": 310,
+   "loop": true
+  },
+  "actor.troll/attack/up": {
+   "atlas": "actors_huge",
+   "frames": [
+    119,
+    120,
+    121,
+    122,
+    123
+   ],
+   "ms": 136,
+   "loop": false
+  },
+  "actor.zebra/walk/down": {
+   "atlas": "actors",
+   "frames": [
+    1064,
+    1065,
+    1066,
+    1067
+   ],
+   "ms": 150,
+   "loop": true
+  },
+  "actor.zebra/idle/down": {
+   "atlas": "actors",
+   "frames": [
+    1068,
+    1069
+   ],
+   "ms": 600,
+   "loop": true
+  },
+  "actor.zebra/graze/down": {
+   "atlas": "actors",
+   "frames": [
+    1070,
+    1071
+   ],
+   "ms": 380,
+   "loop": true
+  },
+  "actor.zebra/walk/left": {
+   "atlas": "actors",
+   "frames": [
+    1072,
+    1073,
+    1074,
+    1075
+   ],
    "ms": 150,
    "loop": true
   },
   "actor.zebra/idle/left": {
    "atlas": "actors",
    "frames": [
-    828,
-    829
+    1076,
+    1077
    ],
    "ms": 600,
    "loop": true
@@ -18833,8 +22005,8 @@
   "actor.zebra/graze/left": {
    "atlas": "actors",
    "frames": [
-    830,
-    831
+    1078,
+    1079
    ],
    "ms": 380,
    "loop": true
@@ -18842,10 +22014,10 @@
   "actor.zebra/walk/right": {
    "atlas": "actors",
    "frames": [
-    832,
-    833,
-    834,
-    835
+    1080,
+    1081,
+    1082,
+    1083
    ],
    "ms": 150,
    "loop": true
@@ -18853,8 +22025,8 @@
   "actor.zebra/idle/right": {
    "atlas": "actors",
    "frames": [
-    836,
-    837
+    1084,
+    1085
    ],
    "ms": 600,
    "loop": true
@@ -18862,8 +22034,8 @@
   "actor.zebra/graze/right": {
    "atlas": "actors",
    "frames": [
-    838,
-    839
+    1086,
+    1087
    ],
    "ms": 380,
    "loop": true
@@ -18871,10 +22043,10 @@
   "actor.zebra/walk/up": {
    "atlas": "actors",
    "frames": [
-    840,
-    841,
-    842,
-    843
+    1088,
+    1089,
+    1090,
+    1091
    ],
    "ms": 150,
    "loop": true
@@ -18882,8 +22054,8 @@
   "actor.zebra/idle/up": {
    "atlas": "actors",
    "frames": [
-    844,
-    845
+    1092,
+    1093
    ],
    "ms": 600,
    "loop": true
@@ -18891,8 +22063,8 @@
   "actor.zebra/graze/up": {
    "atlas": "actors",
    "frames": [
-    846,
-    847
+    1094,
+    1095
    ],
    "ms": 380,
    "loop": true
@@ -20499,15 +23671,19 @@
    "|": "actor.hero",
    "|item.desert_tunic": "actor.hero_desert_tunic",
    "|item.mail": "actor.hero_mail",
+   "|item.nomad_armor": "actor.hero_nomad_armor",
    "item.axe|": "actor.hero_axe",
    "item.axe|item.desert_tunic": "actor.hero_axe_desert_tunic",
    "item.axe|item.mail": "actor.hero_axe_mail",
+   "item.axe|item.nomad_armor": "actor.hero_axe_nomad_armor",
    "item.spear|": "actor.hero_spear",
    "item.spear|item.desert_tunic": "actor.hero_spear_desert_tunic",
    "item.spear|item.mail": "actor.hero_spear_mail",
+   "item.spear|item.nomad_armor": "actor.hero_spear_nomad_armor",
    "item.sword|": "actor.hero_sword",
    "item.sword|item.desert_tunic": "actor.hero_sword_desert_tunic",
-   "item.sword|item.mail": "actor.hero_sword_mail"
+   "item.sword|item.mail": "actor.hero_sword_mail",
+   "item.sword|item.nomad_armor": "actor.hero_sword_nomad_armor"
   }
  }
 }
