@@ -150,6 +150,15 @@ WEAPONS = {
     "sword": dict(length=8, grip=2, shaft="MTL", edge="MT", guard=True),
     "axe":   dict(length=7, grip=0, shaft="WD", edge="WDD", head="axe"),
     "spear": dict(length=9, grip=0, shaft="WD", edge="WDD", head="spear"),
+    # The one blade here that is not metal, and the only one longer than the
+    # hero is tall from shoulder to boot. Its `glow` puts a third row of light
+    # on the side the steel weapons leave dark: inside a weapon drawn as a
+    # line, **width is the only thing that can say "lit"**. Colour alone says
+    # "blue", and a blue line the same two pixels thick as the sword reads as
+    # a sword somebody painted.
+    "azure_blade": dict(length=10, grip=2, shaft="CYL", edge="CY", glow="CY",
+                        guard=True, grip_key="STX", guard_key="CYD",
+                        thick=True),
 }
 
 REST_AIM = {"down": (0, -1), "up": (0, -1), "right": (1, -1)}
@@ -233,18 +242,35 @@ def draw_weapon(c, hx, hy, aim, name):
     dx, dy = aim
     px, py = -dy, dx                       # the perpendicular, for guards
     straight = not (dx and dy)
+    # Everything a weapon does not say for itself falls back to the wooden
+    # haft the first three are built from, so adding a field leaves them alone.
+    glow = spec.get("glow")
+    # Width goes on along the perpendicular while the weapon points along an
+    # axis. On a diagonal the perpendicular is diagonal too, so the extra rows
+    # land on diagonal neighbours and the blade comes out a chequerboard - a
+    # barber's pole, not a sword. A sideways step gives a solid parallel line,
+    # which is also how the 16px icons draw a diagonal blade.
+    wx, wy = (px, py) if straight else (dx, 0)
     for i in range(spec["length"] + 1):
         x, y = hx + dx * i, hy + dy * i
         if i < spec["grip"]:
-            c.set(x, y, "WD")
+            c.set(x, y, spec.get("grip_key", "WD"))
             continue
         c.set(x, y, spec["shaft"])
-        if straight and i >= spec["grip"] + 1:
-            c.set(x + px, y + py, spec["edge"])    # a second row gives it width
+        # The steel weapons are one pixel wide when they point on a diagonal,
+        # which is fine for them and is not for a blade whose whole character
+        # is that it is lit: held at rest facing right it came out a thin
+        # white stick, with none of the colour that is the point of it. A
+        # weapon can ask to keep its width in every direction instead.
+        if (straight or spec.get("thick")) and i >= spec["grip"] + 1:
+            c.set(x + wx, y + wy, spec["edge"])    # a second row gives it width
+            if glow:
+                c.set(x - wx, y - wy, glow)        # and a third one gives light
     if spec.get("guard"):
         g = spec["grip"]
         for k in (-1, 0, 1, 2):
-            c.set(hx + dx * g + px * k, hy + dy * g + py * k, "WDD")
+            c.set(hx + dx * g + px * k, hy + dy * g + py * k,
+                  spec.get("guard_key", "WDD"))
     head = spec.get("head")
     if head == "axe":                      # a bit hung on one side of the haft
         for i in range(spec["length"] - 2, spec["length"] + 1):

@@ -1,0 +1,11 @@
+{
+  "id": "item.azure_blade",
+  "name": "Azure Blade",
+  "sprite": "item.azure_blade",
+  "kind": "weapon",
+  "slot": "weapon",
+  "held": "azure_blade",
+  "stack": false,
+  "description": "Crystal, not steel, and the same crystal that turns in the gate. Whoever carried it this far did not carry it back.",
+  "damage": 14
+}

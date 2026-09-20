@@ -160,6 +160,32 @@ def sword():
     return c.outline()
 
 
+def azure_blade():
+    """A sword of the gate's own crystal: an azure edge either side of a core
+    lit almost to white, and a dark grip with a shard set in the pommel.
+
+    The light around it is drawn **after** `outline()`, which is the temple's
+    dust rule and matters more here than it does there. A mote with a hard
+    black line round it is a pebble, and an icon of a magic sword whose magic
+    reads as gravel is worse than one carrying no magic at all. They are also
+    only ever placed where nothing already is, so the glow can never end up
+    painted over the blade it is supposed to be coming off."""
+    c = Canvas(SIZE, SIZE)
+    _diag(c, 4, 11, 9, "CY")                    # the near edge
+    _diag(c, 5, 11, 9, "CYL")                   # the core, lit almost white
+    _diag(c, 6, 11, 8, "CY")                    # and the far edge
+    c.set(14, 2, "CYL")                         # the point
+    _diag(c, 2, 13, 3, "STX")                   # a dark grip
+    c.set(1, 14, "CY")                          # a shard set in the pommel
+    for x, y in ((3, 10), (4, 9), (5, 13), (6, 14)):
+        c.set(x, y, "CYD")                      # the guard, across the blade
+    c.outline()
+    for x, y in ((2, 7), (8, 3), (11, 8), (3, 3), (12, 11), (9, 1), (14, 6)):
+        if c.get(x, y) is None:
+            c.set(x, y, "CYL" if (x + y) % 2 else "CY")
+    return c
+
+
 def axe():
     c = Canvas(SIZE, SIZE)
     _diag(c, 3, 13, 9, "WD")                    # haft
@@ -275,6 +301,7 @@ ITEMS = {
     "item.key": key,
     "item.flower": flower,
     "item.sword": sword,
+    "item.azure_blade": azure_blade,
     "item.axe": axe,
     "item.spear": spear,
     "item.mail": mail,

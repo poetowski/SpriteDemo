@@ -312,6 +312,13 @@
       ]
     },
     {
+      "def": "item.azure_blade",
+      "tile": [
+        10,
+        10
+      ]
+    },
+    {
       "def": "npc.heron",
       "tile": [
         8,

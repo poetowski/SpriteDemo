@@ -890,11 +890,39 @@ every actor with `"wields": true` (that table is the actor's `looks`) and the
 
 **Another armour costs a function and a line**, and is worth noting for what
 it does to the sheet: the table is a *product*, so each one multiplies the
-baked hero frame sets rather than adding to them. Four weapons (none, sword,
-axe, spear) times four looks (bare, mail, desert tunic, nomad robe) is
-sixteen. That is fine at this size and would not be at ten of each - which is
-the reason `looks` is a table the build writes rather than something content
-has to spell out.
+baked hero frame sets rather than adding to them. Five weapons (none, sword,
+axe, spear, azure blade) times four looks (bare, mail, desert tunic, nomad
+robe) is twenty, and the fifth weapon cost 209 frames on its own. That is
+fine at this size and would not be at ten of each - which is the reason
+`looks` is a table the build writes rather than something content has to
+spell out.
+
+**A weapon that is not metal** is the azure blade, and it took three things
+that are worth knowing before drawing another one. A weapon is a *line* from
+the hand, so:
+
+- **Width is the only thing that can say "lit".** A blade the sword's two
+  pixels thick in a bright blue reads as a sword somebody painted. The blade
+  carries a third row - `glow`, on the side the steel ones leave dark - and
+  that is what makes it read as light rather than paint.
+- **The perpendicular is the wrong step on a diagonal.** Extra rows go on at
+  `(-dy, dx)`, which is diagonal too when the weapon points diagonally, so
+  they land on diagonal neighbours and the blade comes out a chequerboard - a
+  barber's pole, not a sword. A sideways step, `(dx, 0)`, gives a solid
+  parallel line. The steel three sidestep this by being one pixel wide on a
+  diagonal, which is fine for them and throws away everything that makes this
+  one what it is, so it asks for `thick` instead.
+- Every new field on a `WEAPONS` entry is read with `.get` and a default of
+  whatever the wooden haft does, so adding one leaves the other three byte
+  for byte identical. That is checkable and worth checking: compare the
+  decoded cells of every sprite key present in both the old and new
+  `atlases.json` before believing a shared drawing function still draws the
+  same thing.
+
+Its 16px icon draws the light *after* `outline()`, which is the temple's dust
+rule and matters more here: a mote with a hard black line round it is a
+pebble, and an icon of a magic sword whose magic reads as gravel is worse
+than one carrying no magic at all.
 
 Two cloth armours also have to read apart *as cloth*, which the icon cannot do
 alone: the desert tunic is one bright band at the collar over pale linen, and
