@@ -2,5 +2,7 @@
   "id": "tile.plank_wall",
   "sprite": "tile.plank_wall",
   "walkable": false,
-  "material": "wood"
+  "material": "wood",
+  "blend": true,
+  "blend_over": "tile.wood_floor"
 }

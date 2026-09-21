@@ -1,8 +1,0 @@
-{
-  "id": "tile.salt",
-  "sprite": "tile.salt",
-  "walkable": true,
-  "blend": true,
-  "blend_over": "tile.dune",
-  "material": "salt"
-}

@@ -1,9 +1,0 @@
-{
-  "id": "tile.oasis",
-  "sprite": "tile.oasis",
-  "walkable": false,
-  "blend": true,
-  "blend_over": "tile.dune",
-  "material": "water",
-  "family": "oasis"
-}

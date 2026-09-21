@@ -1,9 +1,0 @@
-{
-  "id": "tile.marsh",
-  "sprite": "tile.marsh",
-  "walkable": true,
-  "blend": true,
-  "blend_over": "tile.grass",
-  "material": "marsh",
-  "family": "marsh"
-}

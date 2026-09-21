@@ -30,6 +30,11 @@
   button.on { background: #2f4a2c; border-color: var(--accent); color: #d8f2cf; }
   button.primary { background: #2f4a2c; border-color: var(--accent); }
   button.warn { border-color: var(--warn); }
+  /* Undo is filled rather than outlined, like save is. It is the one control
+     you reach for without looking - having to find it among six grey buttons
+     is the moment you have already made the mistake. */
+  button.danger { background: #4a2c2c; border-color: var(--bad); color: #f6ddd8; }
+  button.danger:hover { border-color: #f08a78; }
   .tools { display: flex; gap: 4px; }
   kbd { color: var(--muted); font-size: 11px; }
 
@@ -227,7 +232,7 @@
   <label>brush <select id="brush"><option>1</option><option>2</option><option>3</option></select></label>
   <label>zoom <select id="zoom"><option>1</option><option selected>2</option><option>3</option></select></label>
   <label><input id="grid" type="checkbox" checked> grid</label>
-  <button id="undo" title="Ctrl+Z">undo</button>
+  <button id="undo" class="danger" title="Ctrl+Z">undo</button>
   <button id="save" class="primary" title="Ctrl+S">save</button>
   <button id="build" class="warn" title="save, then run tools/build.py">save + build</button>
   <a id="play" href="/game/index.html" target="_blank"><button>open game</button></a>
@@ -281,6 +286,9 @@
     <span style="color:#6cc0e0">&#9654;</span> animated - moves on its own in game<br>
     <span style="color:#e59a5b"><b>E</b></span> equippable - it goes in a gear
     slot<br>
+    the corner of each terrain swatch says how many <b>variants</b> it has -
+    which one a cell gets is fixed by where the cell is, not rolled, so a map
+    looks the same every time it opens<br>
     the corner of each object swatch says its <b>frame size</b> - 32px is one
     tile, 64px is four across, 128px four by four<br>
     <span style="color:#b48ce0"><b>A</b></span> autotiles - edges resolve against

@@ -7,6 +7,5 @@
       0
     ]
   ],
-  "blocks": true,
-  "interact": "dlg.chest"
+  "blocks": true
 }

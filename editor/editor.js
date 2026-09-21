@@ -462,11 +462,24 @@ function buildPalettes() {
     const auto = autotiles(tid);
     el.className = "swatch" + (t.walkable ? "" : " solid") + (auto ? " auto" : "");
     el.append(swatchCanvas({ atlas: "tiles", index: t.index }, 48));
+    // How many drawings of this tile exist. Which one a cell gets is decided
+    // by where the cell is, not by a die roll, so a map looks the same every
+    // time it loads - but a tile with one variant repeats visibly over a
+    // field and that is worth knowing before painting one.
+    const nvar = (t.variants || [t.index]).length;
+    const vtag = document.createElement("i");
+    vtag.className = "size";
+    vtag.textContent = "×" + nvar;
+    vtag.title = nvar > 1
+      ? `${nvar} variants, picked per cell by position`
+      : "one drawing - it repeats over a large area";
+    el.append(vtag);
     const label = document.createElement("span");
     label.textContent = tid.replace("tile.", "");
     label.title = `${tid} (${t.walkable ? "walkable" : "solid"}, `
       + (auto ? "autotiles - edges resolve against its neighbours"
-              : "no transitions - a hard edge against anything else") + ")";
+              : "no transitions - a hard edge against anything else")
+      + `, ${nvar} variant${nvar === 1 ? "" : "s"})`;
     el.append(label);
     el.onclick = () => { state.terrain = tid; setTool("paint"); markSelection(); };
     el.dataset.id = tid;
@@ -1481,6 +1494,11 @@ const DEF_FIELDS = {
       hint: "anything worth knowing that is not part of the description" },
   ],
   actors: [
+    { key: "speed", label: "speed", type: "int", min: 1,
+      hint: "pixels a second when it is walking" },
+    { key: "hostile.sight", label: "sight", type: "int", min: 1,
+      only: (d) => d.behaviour !== "passive",
+      hint: "how far off it notices the hero; hostile.lose has to be wider" },
     { key: "behaviour", label: "behaviour", type: "choice",
       choices: ["passive", "defensive", "offensive"],
       hint: "passive leaves you alone; defensive hits back once hit; "
@@ -1504,11 +1522,16 @@ const DEF_META = {
   items: (d) => [d.id, d.kind, d.slot ? d.slot + " slot" : null,
                  d.damage ? d.damage + " damage" : null,
                  d.defense ? d.defense + " armour" : null].filter(Boolean).join(" · "),
-  actors: (d) => [d.id, d.rig, "speed " + d.speed,
-                  d.hostile ? "sight " + d.hostile.sight : null].filter(Boolean).join(" · "),
+  actors: (d) => [d.id, d.rig,
+                  d.hostile ? "chases from " + d.hostile.lose : null,
+                  d.wander ? "wanders" : null].filter(Boolean).join(" · "),
 };
 
 function defTable(kind) { return kind === "items" ? state.M.items : state.M.actors; }
+/** Read a field that may live one level inside a block, like hostile.sight. */
+function fieldOf(d, key) {
+  return key.split(".").reduce((o, k) => (o == null ? undefined : o[k]), d);
+}
 function defFile(id) { return id.split(".")[1]; }
 /** The name to list something under. Falls back to the filename, capitalised -
  *  a definition with no "name" used to sit lowercase in a column of capitals
@@ -1580,7 +1603,7 @@ function defSheet(kind, id) {
     if (f.type === "bool") {
       input = document.createElement("input");
       input.type = "checkbox";
-      input.checked = Boolean(d[f.key]);
+      input.checked = Boolean(fieldOf(d, f.key));
     } else if (f.type === "choice") {
       input = document.createElement("select");
       for (const c of f.choices) {
@@ -1589,15 +1612,16 @@ function defSheet(kind, id) {
         opt.textContent = c;
         input.append(opt);
       }
-      input.value = d[f.key] || f.choices[0];
+      input.value = fieldOf(d, f.key) || f.choices[0];
     } else if (f.type === "text") {
       input = document.createElement("textarea");
-      input.value = d[f.key] || "";
+      input.value = fieldOf(d, f.key) || "";
     } else {
       input = document.createElement("input");
       input.type = "number";
       input.min = String(f.min);
-      input.value = d[f.key] === undefined ? "" : String(d[f.key]);
+      const v = fieldOf(d, f.key);
+      input.value = v === undefined ? "" : String(v);
       if (f.optional) input.placeholder = "none";
     }
     input.dataset.key = f.key;
@@ -1674,8 +1698,9 @@ async function saveDef(kind, id, values, form) {
   if (!res.ok || !body.ok) { message((body && body.error) || "save failed"); return false; }
   // Keep memory level with disk, so the list and the next sheet read true
   // without a reload.
-  for (const k of Object.keys(patch)) delete defTable(kind)[id][k];
-  Object.assign(defTable(kind)[id], body.def);
+  // Replace the record outright: deleting the patched keys one by one cannot
+  // undo a nested write, and body.def is the file as it now stands anyway.
+  defTable(kind)[id] = body.def;
   if (form) {
     const flag = form.querySelector(".unsaved");
     if (flag) flag.textContent = "";

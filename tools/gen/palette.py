@@ -14,11 +14,7 @@ PALETTE = {
     # A fourth tone and some detail keys, for the giant rig: three tones over a
     # mass that size leaves it flat, and a monster wants things on it that a
     # person does not.
-    "SKD": ((0x8a, 0x5c, 0x38, 255), "skin deep"),
     "MS":  ((0x86, 0x96, 0x6a, 255), "lichen"),
-    "WR":  ((0x8a, 0x84, 0x4e, 255), "wart"),
-    "MW":  ((0x4a, 0x1e, 0x1e, 255), "maw"),
-    "IR":  ((0xe8, 0xb4, 0x3c, 255), "iris"),
     "HR":  ((0x5c, 0x3a, 0x24, 255), "hair"),
     "HRL": ((0x82, 0x55, 0x35, 255), "hair light"),
     "TU":  ((0x4f, 0xa5, 0x55, 255), "tunic"),
@@ -91,8 +87,6 @@ PALETTE = {
     "HNS": ((0xa3, 0x90, 0x6d, 255), "horn shade"),
     # Gas, and the only translucent colours besides the ground shadow: a cloud
     # you cannot see the grass through is a balloon, not a smell.
-    "GS":  ((0xc8, 0xbe, 0x3a, 165), "gas"),
-    "GSL": ((0xe9, 0xe1, 0x7c, 120), "gas light"),
     # Dust hanging in the air. Warmer and fainter than the gas, because it is
     # lit by something rather than coming off something.
     "DU":  ((0xe8, 0xdc, 0xbe, 150), "dust"),
@@ -102,9 +96,7 @@ PALETTE = {
     # Nothing in the grass palette reads as sun-bleached: the greens are all
     # cool and the browns are all damp, and a desert drawn out of them comes
     # out looking like a dead meadow.
-    "DN":  ((0xe0, 0xbd, 0x7e, 255), "dune"),
     "DND": ((0xbd, 0x9a, 0x5c, 255), "dune shade"),
-    "DNL": ((0xf5, 0xdc, 0xa6, 255), "dune light"),
     "DNX": ((0x9a, 0x7a, 0x45, 255), "dune deep"),
     "SL":  ((0xe8, 0xe4, 0xd8, 255), "salt"),
     "SLD": ((0xc2, 0xbd, 0xae, 255), "salt shade"),
@@ -123,11 +115,9 @@ PALETTE = {
     "OAX": ((0x14, 0x46, 0x4a, 255), "oasis deep"),
     # What the old kingdom put on the things it meant to outlast it.
     "GD":  ((0xd9, 0xb2, 0x4c, 255), "gold"),
-    "GDD": ((0xa8, 0x84, 0x2e, 255), "gold shade"),
     "GDL": ((0xf0, 0xd5, 0x82, 255), "gold light"),
     "LP":  ((0x2f, 0x4e, 0x9c, 255), "lapis"),
     "LPD": ((0x1d, 0x31, 0x68, 255), "lapis shade"),
-    "LPL": ((0x4f, 0x74, 0xc9, 255), "lapis light"),
 
     # --- the wetland ------------------------------------------------------
     # The country between the meadow and whatever grows south of it. Its own
@@ -146,28 +136,16 @@ PALETTE = {
     # is luma 105, marsh 86, bog 65 - a ladder you can see from across the
     # map, which is what tells you the ground has changed before you notice
     # the sedge.
-    "MA":  ((0x4c, 0x61, 0x42, 255), "marsh"),
     "MAD": ((0x3a, 0x4d, 0x33, 255), "marsh shade"),
-    "MAL": ((0x62, 0x78, 0x52, 255), "marsh light"),
-    "MAX": ((0x2b, 0x38, 0x2a, 255), "marsh peat"),
     # Peat water, not river water: what stains it is the ground it stands in,
     # so it is brown-green and much darker than anything the wilderness has.
-    "BG":  ((0x33, 0x45, 0x3e, 255), "bog"),
-    "BGD": ((0x22, 0x30, 0x2c, 255), "bog deep"),
-    "BGL": ((0x5f, 0x7d, 0x74, 255), "bog light"),
     # Rush and sedge: paler and more golden than anything growing on dry
     # ground here, which is what makes a reed bed read as a reed bed from a
     # screen away.
-    "RE":  ((0x8d, 0x9a, 0x4e, 255), "reed"),
-    "RED": ((0x63, 0x6d, 0x33, 255), "reed shade"),
-    "REL": ((0xb6, 0xc0, 0x73, 255), "reed light"),
     # And the blue-green the leaves take when they never dry out. Measured
     # against the ground rather than picked for hue: the first pass was a
     # deep teal at luma 69 standing on marsh at 86, so a bush in the fen was
     # a hole in it. A plant has to sit *above* the ground it grows out of.
-    "MB":  ((0x3c, 0x77, 0x5b, 255), "wet leaf"),
-    "MBD": ((0x23, 0x4c, 0x3a, 255), "wet leaf shade"),
-    "MBL": ((0x57, 0x9c, 0x78, 255), "wet leaf light"),
 
     # --- crystal ----------------------------------------------------------
     # Two families, and they are a pair on purpose: the blue burns in the gate
@@ -179,9 +157,6 @@ PALETTE = {
     "CYD": ((0x27, 0x6a, 0xa8, 255), "crystal shade"),
     "CYL": ((0xea, 0xf8, 0xff, 255), "crystal light"),
     "CYX": ((0x14, 0x3a, 0x6e, 255), "crystal deep"),
-    "RC":  ((0xe0, 0x44, 0x4e, 255), "red crystal"),
-    "RCD": ((0x8c, 0x1c, 0x2e, 255), "red crystal shade"),
-    "RCL": ((0xff, 0x9a, 0x92, 255), "red crystal light"),
 
 }
 

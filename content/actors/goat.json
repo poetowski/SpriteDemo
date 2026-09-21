@@ -25,6 +25,7 @@
   },
   "description": "Has the run of the berry patch and no manners at all.",
   "level": 1,
+  "hp": 15,
   "attack": 0,
   "armor": 0,
   "behaviour": "passive",

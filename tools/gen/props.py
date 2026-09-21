@@ -375,63 +375,101 @@ def tree_oak_forked():
     return c.outline()
 
 
-def tree_pine():
-    """A pine: a straight leader with four boughs hung off it, each darker
-    underneath than on top.
+def _conifer(c, rows, top, seed, trunk_from):
+    """A conifer from a per-row pair of half-widths.
 
-    Three stacked tapers is a cone with two notches in it. What makes a
-    conifer is that the boughs droop at their tips and that the trunk is
-    visible between them - so each bough is drawn as a row that sags at the
-    ends, and the trunk runs the whole height behind them."""
-    c = Canvas(FRAME, FRAME)
-    c.rect(14, 5, 17, BASE_Y, "WDD")              # the leader, top to bottom
-    c.col(14, 5, BASE_Y, "WD")
-    c.row(11, 20, BASE_Y, "WDD")                  # a foot in the needles
-    for top, w in ((6, 4), (11, 6), (16, 8), (21, 10)):
-        for i in range(4):
-            half = w - i
-            if half < 1:
-                break
-            c.row(15 - half, 16 + half, top + i, "BU")
-        c.row(15 - w, 16 + w, top + 3, "BUD")     # shadow under each bough
-        c.set(15 - w - 1, top + 3, "BUD")         # and a drooping tip
-        c.set(16 + w + 1, top + 3, "BUD")
-        c.row(15 - w + 2, 16 + w - 2, top, "BUL")  # light along its back
-    _blob(c, 2, (0, 1, 2), "BU")                  # the leader's own tuft
-    for x, y in ((11, 14), (21, 19), (15, 9)):
-        c.set(x, y, None)
+    The first cut at these drew each whorl as its own centred trapezoid with a
+    black row under it, and what came out was a stack of plates: every bough
+    the same shape, every gap the same height, both sides the same width. A
+    real one steps - each whorl reaches a little past the one above it and then
+    the next starts narrower again - and it is never symmetrical, because half
+    of it grew towards the light and half did not.
+
+    So the silhouette is authored as two lists, left and right, that step
+    independently. _shade then lights the steps for free: a stepped edge gives
+    it something to catch, where a smooth trapezoid gives it nothing."""
+    rnd = scatter(seed)
+    # The trunk first, so the boughs close over it and only the foot shows.
+    c.rect(14, trunk_from, 17, BASE_Y, "WD")
+    c.col(14, trunk_from, BASE_Y, "WDL")
+    c.col(17, trunk_from, BASE_Y, "WDD")
+    c.row(13, 18, BASE_Y, "WDD")
+
+    prev_l = prev_r = 0
+    for i, (l, r) in enumerate(rows):
+        y = top + i
+        c.row(15 - l, 16 + r, y, "BU")
+        # Where a whorl reaches past the row above it, that overhang is the
+        # underside of a bough and is in shadow. The shadow runs a few pixels
+        # further in than the overhang itself: stopped at the step, all the
+        # depth sat on the outline and the middle of the tree stayed flat.
+        if l > prev_l:
+            c.row(15 - l, 15 - prev_l + 3, y, "BUD")
+        if r > prev_r:
+            c.row(16 + prev_r - 3, 16 + r, y, "BUD")
+        # and a drooping tip on the wider side, every few rows
+        if i and i % 4 == 3:
+            if l >= r:
+                c.set(15 - l - 1, y, "BUD")
+                c.set(15 - l, y + 1, "BUD")
+            else:
+                c.set(16 + r + 1, y, "BUD")
+                c.set(16 + r, y + 1, "BUD")
+        prev_l, prev_r = l, r
+
+    # Needle texture through the body, or the inside of it is one flat green
+    # however ragged the outline is.
+    for _ in range(26):
+        i = rnd(len(rows))
+        l, r = rows[i]
+        span = l + r + 2
+        x = 15 - l + rnd(max(1, span))
+        y = top + i
+        if c.get(x, y) == "BU":
+            c.set(x, y, "BUD" if rnd(3) else "BUL")
+    # Needles: single pixels bitten out of the edge, so the outline is not a
+    # clean staircase. Four or five is enough - more and it reads as damage.
+    for _ in range(5):
+        i = 4 + rnd(len(rows) - 5)
+        l, r = rows[i]
+        c.set(15 - l if rnd(2) else 16 + r, top + i, None)
     _shade(c, "BU", "BUL", "BUD")
+    _shade(c, "WD", "WDL", "WDD")
+    return c
+
+
+def tree_pine():
+    """A mature pine: six whorls, none of them the same width as its
+    neighbours and none of them symmetrical."""
+    c = Canvas(FRAME, FRAME)
+    rows = [(0, 1), (1, 1), (2, 2), (3, 3),
+            (1, 2), (2, 3), (3, 4), (4, 4),
+            (2, 3), (3, 4), (4, 5), (5, 6),
+            (4, 4), (5, 6), (6, 7), (7, 7),
+            (5, 6), (6, 7), (7, 8), (8, 9),
+            (7, 8), (8, 9), (9, 10), (10, 10),
+            (9, 9)]
+    _conifer(c, rows, 2, 0x2B71, 22)
     return c.outline()
 
 
 def tree_pine_slim():
-    """A pine grown in company: bare for half its height, then three narrow
-    boughs where it finally reached the light.
+    """A pine grown in company: bare for half its height, then four narrow
+    whorls where it finally reached the light.
 
-    The bare trunk is the point of it. Placed next to the broad one it reads
-    as the same species at a different age, which is what a second version is
-    for - two trees that differ only in width read as one tree drawn twice."""
+    The bare trunk is the point of it - placed beside the broad one it reads as
+    the same species at a different age, which is what a second version is for.
+    Two trees that differ only in width read as one tree drawn twice."""
     c = Canvas(FRAME, FRAME)
-    c.rect(14, 3, 17, BASE_Y, "WDD")
-    c.col(14, 3, BASE_Y, "WD")
-    c.row(12, 19, BASE_Y, "WDD")
-    for y in range(16, BASE_Y, 4):                # branch scars down the bare
-        c.set(13, y, "WDD")                       # half of it
+    rows = [(0, 1), (1, 1), (2, 2),
+            (1, 2), (2, 2), (3, 3),
+            (2, 3), (3, 3), (4, 4),
+            (3, 4), (4, 5), (5, 5),
+            (4, 5), (5, 6), (6, 6)]
+    _conifer(c, rows, 2, 0x6D34, 14)
+    for y in range(20, BASE_Y, 4):               # branch scars down the bare
+        c.set(13, y, "WDD")                      # half of it
         c.set(18, y + 1, "WDD")
-    for top, w in ((4, 3), (8, 5), (13, 7)):
-        for i in range(4):
-            half = w - i
-            if half < 1:
-                break
-            c.row(15 - half, 16 + half, top + i, "BU")
-        c.row(15 - w, 16 + w, top + 3, "BUD")
-        c.set(15 - w - 1, top + 3, "BUD")
-        c.set(16 + w + 1, top + 3, "BUD")
-        c.row(15 - w + 2, 16 + w - 2, top, "BUL")
-    _blob(c, 1, (0, 1), "BU")
-    for x, y in ((12, 11), (20, 15)):
-        c.set(x, y, None)
-    _shade(c, "BU", "BUL", "BUD")
     return c.outline()
 
 
@@ -500,46 +538,14 @@ def boulder():
 # "footprint" in content/props/ - the art is free to overhang them.
 
 
-def boulder_8():
-    """Eight tiles, four by two: the boulder you see from the other end of the
-    valley. Four tiles across, so it shares the 64x64 frame and the anchor
-    convention with the burrow tree."""
-    c = Canvas(HUGE_FRAME, HUGE_FRAME)
-    _mass(c, ((29, 40, 27), (12, 55, 12), (50, 52, 12), (36, 22, 15)),
-          HUGE_BASE_Y)
-    _form(c, seed=71, tilt=0.12)
-    _crack(c, ((28, 10), (34, 28), (27, 42), (31, 60)))
-    _crack(c, ((44, 32), (52, 46), (48, 60)))
-    _crack(c, ((9, 46), (17, 55)))
-    _moss(c, ((8, 55, 7), (23, 58, 5), (54, 56, 5), (39, 59, 4)))
-    _rim(c, ROCK, "STL", "STD")
-    return c.outline()
-
-
-def boulder_16():
-    """Sixteen tiles, four by four: the erratic the pass is named for. Two
-    storeys of rock standing on a square of ground the size of a barnyard,
-    which is why it gets a frame of its own - see VAST_FRAME above.
-
-    Built in two masses rather than one so it reads as a block that split and
-    settled: a lower plinth spreading out to the ground, and a leaning cap sat
-    on top of it with the fissure between them running the whole way across.
-    One dome this size, however lumpy its edge, is a boulder-shaped hill."""
-    c = Canvas(VAST_FRAME, VAST_FRAME)
-    _mass(c, ((62, 100, 40), (48, 74, 24), (84, 80, 20),
-              (62, 58, 22)), VAST_BASE_Y)
-    _form(c, seed=93, tilt=0.14)
-    # The split: one long fissure across the whole mass, with the cap's weight
-    # carried on the left of it, plus the shorter cracks that run off it.
-    _crack(c, ((27, 80), (46, 72), (64, 76), (82, 68), (102, 76)))
-    _crack(c, ((46, 72), (50, 50), (45, 28)))
-    _crack(c, ((64, 76), (68, 96), (62, 112), (65, 124)))
-    _crack(c, ((82, 68), (90, 86), (86, 104), (90, 124)))
-    _crack(c, ((33, 90), (39, 108), (34, 124)))
-    _moss(c, ((32, 110, 9), (50, 119, 7), (97, 114, 8), (73, 121, 6),
-              (24, 96, 5)))
-    _rim(c, ROCK, "STL", "STD")
-    return c.outline()
+def _eave(c, x, y, step, key, dark, n=7):
+    """The upturned tip of an Asian eave. It lifts faster the further out it
+    goes - a tip that rises in a straight line is a ramp, and the whole look of
+    the roof is in that curve."""
+    for i in range(n):
+        lift = (i * i) // 5
+        c.col(x + step * i, y - lift, y + 2 - lift // 2, key)
+        c.set(x + step * i, y - lift, dark)
 
 
 # The flame on a lamp column, one entry per phase: where it starts and how wide
@@ -555,19 +561,13 @@ TEMPLE_FLAME = (                              # every one of them ends at y 83,
 # where anything this faint can be seen at all. Each mote drifts up and out
 # over the four frames, and they start at staggered phases so the air moves
 # instead of pulsing.
+
+# Where the dust hangs: over the steps and in the dark of the hall, which is
+# where anything this faint can be seen at all. Each mote drifts up and out
+# over the four frames, and they start at staggered phases so the air moves
+# instead of pulsing.
 TEMPLE_DUST = ((46, 96), (58, 90), (68, 94), (80, 88), (52, 102),
                (74, 104), (44, 86), (84, 98), (63, 82), (88, 92))
-
-
-def _eave(c, x, y, step, key, dark, n=7):
-    """The upturned tip of an Asian eave. It lifts faster the further out it
-    goes - a tip that rises in a straight line is a ramp, and the whole look of
-    the roof is in that curve."""
-    for i in range(n):
-        lift = (i * i) // 5
-        c.col(x + step * i, y - lift, y + 2 - lift // 2, key)
-        c.set(x + step * i, y - lift, dark)
-
 
 def temple(phase=0):
     """A temple on a square of ground four tiles by four: stone podium, a
@@ -732,56 +732,6 @@ def _frond(c, x, y, dx, dy, n, key, dark):
             c.set(px, py + 1, dark)
 
 
-def palm(phase=0):
-    """A date palm: a bare leaning trunk and everything happening at the top,
-    which is the whole silhouette of one."""
-    c = Canvas(FRAME, FRAME)
-    for i in range(BASE_Y - 11):                  # the trunk, leaning west
-        y = BASE_Y - i
-        x = 16 - i // 5
-        c.col(x, y, y, "WD")
-        c.set(x + 1, y, "WDD")
-        if i % 3 == 0:
-            c.set(x, y, "WDL")                    # the old frond scars
-    c.row(14, 18, BASE_Y, "WDD")                  # a flare at the foot
-    hx, hy = 13, 11
-    for dx, dy in ((-1.6, -0.5), (-1.3, 0.5), (1.6, -0.4), (1.3, 0.6),
-                   (-0.7, -1.1), (0.8, -1.1), (0.2, 1.1)):
-        _frond(c, hx, hy, dx, dy, 6, "BU", "BUD")
-    _lobe(c, hx, hy, 2, "BUD")                    # the crown itself
-    for x, y in ((hx + 2, hy + 2), (hx + 3, hy + 2), (hx + 2, hy + 3)):
-        c.set(x, y, "RF")                         # a bunch of dates under it
-    c.rect(0, BASE_Y + 1, FRAME - 1, FRAME - 1, None)
-    return c.outline()
-
-
-def cactus(phase=0):
-    """A column with two arms at different heights. Both at the same height
-    is a candlestick, and it is the one thing that stops it reading as a
-    cactus at all."""
-    c = Canvas(FRAME, FRAME)
-    c.rect(13, 9, 18, BASE_Y, "BU")               # the trunk
-    c.col(13, 9, BASE_Y, "BUL")
-    c.col(18, 9, BASE_Y, "BUD")
-    c.row(13, 18, 9, "BUL")
-    c.rect(9, 15, 12, 17, "BU")                   # the low arm, west
-    c.rect(9, 12, 10, 16, "BU")
-    c.col(9, 12, 17, "BUL")
-    c.rect(19, 13, 22, 15, "BU")                  # and the high one, east
-    c.rect(21, 9, 22, 14, "BU")
-    c.col(22, 9, 15, "BUD")
-    for y in range(11, BASE_Y, 3):                # ribs, and a spine on each
-        for x in (14, 16, 17):
-            c.set(x, y, "BUD")
-        c.set(15, y + 1, "EW")
-    for y in (13, 16):
-        c.set(10, y, "EW")
-    for y in (11, 14):
-        c.set(21, y, "EW")
-    c.rect(0, BASE_Y + 1, FRAME - 1, FRAME - 1, None)
-    return c.outline()
-
-
 def dry_bush(phase=0):
     """Thorn: a few long stems and a lot of gaps. Twenty short ones packed
     round a root came out as a solid green lump - what says dead scrub is the
@@ -870,51 +820,6 @@ def urn(phase=0):
     c.set(15, 20, "GDL")
     c.set(16, 22, "GDL")
     c.rect(0, BASE_Y + 1, FRAME - 1, FRAME - 1, None)
-    return c.outline()
-
-
-def colossus():
-    """A head of something far larger, with the desert up to its mouth. Four
-    tiles across and two deep; what is above the sand is the small part of it,
-    which is the only way to put something this size in a 32px world and have
-    it read as enormous.
-
-    The nemes does the silhouette - a wide flaring headcloth, nothing else -
-    so the pleats belong on its two lappets and nowhere near the face. Ruled
-    right across the frame they came out as a pair of combs on a block."""
-    c = Canvas(HUGE_FRAME, HUGE_FRAME)
-    b = HUGE_BASE_Y
-    _taper(c, 13, b - 6, 11, 26, "SS", cx=31)                 # the headcloth
-    c.rect(21, 17, 42, b - 6, "SS")                           # and the face
-    _shade(c, "SS", "SSL", "SSD")
-    for x in range(6, 21, 4):                                 # pleats, on the
-        c.col(x, 34, b - 7, "SSD")                            # lappets only
-        c.col(x + 1, 36, b - 7, "SSL")
-    for x in range(43, 58, 4):
-        c.col(x, 34, b - 7, "SSD")
-        c.col(x + 1, 36, b - 7, "SSL")
-    c.rect(18, 14, 45, 20, "LP")                              # the browband
-    c.row(18, 45, 14, "LPL")
-    c.row(18, 45, 20, "LPD")
-    c.rect(29, 9, 34, 15, "GD")                               # the cobra on it
-    c.set(31, 7, "GD")
-    c.set(32, 8, "GDL")
-    for x in (24, 36):                                        # eyes, lined
-        c.rect(x, 25, x + 4, 28, "SLL")
-        c.rect(x + 1, 26, x + 2, 27, "OL")
-        c.row(x - 1, x + 5, 24, "LPD")                        # the kohl line
-        c.row(x + 5, x + 7, 24, "LPD")
-    c.rect(29, 30, 34, 38, "SSD")                             # the nose
-    c.row(30, 33, 30, "SSL")
-    c.row(26, 37, 42, "SSD")                                  # the mouth
-    c.row(27, 36, 43, "SSX" if False else "SSD")
-    _crack(c, ((21, 22), (24, 32), (20, 42)))                 # and the damage
-    _crack(c, ((44, 26), (41, 36)))
-    c.rect(0, b - 6, HUGE_FRAME - 1, b, "DND")                # sand to the lip
-    c.row(0, HUGE_FRAME - 1, b - 6, "DNX")
-    for x in range(3, HUGE_FRAME, 6):
-        c.set(x, b - 7, "DND")
-    c.rect(0, b + 1, HUGE_FRAME - 1, HUGE_FRAME - 1, None)
     return c.outline()
 
 
@@ -1086,17 +991,6 @@ def tombstone():
     _shade(c, "ST", "STL", "STD")
     for y in (19, 21, 23):               # an inscription, illegible at this size
         c.row(13, 18, y, "STD")
-    return c.outline()
-
-
-def bench():
-    c = Canvas(FRAME, FRAME)
-    _plank(c, 4, 20, 27, 22)             # seat
-    _plank(c, 5, 12, 26, 14)             # backrest
-    for x in (6, 23):
-        _post(c, x, 14, 20)              # back uprights
-        _post(c, x, 22, BASE_Y)          # legs
-    c.rect(0, BASE_Y + 1, FRAME - 1, FRAME - 1, None)
     return c.outline()
 
 
@@ -1562,122 +1456,9 @@ def bone_pile():
     return c.outline()
 
 
-def bedding():
-    """A bear's nest: straw and leaf litter dragged into a heap and pressed
-    flat in the middle by whatever sleeps on it.
-
-    prop.bed_straw is a person's - a pallet with a blanket squared off over it,
-    and the blanket is what makes it a bed rather than a pile of straw. Take
-    the blanket away, round the outline off and press a hollow into the centre,
-    and the same material reads as an animal's."""
-    c = Canvas(FRAME, FRAME)
-    # Overlapping discs, so the rim comes out ragged. A clean ellipse reads as
-    # a rug, which is the opposite of what a dragged-together heap looks like.
-    for cx, cy, r in ((10, BASE_Y - 5, 7), (21, BASE_Y - 5, 7),
-                      (16, BASE_Y - 3, 8), (16, BASE_Y - 9, 6)):
-        _lobe(c, cx, cy, r, "TH")
-    for y in range(BASE_Y + 1, FRAME):                # nothing below the base
-        for x in range(FRAME):
-            c.set(x, y, None)
-    rnd = scatter(0x5E77)
-    for _ in range(30):                               # straws, lying every way
-        x, y = rnd(FRAME), rnd(FRAME)
-        if c.get(x, y) == "TH":
-            c.set(x, y, "THD")
-            c.set(x + 1, y, "THD")
-    for _ in range(16):                               # leaf litter through it
-        x, y = rnd(FRAME), rnd(FRAME)
-        if c.get(x, y) in ("TH", "THD"):
-            c.set(x, y, "LF")
-    _lobe(c, 16, BASE_Y - 6, 5, "LFD")                # the hollow, in shadow
-    _shade(c, "TH", "THL", "THD")
-    return c.outline()
-
-
 # ---------------------------------------------------------------- wetland ---
-def marsh_bush():
-    """A bush that never dries out.
-
-    The meadow's bush is a dome, so a dome in the wetland's blue-green would
-    only be the same bush recoloured - and a recolour is exactly what a new
-    biome must not be. This is built the other way about: a broad low mass
-    that spreads instead of climbing, with long leaves arching off the top of
-    it and falling away again. What says the ground under a plant is soft is
-    that the plant is lying down on it.
-
-    A leaf gets the palm's frond rather than a line of pixels, and that is not
-    a stylistic choice: a leaf drawn one pixel wide comes back from outline()
-    as a black hair, and the first version of this had a fuzzy black crest
-    where its foliage was meant to be. Three pixels thick is the thinnest
-    thing that survives being outlined.
-
-    They are also drawn in the *light* tone over the mass rather than the dark
-    one. Leaves standing above a crown are the part of it the sun reaches, and
-    a spray of shade-coloured ribs on a shade-coloured mound is a hedgehog."""
-    c = Canvas(FRAME, FRAME)
-    for cx, cy, r in ((11, 26, 5), (16, 25, 6), (21, 26, 5)):
-        _lobe(c, cx, cy, r, "MB")
-    c.rect(0, BASE_Y + 1, FRAME - 1, FRAME - 1, None)
-    _shade(c, "MB", "MBL", "MBD")
-    for x, y in ((12, 21), (20, 21)):
-        c.set(x, y, None)                         # notches, so it reads as leaf
-    for dx, dy in ((-1.8, -0.8), (-1.0, -1.4), (0.4, -1.5),
-                   (1.3, -1.1), (1.9, -0.5)):
-        _frond(c, 16, 23, dx, dy, 6, "MBL", "MB")
-    for x, y in ((14, 26), (19, 25), (10, 27), (22, 24)):
-        c.set(x, y, "MBD")                        # gaps down into the leaf, so
-    for x, y in ((13, 23), (17, 22)):             # the face is not one flat
-        c.set(x, y, "MBL")                        # slab of the one colour
-    c.row(12, 20, BASE_Y, "MBD")                  # sodden where it meets the mud
-    return c.outline()
-
-
-def reeds(phase=0):
-    """A stand of rush at the water's edge.
-
-    Reeds stand up. Two earlier versions got that wrong in opposite ways: six
-    parallel hairs a pixel wide gave every stalk its own black border and the
-    stand came out as a dark comb, and splaying them out of one root to dodge
-    that gave a solid wedge with fingers on it - a hand, not a reed bed.
-
-    What it takes is spacing, measured against the outline rather than
-    eyeballed. A stalk two pixels wide picks up a border on each side, so two
-    of them five pixels apart leave no daylight between; at six there is a
-    clear pixel of ground, and the stand reads as separate stalks however dark
-    the water behind it. Four tufts is what fits across a tile at that
-    spacing, so each one is a tall stalk with a shorter one beside it rather
-    than a single post, and half of them carry a brown head - the only part of
-    a reed bed anyone can name from across a map."""
-    c = Canvas(FRAME, FRAME)
-    for i, x in enumerate((7, 13, 19, 25)):
-        lean = (x - 16) * 0.035                   # leaning away from the middle
-        h, sh = (17, 11) if i % 2 == 0 else (14, 9)
-        fx = float(x)
-        for k in range(h):                        # the stalk itself
-            fx += lean
-            px = round(fx)
-            c.set(px, BASE_Y - k, "RE")
-            c.set(px - 1, BASE_Y - k, "RED")      # its shaded side
-        for k in range(sh):                       # and a shorter one beside it
-            c.set(round(fx) + 1, BASE_Y - k, "RE" if k % 3 else "RED")
-        px, ty = round(fx), BASE_Y - h + 1
-        if i % 2 == 0:                            # a cattail head on this one
-            c.rect(px - 1, ty - 4, px, ty - 1, "WDD")
-            c.row(px - 1, px, ty - 4, "WD")
-            c.col(px, ty - 3, ty - 1, "WD")
-        else:                                     # a seeding tip on that one
-            c.set(px, ty - 1, "REL")
-            c.set(px - 1, ty, "REL")
-        c.set(round(fx) + 1, BASE_Y - sh, "REL")
-    c.row(11, 21, BASE_Y, "MAX")                  # standing in mud, not on turf
-    c.rect(0, BASE_Y + 1, FRAME - 1, FRAME - 1, None)
-    return c.outline()
-
-
 PROPS = {
     "prop.bush": bush,
-    "prop.marsh_bush": marsh_bush,
-    "prop.reeds": reeds,
     "prop.rock": rock,
     "prop.sign": sign,
     "prop.tree_pine": tree_pine,
@@ -1700,7 +1481,6 @@ PROPS = {
     "prop.signpost": signpost,
     "prop.statue": statue,
     "prop.tombstone": tombstone,
-    "prop.bench": bench,
     "prop.table": table,
     "prop.chest": chest,
     "prop.beehive": beehive,
@@ -1714,15 +1494,12 @@ PROPS = {
     "prop.hearth": hearth,
     "prop.weapon_rack": weapon_rack,
     "prop.bed_straw": bed_straw,
-    "prop.palm": palm,
-    "prop.cactus": cactus,
     "prop.dry_bush": dry_bush,
     "prop.bones": bones,
     "prop.urn": urn,
     "prop.roots": roots,
     "prop.cave_shroom": cave_shroom,
     "prop.bone_pile": bone_pile,
-    "prop.bedding": bedding,
 }
 PROP_ORDER = list(PROPS)
 
@@ -1876,8 +1653,6 @@ def shed():
 HUGE_PROPS = {
     "prop.shed": shed,
     "prop.burrow_tree": burrow_tree,
-    "prop.boulder_8": boulder_8,
-    "prop.colossus": colossus,
 }
 HUGE_PROP_ORDER = list(HUGE_PROPS)
 
@@ -2010,7 +1785,6 @@ def crystal_gate(phase=0):
 
 
 VAST_PROPS = {
-    "prop.boulder_16": boulder_16,
     "prop.temple": temple,
     "prop.crystal_gate": crystal_gate,
 }

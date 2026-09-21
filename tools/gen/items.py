@@ -160,32 +160,6 @@ def sword():
     return c.outline()
 
 
-def azure_blade():
-    """A sword of the gate's own crystal: an azure edge either side of a core
-    lit almost to white, and a dark grip with a shard set in the pommel.
-
-    The light around it is drawn **after** `outline()`, which is the temple's
-    dust rule and matters more here than it does there. A mote with a hard
-    black line round it is a pebble, and an icon of a magic sword whose magic
-    reads as gravel is worse than one carrying no magic at all. They are also
-    only ever placed where nothing already is, so the glow can never end up
-    painted over the blade it is supposed to be coming off."""
-    c = Canvas(SIZE, SIZE)
-    _diag(c, 4, 11, 9, "CY")                    # the near edge
-    _diag(c, 5, 11, 9, "CYL")                   # the core, lit almost white
-    _diag(c, 6, 11, 8, "CY")                    # and the far edge
-    c.set(14, 2, "CYL")                         # the point
-    _diag(c, 2, 13, 3, "STX")                   # a dark grip
-    c.set(1, 14, "CY")                          # a shard set in the pommel
-    for x, y in ((3, 10), (4, 9), (5, 13), (6, 14)):
-        c.set(x, y, "CYD")                      # the guard, across the blade
-    c.outline()
-    for x, y in ((2, 7), (8, 3), (11, 8), (3, 3), (12, 11), (9, 1), (14, 6)):
-        if c.get(x, y) is None:
-            c.set(x, y, "CYL" if (x + y) % 2 else "CY")
-    return c
-
-
 def axe():
     c = Canvas(SIZE, SIZE)
     _diag(c, 3, 13, 9, "WD")                    # haft
@@ -223,71 +197,6 @@ def mail():
     return c.outline()
 
 
-def desert_tunic():
-    c = Canvas(SIZE, SIZE)
-    c.rect(4, 5, 11, 13, "CL")                  # the linen
-    c.rect(2, 5, 4, 8, "CL")                    # short sleeves
-    c.rect(11, 5, 13, 8, "CL")
-    for y in range(7, 13, 2):
-        c.row(4, 11, y, "CLD")
-    c.rect(4, 3, 11, 5, "GD")                   # the collar, which is the
-    c.row(4, 11, 3, "GDL")                      # whole of what it is
-    c.set(6, 4, "LP")
-    c.set(9, 4, "LP")
-    c.row(4, 11, 12, "LP")                      # and the sash
-    return c.outline()
-
-
-def nomad_armor():
-    """A hooded travelling robe: the hood is the icon, because a folded robe
-    on its own is a rectangle and every soft thing in the bag would be one."""
-    c = Canvas(SIZE, SIZE)
-    c.rect(3, 6, 12, 14, "CL")                  # the robe, full length
-    c.rect(1, 6, 3, 10, "CL")                   # and long sleeves
-    c.rect(12, 6, 14, 10, "CL")
-    for y in range(8, 14, 2):
-        c.row(3, 12, y, "CLD")
-    c.rect(4, 1, 11, 6, "LP")                   # the indigo hood over it
-    c.row(5, 10, 1, "LPL")
-    c.rect(6, 3, 9, 6, "SKS")                   # a face in the shade of it
-    c.row(4, 11, 6, "LPD")
-    c.row(3, 12, 11, "GD")                      # a sash at the waist
-    c.set(7, 12, "GDL")
-    return c.outline()
-
-
-def desert_flower():
-    """A bloom on a bare stem. The leaves are grey-green rather than grass
-    green - nothing in this biome is the colour of a meadow, and an icon that
-    was would read as picked somewhere else.
-
-    The petals are laid as a disc and lit, not drawn one at a time with a
-    shade pixel beside each: eight petals each carrying their own outline
-    came out as a dark ring with a gold spot in it."""
-    c = Canvas(SIZE, SIZE)
-    c.col(8, 8, 14, "SC")                       # the stem
-    c.col(9, 9, 14, "SCD")
-    # Two small blades close in to the stem. Long ones angled away from it
-    # crossed under the bloom and the whole icon read as a fire laid ready.
-    for k in range(3):
-        c.set(7 - k, 11 + k, "SC")
-        c.set(6 - k, 11 + k, "SCD")
-    for k in range(2):
-        c.set(10 + k, 12 + k, "SC")
-        c.set(11 + k, 12 + k, "SCD")
-    for dy in range(-4, 5):                     # the bloom, as a disc
-        for dx in range(-4, 5):
-            if dx * dx + dy * dy > 17:
-                continue
-            c.set(8 + dx, 6 + dy, "FID" if dx + dy > 2 else "FI")
-    for dx, dy in ((-2, -3), (0, -4), (2, -3), (-3, -1), (3, -1)):
-        c.set(8 + dx, 6 + dy, "FIL")            # lit on the side it faces
-    c.rect(7, 5, 9, 7, "GD")                    # and the eye of it
-    c.set(7, 5, "GDL")
-    c.set(9, 7, "GDD")
-    return c.outline()
-
-
 ITEMS = {
     "item.apple": apple,
     "item.berries": berries,
@@ -301,13 +210,9 @@ ITEMS = {
     "item.key": key,
     "item.flower": flower,
     "item.sword": sword,
-    "item.azure_blade": azure_blade,
     "item.axe": axe,
     "item.spear": spear,
     "item.mail": mail,
-    "item.desert_tunic": desert_tunic,
-    "item.nomad_armor": nomad_armor,
-    "item.desert_flower": desert_flower,
 }
 ITEM_ORDER = list(ITEMS)
 

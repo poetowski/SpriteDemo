@@ -156,9 +156,6 @@ WEAPONS = {
     # line, **width is the only thing that can say "lit"**. Colour alone says
     # "blue", and a blue line the same two pixels thick as the sword reads as
     # a sword somebody painted.
-    "azure_blade": dict(length=10, grip=2, shaft="CYL", edge="CY", glow="CY",
-                        guard=True, grip_key="STX", guard_key="CYD",
-                        thick=True),
 }
 
 REST_AIM = {"down": (0, -1), "up": (0, -1), "right": (1, -1)}
@@ -184,57 +181,7 @@ def mail(c, direction, dy=0):
     c.set(x1 + 1, t + 2, "MTD")
 
 
-def desert_tunic(c, direction, dy=0):
-    """Linen to the waist under a broad gilt collar. The collar is the armour
-    and the rest is cloth, which is how it reads at a glance against the mail:
-    one is metal all over and this is one bright band at the shoulders."""
-    t = TORSO_TOP + dy
-    b = BELT_Y + dy
-    x0, x1 = (13, 19) if direction == "right" else (12, 19)
-    c.rect(x0, t, x1, b - 1, "CL")                 # the linen
-    for y in range(t + 3, b - 1):                  # and the weave of it, as a
-        for x in range(x0, x1 + 1):                # dither: a dark row every
-            if (x * 2 + y) % 4 == 0:               # other line was a striped
-                c.set(x, y, "CLD")                 # shirt, not woven cloth
-    c.rect(x0, t, x1, t + 2, "GD")                 # the broad collar
-    c.row(x0, x1, t, "GDL")
-    c.row(x0, x1, t + 2, "GDD")
-    c.set(x0 + 1, t + 1, "LP")                     # inlaid, twice
-    c.set(x1 - 1, t + 1, "LP")
-    c.rect(x0 - 1, t, x0, t + 1, "GDL")            # over the shoulder seams
-    c.rect(x1, t, x1 + 1, t + 1, "GDL")
-    c.set(x0 - 1, t + 2, "GDD")
-    c.set(x1 + 1, t + 2, "GDD")
-    c.row(x0, x1, b - 1, "LP")                     # a sash at the waist
-    c.set(x0 + 2, b - 1, "LPL")
-
-
-def nomad_armor(c, direction, dy=0):
-    """A travelling robe: heavy linen with an indigo mantle over the shoulders
-    and a sash. Where the desert tunic is one bright band at the collar, this
-    is dark at the top and pale below - the two read apart at a glance even
-    though both are cloth, which is the only thing that matters in a bag."""
-    t = TORSO_TOP + dy
-    b = BELT_Y + dy
-    x0, x1 = (13, 19) if direction == "right" else (12, 19)
-    c.rect(x0, t, x1, b - 1, "CL")                 # the robe
-    for y in range(t + 4, b - 1):                  # woven, as a dither - a
-        for x in range(x0, x1 + 1):                # dark row every other line
-            if (x * 2 + y) % 4 == 0:               # is a striped shirt
-                c.set(x, y, "CLD")
-    c.rect(x0, t, x1, t + 3, "LP")                 # the mantle over it
-    c.row(x0, x1, t, "LPL")
-    c.row(x0, x1, t + 3, "LPD")
-    c.rect(x0 - 1, t, x0, t + 2, "LP")             # over the shoulder seams
-    c.rect(x1, t, x1 + 1, t + 2, "LP")
-    c.set(x0 - 1, t + 2, "LPD")
-    c.set(x1 + 1, t + 2, "LPD")
-    c.row(x0, x1, b - 1, "GD")                     # and a sash at the waist
-    c.set(x0 + 2, b - 1, "GDL")
-
-
-ARMOURS = {"mail": mail, "desert_tunic": desert_tunic,
-           "nomad_armor": nomad_armor}
+ARMOURS = {"mail": mail}
 
 
 def draw_weapon(c, hx, hy, aim, name):

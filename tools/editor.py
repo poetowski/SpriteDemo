@@ -117,11 +117,26 @@ class Handler(SimpleHTTPRequestHandler):
                 return self._json(HTTPStatus.CONFLICT, {
                     "error": f"refusing to write {patch['id']!r} over {defn['id']!r}"})
             patch.pop("id", None)
+            # A dotted key reaches one level in, so a sheet can edit a number
+            # that lives inside a block - hostile.sight - without the sheet
+            # having to understand the block or be able to replace it.
             for key, value in patch.items():
+                head, _, tail = key.partition(".")
+                if not tail:
+                    if value is None:
+                        defn.pop(key, None)  # None means "take this field out"
+                    else:
+                        defn[key] = value
+                    continue
+                node = defn.get(head)
+                if not isinstance(node, dict):
+                    if value is None:
+                        continue             # nothing to take it out of
+                    node = defn[head] = {}
                 if value is None:
-                    defn.pop(key, None)      # None means "take this field out"
+                    node.pop(tail, None)
                 else:
-                    defn[key] = value
+                    node[tail] = value
             with open(path, "w", encoding="utf-8") as fh:
                 json.dump(defn, fh, indent=2)
                 fh.write(chr(10))

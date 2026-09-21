@@ -711,6 +711,25 @@ function dropScratch() {
   check('the A stacks with solid rather than replacing it',
         blending.stacked.every((id) => blending.marked.includes(id)),
         blending.stacked.join(', ') || 'no solid terrain autotiles here');
+  // Every terrain swatch says how many drawings of it exist. A tile with one
+  // repeats visibly over a field, and that is worth knowing before painting an
+  // acre of it rather than after.
+  const vars = await page.evaluate(() => {
+    const out = [];
+    for (const el of document.querySelectorAll('#pal-terrain .swatch')) {
+      const tag = el.querySelector('.size');
+      const t = window.editor.M.tiles[el.dataset.id];
+      out.push({ id: el.dataset.id, shown: tag ? tag.textContent : null,
+                 real: '×' + (t.variants || [t.index]).length });
+    }
+    return out;
+  });
+  check('every terrain swatch says how many variants it has',
+        vars.length > 0 && vars.every((v) => v.shown === v.real),
+        vars.filter((v) => v.shown !== v.real)
+            .map((v) => `${v.id} says ${v.shown} not ${v.real}`).join(', ')
+          || `${vars.length} agree with the manifest`);
+
   check('marked terrain says so in its title', blending.titles, 'titles carry it');
   check('and unmarked terrain says it has no transitions', blending.plainTitles,
         'the absence is stated, not left blank');
@@ -1187,12 +1206,16 @@ function dropScratch() {
       defined: Object.keys(window.editor.M.actors).sort(),
       level: val('level'), hp: val('hp'), attack: val('attack'), armor: val('armor'),
       boar: window.editor.M.actors['npc.boar'],
-      goatHp: (() => {
-        const g = [...document.querySelectorAll('#defs-actors .list button')]
-          .find((e) => e.dataset.id === 'npc.goat');
-        if (g) g.click();
+      // Whichever actor has no hp, rather than one named here: the goat used
+      // to be the example and then the goat was given fifteen.
+      noHp: (() => {
+        const defs = window.editor.M.actors;
+        const id = Object.keys(defs).find((k) => defs[k].hp === undefined);
+        if (!id) return { id: null };
+        [...document.querySelectorAll('#defs-actors .list button')]
+          .find((e) => e.dataset.id === id).click();
         const el = document.querySelector('#defs-actors [data-key="hp"]');
-        return el ? el.value : null;
+        return { id, value: el ? el.value : null };
       })(),
     };
   });
@@ -1208,8 +1231,9 @@ function dropScratch() {
         `level ${actorSheet.level} hp ${actorSheet.hp} `
           + `attack ${actorSheet.attack} armor ${actorSheet.armor}`);
   check('a thing with no hp shows an empty box, not a zero',
-        actorSheet.goatHp === '',
-        `the goat reads ${JSON.stringify(actorSheet.goatHp)}`);
+        actorSheet.noHp.id === null || actorSheet.noHp.value === '',
+        actorSheet.noHp.id === null ? 'every actor has hp now'
+          : `${actorSheet.noHp.id} reads ${JSON.stringify(actorSheet.noHp.value)}`);
 
   // behaviour is a word with three values, and the sheet has to offer exactly
   // those - a free text box here would let "agressive" through to a build that
@@ -1264,6 +1288,49 @@ function dropScratch() {
         `${behaviour.walker} vs ${behaviour.stander}`);
   check('unticking walks takes the radius with it',
         !behaviour.afterUntick && behaviour.back);
+  // speed is a plain field; sight lives inside the hostile block. The sheet
+  // reaches one level in for it, and the save must not flatten or replace the
+  // block on its way past - the other six numbers in there belong to nobody
+  // the sheet has heard of.
+  const nested = await page.evaluate(async () => {
+    const id = Object.keys(window.editor.M.actors)
+      .find((k) => window.editor.M.actors[k].hostile);
+    if (!id) return { skipped: true };
+    const file = id.split('.')[1];
+    const before = JSON.parse(JSON.stringify(window.editor.M.actors[id]));
+    [...document.querySelectorAll('#defs-actors .list button')]
+      .find((e) => e.dataset.id === id).click();
+    const shown = {
+      speed: document.querySelector('#defs-actors [data-key="speed"]').value,
+      sight: document.querySelector('#defs-actors [data-key="hostile.sight"]').value,
+    };
+    await window.saveDef('actors', id, {
+      speed: before.speed, 'hostile.sight': before.hostile.sight + 4,
+      behaviour: before.behaviour, walking: before.walking,
+      walk_radius: before.walk_radius, level: before.level, hp: before.hp,
+      attack: before.attack, armor: before.armor,
+      description: before.description,
+    }, null);
+    const after = JSON.parse(JSON.stringify(window.editor.M.actors[id]));
+    await fetch(`/api/def?kind=actors&name=${file}`, {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ 'hostile.sight': before.hostile.sight }),
+    });
+    return { id, shown, before, after };
+  });
+  check('speed and sight are both on the sheet, reading the right places',
+        nested.skipped || (Number(nested.shown.speed) === nested.before.speed
+          && Number(nested.shown.sight) === nested.before.hostile.sight),
+        nested.skipped ? 'no hostile actor to test'
+          : `speed ${nested.shown.speed}, sight ${nested.shown.sight}`);
+  check('a nested save lands inside the block and leaves the rest of it alone',
+        nested.skipped || (nested.after.hostile.sight === nested.before.hostile.sight + 4
+          && Object.keys(nested.after.hostile).length
+             === Object.keys(nested.before.hostile).length
+          && nested.after.hostile.lose === nested.before.hostile.lose),
+        nested.skipped ? 'skipped'
+          : `${Object.keys(nested.after.hostile || {}).length} keys still in hostile`);
+
   check('every actor carries the three new fields',
         Object.values(behaviour.defs).every((d) =>
           ['passive', 'defensive', 'offensive'].includes(d.behaviour)
@@ -1282,6 +1349,21 @@ function dropScratch() {
   });
   check('I opens the items view', keys.onItems);
   check('A opens the actors view', keys.onActors);
+
+  // Undo is the one control you reach for without looking, so it is not
+  // allowed to look like the five grey buttons beside it.
+  const undoLook = await page.evaluate(() => {
+    const u = getComputedStyle(document.getElementById('undo'));
+    const plain = getComputedStyle(document.getElementById('resize'));
+    const rgb = (s) => (s.match(/\d+/g) || []).map(Number);
+    const [r, g, b] = rgb(u.borderTopColor);
+    return { border: u.borderTopColor, bg: u.backgroundColor,
+             plainBg: plain.backgroundColor,
+             reddest: r > g + 40 && r > b + 40 };
+  });
+  check('the undo button is red, and not the same as a plain one',
+        undoLook.reddest && undoLook.bg !== undoLook.plainBg,
+        `border ${undoLook.border}, background ${undoLook.bg} vs ${undoLook.plainBg}`);
 
   check('no console errors', problems.length === 0, problems.join(' | '));
 

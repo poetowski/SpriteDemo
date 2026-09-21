@@ -1,6 +1,0 @@
-{
-  "id": "tile.dune",
-  "sprite": "tile.dune",
-  "walkable": true,
-  "material": "sand"
-}

@@ -1,8 +1,0 @@
-{
-  "id": "tile.scrub",
-  "sprite": "tile.scrub",
-  "walkable": true,
-  "blend": true,
-  "blend_over": "tile.dune",
-  "material": "sand"
-}

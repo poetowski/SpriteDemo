@@ -4,6 +4,6 @@
   "walkable": true,
   "material": "water",
   "blend": true,
-  "blend_over": "tile.sand",
+  "blend_over": "tile.grass",
   "family": "water"
 }

@@ -1,8 +1,0 @@
-{
-  "id": "tile.sandstone",
-  "sprite": "tile.sandstone",
-  "walkable": true,
-  "blend": true,
-  "blend_over": "tile.dune",
-  "material": "stone"
-}

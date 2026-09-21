@@ -25,6 +25,7 @@
   },
   "description": "Gathers at the trough and wants nothing else.",
   "level": 1,
+  "hp": 15,
   "attack": 0,
   "armor": 0,
   "behaviour": "passive",

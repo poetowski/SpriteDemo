@@ -212,7 +212,7 @@ class World extends Phaser.Scene {
     // Crossing restarts the scene, which would otherwise hand the player a
     // fresh bag and a level 1 sheet every time they walked west.
     if (this.carry) {
-      this.inventory = this.carry.inventory.slice();
+      this.inventory = this.carry.inventory.map((s) => (s ? { ...s } : null));
       this.weapon = this.carry.weapon;
       this.armor = this.carry.armor;
       this.level = this.carry.level;
@@ -759,7 +759,33 @@ class World extends Phaser.Scene {
   canTake(id) {
     const kind = M.items[id].slot;
     if (kind && !this.gearIn(kind)) return true;
-    return this.inventory.includes(null);
+    return this.roomFor(id) >= 0;
+  }
+
+  /** A bag slot is null or { id, n }. Stacking is what stack_max is for: a
+   *  handful of berries is one slot with a 3 on it, not three slots. */
+  slotOf(id) {
+    return this.inventory.findIndex((s) => s && s.id === id);
+  }
+
+  bagHas(id) {
+    return this.slotOf(id) >= 0;
+  }
+
+  bagFull() {
+    return !this.inventory.includes(null);
+  }
+
+  /** Where one more of this would go: an open stack of its own kind first, an
+   *  empty slot otherwise, and -1 when there is neither. */
+  roomFor(id) {
+    const def = M.items[id];
+    if (def.stack) {
+      const at = this.inventory.findIndex(
+        (s) => s && s.id === id && s.n < def.stack_max);
+      if (at >= 0) return at;
+    }
+    return this.inventory.indexOf(null);
   }
 
   gearIn(kind) {
@@ -774,9 +800,11 @@ class World extends Phaser.Scene {
       this.refreshLook();
       return true;
     }
-    const slot = this.inventory.indexOf(null);
+    const slot = this.roomFor(id);
     if (slot < 0) return false;
-    this.inventory[slot] = id;
+    const at = this.inventory[slot];
+    if (at && at.id === id) at.n += 1;
+    else this.inventory[slot] = { id, n: 1 };
     this.pushInventory();
     this.afterQuestChange();          // a fetch is counted off the bag
     return true;
@@ -789,13 +817,15 @@ class World extends Phaser.Scene {
     const cur = this.gearIn(kind);
     if (id === cur) return true;
     if (id) {
-      const slot = this.inventory.indexOf(id);
+      const slot = this.slotOf(id);
       if (slot < 0) return false;
-      this.inventory[slot] = cur;            // what was worn drops into its place
+      // Gear never stacks, so the slot holds exactly one and the two can
+      // simply trade places.
+      this.inventory[slot] = cur ? { id: cur, n: 1 } : null;
     } else {
       const free = this.inventory.indexOf(null);
       if (free < 0) return false;            // bag full: it stays on
-      this.inventory[free] = cur;
+      this.inventory[free] = { id: cur, n: 1 };
     }
     if (kind === 'weapon') this.weapon = id; else this.armor = id;
     this.refreshLook();
@@ -804,8 +834,9 @@ class World extends Phaser.Scene {
 
   /** E on a slot in the open bag: put that piece of gear on. */
   useSlot(slot) {
-    const id = this.inventory[slot];
-    if (!id) return;
+    const at = this.inventory[slot];
+    if (!at) return;
+    const id = at.id;
     const kind = M.items[id].slot;
     if (kind) this.setGear(kind, id);
   }
@@ -828,8 +859,8 @@ class World extends Phaser.Scene {
   weaponsHeld() {
     const seen = new Set();
     if (this.weapon) seen.add(this.weapon);
-    for (const id of this.inventory) {
-      if (id && M.items[id].slot === 'weapon') seen.add(id);
+    for (const s of this.inventory) {
+      if (s && M.items[s.id].slot === 'weapon') seen.add(s.id);
     }
     return [...seen];
   }
@@ -902,7 +933,7 @@ class World extends Phaser.Scene {
         { kind: 'weapon', label: 'Weapon', item: gear('weapon') },
         { kind: 'armor', label: 'Armour', item: gear('armor') },
       ],
-      bagFull: !this.inventory.includes(null),
+      bagFull: this.bagFull(),
     });
   }
 
@@ -1114,12 +1145,13 @@ class World extends Phaser.Scene {
 
   pushInventory() {
     if (!window.__inventory) return;
-    const slots = this.inventory.map((id) => {
-      if (!id) return null;
-      const def = M.items[id];
-      return { id, name: def.name, index: M.sprites[def.sprite].index,
+    const slots = this.inventory.map((s) => {
+      if (!s) return null;
+      const def = M.items[s.id];
+      return { id: s.id, name: def.name, n: s.n,
+               index: M.sprites[def.sprite].index,
                gear: def.slot || null,
-               equipped: id === this.weapon || id === this.armor };
+               equipped: s.id === this.weapon || s.id === this.armor };
     });
     window.__inventory({
       slots, cols: BAG_COLS, cursor: this.cursor, open: this.bagOpen,
@@ -1164,7 +1196,7 @@ class World extends Phaser.Scene {
 
   /** How many of one item the player has, bag and body together. */
   countItem(id) {
-    let n = this.inventory.filter((x) => x === id).length;
+    let n = this.inventory.reduce((t, s) => t + (s && s.id === id ? s.n : 0), 0);
     if (this.weapon === id) n += 1;
     if (this.armor === id) n += 1;
     return n;
@@ -1334,8 +1366,8 @@ class World extends Phaser.Scene {
     if (cond.all) return cond.all.every((c) => this.test(c));
     if (cond.flag) return this.flags.has(cond.flag);
     if (cond.noflag) return !this.flags.has(cond.noflag);
-    if (cond.has) return this.inventory.includes(cond.has);
-    if (cond.nothas) return !this.inventory.includes(cond.nothas);
+    if (cond.has) return this.bagHas(cond.has);
+    if (cond.nothas) return !this.bagHas(cond.nothas);
     // One key for a quest rather than four: the state is a word, and a
     // condition names the word - or the words - it will accept. That is also
     // how "taken but not finished" is said without a negation.
@@ -1431,9 +1463,12 @@ class World extends Phaser.Scene {
    *  while one is drawn is the case that matters - handing that one over must
    *  not take the drawn one out of the hero's hand as well. */
   dropItem(id) {
-    const slot = this.inventory.indexOf(id);
+    const slot = this.slotOf(id);
     if (slot < 0) return;
-    this.inventory[slot] = null;
+    // One off the stack, and the slot only empties when the last one goes.
+    const at = this.inventory[slot];
+    if (at.n > 1) at.n -= 1;
+    else this.inventory[slot] = null;
     this.pushInventory();
     this.afterQuestChange();          // and un-counted when it leaves again
   }
@@ -1537,7 +1572,7 @@ class World extends Phaser.Scene {
         tile: at,
         prompt: !talking && best ? (best.def.name || best.id.split('.')[1]) : null,
         verb: best && best.item ? 'take' : 'talk',
-        bagFull: !this.inventory.includes(null),
+        bagFull: this.bagFull(),
         talking,
         quests: Object.keys(this.quests)
           .filter((id) => this.questState(id) !== 'done').length,

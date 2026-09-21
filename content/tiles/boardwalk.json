@@ -1,6 +1,0 @@
-{
-  "id": "tile.boardwalk",
-  "sprite": "tile.boardwalk",
-  "walkable": true,
-  "material": "wood"
-}

@@ -79,28 +79,39 @@ def _pool(c, cx, cy, rx, ry, key):
 
 # ------------------------------------------------------------ base textures --
 def grass(seed=0, phase=0):
+    """Turf, in three moods: even, damp and dry.
+
+    Reseeding alone was not enough. Three variants drawn with the same counts
+    differ only in where their blades landed, and a field of them reads as one
+    texture repeating - which is what it was. So the counts change with the
+    seed as well: 1 is damper, with more deep patches and more blades in
+    shadow; 2 is drier, with fewer of both and more tips catching the light.
+    The same grass over three kinds of ground, rather than one grass shuffled."""
+    deep, shade, light = ((2, 8, 6), (4, 12, 3), (1, 5, 10))[seed % 3]
     c = Canvas(SIZE, SIZE)
     c.rect(0, 0, SIZE - 1, SIZE - 1, "GR")
     rnd = scatter(0x6A55 + seed * 977)
-    for _ in range(2):                            # deep patches under the blades
+    for _ in range(deep):                         # deep patches under the blades
         _patch(c, rnd, rnd(SIZE), rnd(SIZE), 5, 3, "GRX", 4 + rnd(3))
-    for _ in range(8):                            # blades in the shade
+    for _ in range(shade):                        # blades in the shade
         _blade(c, rnd(SIZE), rnd(SIZE), 1 + rnd(2), "GRD")
-    for _ in range(6):                            # blades catching the light
+    for _ in range(light):                        # blades catching the light
         _blade(c, rnd(SIZE), rnd(SIZE), 1 + rnd(2), "GRL")
     return c
 
 
 def grass_tall(seed=0, phase=0):
-    """Rank, unmown grass: darker, with taller blades and lit tips."""
+    """Rank, unmown grass: darker, with taller blades and lit tips. Three
+    moods, on the same rule as grass() - thicker, ranker, or going over."""
+    deep, dark, lit = ((2, 10, 8), (3, 14, 5), (1, 7, 12))[seed % 3]
     c = Canvas(SIZE, SIZE)
     c.rect(0, 0, SIZE - 1, SIZE - 1, "GRD")
     rnd = scatter(0x7A11 + seed * 613)
-    for _ in range(2):
+    for _ in range(deep):
         _patch(c, rnd, rnd(SIZE), rnd(SIZE), 5, 4, "GRX", 5 + rnd(4))
-    for _ in range(10):
+    for _ in range(dark):
         _blade(c, rnd(SIZE), rnd(SIZE), 2 + rnd(2), "GRX")
-    for _ in range(8):
+    for _ in range(lit):
         x, y, h = rnd(SIZE), rnd(SIZE), 2 + rnd(2)
         _blade(c, x, y, h, "GR")
         _put(c, x, y - h, "GRL")                  # the tip catches the light
@@ -108,13 +119,19 @@ def grass_tall(seed=0, phase=0):
 
 
 def grass_flower(seed=0, phase=0):
+    """Grass with flowers through it. The variants differ in how many and in
+    which colour leads, so a meadow is not three blooms stamped over and over
+    in the same two colours."""
+    n, lead = ((3, "FL"), (5, "EW"), (2, "FL"))[seed % 3]
     c = grass(seed)
     rnd = scatter(0xF10E + seed * 331)
-    for i in range(3):
+    other = "EW" if lead == "FL" else "FL"
+    for i in range(n):
         x, y = rnd(SIZE), rnd(SIZE)
         _put(c, x, y + 1, "GRL")                  # stem
-        _put(c, x, y, "FL" if i % 2 else "EW")    # and the head
-        _put(c, x - 1, y, "FL" if i % 2 else "EW")
+        head = lead if i % 2 else other           # and the head
+        _put(c, x, y, head)
+        _put(c, x - 1, y, head)
     return c
 
 
@@ -191,224 +208,41 @@ def stone(seed=0, phase=0):
 
 
 def tall_stone(seed=0, phase=0):
-    """The same masonry as tile.stone, cut into stones set on end.
+    """Stone that stands up, where tile.stone lies flat.
 
-    stone() is courses five pixels deep - wider than they are tall, which is
-    what a flag laid flat looks like. This is two courses to the tile instead
-    of three, with the vertical joints spaced to match the taller block, so
-    the two read as one material cut two ways rather than as two different
-    stones that happen to share a palette.
+    Making the blocks taller inside the tile did not work: both textures were
+    still patterns painted on the ground, so a wall of one read at exactly the
+    height of a wall of the other. Height is not block size, it is a top you
+    can see and a face under it.
 
-    Eight divides sixteen and nine does not, which is why the joints here step
-    by eight: stone()'s step of nine wraps mid-block, and at twice the block
-    height that lands as a visible stagger at the tile boundary instead of a
-    joint."""
+    So the tile is a block in oblique: the top five rows are the cap, lit,
+    because that surface faces the sky; below it the face drops through mid to
+    dark as it goes away from the light; and the last two rows are the shadow
+    the course throws on the one behind it. Stacked, that repeats as cap, face,
+    shadow - a wall in courses rather than a floor with lines on it.
+
+    The two variants carry their perpends at different offsets, so a run of
+    them breaks up instead of ruling one line down every tile boundary."""
     c = Canvas(SIZE, SIZE)
-    c.rect(0, 0, SIZE - 1, SIZE - 1, "ST")
+    c.rect(0, 0, SIZE - 1, 4, "STL")              # the cap, facing the sky
+    c.row(0, SIZE - 1, 5, "ST")                   # the arris it turns on
+    c.rect(0, 6, SIZE - 1, 10, "ST")              # the face, dropping away
+    c.rect(0, 11, SIZE - 1, 13, "STD")
+    c.rect(0, 14, SIZE - 1, SIZE - 1, "STX")      # and the shadow at its foot
     rnd = scatter(0x7C3B + seed * 191)
-    for i, y in enumerate((7, 15)):
-        c.row(0, SIZE - 1, y, "STD")              # the mortar between courses
-        c.row(0, SIZE - 1, y - 1, "STL")          # lit along the top of the next
-        for x in range((i % 2) * 4, SIZE, 8):     # joints, staggered course on course
-            for yy in range(max(0, y - 6), y):
-                _put(c, x, yy, "STD")
-    for _ in range(5):                            # pitting
-        _put(c, rnd(SIZE), rnd(SIZE), "STD")
-    for _ in range(3):
-        _put(c, rnd(SIZE), rnd(SIZE), "STL")
-    return c
-
-
-def sand(seed=0, phase=0):
-    """Dry sand: fine grain, the odd shell or pebble."""
-    c = Canvas(SIZE, SIZE)
-    c.rect(0, 0, SIZE - 1, SIZE - 1, "SA")
-    rnd = scatter(0x5A9D + seed * 331)
-    for _ in range(2):
-        _patch(c, rnd, rnd(SIZE), rnd(SIZE), 6, 4, "SAD", 5 + rnd(4))
-    for _ in range(14):
-        _put(c, rnd(SIZE), rnd(SIZE), "SAL")
-    for _ in range(8):
-        _put(c, rnd(SIZE), rnd(SIZE), "SAD")
-    for _ in range(2):                            # a shell, two pixels of it
-        x, y = rnd(SIZE), rnd(SIZE)
-        _put(c, x, y, "EW")
-        _put(c, x + 1, y, "SAD")
+    for x in ((0, 8), (4, 12))[seed % 2]:         # perpends, cap and face
+        c.col(x, 0, 13, "STD")
+        c.set(x, 4, "ST")                         # catching light on the cap
+    for _ in range(5):                            # pitting, so neither surface
+        _put(c, rnd(SIZE), rnd(5), "ST")          # is flat
+    for _ in range(6):
+        _put(c, rnd(SIZE), 6 + rnd(8), "STD")
     return c
 
 
 # --------------------------------------------------------------- the desert --
 # The desert has its own base the way the meadow has grass: everything else in
 # the biome is carved out of dune, so the two families never have to meet.
-def dune(seed=0, phase=0):
-    """Deep wind-blown sand. The ripples are the whole of it - sand without
-    them is a flat wash, and sand with a scatter of dots on it is gravel. They
-    run as long shallow arcs one way across the tile, drawn with _put so a
-    ripple crossing the seam comes out of the far side and the desert reads as
-    one surface rather than as a grid of squares."""
-    c = Canvas(SIZE, SIZE)
-    c.rect(0, 0, SIZE - 1, SIZE - 1, "DN")
-    rnd = scatter(0xD0E5 + seed * 887)
-    for k in range(3):                            # the crests
-        y0 = rnd(SIZE)
-        amp = 1 + rnd(2)
-        for x in range(SIZE):
-            y = y0 + round(math.sin((x + seed * 5 + k * 7) / SIZE * 2 * math.pi) * amp)
-            _put(c, x, y, "DNL")
-            _put(c, x, y + 1, "DND")              # the lee side, in shade
-    for _ in range(3):                            # hollows between them
-        _patch(c, rnd, rnd(SIZE), rnd(SIZE), 5, 3, "DND", 4 + rnd(3))
-    for _ in range(6):
-        _put(c, rnd(SIZE), rnd(SIZE), "DNL")
-    return c
-
-
-def salt(seed=0, phase=0):
-    """A dry pan: white crust broken into plates. The cracks are the texture -
-    crust with a few specks on it is just a pale square - so they run long,
-    wander, and show the sand underneath where they open widest."""
-    c = Canvas(SIZE, SIZE)
-    c.rect(0, 0, SIZE - 1, SIZE - 1, "SL")
-    rnd = scatter(0x5A17 + seed * 439)
-    for k in range(5):
-        x, y = rnd(SIZE), rnd(SIZE)
-        dx, dy = (1, 0) if k % 2 else (0, 1)      # each crack keeps a heading
-        for i in range(7 + rnd(7)):
-            _put(c, x, y, "SLD")
-            if i % 3 == 2:                        # and opens here and there
-                _put(c, x + dy, y + dx, "DND")
-                _put(c, x, y, "DNX")
-            x += dx + (0 if rnd(3) else (1 if rnd(2) else -1))
-            y += dy + (0 if rnd(3) else (1 if rnd(2) else -1))
-    for _ in range(12):
-        _put(c, rnd(SIZE), rnd(SIZE), "SLL")      # crystals catching the sun
-    for _ in range(4):
-        _put(c, rnd(SIZE), rnd(SIZE), "SLD")
-    return c
-
-
-def sandstone(seed=0, phase=0):
-    """A flagged court, seen from above. Four slabs to the tile, each its own
-    shade, with a thin joint between them and sand lying in the corners.
-
-    Two earlier versions were wrong in opposite directions. Lighting the top
-    of every course gave each slab a lit upper edge - which is what a wall
-    has and a floor does not - and it came out as brickwork standing up.
-    Dashing the joints to fix that removed the slabs altogether and left
-    noise. A floor needs its grid; what it must not have is the *same* grid in
-    every tile, so the joints move with the variant."""
-    c = Canvas(SIZE, SIZE)
-    rnd = scatter(0x55A0 + seed * 691)
-    row = (3 + seed * 5) % SIZE
-    col = (2 + seed * 7) % SIZE
-    # Barely apart on purpose. Cut stone from one quarry varies by a shade,
-    # and four tones a step apart came out as a chessboard; the dark tone is
-    # for the joints and the wear, never for a whole slab.
-    tone = ("SS", "SS", "SSL", "SS")
-    for y in range(SIZE):
-        for x in range(SIZE):
-            q = 2 * ((y - row) % SIZE < 8) + ((x - col) % SIZE < 8)
-            c.set(x, y, tone[(q + seed) % 4])
-    for i in range(SIZE):                         # the joints between them
-        for j in (0, 8):
-            _put(c, i, (row + j) % SIZE, "SSD")
-            _put(c, (col + j) % SIZE, i, "SSD")
-    _put(c, col, row, "DNX")                      # sand in the crossings
-    _put(c, (col + 8) % SIZE, (row + 8) % SIZE, "DNX")
-    for _ in range(5):                            # wear on the faces
-        _put(c, rnd(SIZE), rnd(SIZE), "SSD")
-    for _ in range(4):
-        _put(c, rnd(SIZE), rnd(SIZE), "SSL")
-    _patch(c, rnd, rnd(SIZE), rnd(SIZE), 5, 3, "DND", 4)   # and drifted sand
-    return c
-
-
-def scrub(seed=0, phase=0):
-    """What grows here: thorn and dry stalk over the sand, sparse enough that
-    the ground shows through it."""
-    c = Canvas(SIZE, SIZE)
-    c.rect(0, 0, SIZE - 1, SIZE - 1, "DN")
-    rnd = scatter(0x5C30 + seed * 521)
-    for _ in range(3):
-        _patch(c, rnd, rnd(SIZE), rnd(SIZE), 5, 3, "DND", 4)
-    for _ in range(9):                            # stalks, most of them dead
-        _blade(c, rnd(SIZE), rnd(SIZE), 2 + rnd(2), "SCD")
-    for _ in range(6):
-        x, y, h = rnd(SIZE), rnd(SIZE), 1 + rnd(2)
-        _blade(c, x, y, h, "SC")
-        _put(c, x, y - h, "SCL")
-    return c
-
-
-def oasis(seed=0, phase=0):
-    """Still, deep and green: nothing moves it but the light on top, so the
-    phases shift the glints rather than running a current.
-
-    No pool shape in here. A base texture is laid down in every cell of the
-    water, so anything centred in the tile repeats on a 16px grid - the first
-    version put a dark ellipse in the middle of each one and the oasis came
-    out as polka dots. Depth is scattered and wrapped like every other base."""
-    c = Canvas(SIZE, SIZE)
-    c.rect(0, 0, SIZE - 1, SIZE - 1, "OA")
-    rnd = scatter(0x0A51 + seed * 733)
-    for _ in range(3):
-        _patch(c, rnd, rnd(SIZE), rnd(SIZE), 7, 5, "OAD", 8 + rnd(4))
-    for _ in range(2):
-        _patch(c, rnd, rnd(SIZE), rnd(SIZE), 4, 3, "OAX", 4 + rnd(3))
-    for _ in range(6):                            # light on the surface
-        x, y = rnd(SIZE), rnd(SIZE)
-        _put(c, x + phase, y, "OAL")
-        _put(c, x + 1 + phase, y, "OAL")
-    return c
-
-
-def lily(seed=0, phase=0):
-    """Pads on the water, which is why it is a terrain and not a prop: nothing
-    may stand on ground it cannot walk on, so a lily laid as an object fails
-    the footprint gate on every tile of the pool it belongs in. Drawn as the
-    surface itself, it is exactly what it looks like - water you cannot cross
-    with things growing on it.
-
-    Built on top of the oasis rather than beside it: the pads have to sit in
-    the same water the rest of the pool is made of, so the base is drawn by
-    `oasis` itself and this only adds what floats.
-
-    It does not blend, and that is deliberate. Lilies share the oasis's
-    `family`, so the autotiler treats a patch of them and the water round it
-    as one ground and neither draws an edge against the other - which is the
-    whole point, because when they were separate families every oasis tile
-    touching a patch drew its *shore* against it and each drift came out
-    ringed in sand in the middle of the lake. Sharing the family also makes
-    this five frames a phase instead of forty-seven."""
-    c = oasis(seed, phase)
-    rnd = scatter(0x1B77 + seed * 397)
-    # Bush green, not the scrub keys. A pad drawn in the desert's own greens
-    # is a khaki disc floating on teal, which reads as sand on the water -
-    # the one thing in this biome that is genuinely lush is the thing growing
-    # in the only water for a day's walk, so it borrows the wilderness green.
-    for i in range(2):
-        # A pad is a disc with a wedge cut out of it. A plain disc reads as a
-        # coin, and at 16px the notch is the whole difference.
-        px, py, r = rnd(SIZE), rnd(SIZE), 3 + rnd(2)
-        notch = rnd(4)
-        for dy in range(-r, r + 1):
-            for dx in range(-r, r + 1):
-                if dx * dx + dy * dy > r * r:
-                    continue
-                if notch == 0 and dx > 0 and abs(dy) < 2: continue
-                if notch == 1 and dx < 0 and abs(dy) < 2: continue
-                if notch == 2 and dy > 0 and abs(dx) < 2: continue
-                if notch == 3 and dy < 0 and abs(dx) < 2: continue
-                _put(c, px + dx, py + dy, "BUD" if dy > 0 else "BU")
-        for k in range(-r + 1, r):                # the rim catching the light
-            _put(c, px + k, py - r + abs(k) // 2, "BUL")
-        if i == 0:                                # one pad in two is flowering
-            _put(c, px, py - 1, "EW")
-            _put(c, px + 1, py - 1, "EW")
-            _put(c, px, py, "FL")
-    return c
-
-
 # -------------------------------------------------------------- the wetland --
 # The third biome starts where the meadow gets its feet wet, so unlike the
 # desert it has to *meet* the country next to it: marsh is carved out of the
@@ -426,63 +260,6 @@ def lily(seed=0, phase=0):
 # forty-seven. What keeps the bank from reading as tile grid is the shape it
 # is laid in and the reeds standing along it, which is where a bank's
 # raggedness belongs anyway.
-def marsh(seed=0, phase=0):
-    """Sodden ground: sedge over peat, with the water never far under it.
-
-    The blades are what stops it reading as a dirty lawn - they are the same
-    trick as the grass's, but taller, sparser and leaning, because sedge grows
-    in tufts out of standing mud rather than as a sward."""
-    c = Canvas(SIZE, SIZE)
-    c.rect(0, 0, SIZE - 1, SIZE - 1, "MA")
-    rnd = scatter(0x3A11 + seed * 569)
-    for _ in range(3):                            # broad wet sheets
-        _patch(c, rnd, rnd(SIZE), rnd(SIZE), 7, 5, "MAD", 8 + rnd(4))
-    for _ in range(2):                            # peat showing through them
-        _patch(c, rnd, rnd(SIZE), rnd(SIZE), 5, 3, "MAX", 4 + rnd(3))
-    # Not in every variant. Standing water every sixteen pixels is the oasis's
-    # polka-dot mistake in a different colour, and the open water here is
-    # tile.bog's job - this is only the wet the ground itself holds.
-    if seed % 3 == 1:
-        _pool(c, rnd(SIZE), rnd(SIZE), 2 + rnd(2), 1 + rnd(2), "BGD")
-    for _ in range(8):                            # sedge, standing in it
-        _blade(c, rnd(SIZE), rnd(SIZE), 2 + rnd(2), "MAL")
-    # Two seeding heads, and no more. Six of them and the fen came out speckled
-    # yellow all over, which at map scale is a gravel path with a green cast.
-    for _ in range(2):
-        x, y, h = rnd(SIZE), rnd(SIZE), 2 + rnd(2)
-        _blade(c, x, y, h, "RED")
-        _put(c, x, y - h, "REL")
-    return c
-
-
-def bog(seed=0, phase=0):
-    """Peat water: still, and dark enough that nothing shows through it.
-
-    Not the river's blue. What colours this is the ground it is standing in,
-    so it is brown-green, and the surface is scum and weed rather than
-    ripples - there is nothing moving it. The phases only shift what light
-    gets down to it, which is why two are enough where the river wants three.
-
-    It carries its own texture rather than leaning on a transition, because it
-    has none: every tile of it is a plain tile, so a pool three tiles across
-    is three of these and they have to be worth looking at on their own."""
-    c = Canvas(SIZE, SIZE)
-    c.rect(0, 0, SIZE - 1, SIZE - 1, "BG")
-    rnd = scatter(0x80C1 + seed * 677)
-    for _ in range(3):                            # depth, scattered and wrapped
-        _patch(c, rnd, rnd(SIZE), rnd(SIZE), 7, 5, "BGD", 9 + rnd(5))
-    for _ in range(3):                            # weed lying on the surface
-        _patch(c, rnd, rnd(SIZE), rnd(SIZE), 4, 3, "MAX", 3 + rnd(3))
-    for _ in range(2):                            # and a blade of it standing
-        _blade(c, rnd(SIZE), rnd(SIZE), 1 + rnd(2), "MAD")
-    for i in range(4):
-        x, y = rnd(SIZE), rnd(SIZE)
-        if (i + phase) % 2 == 0:
-            _put(c, x + phase, y, "BGL")
-            _put(c, x + 1 + phase, y, "BGL")
-    return c
-
-
 def gravel(seed=0, phase=0):
     """A made road: small stones rolled into the dirt."""
     c = Canvas(SIZE, SIZE)
@@ -554,14 +331,18 @@ def leaves(seed=0, phase=0):
 
 
 def shallow(seed=0, phase=0):
-    """Water you can wade: the bed shows through, and it moves."""
+    """Water you can wade: the bed shows through, and it moves.
+
+    The bed is silt and weed, not sand. It was sand, which is a bed for water
+    in a desert - in a meadow it put a scatter of yellow grit through every
+    shoal and none of it belonged to the grass the pool was cut out of."""
     c = Canvas(SIZE, SIZE)
     c.rect(0, 0, SIZE - 1, SIZE - 1, "WAL")
     rnd = scatter(0x2B4F + seed * 521)
-    for _ in range(10):                           # sand and stones underneath
-        _put(c, rnd(SIZE), rnd(SIZE), "SA")
+    for _ in range(10):                           # silt and weed underneath
+        _put(c, rnd(SIZE), rnd(SIZE), "GRX")
     for _ in range(4):
-        _put(c, rnd(SIZE), rnd(SIZE), "SAD")
+        _put(c, rnd(SIZE), rnd(SIZE), "GRD")
     for i in range(3):                            # ripples travelling across
         ax, ay = rnd(SIZE), rnd(SIZE)
         for k in range(-2, 3):
@@ -609,24 +390,6 @@ def plank_wall(seed=0, phase=0):
         c.col(x + 1, 0, SIZE - 1, "WDD")
     for _ in range(7):                            # knots and grain
         _put(c, rnd(SIZE), rnd(SIZE), "OL")
-    return c
-
-
-def straw(seed=0, phase=0):
-    """Straw trodden over a floor: the cheapest thing to put down and the
-    first thing in any shed that keeps animals or stores a harvest."""
-    c = Canvas(SIZE, SIZE)
-    c.rect(0, 0, SIZE - 1, SIZE - 1, "TH")
-    rnd = scatter(0x3C5E + seed * 421)
-    for _ in range(26):                           # stalks, lying every way
-        x, y = rnd(SIZE), rnd(SIZE)
-        key = ("THD", "THL", "TH")[rnd(3)]
-        if rnd(2):
-            c.row(x, x + 2, y, key)
-        else:
-            c.col(x, y, y + 2, key)
-    for _ in range(5):
-        _put(c, rnd(SIZE), rnd(SIZE), "WDD")      # floor showing through
     return c
 
 
@@ -681,32 +444,6 @@ def cave_wall(seed=0, phase=0):
     return c
 
 
-def boardwalk(seed=0, phase=0):
-    """Planks laid over standing water, for the one crossing that needs them.
-
-    Every other road in the game is gravel, on the principle that what makes a
-    seam read as one road is being the same road on both sides. This is the
-    exception the principle allows for: gravel tipped into a bog is not a road,
-    it is gravel in a bog, and the fen between Wilderness IX and X is the only
-    place the way through had to be built rather than worn.
-
-    The boards run across the line of travel. That is what a walkway laid
-    plank by plank looks like, and it is also what keeps a long run of them
-    from reading as one smeared streak the way lengthwise boards would. Four
-    boards to the tile, so the pattern meets itself at the edge."""
-    c = Canvas(SIZE, SIZE)
-    c.rect(0, 0, SIZE - 1, SIZE - 1, "WD")
-    rnd = scatter(0x8A2D + seed * 149)
-    for x in range(0, SIZE, 4):
-        c.col(x, 0, SIZE - 1, "OL")           # the gap between two boards
-        c.col(x + 1, 0, SIZE - 1, "WDL")      # and the lit edge of the next
-    for _ in range(9):                        # grain, and boots
-        _put(c, rnd(SIZE), rnd(SIZE), "WDD")
-    for _ in range(3):
-        _put(c, rnd(SIZE), rnd(SIZE), "WDL")
-    return c
-
-
 BASE = {
     "tile.grass": grass,
     "tile.grass_flower": grass_flower,
@@ -716,24 +453,13 @@ BASE = {
     "tile.gravel": gravel,
     "tile.dirt": dirt,
     "tile.field": field,
-    "tile.sand": sand,
-    "tile.dune": dune,
-    "tile.salt": salt,
-    "tile.sandstone": sandstone,
-    "tile.scrub": scrub,
-    "tile.oasis": oasis,
-    "tile.lily": lily,
-    "tile.marsh": marsh,
-    "tile.bog": bog,
     "tile.cobble": cobble,
     "tile.stone": stone,
     "tile.tall_stone": tall_stone,
     "tile.wood_floor": wood_floor,
     "tile.plank_wall": plank_wall,
-    "tile.straw": straw,
     "tile.cave_floor": cave_floor,
     "tile.cave_wall": cave_wall,
-    "tile.boardwalk": boardwalk,
     "tile.shallow": shallow,
     "tile.water": water,
 }
@@ -741,29 +467,15 @@ TILE_ORDER = list(BASE)
 
 # How many seeded variants of each base to draw. A cell picks one by position,
 # so the field changes without anyone having authored it.
-VARIANTS = {"tile.grass": 3, "tile.grass_tall": 2, "tile.water": 2,
-            "tile.sand": 2, "tile.leaves": 2, "tile.wood_floor": 2,
-            "tile.straw": 2, "tile.cave_floor": 3, "tile.cave_wall": 2,
-            "tile.tall_stone": 2,
-            "tile.boardwalk": 2,
-            # Dune needs the most of any base: it is the whole floor of the
-            # biome, and one ripple pattern repeated across a map is a rug.
-            "tile.dune": 4, "tile.salt": 2, "tile.scrub": 2,
-            "tile.sandstone": 3, "tile.oasis": 2, "tile.lily": 5,
-            # Three, so a marsh tile with a puddle in it is one cell in three
-            # rather than every one of them - see marsh().
-            "tile.marsh": 3, "tile.bog": 3}
+VARIANTS = {"tile.grass": 3, "tile.grass_flower": 3, "tile.grass_tall": 3,
+            "tile.leaves": 2, "tile.water": 2, "tile.wood_floor": 2,
+            "tile.cave_floor": 3, "tile.cave_wall": 2, "tile.tall_stone": 2}
 
 # Tiles drawn in several phases. The art pipeline emits every phase as its own
 # frame and the engine cycles them; the base frame is what the map resolves to.
 # One clock for everything that moves on the floor is what keeps the scene
 # from twitching, so they all run at the same frame time.
-ANIMATED = {"tile.water": 3, "tile.shallow": 2, "tile.oasis": 3,
-            # The pads ride the same water, so they move with it.
-            "tile.lily": 3,
-            # Two, not three: nothing stirs a bog, so all the phases have to
-            # do is move the light about on it.
-            "tile.bog": 2}
+ANIMATED = {"tile.water": 3, "tile.shallow": 2}
 ANIM_MS = 420
 
 
@@ -828,7 +540,10 @@ def _edge_water(d, which, x, y, over, under, rnd, phase):
     if d < 0:
         return under
     if d < 1.2:
-        return "SAD" if rnd(6) == 0 else "SA"                # a strip of shore
+        # A damp bank, not a beach. This was a strip of sand, which is what a
+        # pond in a desert has - dropped into a meadow it drew a yellow ring
+        # round every pool and none of it met the grass it was cut out of.
+        return "GRD" if rnd(5) == 0 else "GRX"
     if d < 2.0:
         return "WAL" if (x + y * 3 + phase * 2) % 4 else "WA"   # foam, creeping
     if d < 3.0 and over == "WAX":
@@ -868,6 +583,26 @@ def _edge_stone(d, which, x, y, over, under, rnd, phase):
     return over
 
 
+def _edge_plank(d, which, x, y, over, under, rnd, phase):
+    """A timber wall standing on a floor. Same idea as _edge_stone - the side
+    you can see is a face with a lit cap over it, the other edges get a lit
+    arris - but in wood, and carved out of the boards rather than out of turf.
+    A wall whose transitions were cut from grass would be a shed standing in a
+    field, and this one is only ever indoors."""
+    downhill = which in ("S", "cSE", "cSW")
+    if d < 0:
+        return "WDD" if downhill and d >= -1.5 else under    # shadow on the floor
+    if downhill:
+        if d >= 3:
+            return over
+        if d >= 2:
+            return "WDL"                                     # the cap
+        return "OL" if x % 5 == 0 else "WDD"                 # the face, jointed
+    if d < 1:
+        return "WDL"                                         # arris
+    return over
+
+
 def _edge_soft(d, which, x, y, over, under, rnd, edge):
     """A boundary that crumbles rather than cuts: the outermost pixels are
     dithered between the two, which is what sand, leaf litter and gravel do
@@ -891,15 +626,15 @@ def _edge_kerb(d, which, x, y, over, under, rnd, edge):
 
 
 def _edge_shallow(d, which, x, y, over, under, rnd, phase):
-    """A shoal, not a pond: the water thins into the bed it lies on rather
-    than breaking against a shore, so there is no foam line and no sand strip -
-    the strip would be sand drawn on sand and read as a painted border."""
+    """A shoal, not a pond: the water thins into the bed it lies on rather than
+    breaking against a shore, so there is no foam line and no bank - a bank
+    would be the bed drawn on the bed and read as a painted border."""
     if d < 0:
         return under
     if d < 1.6:                                   # the bed showing through
         return under if (x * 3 + y * 5 + phase) % 3 else over
     if d < 2.6:
-        return over if (x + y + phase) % 2 else "SA"
+        return over if (x + y + phase) % 2 else "GRX"
     return over
 
 
@@ -956,19 +691,14 @@ def _edge_sedge(d, which, x, y, over, under, rnd, phase):
 
 STYLE = {
     "tile.water": _edge_water,
-    "tile.marsh": _edge_sedge,
-    "tile.oasis": _edge_oasis,
-    "tile.salt": lambda d, w, x, y, o, u, r, p: _edge_drift(d, w, x, y, o, u, r, "SLD"),
-    "tile.scrub": lambda d, w, x, y, o, u, r, p: _edge_soft(d, w, x, y, o, u, r, "SCD"),
-    "tile.sandstone": lambda d, w, x, y, o, u, r, p: _edge_drift(d, w, x, y, o, u, r, "DND"),
     "tile.shallow": _edge_shallow,
     "tile.path": lambda d, w, x, y, o, u, r, p: _edge_trodden(d, w, x, y, o, u, r, "PTD", "PTL"),
     "tile.dirt": lambda d, w, x, y, o, u, r, p: _edge_trodden(d, w, x, y, o, u, r, "DRD", "DRL"),
     "tile.gravel": lambda d, w, x, y, o, u, r, p: _edge_soft(d, w, x, y, o, u, r, "STD"),
-    "tile.sand": lambda d, w, x, y, o, u, r, p: _edge_soft(d, w, x, y, o, u, r, "SAD"),
     "tile.leaves": lambda d, w, x, y, o, u, r, p: _edge_soft(d, w, x, y, o, u, r, "LFD"),
     "tile.field": lambda d, w, x, y, o, u, r, p: _edge_trodden(d, w, x, y, o, u, r, "DRD", "TH"),
     "tile.cobble": lambda d, w, x, y, o, u, r, p: _edge_kerb(d, w, x, y, o, u, r, "STD"),
+    "tile.plank_wall": _edge_plank,
     "tile.stone": _edge_stone,
     "tile.tall_stone": _edge_stone,
 }

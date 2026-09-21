@@ -1,8 +1,0 @@
-{
-  "id": "tile.lily",
-  "sprite": "tile.lily",
-  "walkable": false,
-  "blend": false,
-  "material": "water",
-  "family": "oasis"
-}
