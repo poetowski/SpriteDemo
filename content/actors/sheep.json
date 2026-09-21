@@ -13,7 +13,6 @@
   "facing": "down",
   "interact": "dlg.sheep_baa",
   "wander": {
-    "radius": 4,
     "idle_ms": [
       900,
       2200
@@ -23,5 +22,12 @@
       6000
     ],
     "graze_chance": 0.6
-  }
+  },
+  "description": "Gathers at the trough and wants nothing else.",
+  "level": 1,
+  "attack": 0,
+  "armor": 0,
+  "behaviour": "passive",
+  "walking": true,
+  "walk_radius": 4
 }

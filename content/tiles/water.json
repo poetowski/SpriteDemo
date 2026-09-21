@@ -3,5 +3,6 @@
   "sprite": "tile.water",
   "walkable": false,
   "material": "water",
-  "blend": true
+  "blend": true,
+  "family": "water"
 }

@@ -3,5 +3,10 @@
   "name": "Desert flower",
   "sprite": "item.desert_flower",
   "kind": "material",
-  "description": "It opens for a few days after rain that may not come again for a year. Nobody has explained why it smells of nothing."
+  "description": "It opens for a few days after rain that may not come again for a year. Nobody has explained why it smells of nothing.",
+  "price": 4,
+  "stack": true,
+  "stack_max": 20,
+  "consumable": false,
+  "equippable": false
 }

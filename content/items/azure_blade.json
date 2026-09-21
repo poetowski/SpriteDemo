@@ -7,5 +7,9 @@
   "held": "azure_blade",
   "stack": false,
   "description": "Crystal, not steel, and the same crystal that turns in the gate. Whoever carried it this far did not carry it back.",
-  "damage": 14
+  "damage": 14,
+  "price": 250,
+  "note": "Found, not bought. The price is what it would fetch, not what it cost.",
+  "consumable": false,
+  "equippable": true
 }

@@ -136,6 +136,14 @@ function familyOf(tid) {
   return (t && t.family) || tid;
 }
 
+/** Whether a tile carries the 47-tile transition set the build exported.
+ *  This is the same test indexAt makes before it resolves an edge, and it is
+ *  deliberately the same table rather than a list kept alongside it: a mark
+ *  that can disagree with what painting actually does is worse than no mark. */
+function autotiles(tid) {
+  return Boolean(state.M.tileset.masks[tid]);
+}
+
 /** The atlas index for a cell, resolved exactly as the build resolves it. */
 function indexAt(x, y, m = state.map) {
   const tid = terrainAt(x, y, m);
@@ -447,10 +455,18 @@ function buildPalettes() {
   terrain.replaceChildren();
   for (const [tid, t] of Object.entries(M.tiles)) {
     const el = document.createElement("div");
-    el.className = "swatch" + (t.walkable ? "" : " solid");
+    // Whether a tile resolves its own edges is the thing worth knowing before
+    // painting with it - it is the difference between a shore and a hard seam -
+    // so it belongs on the swatch rather than being something you discover by
+    // painting and undoing.
+    const auto = autotiles(tid);
+    el.className = "swatch" + (t.walkable ? "" : " solid") + (auto ? " auto" : "");
     el.append(swatchCanvas({ atlas: "tiles", index: t.index }, 48));
     const label = document.createElement("span");
     label.textContent = tid.replace("tile.", "");
+    label.title = `${tid} (${t.walkable ? "walkable" : "solid"}, `
+      + (auto ? "autotiles - edges resolve against its neighbours"
+              : "no transitions - a hard edge against anything else") + ")";
     el.append(label);
     el.onclick = () => { state.terrain = tid; setTool("paint"); markSelection(); };
     el.dataset.id = tid;
@@ -482,15 +498,39 @@ function buildPalettes() {
       const el = document.createElement("div");
       el.className = "swatch " + (gather ? "gather" : blocksOf(id) ? "solid" : "ground")
                    + (frames > 1 ? " anim" : "");
-      el.append(swatchCanvas(spriteFor(id), 48));
+      const rec = spriteFor(id);
+      el.append(swatchCanvas(rec, 48));
+      // Every swatch is drawn at 48px whatever it really is, so the palette
+      // says nothing about size unless it is told to. Which frame a thing is
+      // on decides how many tiles it covers and which sheet it costs space
+      // on, so it is worth knowing before placing one.
+      // A frame that is not square has to say both numbers, or props_tall
+      // reads as the smallest class in the game rather than the narrowest.
+      const [fw, fh] = state.M.atlases[rec.atlas].frame;
+      const px = fw === fh ? fw + "px" : fw + "x" + fh;
+      const size = document.createElement("i");
+      size.className = "size";
+      size.textContent = px;
+      el.append(size);
       const label = document.createElement("span");
       label.textContent = id.split(".")[1];
       const d = defOf(id);
+      // Its own element rather than another ::after, because the animation
+      // mark already owns that pseudo-element and two flags on one swatch
+      // would mean one of them silently winning.
+      if (d && d.equippable) {
+        const eq = document.createElement("i");
+        eq.className = "equip";
+        eq.textContent = "E";
+        eq.title = "equippable";
+        label.append(eq);
+      }
       label.title = `${id} (${kind}, `
         + (gather ? `gatherable${d && d.kind ? " " + d.kind : ""}`
                   : blocksOf(id) ? "solid" : "walkable")
         + (frames > 1 ? `, animated - ${frames} frames` : "")
-        + ")";
+        + (d && d.equippable ? ", equippable" : "")
+        + `, ${px} frame)`;
       el.append(label);
       el.onclick = () => { state.object = id; setTool("place"); markSelection(); };
       el.dataset.id = id;
@@ -1419,11 +1459,240 @@ function buildWorldPanel() {
   }));
 }
 
-const VIEWS = { map: "v-map", world: "v-world", quests: "v-quests", dlg: "v-dlg" };
-const PANES = { map: "view", world: "world", quests: "quests", dlg: "dlg" };
+
+// --- item and actor sheets ---------------------------------------------------
+/** What a sheet lets you change, per kind. Everything else in a definition -
+ *  the sprite, the rig, the states, the wandering - is structure, and structure
+ *  is not something a number box should be able to break. So the sheet shows
+ *  those and edits these, and the server patches field by field rather than
+ *  replacing the file, so a field the editor has never heard of survives it. */
+const DEF_FIELDS = {
+  items: [
+    { key: "price", label: "price", type: "int", min: 0,
+      hint: "in coins; 0 means nobody will buy it" },
+    { key: "consumable", label: "consumable", type: "bool" },
+    { key: "equippable", label: "equippable", type: "bool",
+      hint: "has to agree with the slot shown above" },
+    { key: "stack", label: "stacks", type: "bool" },
+    { key: "stack_max", label: "max stack", type: "int", min: 2,
+      only: (d) => d.stack, hint: "how many fit in one inventory slot" },
+    { key: "description", label: "description", type: "text" },
+    { key: "note", label: "note", type: "text", optional: true,
+      hint: "anything worth knowing that is not part of the description" },
+  ],
+  actors: [
+    { key: "behaviour", label: "behaviour", type: "choice",
+      choices: ["passive", "defensive", "offensive"],
+      hint: "passive leaves you alone; defensive hits back once hit; "
+          + "offensive starts it" },
+    { key: "walking", label: "walks", type: "bool" },
+    { key: "walk_radius", label: "walk radius", type: "int", min: 1,
+      only: (d) => d.walking, hint: "how far from where it started it will go" },
+    { key: "level", label: "level", type: "int", min: 1 },
+    { key: "hp", label: "hp", type: "int", min: 1, optional: true,
+      hint: "leave it empty and the thing cannot be killed" },
+    { key: "attack", label: "attack", type: "int", min: 0,
+      hint: "what one of its blows deals" },
+    { key: "armor", label: "armor", type: "int", min: 0,
+      hint: "comes off every blow it takes, to a floor of 1" },
+    { key: "description", label: "description", type: "text" },
+  ],
+};
+
+/** The structural facts, shown so the numbers have something to mean. */
+const DEF_META = {
+  items: (d) => [d.id, d.kind, d.slot ? d.slot + " slot" : null,
+                 d.damage ? d.damage + " damage" : null,
+                 d.defense ? d.defense + " armour" : null].filter(Boolean).join(" · "),
+  actors: (d) => [d.id, d.rig, "speed " + d.speed,
+                  d.hostile ? "sight " + d.hostile.sight : null].filter(Boolean).join(" · "),
+};
+
+function defTable(kind) { return kind === "items" ? state.M.items : state.M.actors; }
+function defFile(id) { return id.split(".")[1]; }
+/** The name to list something under. Falls back to the filename, capitalised -
+ *  a definition with no "name" used to sit lowercase in a column of capitals
+ *  and read as a different kind of thing. */
+function defName(d, id) {
+  const n = d.name || defFile(id);
+  return n.charAt(0).toUpperCase() + n.slice(1);
+}
+
+function renderDefs(kind) {
+  const table = defTable(kind);
+  const ids = Object.keys(table).sort();
+  state.defId = state.defId || {};
+  if (!state.defId[kind] || !table[state.defId[kind]]) state.defId[kind] = ids[0];
+  const pane = $(kind === "items" ? "defs-items" : "defs-actors");
+  pane.replaceChildren();
+  if (!ids.length) { pane.textContent = "nothing defined"; return; }
+
+  const wrap = document.createElement("div");
+  wrap.className = "defs";
+  const list = document.createElement("div");
+  list.className = "list";
+  for (const id of ids) {
+    const b = document.createElement("button");
+    if (id === state.defId[kind]) b.className = "on";
+    b.dataset.id = id;
+    const rec = spriteFor(id);
+    if (rec) b.append(swatchCanvas(rec, 24));
+    const s = document.createElement("span");
+    s.textContent = defName(table[id], id);
+    b.append(s);
+    b.onclick = () => { state.defId[kind] = id; renderDefs(kind); };
+    list.append(b);
+  }
+  wrap.append(list, defSheet(kind, state.defId[kind]));
+  pane.append(wrap);
+}
+
+function defSheet(kind, id) {
+  const d = defTable(kind)[id];
+  const form = document.createElement("div");
+  form.className = "sheet";
+  form.dataset.id = id;
+
+  const h = document.createElement("h2");
+  const rec = spriteFor(id);
+  if (rec) h.append(swatchCanvas(rec, 32));
+  h.append(document.createTextNode(defName(d, id)));
+  const meta = document.createElement("div");
+  meta.className = "meta";
+  meta.textContent = DEF_META[kind](d);
+  form.append(h, meta);
+
+  const inputs = {};
+  // A max stack beside "does not stack" is meaningless, and the build refuses
+  // it - so the row goes away rather than sitting there inviting the mistake.
+  const redraw = () => {
+    for (const f of DEF_FIELDS[kind]) {
+      if (!f.only || !inputs[f.key]) continue;
+      inputs[f.key].closest("label").hidden = !f.only(readSheet(kind, inputs));
+    }
+  };
+  for (const f of DEF_FIELDS[kind]) {
+    const label = document.createElement("label");
+    const name = document.createElement("span");
+    name.textContent = f.label;
+    const cell = document.createElement("div");
+    let input;
+    if (f.type === "bool") {
+      input = document.createElement("input");
+      input.type = "checkbox";
+      input.checked = Boolean(d[f.key]);
+    } else if (f.type === "choice") {
+      input = document.createElement("select");
+      for (const c of f.choices) {
+        const opt = document.createElement("option");
+        opt.value = c;
+        opt.textContent = c;
+        input.append(opt);
+      }
+      input.value = d[f.key] || f.choices[0];
+    } else if (f.type === "text") {
+      input = document.createElement("textarea");
+      input.value = d[f.key] || "";
+    } else {
+      input = document.createElement("input");
+      input.type = "number";
+      input.min = String(f.min);
+      input.value = d[f.key] === undefined ? "" : String(d[f.key]);
+      if (f.optional) input.placeholder = "none";
+    }
+    input.dataset.key = f.key;
+    const touched = () => { markDefDirty(form); redraw(); };
+    input.oninput = touched;
+    input.onchange = touched;
+    inputs[f.key] = input;
+    cell.append(input);
+    if (f.hint) {
+      const hint = document.createElement("span");
+      hint.className = "hint";
+      hint.textContent = f.hint;
+      cell.append(hint);
+    }
+    label.append(name, cell);
+    form.append(label);
+  }
+
+  const actions = document.createElement("div");
+  actions.className = "actions";
+  const saveBtn = document.createElement("button");
+  saveBtn.className = "primary";
+  saveBtn.id = "def-save";
+  saveBtn.textContent = "save";
+  saveBtn.onclick = () => saveDef(kind, id, readSheet(kind, inputs), form);
+  const flag = document.createElement("span");
+  flag.className = "unsaved";
+  actions.append(saveBtn, flag);
+  form.append(actions);
+  form._inputs = inputs;
+  redraw();
+  return form;
+}
+
+function readSheet(kind, inputs) {
+  const out = {};
+  for (const f of DEF_FIELDS[kind]) {
+    const el = inputs[f.key];
+    if (!el) continue;
+    if (f.type === "bool") out[f.key] = el.checked;
+    else if (f.type === "choice") out[f.key] = el.value;
+    else if (f.type === "text") out[f.key] = el.value.trim();
+    else out[f.key] = el.value === "" ? null : Number(el.value);
+  }
+  return out;
+}
+
+function markDefDirty(form) {
+  const flag = form.querySelector(".unsaved");
+  if (flag) flag.textContent = "unsaved";
+}
+
+/** Send only the fields the sheet owns. A field that is allowed to be empty
+ *  and is empty goes as null, which is the server's word for "take this out" -
+ *  so an emptied note is removed from the file rather than written as "". */
+async function saveDef(kind, id, values, form) {
+  const patch = {};
+  for (const f of DEF_FIELDS[kind]) {
+    let v = values[f.key];
+    if (f.only && !f.only(values)) v = null;      // a cap with nothing to cap
+    if (f.type === "text" && v === "" && f.optional) v = null;
+    // walk_radius follows "walks": a radius on something that stands still is
+    // refused by the build, so it goes out with the flag rather than lingering.
+    if (f.key === "walk_radius" && !values.walking) v = 0;
+    patch[f.key] = v;
+  }
+  const url = "/api/def?kind=" + kind + "&name=" + defFile(id);
+  const res = await fetch(url, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(patch),
+  });
+  const body = await res.json().catch(() => ({}));
+  if (!res.ok || !body.ok) { message((body && body.error) || "save failed"); return false; }
+  // Keep memory level with disk, so the list and the next sheet read true
+  // without a reload.
+  for (const k of Object.keys(patch)) delete defTable(kind)[id][k];
+  Object.assign(defTable(kind)[id], body.def);
+  if (form) {
+    const flag = form.querySelector(".unsaved");
+    if (flag) flag.textContent = "";
+  }
+  message("saved " + body.path + " - run save + build to check it");
+  renderDefs(kind);
+  return true;
+}
+
+const VIEWS = { map: "v-map", world: "v-world", quests: "v-quests", dlg: "v-dlg",
+                items: "v-items", actors: "v-actors" };
+const PANES = { map: "view", world: "world", quests: "quests", dlg: "dlg",
+                items: "defs-items", actors: "defs-actors" };
 const SIDES = { world: "side-world", quests: "side-quests", dlg: "side-dlg" };
 const LEGENDS = { map: "legend-map", world: "legend-world",
-                  quests: "legend-quests", dlg: "legend-dlg" };
+                  quests: "legend-quests", dlg: "legend-dlg",
+                  items: "legend-items", actors: "legend-actors" };
 
 async function setView(name) {
   state.view = name;
@@ -1441,6 +1710,9 @@ async function setView(name) {
     await refreshWorld();
     if (name === "world") { renderWorld(); message("click a map to open it"); }
     else { renderQuests(); message("click a quest to read the conversation"); }
+  } else if (name === "items" || name === "actors") {
+    renderDefs(name);
+    message("click one on the left to read and edit it");
   } else if (name === "dlg") {
     if (!state.dlgId) state.dlgId = Object.keys(state.M.dialogue || {}).sort()[0];
     renderDialogueList();
@@ -2052,6 +2324,8 @@ function wire() {
   $("v-world").onclick = () => setView("world");
   $("v-quests").onclick = () => setView("quests");
   $("v-dlg").onclick = () => setView("dlg");
+  $("v-items").onclick = () => setView("items");
+  $("v-actors").onclick = () => setView("actors");
   $("mapName").oninput = (e) => {
     state.map.name = e.target.value;
     state.dirty = true;
@@ -2080,10 +2354,12 @@ function wire() {
   $("tab-objects").onclick = () => setTool("place");
 
   addEventListener("keydown", (e) => {
-    if (e.target.tagName === "INPUT" || e.target.tagName === "SELECT") return;
+    if (e.target.tagName === "INPUT" || e.target.tagName === "SELECT"
+        || e.target.tagName === "TEXTAREA") return;
     if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "z") { e.preventDefault(); return undo(); }
     if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "s") { e.preventDefault(); return save(); }
-    const views = { w: "world", q: "quests", d: "dlg" };
+    const views = { w: "world", q: "quests", d: "dlg",
+                    i: "items", a: "actors" };
     const view = views[e.key.toLowerCase()];
     if (view) return setView(state.view === view ? "map" : view);
     const keys = { p: "paint", o: "place", x: "erase", s: "spawn" };
@@ -2108,7 +2384,7 @@ function showTab(terrain) {
 Object.assign(window, {
   editor: state, openMap, terrainAt, indexAt, paint, place, erase, applyAt,
   snapshot, undo, save, setTool, showTab, render,
-  setView, loadWorld, layoutWorld, renderWorld, worldNotes, edgeOf, arrivalsOf,
+  setView, renderDefs, saveDef, DEF_FIELDS, loadWorld, layoutWorld, renderWorld, worldNotes, edgeOf, arrivalsOf,
   componentsOf, mapAtWorld, worldPointOf, worldScale,
   gatesOf, gateFor, refreshWorld, gatherableOf, blocksOf, interiorsOf, framesOf,
   questsOf, questRefs, questNotes, renderQuests, placementsOf, questTargets,

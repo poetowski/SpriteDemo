@@ -13,7 +13,6 @@
   "blocks": true,
   "facing": "down",
   "wander": {
-    "radius": 3,
     "idle_ms": [
       700,
       1800
@@ -28,9 +27,15 @@
     "sight": 68,
     "lose": 132,
     "charge_speed": 62,
-    "damage": 4,
     "reach": 18,
     "cooldown_ms": 1100,
     "leash": 80
-  }
+  },
+  "description": "Comes up out of the meadow and is not shy. Goes for the legs.",
+  "level": 2,
+  "attack": 4,
+  "armor": 1,
+  "behaviour": "offensive",
+  "walking": true,
+  "walk_radius": 3
 }

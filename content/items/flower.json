@@ -4,5 +4,9 @@
   "sprite": "item.flower",
   "kind": "material",
   "stack": true,
-  "description": "From the meadow. It will not last."
+  "description": "From the meadow. It will not last.",
+  "price": 1,
+  "stack_max": 20,
+  "consumable": false,
+  "equippable": false
 }

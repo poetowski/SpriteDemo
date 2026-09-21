@@ -173,8 +173,8 @@ PALETTE = {
     # Two families, and they are a pair on purpose: the blue burns in the gate
     # and the red grows on the thing standing in front of it, so the only two
     # saturated colours in that corner of the world are the two sides of one
-    # argument. Neither is in any biome's palette, for the portal's reason -
-    # a crystal painted in the local greens is a rock somebody polished.
+    # argument. Neither is in any biome's palette, on purpose: a crystal
+    # painted in the local greens is a rock somebody polished.
     "CY":  ((0x6c, 0xc8, 0xf4, 255), "crystal"),
     "CYD": ((0x27, 0x6a, 0xa8, 255), "crystal shade"),
     "CYL": ((0xea, 0xf8, 0xff, 255), "crystal light"),
@@ -183,14 +183,6 @@ PALETTE = {
     "RCD": ((0x8c, 0x1c, 0x2e, 255), "red crystal shade"),
     "RCL": ((0xff, 0x9a, 0x92, 255), "red crystal light"),
 
-    # --- the gateway ------------------------------------------------------
-    # A violet that belongs to neither biome, on purpose: the thing joining
-    # them is not of either, and a portal drawn in the local greens or the
-    # local golds reads as a floor tile somebody laid rather than as magic.
-    "PO":  ((0x8a, 0x4f, 0xd0, 255), "portal"),
-    "POD": ((0x4a, 0x2f, 0x7a, 255), "portal deep"),
-    "POL": ((0xd6, 0xb4, 0xff, 255), "portal light"),
-    "POX": ((0x1b, 0x14, 0x2e, 255), "portal dark"),
 }
 
 # Palette swaps. The frames are identical pixels; only the lookup changes, so a
@@ -261,147 +253,6 @@ VARIANTS = {
         "AF":  (0x2e, 0x24, 0x1d, 255),
         "AFS": (0x20, 0x19, 0x14, 255),
         "AH":  (0x1d, 0x17, 0x12, 255),
-    },
-    "bear": {
-        # Dark brown all through, with the muzzle borrowing the horn keys -
-        # the one pale thing on it, and at this size the fastest way to tell
-        # which end is looking at you.
-        "AB":  (0x6b, 0x4e, 0x36, 255),
-        "ABS": (0x4a, 0x35, 0x24, 255),
-        "ABL": (0x8a, 0x68, 0x49, 255),
-        "AF":  (0x3a, 0x2a, 0x1d, 255),
-        "AFS": (0x25, 0x1a, 0x12, 255),
-        "AH":  (0x1c, 0x15, 0x0f, 255),   # claws
-        "HN":  (0xb9, 0x9a, 0x6e, 255),   # the muzzle
-        "HNS": (0x8c, 0x72, 0x50, 255),
-    },
-    "zebra": {
-        # A zebra is a white animal with black on it, so the *head* key is
-        # white too - it is the shade key that carries every bar, the mane and
-        # the muzzle. Pointing the head at the black instead made it a black
-        # horse with a few white legs.
-        "AB":  (0xf0, 0xee, 0xe8, 255),
-        "ABS": (0xc6, 0xc3, 0xbb, 255),
-        "ABL": (0xff, 0xff, 0xfa, 255),
-        "AF":  (0xe4, 0xe1, 0xd9, 255),
-        "AFS": (0x24, 0x21, 0x1f, 255),
-        "AH":  (0x22, 0x20, 0x1e, 255),
-    },
-    "elephant": {
-        # Grey on grey: the shape has to carry it, so the three body tones sit
-        # close together and the ivory is the only thing that jumps.
-        "AB":  (0x8e, 0x8b, 0x8a, 255),
-        "ABS": (0x68, 0x66, 0x66, 255),
-        "ABL": (0xa9, 0xa6, 0xa4, 255),
-        "AF":  (0x6d, 0x6a, 0x69, 255),
-        "AFS": (0x3e, 0x3c, 0x3b, 255),   # the edge tone: ear, trunk, folds
-        "AH":  (0x2e, 0x2c, 0x2b, 255),
-        "HN":  (0xe4, 0xdd, 0xc8, 255),   # tusks
-        "HNS": (0xb8, 0xb0, 0x9a, 255),
-    },
-    "giraffe": {
-        # The opposite problem to the elephant: here the *shade* key is the
-        # coat pattern rather than a shadow, so it has to be a long way off
-        # the body tone or the patches disappear and it is a tall camel.
-        "AB":  (0xe0, 0xb4, 0x6a, 255),
-        "ABS": (0x96, 0x60, 0x2a, 255),   # the patches
-        "ABL": (0xf4, 0xd8, 0xa4, 255),
-        "AF":  (0xd6, 0xa8, 0x5e, 255),
-        "AFS": (0x7a, 0x4c, 0x1f, 255),
-        "AH":  (0x4a, 0x33, 0x1c, 255),
-        "HN":  (0x8a, 0x6a, 0x40, 255),   # the ossicones, horn-coloured but
-        "HNS": (0x5e, 0x46, 0x28, 255),   # dull - they are skin over bone
-    },
-    "jackal": {
-        # Sand with a dark saddle and black-tipped ears: a dog you see against
-        # dune, so it is built out of the ground it hunts on.
-        "AB":  (0xc2, 0xa2, 0x70, 255),
-        "ABS": (0x8a, 0x6e, 0x46, 255),
-        "ABL": (0xdd, 0xc2, 0x94, 255),
-        "AF":  (0x7c, 0x62, 0x3e, 255),
-        "AFS": (0x4a, 0x39, 0x24, 255),
-        "AH":  (0x2c, 0x22, 0x16, 255),
-    },
-    "elk": {
-        # A bull elk is two animals of colour: a tawny body and a much darker
-        # head, neck and mane. That contrast is most of what tells it from the
-        # goat at this size - the rack does the rest, and the pale rump is
-        # what you see of it walking away.
-        "AB":  (0x8e, 0x6c, 0x45, 255),
-        "ABS": (0x69, 0x4e, 0x31, 255),
-        "ABL": (0xac, 0x89, 0x5c, 255),
-        "AR":  (0xd6, 0xc4, 0x9c, 255),   # the rump patch
-        "AF":  (0x45, 0x33, 0x25, 255),   # head, neck and mane
-        "AFS": (0x2d, 0x21, 0x18, 255),
-        "AH":  (0x26, 0x1d, 0x16, 255),
-        "HN":  (0xa8, 0x8e, 0x60, 255),   # antlers, browner than a goat's horn
-        "HNS": (0x77, 0x62, 0x40, 255),
-    },
-    "heron": {
-        # The bird rig reads the same generic animal keys everything else
-        # does, so a species here is still a palette swap. A grey heron is
-        # three decisions: a pale slate body, the *face* key doing the black
-        # of the crest and the flight feathers, and a bill bright enough to
-        # be the one warm thing on it - at 32px in the air the bill and the
-        # wingtips are most of what you can see.
-        "AB":  (0xb9, 0xc2, 0xc8, 255),
-        "ABS": (0x86, 0x92, 0x9b, 255),
-        "ABL": (0xe6, 0xeb, 0xee, 255),   # the head and neck, near white
-        "AF":  (0x33, 0x3b, 0x45, 255),   # crest and primaries
-        "AFS": (0x1f, 0x25, 0x2d, 255),
-        "AH":  (0x3d, 0x33, 0x22, 255),   # the legs it trails behind it
-        "HN":  (0xe0, 0xb0, 0x3c, 255),   # the bill
-        "HNS": (0xa8, 0x7e, 0x22, 255),
-    },
-    "golem": {
-        # A jungle stone golem on the troll's rig. The value ramp is the whole
-        # of whether he reads at all, and it is the troll's lesson applied
-        # twice over: he stands on a stone court (luma 92) in a fen (86) with
-        # meadow (105) behind him, so the ramp has to run well under *and*
-        # well over all three rather than sit among them. 32 / 50 / 73 / 125.
-        "SK":  (0x42, 0x4e, 0x44, 255),   # wet stone, darker than any ground
-        "SKS": (0x2e, 0x37, 0x30, 255),
-        "SKL": (0x74, 0x84, 0x72, 255),   # and a lit face well over the grass
-        "SKD": (0x1c, 0x22, 0x1d, 255),
-        "MS":  (0x6e, 0x9a, 0x4e, 255),   # moss, growing on the north of him
-        "WR":  (0x4a, 0x57, 0x4a, 255),   # knots in the stone, not warts
-        "MW":  (0x14, 0x10, 0x12, 255),   # the dark in the seam of his mouth
-        # The eyes are the same crystal that grows on his back, which is what
-        # ties the two halves of him together: whatever is in the stone is
-        # also looking at you.
-        "IR":  (0xff, 0x6a, 0x64, 255),
-        "TU":  (0x4a, 0x55, 0x4c, 255),   # a carved band, not a hide
-        "TUS": (0x33, 0x3c, 0x35, 255),
-        "TUL": (0x63, 0x70, 0x62, 255),
-        "BT":  (0x23, 0x2a, 0x24, 255),
-        "BTS": (0x16, 0x1b, 0x17, 255),
-        "HN":  (0x9a, 0xa4, 0x94, 255),   # pale stone where a troll has teeth
-        "HNS": (0x70, 0x79, 0x6d, 255),
-    },
-    "troll": {
-        # Woodland colours: moss and bark, so a troll standing still among the
-        # trees is nearly one of them until it moves. The gas keys are left
-        # alone - the yellow is the only thing on him that is not the wood.
-        # Grass is luma 103 and the old hide was 104, so he was the exact
-        # brightness of the ground he stood on and the whole silhouette
-        # dissolved into it. The ramp now runs well under and well over the
-        # grass instead, which is what makes the shape read at all - the
-        # woodland colouring survives in the hue, not in the value.
-        "SK":  (0x4a, 0x5a, 0x3a, 255),   # hide, darker than the turf
-        "SKS": (0x33, 0x40, 0x28, 255),
-        "SKL": (0x6e, 0x82, 0x52, 255),
-        "SKD": (0x22, 0x2b, 0x1c, 255),   # the deepest folds
-        "MS":  (0x8c, 0x9c, 0x6e, 255),   # lichen, growing on him
-        "WR":  (0x7e, 0x7a, 0x46, 255),   # warts
-        "MW":  (0x3a, 0x16, 0x18, 255),   # the inside of the maw
-        "IR":  (0xd8, 0xa8, 0x34, 255),   # small amber eyes
-        "TU":  (0x66, 0x47, 0x29, 255),   # a hide slung round the waist
-        "TUS": (0x46, 0x2f, 0x1a, 255),
-        "TUL": (0x8a, 0x64, 0x3c, 255),
-        "BT":  (0x2b, 0x23, 0x1a, 255),   # near-black: straps, nails, the maw
-        "BTS": (0x1a, 0x15, 0x10, 255),
-        "HN":  (0xb5, 0xa6, 0x7c, 255),   # tusks, grubbier than a goat's horn
-        "HNS": (0x8d, 0x7f, 0x5c, 255),
     },
 }
 

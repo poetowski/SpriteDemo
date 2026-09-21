@@ -1,0 +1,7 @@
+{
+  "id": "tile.tall_stone",
+  "sprite": "tile.tall_stone",
+  "walkable": false,
+  "material": "stone",
+  "blend": true
+}

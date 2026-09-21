@@ -4,5 +4,9 @@
   "sprite": "item.wheat",
   "kind": "material",
   "stack": true,
-  "description": "A sheaf bound for the mill."
+  "description": "A sheaf bound for the mill.",
+  "price": 2,
+  "stack_max": 30,
+  "consumable": false,
+  "equippable": false
 }

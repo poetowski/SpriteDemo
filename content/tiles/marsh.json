@@ -4,5 +4,6 @@
   "walkable": true,
   "blend": true,
   "blend_over": "tile.grass",
-  "material": "marsh"
+  "material": "marsh",
+  "family": "marsh"
 }

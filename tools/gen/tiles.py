@@ -190,6 +190,35 @@ def stone(seed=0, phase=0):
     return c
 
 
+def tall_stone(seed=0, phase=0):
+    """The same masonry as tile.stone, cut into stones set on end.
+
+    stone() is courses five pixels deep - wider than they are tall, which is
+    what a flag laid flat looks like. This is two courses to the tile instead
+    of three, with the vertical joints spaced to match the taller block, so
+    the two read as one material cut two ways rather than as two different
+    stones that happen to share a palette.
+
+    Eight divides sixteen and nine does not, which is why the joints here step
+    by eight: stone()'s step of nine wraps mid-block, and at twice the block
+    height that lands as a visible stagger at the tile boundary instead of a
+    joint."""
+    c = Canvas(SIZE, SIZE)
+    c.rect(0, 0, SIZE - 1, SIZE - 1, "ST")
+    rnd = scatter(0x7C3B + seed * 191)
+    for i, y in enumerate((7, 15)):
+        c.row(0, SIZE - 1, y, "STD")              # the mortar between courses
+        c.row(0, SIZE - 1, y - 1, "STL")          # lit along the top of the next
+        for x in range((i % 2) * 4, SIZE, 8):     # joints, staggered course on course
+            for yy in range(max(0, y - 6), y):
+                _put(c, x, yy, "STD")
+    for _ in range(5):                            # pitting
+        _put(c, rnd(SIZE), rnd(SIZE), "STD")
+    for _ in range(3):
+        _put(c, rnd(SIZE), rnd(SIZE), "STL")
+    return c
+
+
 def sand(seed=0, phase=0):
     """Dry sand: fine grain, the odd shell or pebble."""
     c = Canvas(SIZE, SIZE)
@@ -454,51 +483,6 @@ def bog(seed=0, phase=0):
     return c
 
 
-def portal(seed=0, phase=0):
-    """The floor of a gateway: violet light with sigils turning over in it.
-
-    It wraps like the ground textures do, and that is the whole of why. Drawn
-    as a plate with a ring centred in the tile, a two-tile gateway came out as
-    two glowing donuts side by side rather than as one threshold; a seamless
-    surface runs straight across the join, so the pair is one pool of light
-    however wide it is laid.
-
-    Calm, too. Every stroke given a shadow and a spark scattered over the rest
-    made a tile of violet static, and static reads as a rendering fault rather
-    than as magic. Three marks on a quiet field is plenty at 16px.
-    """
-    c = Canvas(SIZE, SIZE)
-    # The mid violet is the base, not the deep one: a portal is a light
-    # source, and built up from the dark end it reads as a hole in the floor
-    # however bright the marks on it are.
-    c.rect(0, 0, SIZE - 1, SIZE - 1, "PO")
-    rnd = scatter(0x51D3 + seed * 613)
-    for _ in range(2):                            # depth under the surface
-        _patch(c, rnd, rnd(SIZE), rnd(SIZE), 7, 5, "POD", 7 + rnd(4))
-
-    # Sigil strokes rather than ripples: angular, and drifting a pixel a
-    # phase, so it reads as something written that is working rather than as
-    # violet water. One lies flat - all of them on the same diagonal came out
-    # as hatching.
-    marks = [(rnd(SIZE), rnd(SIZE), 3 + rnd(3), (1, 0, -1)[i % 3])
-             for i in range(3)]
-    for i, (mx, my, n, dy) in enumerate(marks):
-        ox = mx + phase * (1 if i % 2 else -1)
-        for k in range(n):
-            _put(c, ox + k, my + k * dy, "POL")
-        _put(c, ox + n, my + n * dy - 1, "POL")   # a hook on the end of each
-        _put(c, ox - 1, my - dy, "POD")           # and one dark pixel behind
-
-    # Two sparks, and which two changes with the phase, so the surface is
-    # never quite the same twice without ever being busy.
-    for i in range(6):
-        x, y = rnd(SIZE), rnd(SIZE)
-        if (i + phase * 2) % 6 < 2:
-            _put(c, x, y, "POL")
-            _put(c, x, y + 1, "POX")
-    return c
-
-
 def gravel(seed=0, phase=0):
     """A made road: small stones rolled into the dirt."""
     c = Canvas(SIZE, SIZE)
@@ -730,7 +714,6 @@ BASE = {
     "tile.leaves": leaves,
     "tile.path": path,
     "tile.gravel": gravel,
-    "tile.portal": portal,
     "tile.dirt": dirt,
     "tile.field": field,
     "tile.sand": sand,
@@ -744,6 +727,7 @@ BASE = {
     "tile.bog": bog,
     "tile.cobble": cobble,
     "tile.stone": stone,
+    "tile.tall_stone": tall_stone,
     "tile.wood_floor": wood_floor,
     "tile.plank_wall": plank_wall,
     "tile.straw": straw,
@@ -760,6 +744,7 @@ TILE_ORDER = list(BASE)
 VARIANTS = {"tile.grass": 3, "tile.grass_tall": 2, "tile.water": 2,
             "tile.sand": 2, "tile.leaves": 2, "tile.wood_floor": 2,
             "tile.straw": 2, "tile.cave_floor": 3, "tile.cave_wall": 2,
+            "tile.tall_stone": 2,
             "tile.boardwalk": 2,
             # Dune needs the most of any base: it is the whole floor of the
             # biome, and one ripple pattern repeated across a map is a rug.
@@ -771,16 +756,14 @@ VARIANTS = {"tile.grass": 3, "tile.grass_tall": 2, "tile.water": 2,
 
 # Tiles drawn in several phases. The art pipeline emits every phase as its own
 # frame and the engine cycles them; the base frame is what the map resolves to.
-# The portal is the only one of these that is not ground: four phases of a
-# ring breathing, at the same frame time as the water, because one clock for
-# everything that moves on the floor is what keeps the scene from twitching.
+# One clock for everything that moves on the floor is what keeps the scene
+# from twitching, so they all run at the same frame time.
 ANIMATED = {"tile.water": 3, "tile.shallow": 2, "tile.oasis": 3,
             # The pads ride the same water, so they move with it.
             "tile.lily": 3,
             # Two, not three: nothing stirs a bog, so all the phases have to
             # do is move the light about on it.
-            "tile.bog": 2,
-            "tile.portal": 4}
+            "tile.bog": 2}
 ANIM_MS = 420
 
 
@@ -987,6 +970,7 @@ STYLE = {
     "tile.field": lambda d, w, x, y, o, u, r, p: _edge_trodden(d, w, x, y, o, u, r, "DRD", "TH"),
     "tile.cobble": lambda d, w, x, y, o, u, r, p: _edge_kerb(d, w, x, y, o, u, r, "STD"),
     "tile.stone": _edge_stone,
+    "tile.tall_stone": _edge_stone,
 }
 
 

@@ -7,5 +7,8 @@
   "held": "sword",
   "stack": false,
   "description": "Arne's own work. Balanced, and sharp.",
-  "damage": 6
+  "damage": 6,
+  "price": 30,
+  "consumable": false,
+  "equippable": true
 }

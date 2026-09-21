@@ -66,7 +66,44 @@
      replacing them: a campfire is both solid and animated. */
   .swatch.anim span::after { content: " ▶"; color: #6cc0e0; }
   .swatch.anim canvas { outline: 1px dashed #35617a; outline-offset: 1px; }
+  /* Autotiling goes after the name for the same reason the animation mark
+     does: it stacks with solid rather than replacing it, and a wall that
+     resolves its own edges is both things at once. */
+  .swatch.auto span::after { content: " A"; color: #b48ce0; font-weight: 600; }
   .swatch.gather { border-color: #6a5c28; }
+  /* How big the thing actually is. Every swatch is drawn at 48px, so without
+     this the palette shows a mushroom and a temple at the same size. */
+  .swatch { position: relative; }
+  .swatch .size { position: absolute; top: 4px; right: 3px; font-style: normal;
+                  font-size: 9px; line-height: 1; padding: 1px 3px; border-radius: 3px;
+                  background: rgba(20,22,28,.82); color: var(--muted); }
+  .swatch .size:only-of-type { pointer-events: none; }
+  /* Equippable, after the name so it stacks with the solid/ground/gatherable
+     mark before it rather than replacing it. */
+  .swatch .equip { font-style: normal; font-weight: 600; color: #e59a5b;
+                   margin-left: 3px; }
+  /* The definition sheets. Two columns, because a list you have to scroll
+     past to reach the form is a list you stop using. */
+  .defs { display: grid; grid-template-columns: 210px 1fr; gap: 14px;
+          padding: 12px; overflow: auto; height: 100%; align-content: start; }
+  .defs[hidden] { display: none; }
+  .defs .list { display: flex; flex-direction: column; gap: 2px; overflow: auto; }
+  .defs .list button { text-align: left; display: flex; align-items: center; gap: 6px; }
+  .defs .list button.on { border-color: var(--accent); background: #26362a; }
+  .defs .list canvas { image-rendering: pixelated; width: 24px; height: 24px; }
+  .sheet { display: flex; flex-direction: column; gap: 9px; max-width: 540px; }
+  .sheet h2 { margin: 0; font-size: 15px; display: flex; align-items: center; gap: 8px; }
+  .sheet h2 canvas { image-rendering: pixelated; width: 32px; height: 32px; }
+  .sheet .meta { color: var(--muted); font-size: 11px; margin-top: -4px; }
+  .sheet label { display: grid; grid-template-columns: 104px 1fr; align-items: start; gap: 8px; }
+  .sheet label > span { color: var(--muted); font-size: 12px; padding-top: 3px; }
+  .sheet input[type=number] { width: 88px; }
+  .sheet textarea { width: 100%; min-height: 46px; font: inherit; background: var(--panel2);
+                    color: var(--ink); border: 1px solid var(--line); border-radius: 4px;
+                    padding: 4px 6px; resize: vertical; }
+  .sheet .hint { color: var(--muted); font-size: 11px; display: block; margin-top: 2px; }
+  .sheet .actions { display: flex; gap: 8px; align-items: center; margin-top: 4px; }
+  .sheet .unsaved { color: #e0c341; font-size: 11px; }
   .legend { color: var(--muted); font-size: 11px; line-height: 1.6; }
   .legend b { color: var(--ink); font-weight: 500; }
 
@@ -199,6 +236,8 @@
     <button id="v-world" title="See how the maps join up (W)">world</button>
     <button id="v-quests" title="Every quest, and whether the world can pay it (Q)">quests</button>
     <button id="v-dlg" title="Conversations, drawn as the graphs they are (D)">talk</button>
+    <button id="v-items" title="Every item: what it is worth, how it stacks (I)">items</button>
+    <button id="v-actors" title="Every actor: what it hits for and what it can take (A)">actors</button>
   </div>
 </div>
 
@@ -240,6 +279,12 @@
     <span style="color:var(--accent)">&#9679;</span> walkable scenery<br>
     <span style="color:#e0c341">&#9670;</span> gatherable - goes in the bag; ringed on the map<br>
     <span style="color:#6cc0e0">&#9654;</span> animated - moves on its own in game<br>
+    <span style="color:#e59a5b"><b>E</b></span> equippable - it goes in a gear
+    slot<br>
+    the corner of each object swatch says its <b>frame size</b> - 32px is one
+    tile, 64px is four across, 128px four by four<br>
+    <span style="color:#b48ce0"><b>A</b></span> autotiles - edges resolve against
+    its neighbours; terrain without it meets everything at a hard seam<br>
     <span style="color:#e0c341">&#10022;</span> a quest depends on it - see the
     <b>quests</b> view<br>
     <span style="color:#6cc0e0">&#9632;</span> gate mouth, arrowed the way you leave<br>
@@ -255,6 +300,32 @@
     <span style="color:var(--accent)">&#9679;</span> where a fresh game starts<br>
     Maps are grouped by their <b>tags</b>, so a second zone reads as one even
     before anything connects it to the first.
+  </div>
+  <div id="legend-items" class="legend" hidden>
+    An item is authored in <b>content/items/</b>. What is editable here is what
+    the game reads off it; the sprite, the kind and the slot are structure and
+    are shown but not changed.<br>
+    <b>price</b> in coins - 0 means it cannot be sold<br>
+    <b>stacks</b> and <b>max stack</b> travel together: a cap without stacking
+    says nothing, and the build refuses it<br>
+    <b>equippable</b> has to agree with the item's slot<br>
+    <b>note</b> is optional - leave it empty and it is dropped from the file
+  </div>
+  <div id="legend-actors" class="legend" hidden>
+    An actor is authored in <b>content/actors/</b>. Its drawing, rig and
+    wandering are structure and are not editable here.<br>
+    <b>behaviour</b> is the whole of whether it fights:
+    <b>passive</b> leaves you alone, <b>defensive</b> hits back once you hit it,
+    <b>offensive</b> walks up and starts it<br>
+    <b>walks</b> and <b>walk radius</b> travel together - a radius on something
+    that stands still says nothing, and the build refuses it<br>
+    <b>attack</b> is what one of its blows deals<br>
+    <b>armor</b> comes off every blow it takes, to a floor of 1 - so armour can
+    make a thing tough but never unkillable<br>
+    <b>hp</b> left blank means it cannot be killed at all, which is what the
+    sheep and the goat are<br>
+    A hostile actor with no attack is refused by the build: it would chase the
+    hero and never hurt them
   </div>
   <div id="legend-quests" class="legend" hidden>
     A quest is authored in <b>content/quests/</b>. What cannot be read there is
@@ -278,7 +349,8 @@
 </div>
 
 <div class="main"><canvas id="view"></canvas><canvas id="world" hidden></canvas><div
-  id="quests" hidden></div><canvas id="dlg" hidden></canvas></div>
+  id="quests" hidden></div><canvas id="dlg" hidden></canvas><div
+  id="defs-items" hidden></div><div id="defs-actors" hidden></div></div>
 
 <div class="status">
   <span>tile <b id="st-tile">-</b></span>

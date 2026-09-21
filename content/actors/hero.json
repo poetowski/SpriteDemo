@@ -1,6 +1,7 @@
 {
   "id": "actor.hero",
   "sprite": "actor.hero",
+  "name": "Hero",
   "speed": 56,
   "blocks": false,
   "rig": "biped",
@@ -14,7 +15,6 @@
   "level": 1,
   "hp_max": 24,
   "hp_per_level": 6,
-  "base_damage": 2,
   "xp_curve": {
     "base": 40,
     "growth": 1.6
@@ -22,5 +22,11 @@
   "gear_slots": [
     "weapon",
     "armor"
-  ]
+  ],
+  "description": "You. Whatever you are carrying is most of what you are.",
+  "attack": 2,
+  "armor": 0,
+  "behaviour": "passive",
+  "walking": false,
+  "walk_radius": 0
 }

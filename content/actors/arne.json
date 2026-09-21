@@ -10,5 +10,12 @@
   "states": [
     "walk",
     "idle"
-  ]
+  ],
+  "description": "The smith. Up the road till dusk, and no good at standing still.",
+  "level": 1,
+  "attack": 0,
+  "armor": 0,
+  "behaviour": "passive",
+  "walking": false,
+  "walk_radius": 0
 }

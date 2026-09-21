@@ -22,11 +22,6 @@ from gen.palette import Canvas, scatter
 
 BASE_Y = GROUND_Y - 1          # last opaque row, matching the actor's boots
 
-# Structures: three tiles wide, same anchor convention as the 32x32 frame.
-BIG_FRAME = 48
-BIG_GROUND_Y = 45
-BIG_ANCHOR = (24, BIG_GROUND_Y)
-BIG_BASE_Y = BIG_GROUND_Y - 1
 
 # Four tiles wide, for the one or two things that dwarf a building. An even
 # tile count has no middle tile, so the anchor cannot sit at both the frame
@@ -44,6 +39,8 @@ HUGE_BASE_Y = HUGE_GROUND_Y - 1
 # tall with. Same rule as above - anchor on a tile centre, art centred in the
 # frame - so it covers tile offsets -1, 0, +1, +2 and rises most of four tiles
 # over them.
+
+
 VAST_FRAME = 128
 VAST_GROUND_Y = 125
 VAST_ANCHOR = (56, VAST_GROUND_Y)
@@ -299,27 +296,142 @@ def sign():
     return c.outline()
 
 
-def tree_pine():
-    c = Canvas(FRAME, FRAME)
-    c.rect(14, 22, 17, BASE_Y, "WD")
-    _taper(c, 3, 11, 1, 5, "BU")         # three skirts, each overlapping the
-    _taper(c, 10, 18, 2, 8, "BU")        # one below, so the silhouette reads
-    _taper(c, 16, 24, 3, 11, "BU")       # as a conifer rather than a cone
-    _shade(c, "BU", "BUL", "BUD")
-    _shade(c, "WD", "WD", "WDD")
-    return c.outline()
+def _twig(c, x0, y0, x1, y1, w=0, key="WDD"):
+    """A branch stroke from the trunk outward, thinning to nothing."""
+    steps = max(abs(x1 - x0), abs(y1 - y0), 1)
+    for i in range(steps + 1):
+        x = x0 + (x1 - x0) * i // steps
+        y = y0 + (y1 - y0) * i // steps
+        ww = max(0, w - (w * i) // steps)
+        c.rect(x - ww, y - ww, x + ww, y + ww, key)
+
+
+def _crown(c, lobes, shade, light, holes):
+    """A canopy built from overlapping discs, then given its own internal
+    light and shade. A mass this size shaded only at its rim reads as one flat
+    balloon whatever its outline does, which is what both of these trees were
+    before: a single stack of centred rows with four pixels punched out."""
+    for cx, cy, r in lobes:
+        _lobe(c, cx, cy, r, "BU")
+    for cx, cy, r in shade:                       # crescents, not discs - a full
+        _lobe(c, cx, cy, r, "BUD")                # disc of the paler green reads
+        _lobe(c, cx - 2, cy - 2, r - 1, "BU")     # as a spot stuck on the leaves
+    for cx, cy, r in light:
+        _lobe(c, cx, cy, r, "BUL")
+        _lobe(c, cx + 1, cy + 2, r - 1, "BU")
+    for x, y in holes:
+        c.set(x, y, None)                         # sky through it
 
 
 def tree_oak():
+    """A broad oak: a short trunk that flares straight into the crown, which is
+    what an oak grown in the open does.
+
+    The trunk tapers rather than standing as a rectangle, and the roots are
+    three humps rather than two rows - the old one read as a post driven into
+    the grass because nothing about its base said it had grown there."""
     c = Canvas(FRAME, FRAME)
-    c.rect(14, 13, 17, BASE_Y, "WD")
-    c.row(12, 19, 27, "WD")              # roots flare into the ground
-    c.row(11, 20, 28, "WD")
-    _blob(c, 2, (3, 5, 7, 8, 9, 10, 10, 10, 10, 9, 8, 7, 5, 3), "BU")
-    for x, y in ((9, 8), (22, 11), (13, 3), (18, 14)):
-        c.set(x, y, None)                # gaps in the crown, for leaves
+    _taper(c, 13, BASE_Y, 1, 3, "WD")
+    for cx, cy, r in ((15, 27, 4), (10, 28, 3), (21, 28, 3)):
+        _lobe(c, cx, cy, r, "WD")
+    for x0, y0, x1, y1 in ((14, 15, 9, 10), (17, 14, 22, 10), (15, 13, 15, 8)):
+        _twig(c, x0, y0, x1, y1, 1, "WD")
+    _crown(c,
+           [(15, 9, 8), (7, 12, 5), (24, 12, 5), (15, 4, 6),
+            (9, 6, 4), (22, 6, 4), (15, 15, 6)],
+           [(11, 14, 4), (20, 13, 4), (15, 17, 3)],
+           [(12, 5, 3), (20, 8, 3)],
+           [(10, 9), (21, 11), (15, 2), (17, 16), (6, 12), (25, 13)])
+    _twig(c, 13, 16, 10, 13)                      # limb ends, over the leaves
+    _twig(c, 18, 15, 21, 12)
     _shade(c, "BU", "BUL", "BUD")
-    _shade(c, "WD", "WD", "WDD")
+    _shade(c, "WD", "WDL", "WDD")
+    return c.outline()
+
+
+def tree_oak_forked():
+    """The same species grown crowded: the trunk forks low and carries two
+    crowns that have merged into one lopsided mass.
+
+    A second oak is only worth having if it is a different silhouette - a
+    recoloured or slightly wider copy of the first reads as the first one at a
+    glance, which is the whole failure mode of a variant."""
+    c = Canvas(FRAME, FRAME)
+    _taper(c, 20, BASE_Y, 1, 3, "WD")             # one trunk to the fork
+    for cx, cy, r in ((15, 27, 4), (10, 28, 3), (21, 28, 3)):
+        _lobe(c, cx, cy, r, "WD")
+    _twig(c, 15, 21, 10, 12, 1, "WD")             # then two limbs, not one
+    _twig(c, 16, 21, 21, 13, 1, "WD")
+    _crown(c,
+           [(9, 10, 7), (21, 11, 6), (14, 7, 5), (6, 15, 4),
+            (24, 15, 4), (15, 13, 5)],
+           [(8, 14, 4), (22, 14, 3), (14, 11, 3)],
+           [(8, 6, 3), (19, 8, 3)],
+           [(9, 12), (20, 10), (12, 5), (5, 14), (24, 17)])
+    _twig(c, 12, 15, 8, 12, 0)
+    _twig(c, 18, 15, 22, 13, 0)
+    _shade(c, "BU", "BUL", "BUD")
+    _shade(c, "WD", "WDL", "WDD")
+    return c.outline()
+
+
+def tree_pine():
+    """A pine: a straight leader with four boughs hung off it, each darker
+    underneath than on top.
+
+    Three stacked tapers is a cone with two notches in it. What makes a
+    conifer is that the boughs droop at their tips and that the trunk is
+    visible between them - so each bough is drawn as a row that sags at the
+    ends, and the trunk runs the whole height behind them."""
+    c = Canvas(FRAME, FRAME)
+    c.rect(14, 5, 17, BASE_Y, "WDD")              # the leader, top to bottom
+    c.col(14, 5, BASE_Y, "WD")
+    c.row(11, 20, BASE_Y, "WDD")                  # a foot in the needles
+    for top, w in ((6, 4), (11, 6), (16, 8), (21, 10)):
+        for i in range(4):
+            half = w - i
+            if half < 1:
+                break
+            c.row(15 - half, 16 + half, top + i, "BU")
+        c.row(15 - w, 16 + w, top + 3, "BUD")     # shadow under each bough
+        c.set(15 - w - 1, top + 3, "BUD")         # and a drooping tip
+        c.set(16 + w + 1, top + 3, "BUD")
+        c.row(15 - w + 2, 16 + w - 2, top, "BUL")  # light along its back
+    _blob(c, 2, (0, 1, 2), "BU")                  # the leader's own tuft
+    for x, y in ((11, 14), (21, 19), (15, 9)):
+        c.set(x, y, None)
+    _shade(c, "BU", "BUL", "BUD")
+    return c.outline()
+
+
+def tree_pine_slim():
+    """A pine grown in company: bare for half its height, then three narrow
+    boughs where it finally reached the light.
+
+    The bare trunk is the point of it. Placed next to the broad one it reads
+    as the same species at a different age, which is what a second version is
+    for - two trees that differ only in width read as one tree drawn twice."""
+    c = Canvas(FRAME, FRAME)
+    c.rect(14, 3, 17, BASE_Y, "WDD")
+    c.col(14, 3, BASE_Y, "WD")
+    c.row(12, 19, BASE_Y, "WDD")
+    for y in range(16, BASE_Y, 4):                # branch scars down the bare
+        c.set(13, y, "WDD")                       # half of it
+        c.set(18, y + 1, "WDD")
+    for top, w in ((4, 3), (8, 5), (13, 7)):
+        for i in range(4):
+            half = w - i
+            if half < 1:
+                break
+            c.row(15 - half, 16 + half, top + i, "BU")
+        c.row(15 - w, 16 + w, top + 3, "BUD")
+        c.set(15 - w - 1, top + 3, "BUD")
+        c.set(16 + w + 1, top + 3, "BUD")
+        c.row(15 - w + 2, 16 + w - 2, top, "BUL")
+    _blob(c, 1, (0, 1), "BU")
+    for x, y in ((12, 11), (20, 15)):
+        c.set(x, y, None)
+    _shade(c, "BU", "BUL", "BUD")
     return c.outline()
 
 
@@ -386,46 +498,6 @@ def boulder():
 # road stops at. Each is authored at the frame its footprint needs rather than
 # drawn small and scaled up, and the tiles it actually blocks are the
 # "footprint" in content/props/ - the art is free to overhang them.
-
-
-def boulder_2():
-    """Two tiles: a split rock, waist high, the smallest thing here you cannot
-    step over. Drawn across the anchor tile and the one to its right, which is
-    what an even-width footprint means - there is no middle tile to sit on."""
-    c = Canvas(BIG_FRAME, BIG_FRAME)
-    _mass(c, ((28, 37, 14), (38, 42, 8)), BIG_BASE_Y)
-    _form(c, seed=21, tilt=0.10)
-    _crack(c, ((31, 22), (29, 30), (33, 38), (32, 44)))
-    _rim(c, ROCK, "STL", "STD")
-    return c.outline()
-
-
-def boulder_4():
-    """Four tiles, two by two: shoulder height and square on, the first size
-    that hides what is behind it."""
-    c = Canvas(BIG_FRAME, BIG_FRAME)
-    _mass(c, ((29, 33, 16), (38, 42, 9), (26, 22, 10)), BIG_BASE_Y)
-    _form(c, seed=34, tilt=0.13)
-    _crack(c, ((27, 12), (30, 22), (25, 32), (28, 44)))
-    _crack(c, ((36, 26), (41, 35)))
-    _moss(c, ((20, 40, 5), (31, 43, 4)))
-    _rim(c, ROCK, "STL", "STD")
-    return c.outline()
-
-
-def boulder_6():
-    """Six tiles, three by two: a crag rather than a rock, tall enough that the
-    road has to bend round it. Same footprint as a cottage, which is the point
-    of putting one at a bend - it reads as a building until you are close."""
-    c = Canvas(BIG_FRAME, BIG_FRAME)
-    _mass(c, ((23, 31, 20), (11, 42, 10), (37, 40, 9), (28, 17, 12)),
-          BIG_BASE_Y)
-    _form(c, seed=55, tilt=0.11)
-    _crack(c, ((21, 8), (26, 20), (20, 29), (23, 44)))
-    _crack(c, ((33, 24), (38, 33), (35, 44)))
-    _moss(c, ((7, 41, 6), (18, 43, 4), (40, 41, 4)))
-    _rim(c, ROCK, "STL", "STD")
-    return c.outline()
 
 
 def boulder_8():
@@ -798,62 +870,6 @@ def urn(phase=0):
     c.set(15, 20, "GDL")
     c.set(16, 22, "GDL")
     c.rect(0, BASE_Y + 1, FRAME - 1, FRAME - 1, None)
-    return c.outline()
-
-
-def obelisk():
-    """A needle of sandstone with a gilt pyramidion, on its own plinth. Drawn
-    in the 48 frame for the height, not the width: its footprint is one tile,
-    which is what a thing this slender stands on."""
-    c = Canvas(BIG_FRAME, BIG_FRAME)
-    c.rect(14, BIG_BASE_Y - 6, 33, BIG_BASE_Y, "SS")          # the plinth
-    c.row(14, 33, BIG_BASE_Y - 6, "SSL")
-    c.row(14, 33, BIG_BASE_Y, "SSD")
-    c.rect(16, BIG_BASE_Y - 9, 31, BIG_BASE_Y - 6, "SSD")     # a second course
-    c.row(16, 31, BIG_BASE_Y - 9, "SSL")
-    _taper(c, 12, BIG_BASE_Y - 9, 4, 7, "SS", cx=23)          # the shaft
-    _shade(c, "SS", "SSL", "SSD")
-    for y in range(17, BIG_BASE_Y - 12, 6):                   # carved registers
-        c.row(20, 27, y, "SSD")
-        c.rect(22, y + 2, 25, y + 3, "LP")
-        c.set(23, y + 2, "LPL")
-    _blob(c, 4, (0, 1, 2, 3, 4, 4), "GD", cx=23)              # the pyramidion
-    _shade(c, "GD", "GDL", "GDD")
-    c.row(19, 28, 10, "GDD")
-    return c.outline()
-
-
-SUN_DISC = ((6, "GDL"), (7, "GD"), (6, "GDL"), (5, "GD"))     # per phase
-
-
-def sun_gate(phase=0):
-    """Two posts and a lintel with a disc of light standing in the opening.
-    The middle tile is deliberately left out of its footprint: you can walk
-    under it, which is what a gate is for."""
-    c = Canvas(BIG_FRAME, BIG_FRAME)
-    r, key = SUN_DISC[phase % len(SUN_DISC)]
-    _lobe(c, 23, 26, r, key)                                  # the disc, first,
-    _lobe(c, 23, 26, max(1, r - 3), "GDL")                    # so the posts
-    for i in range(8):                                        # rays off it
-        a = i * math.pi / 4 + phase * 0.2
-        c.set(round(23 + math.cos(a) * (r + 2)), round(26 + math.sin(a) * (r + 2)), "GDL")
-    for x0 in (8, 32):                                        # stand over it
-        c.rect(x0, 14, x0 + 7, BIG_BASE_Y, "SS")
-        c.col(x0, 14, BIG_BASE_Y, "SSL")
-        c.col(x0 + 7, 14, BIG_BASE_Y, "SSD")
-        for y in range(19, BIG_BASE_Y, 6):                    # carved bands
-            c.row(x0, x0 + 7, y, "SSD")
-            c.set(x0 + 3, y + 2, "LP")
-        c.rect(x0 - 1, 11, x0 + 8, 14, "SSD")                 # a capital
-        c.row(x0 - 1, x0 + 8, 11, "SSL")
-    c.rect(6, 6, 41, 11, "SS")                                # the lintel
-    c.row(6, 41, 6, "SSL")
-    c.row(6, 41, 11, "SSD")
-    for x in range(10, 38, 6):                                # and its frieze
-        c.rect(x, 8, x + 2, 9, "LP")
-        c.set(x + 1, 8, "LPL")
-    _lobe(c, 23, 3, 2, "GD")                                  # a sun on top
-    c.rect(0, BIG_BASE_Y + 1, BIG_FRAME - 1, BIG_FRAME - 1, None)
     return c.outline()
 
 
@@ -1256,161 +1272,6 @@ def flower_pot():
 
 
 # ------------------------------------------------------------- structures ---
-def house():
-    c = Canvas(BIG_FRAME, BIG_FRAME)
-    c.rect(6, 24, 41, BIG_BASE_Y, "CL")                 # plastered walls
-    _shade(c, "CL", "CL", "CLD")
-    for x in (6, 23, 41):                               # exposed timber frame
-        c.col(x, 24, BIG_BASE_Y, "WDD")
-    c.row(6, 41, 24, "WDD")
-    c.row(6, 41, 34, "WDD")
-    _taper(c, 8, 25, 4, 21, "RF", cx=23)                # the roof
-    _shade(c, "RF", "RFL", "RFD")
-    for y in range(11, 26, 3):                          # courses of tile
-        for x in range(BIG_FRAME):
-            if c.get(x, y) == "RF":
-                c.set(x, y, "RFD")
-    c.rect(20, 32, 27, BIG_BASE_Y, "WD")                # door
-    c.col(27, 32, BIG_BASE_Y, "WDD")
-    c.row(20, 27, 32, "WDD")
-    c.set(25, 39, "MTL")                                # handle
-    for x0 in (11, 32):                                 # windows
-        c.rect(x0, 28, x0 + 5, 33, "WDD")
-        c.rect(x0 + 1, 29, x0 + 4, 32, "FIL")
-        c.col(x0 + 2, 29, 32, "WDD")
-        c.row(x0 + 1, x0 + 4, 30, "WDD")
-    c.rect(32, 4, 37, 12, "ST")                         # chimney
-    c.row(31, 38, 4, "STL")
-    _shade(c, "ST", "STL", "STD")
-    return c.outline()
-
-
-def barn():
-    c = Canvas(BIG_FRAME, BIG_FRAME)
-    c.rect(5, 20, 42, BIG_BASE_Y, "RF")                 # red board walls
-    _shade(c, "RF", "RFL", "RFD")
-    for x in range(7, 42, 4):                           # vertical boards
-        c.col(x, 20, BIG_BASE_Y, "RFD")
-    _taper(c, 6, 21, 8, 22, "WDD", cx=23)               # gambrel roof, lower
-    _taper(c, 2, 9, 3, 9, "WDD", cx=23)                 # and upper pitch
-    _shade(c, "WDD", "WD", "WDD")
-    c.rect(16, 28, 31, BIG_BASE_Y, "WD")                # the double doors
-    _shade(c, "WD", "WDL", "WDD")
-    c.col(23, 28, BIG_BASE_Y, "WDD")
-    c.col(24, 28, BIG_BASE_Y, "WDD")
-    c.row(16, 31, 28, "WDD")
-    for i in range(9):                                  # cross braces on them
-        c.set(17 + i, 30 + i, "WDL")
-        c.set(30 - i, 30 + i, "WDL")
-    c.rect(20, 12, 27, 18, "OL")                        # the hayloft opening
-    c.rect(21, 13, 26, 17, "TH")
-    _shade(c, "TH", "THL", "THD")
-    return c.outline()
-
-
-def tower():
-    c = Canvas(BIG_FRAME, BIG_FRAME)
-    c.rect(13, 12, 34, BIG_BASE_Y, "ST")
-    for y in range(14, BIG_BASE_Y, 5):                  # courses of block
-        c.row(13, 34, y, "STD")
-    for y in range(14, BIG_BASE_Y, 10):                 # staggered joints
-        for x in range(18, 35, 8):
-            c.col(x, y + 1, y + 4, "STD")
-    for y in range(19, BIG_BASE_Y, 10):
-        for x in range(14, 35, 8):
-            c.col(x, y + 1, y + 4, "STD")
-    c.rect(11, 8, 36, 13, "ST")                         # the parapet, oversailing
-    for x in range(12, 36, 5):                          # crenellations
-        c.rect(x, 4, x + 2, 8, "ST")
-    c.rect(21, 20, 26, 28, "OL")                        # an arched window
-    c.rect(22, 21, 25, 27, "MTD")
-    c.rect(20, 36, 27, BIG_BASE_Y, "WD")                # and a barred door
-    _shade(c, "WD", "WDL", "WDD")
-    for x in (22, 25):
-        c.col(x, 36, BIG_BASE_Y, "MTD")
-    _shade(c, "ST", "STL", "STD")
-    return c.outline()
-
-
-def windmill(phase=0):
-    c = Canvas(BIG_FRAME, BIG_FRAME)
-    _taper(c, 14, BIG_BASE_Y, 5, 11, "CL", cx=23)       # the tapered tower
-    _shade(c, "CL", "CL", "CLD")
-    for y in range(18, BIG_BASE_Y, 6):
-        c.row(14, 33, y, "CLD")
-    _taper(c, 8, 15, 2, 7, "WDD", cx=23)                # the cap
-    _shade(c, "WDD", "WD", "WDD")
-    c.rect(20, 34, 27, BIG_BASE_Y, "WD")                # door
-    c.col(27, 34, BIG_BASE_Y, "WDD")
-    c.row(20, 27, 34, "WDD")
-    # Four sails on a turning hub. Four arms are 90 degrees apart, so a quarter
-    # turn is a whole visual cycle and the frames step 22.5 degrees - any more
-    # and it flicks between poses instead of turning.
-    for k in range(4):
-        a = math.radians(45 + k * 90 + phase * 22.5)
-        ux, uy = math.cos(a), math.sin(a)
-        px, py = -uy, ux                                # across the spar
-        # Stepped in halves, or a diagonal at 22.5 degrees comes out as a
-        # dotted line with gaps in it; and the cloth hangs on one side of the
-        # spar rather than both, which is what a sail does and what stops the
-        # arm reading as a scribble when it turns.
-        i = 2.0
-        while i <= 11.0:
-            c.set(round(23 + ux * i), round(12 + uy * i), "WD")
-            i += 0.5
-        i = 3.5
-        while i <= 11.0:
-            for w in (1, 2):
-                c.set(round(23 + ux * i + px * w), round(12 + uy * i + py * w), "TH")
-            i += 0.5
-    c.rect(22, 11, 25, 14, "WDD")                       # the hub
-    return c.outline()
-
-
-def shed():
-    """A shieling: the hut kept up on the high ground, built out of what was
-    lying next to it. Drystone to head height, a steep plank roof above that,
-    and stones laid along the boards - which is the detail that says weather,
-    because nobody weights a roof anywhere the wind does not lift it."""
-    c = Canvas(BIG_FRAME, BIG_FRAME)
-    c.rect(7, 24, 40, BIG_BASE_Y, "ST")                 # drystone walls
-    for i, y in enumerate(range(27, BIG_BASE_Y, 4)):    # rough courses, with
-        c.row(7, 40, y, "STD")                          # the joints staggered
-        for x in range(10 + (i % 2) * 4, 40, 8):        # so no two line up
-            c.col(x, y - 3, y - 1, "STD")
-    _shade(c, "ST", "STL", "STD")
-
-    _taper(c, 8, 25, 1, 20, "WD", cx=23)                # a steep roof, laid
-    _shade(c, "WD", "WDL", "WDD")                       # over the walls so the
-    for y in range(11, 26, 3):                          # rain clears them
-        for x in range(BIG_FRAME):
-            if c.get(x, y) == "WD":
-                c.set(x, y, "WDD")                      # the boards
-    for y, x in ((13, 19), (13, 27), (17, 14), (17, 32), (21, 9), (21, 37)):
-        c.set(x, y, "STL")                              # and the stones that
-        c.set(x + 1, y, "ST")                           # hold them down
-        c.set(x, y + 1, "STD")
-
-    c.rect(19, 32, 28, BIG_BASE_Y, "STD")               # a dressed surround
-    c.row(19, 28, 32, "STL")                            # under a lit lintel
-    c.rect(20, 33, 27, BIG_BASE_Y, "WD")                # the door
-    c.col(20, 33, BIG_BASE_Y, "WDL")
-    c.col(27, 33, BIG_BASE_Y, "WDD")
-    for x in range(22, 27, 2):
-        c.col(x, 34, BIG_BASE_Y, "WDD")                 # its boards
-    c.set(25, 39, "MTL")                                # and the latch
-
-    c.rect(10, 28, 16, 34, "STD")                       # one small window,
-    c.rect(11, 29, 15, 33, "FIL")                       # lit from inside
-    c.col(13, 29, 33, "WDD")
-    c.row(11, 15, 31, "WDD")
-
-    c.rect(33, 11, 35, 21, "MT")                        # a stovepipe, standing
-    c.col(35, 11, 21, "MTD")                            # clear of the ridge
-    c.rect(32, 9, 36, 11, "MTL")
-    return c.outline()
-
-
 def burrow_tree():
     """An old tree with a burrow under its roots, four tiles across.
 
@@ -1820,7 +1681,9 @@ PROPS = {
     "prop.rock": rock,
     "prop.sign": sign,
     "prop.tree_pine": tree_pine,
+    "prop.tree_pine_slim": tree_pine_slim,
     "prop.tree_oak": tree_oak,
+    "prop.tree_oak_forked": tree_oak_forked,
     "prop.tree_dead": tree_dead,
     "prop.stump": stump,
     "prop.log": log,
@@ -1874,10 +1737,6 @@ ANIMATED = {
     "prop.beehive": (4, 170),
     "prop.trough": (3, 430),        # standing water barely moves
 }
-ANIMATED_BIG = {
-    "prop.windmill": (4, 150),
-    "prop.sun_gate": (4, 240),      # the disc breathing, not flickering
-}
 ANIMATED_HUGE = {}                  # nothing this size moves yet
 ANIMATED_VAST = {
     "prop.temple": (4, 180),        # two fires and the dust off the steps
@@ -1886,7 +1745,7 @@ ANIMATED_VAST = {
 # One table per frame size, because that is how the sheets are built - but the
 # lookup is over all of them, so nothing has to know which class a prop is in
 # to ask whether it moves.
-ANIMATED_ALL = (ANIMATED, ANIMATED_BIG, ANIMATED_HUGE, ANIMATED_VAST)
+ANIMATED_ALL = (ANIMATED, ANIMATED_HUGE, ANIMATED_VAST)
 
 
 def prop_frames(pid, table=None):
@@ -1895,21 +1754,127 @@ def prop_frames(pid, table=None):
     n = next((t[pid][0] for t in ANIMATED_ALL if pid in t), 1)
     return [fns[pid](phase=p) if n > 1 else fns[pid]() for p in range(n)]
 
-BIG_PROPS = {
-    "prop.house": house,
-    "prop.barn": barn,
-    "prop.tower": tower,
-    "prop.windmill": windmill,
-    "prop.shed": shed,
-    "prop.boulder_2": boulder_2,
-    "prop.boulder_4": boulder_4,
-    "prop.boulder_6": boulder_6,
-    "prop.obelisk": obelisk,
-    "prop.sun_gate": sun_gate,
-}
-BIG_PROP_ORDER = list(BIG_PROPS)
+
+def shed():
+    """A shieling: drystone to head height, a steep plank roof weighted with
+    stones, and a boarded terrace along its left side.
+
+    Four tiles of frame is not four tiles of building. The hut is under three
+    of them and the leftmost is the terrace, which is why the footprint leaves
+    that tile walkable - a porch you cannot stand on is a painting of a porch.
+
+    Two things had to be redrawn after the first cut at this size. The terrace
+    came out a solid brown block: rails and posts and decking all touching,
+    and once outline() had been round it there was no daylight left anywhere
+    to say it was a frame rather than a crate. It is drawn open now, with real
+    gaps between the rails. The chimney rose from the right-hand wall straight
+    up past the eaves, so the top two thirds of it stood in the sky beside the
+    roof with a gap behind; it comes out of the slope now, near the ridge,
+    where a chimney on a hut this size would actually be."""
+    c = Canvas(HUGE_FRAME, HUGE_FRAME)
+    Y = HUGE_BASE_Y                              # 60
+    WALL_T, WALL_L, WALL_R = 30, 18, 61
+
+    # --- the terrace, drawn first so the hut stands in front of it -----------
+    # Open, not solid: posts and two rails with daylight between them.
+    # The decking runs right up to the wall. Stopped short of it the whole
+    # thing read as a bench standing near the hut rather than a porch on it.
+    for x in range(1, 20):
+        c.col(x, 54, Y - 1, "WD" if x % 3 else "WDD")
+    c.row(1, 19, 54, "WDL")                      # its lit leading edge
+    c.row(1, 19, Y - 1, "WDD")
+    for x in (3, 16):
+        c.rect(x, 44, x + 1, 54, "WD")           # posts, up from the boards
+        c.col(x, 44, 54, "WDL")
+    c.rect(2, 44, 17, 45, "WD")                  # the top rail
+    c.row(2, 17, 44, "WDL")
+    c.rect(2, 50, 17, 51, "WDD")                 # and a lower one, with real
+    c.rect(7, 50, 11, 53, "WD")                  # daylight between the two
+    c.row(7, 11, 50, "WDL")                      # a pail left on the boards
+    c.set(9, 49, "MTL")                          # and its handle
+
+    # --- walls ---------------------------------------------------------------
+    c.rect(WALL_L, WALL_T, WALL_R, Y, "ST")
+    for i, y in enumerate(range(WALL_T + 4, Y, 5)):     # courses, joints
+        c.row(WALL_L, WALL_R, y, "STD")                 # staggered so no two
+        for x in range(WALL_L + 4 + (i % 2) * 6, WALL_R, 12):
+            c.col(x, y - 4, y - 1, "STD")
+    for x, y in ((21, 34), (57, 39), (30, 56), (52, 55)):
+        c.set(x, y, "STL")                              # a few lit faces, so
+        c.set(x + 1, y + 1, "STD")                      # the wall is not flat
+    for x, y in ((19, 57), (20, 58), (60, 52), (59, 53), (61, 58)):
+        c.set(x, y, "MS")                               # moss at the footings
+    _shade(c, "ST", "STL", "STD")
+
+    # --- roof ----------------------------------------------------------------
+    _taper(c, 7, 31, 1, 25, "WD", cx=39)         # steep, and over the terrace
+    _shade(c, "WD", "WDL", "WDD")
+    for y in range(10, 32, 4):                   # the boards
+        for x in range(HUGE_FRAME):
+            if c.get(x, y) == "WD":
+                c.set(x, y, "WDD")
+    c.rect(36, 4, 43, 7, "WDD")                  # a ridge cap along the top
+    c.row(36, 43, 4, "WDL")
+    for y, x in ((14, 33), (19, 27), (19, 50), (24, 21),
+                 (24, 56), (29, 16), (29, 60)):
+        c.set(x, y, "STL")                       # stones holding the boards
+        c.set(x + 1, y, "ST")
+        c.set(x, y + 1, "STD")
+    for x in range(15, 64, 6):                   # rafter ends under the eaves
+        c.set(x, 31, "WDD")
+
+    # --- the chimney, out of the slope rather than beside it ----------------
+    c.rect(41, 12, 47, 29, "ST")
+    for y in range(15, 29, 4):
+        c.row(41, 47, y, "STD")
+    c.rect(39, 8, 49, 12, "STL")                 # the cap
+    c.row(39, 49, 8, "ST")
+    c.row(41, 47, 9, "OL")                       # the flue, and the soot in it
+    _shade(c, "ST", "STL", "STD")
+
+    # --- the door, centred on the tile the footprint leaves open -------------
+    c.rect(33, 38, 47, Y, "STD")                 # a dressed surround
+    c.row(33, 47, 38, "STL")                     # under a lit lintel
+    c.rect(35, 40, 45, Y, "WD")                  # the door
+    c.col(35, 40, Y, "WDL")
+    c.col(45, 40, Y, "WDD")
+    for x in (38, 41, 44):
+        c.col(x, 41, Y - 1, "WDD")               # its boards
+    for y in (43, 54):                           # strap hinges across them
+        c.row(35, 42, y, "MTD")
+        c.set(36, y, "MTL")
+    c.set(43, 49, "MTL")                         # the latch
+    c.rect(32, Y - 1, 48, Y, "STL")              # a worn step at the foot
+    c.row(32, 48, Y - 1, "ST")
+    c.rect(48, 40, 50, 42, "MTD")                # a lantern on a bracket
+    c.set(49, 41, "FIL")
+    c.set(49, 39, "MTL")
+
+    # --- windows -------------------------------------------------------------
+    # A lit rectangle reads as a hole with a lamp behind it. What says window
+    # is the frame round it and the bars across it.
+    for x0 in (21, 50):
+        c.rect(x0, 35, x0 + 8, 36, "STL")        # a dressed head
+        c.rect(x0, 46, x0 + 8, 47, "STL")        # and a sill, standing proud
+        c.rect(x0 + 1, 37, x0 + 7, 45, "WDD")    # the frame
+        c.rect(x0 + 2, 38, x0 + 6, 44, "FIL")    # lit from inside
+        c.col(x0 + 4, 38, 44, "WDD")             # mullion
+        c.row(x0 + 2, x0 + 6, 41, "WDD")         # and transom - four panes
+        c.set(x0 + 2, 38, "FI")                  # the glass is not one flat
+        c.set(x0 + 6, 44, "FI")                  # tone across all four
+        for sx in (x0 - 3, x0 + 9):              # shutters, folded back
+            c.rect(sx, 36, sx + 2, 46, "WD")
+            c.col(sx + 1, 36, 46, "WDD")
+            c.set(sx + 1, 41, "MTD")
+
+    for y in range(Y + 1, HUGE_FRAME):           # nothing below the base line
+        for x in range(HUGE_FRAME):
+            c.set(x, y, None)
+    return c.outline()
+
 
 HUGE_PROPS = {
+    "prop.shed": shed,
     "prop.burrow_tree": burrow_tree,
     "prop.boulder_8": boulder_8,
     "prop.colossus": colossus,
@@ -1944,8 +1909,8 @@ def crystal_gate(phase=0):
     is grey and unpainted, the light in the ring is blue-white, and the one
     warm thing anywhere near it is the fire on the columns - which is also why
     the thing standing guard in front of it is red. Nothing here borrows a
-    biome's palette, for the portal tile's reason: a gateway painted in the
-    local greens is a wall somebody built.
+    biome's palette, on purpose: a gateway painted in the local greens is a
+    wall somebody built.
 
     **The ring needs an edge of its own.** It is drawn over the columns, and
     the first version gave it the same grey as the shafts behind it - so the
@@ -2005,8 +1970,8 @@ def crystal_gate(phase=0):
 
     # --- what is inside it --------------------------------------------------
     # Deep in the middle and lighter at the rim, because the far side is a long
-    # way off. Built up from the mid blue rather than the dark one, the way the
-    # portal tile is: started from the deep end it is a hole, not a light.
+    # way off. Built up from the mid blue rather than the dark one: started
+    # from the deep end it comes out a hole rather than a light.
     for y in range(cy - 20, cy + 21):
         for x in range(cx - 20, cx + 21):
             d = math.hypot(x - cx, y - cy)
@@ -2041,6 +2006,7 @@ def crystal_gate(phase=0):
 
     c.rect(0, VAST_BASE_Y + 1, VAST_FRAME - 1, VAST_FRAME - 1, None)
     return c.outline()
+
 
 
 VAST_PROPS = {

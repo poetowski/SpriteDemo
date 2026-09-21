@@ -27,31 +27,6 @@ SPECIES = {
     "goat": {"wool": False, "horns": True, "beard": True},
     "boar": {"wool": False, "horns": False, "beard": False,
              "bristles": True, "tusks": True},
-    # "tall" lifts the body and lengthens the legs without moving the hooves,
-    # which is the whole difference between a deer and a sheep in silhouette:
-    # the same barrel carried higher off the ground. The rack does the rest.
-    "elk": {"wool": False, "horns": False, "beard": False,
-            "tall": 3, "antlers": True, "mane": True, "rump": True},
-    # A bear is not a recoloured boar, and the difference is all silhouette:
-    # "bulk" deepens and widens the barrel, "hump" puts the rise over the
-    # shoulders that nothing else here has, and the round ears sit on top of
-    # the skull instead of behind it. Flat paws rather than hooves, a stub of
-    # a tail, and a pale blunt muzzle do the rest.
-    "bear": {"wool": False, "horns": False, "beard": False,
-             "bulk": 1, "hump": True, "round_ears": True, "paws": True,
-             "stub_tail": True, "snout": True},
-    # The zebra is the horse the rig never had, and it needs exactly two
-    # things to be one: the bars, and a mane that stands up instead of lying
-    # along the neck.
-    "zebra": {"wool": False, "horns": False, "beard": False,
-              "tall": 2, "stripes": True, "crest": True},
-    # A jackal is a dog, and at 32px a dog is its ears. They stand up and come
-    # to a point, which nothing else on this rig does - the bear's are round
-    # and on top, the rest are little flaps behind the eye. The brush and the
-    # dark saddle are what stop it reading as a small deer once it moves.
-    "jackal": {"wool": False, "horns": False, "beard": False,
-               "prick_ears": True, "brush": True, "saddle": True,
-               "paws": True},
 }
 
 

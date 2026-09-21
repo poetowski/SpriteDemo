@@ -4,5 +4,9 @@
   "sprite": "item.firewood",
   "kind": "material",
   "stack": true,
-  "description": "Split and tied at the woodcutters' camp."
+  "description": "Split and tied at the woodcutters' camp.",
+  "price": 2,
+  "stack_max": 30,
+  "consumable": false,
+  "equippable": false
 }

@@ -9,267 +9,65 @@
   "spawn": {
     "tile": [
       12,
-      11
+      18
     ],
     "facing": "up"
   },
   "legend": {
     ".": "tile.grass",
-    "t": "tile.grass_tall",
-    ",": "tile.grass_flower",
-    "a": "tile.leaves",
-    "c": "tile.gravel",
-    "#": "tile.stone"
+    "a": "tile.boardwalk",
+    "b": "tile.bog",
+    "c": "tile.cave_floor",
+    "d": "tile.cave_wall",
+    "e": "tile.cobble",
+    "f": "tile.dirt",
+    "g": "tile.dune",
+    "h": "tile.field",
+    "i": "tile.grass_flower",
+    "j": "tile.grass_tall",
+    "k": "tile.gravel",
+    "l": "tile.leaves",
+    "m": "tile.lily",
+    "n": "tile.marsh",
+    "o": "tile.oasis",
+    "p": "tile.path",
+    "q": "tile.plank_wall",
+    "s": "tile.salt",
+    "t": "tile.sand",
+    "u": "tile.sandstone",
+    "v": "tile.scrub",
+    "w": "tile.shallow",
+    "x": "tile.stone",
+    "y": "tile.straw",
+    "z": "tile.tall_stone",
+    "A": "tile.water",
+    "B": "tile.wood_floor"
   },
   "ground": [
-    "tt.ttt.cc,.tt..t.tt.",
-    ".tt..ttcct..ttt..tt.",
-    "t##tt##cc###########",
-    "tttttttccttt########",
-    ".ttaattccttttt######",
-    ".aaaaaacc...tttt####",
-    "..a.a.acc.....ttt###",
-    ".......acc......t###",
-    "........cc.......,##",
-    "........cc.ccc...###",
-    "........cc.cccaaat##",
-    "....aaa.ccccc..aat##",
-    ".....a..cccc....aatt",
-    "......cccc.....##att",
-    "....cccc.cc....##...",
-    ".ccccc....cc........",
-    "ccc.......cc.aaa....",
-    "cc........cc..aaa...",
-    "..........cc...a....",
-    "..........cc........"
+    "....................",
+    ".aa.bb.cc.dd.ee.ff..",
+    ".aa.bb.cc.dd.ee.ff..",
+    "...................k",
+    ".gg.hh....ii.jj.kkkk",
+    ".gg.hh....ii.jj.kkkk",
+    "..................kk",
+    ".ll.mm.nn.oo.pp.qqkk",
+    ".ll.mm.nn.oo.pp.qqkk",
+    "..................kk",
+    "....ss.tt.uu.vv.ww..",
+    "....ss.tt.uu.vv.ww..",
+    "....................",
+    ".xx.yy.zz.AA.BB.llll",
+    ".xx.yy.zz.AA.BB.llll",
+    "....................",
+    "kkkkkk.l.l......l.l.",
+    "kkkkkk..............",
+    ".......l.l..........",
+    "...................."
   ],
   "entities": [
     {
       "def": "prop.shed",
-      "tile": [
-        12,
-        8
-      ]
-    },
-    {
-      "def": "prop.woodpile",
-      "tile": [
-        14,
-        8
-      ]
-    },
-    {
-      "def": "prop.trough",
-      "tile": [
-        10,
-        9
-      ]
-    },
-    {
-      "def": "prop.boulder",
-      "tile": [
-        14,
-        12
-      ]
-    },
-    {
-      "def": "prop.boulder",
-      "tile": [
-        17,
-        14
-      ]
-    },
-    {
-      "def": "prop.rock",
-      "tile": [
-        13,
-        14
-      ]
-    },
-    {
-      "def": "prop.rock",
-      "tile": [
-        6,
-        8
-      ]
-    },
-    {
-      "def": "prop.cairn",
-      "tile": [
-        2,
-        14
-      ]
-    },
-    {
-      "def": "prop.bush",
-      "tile": [
-        18,
-        15
-      ]
-    },
-    {
-      "def": "prop.bush",
-      "tile": [
-        18,
-        16
-      ]
-    },
-    {
-      "def": "prop.mushroom",
-      "tile": [
-        3,
-        5
-      ]
-    },
-    {
-      "def": "prop.stump",
-      "tile": [
-        6,
-        12
-      ]
-    },
-    {
-      "def": "prop.tree_pine",
-      "tile": [
-        2,
-        4
-      ]
-    },
-    {
-      "def": "prop.tree_pine",
-      "tile": [
-        3,
-        4
-      ]
-    },
-    {
-      "def": "prop.tree_pine",
-      "tile": [
-        2,
-        5
-      ]
-    },
-    {
-      "def": "prop.tree_pine",
-      "tile": [
-        4,
-        5
-      ]
-    },
-    {
-      "def": "prop.tree_pine",
-      "tile": [
-        6,
-        5
-      ]
-    },
-    {
-      "def": "prop.tree_pine",
-      "tile": [
-        4,
-        6
-      ]
-    },
-    {
-      "def": "prop.tree_pine",
-      "tile": [
-        16,
-        11
-      ]
-    },
-    {
-      "def": "prop.tree_pine",
-      "tile": [
-        15,
-        10
-      ]
-    },
-    {
-      "def": "prop.tree_pine",
-      "tile": [
-        17,
-        12
-      ]
-    },
-    {
-      "def": "prop.tree_oak",
-      "tile": [
-        14,
-        16
-      ]
-    },
-    {
-      "def": "prop.tree_oak",
-      "tile": [
-        15,
-        17
-      ]
-    },
-    {
-      "def": "prop.tree_oak",
-      "tile": [
-        5,
-        11
-      ]
-    },
-    {
-      "def": "npc.sheep",
-      "tile": [
-        10,
-        10
-      ]
-    },
-    {
-      "def": "npc.sheep",
-      "tile": [
-        7,
-        12
-      ]
-    },
-    {
-      "def": "npc.sheep",
-      "tile": [
-        12,
-        13
-      ]
-    },
-    {
-      "def": "prop.lamp_post",
-      "tile": [
-        5,
-        16
-      ]
-    },
-    {
-      "def": "prop.cairn",
-      "tile": [
-        6,
-        3
-      ]
-    },
-    {
-      "def": "prop.cairn",
-      "tile": [
-        9,
-        3
-      ]
-    },
-    {
-      "def": "prop.signpost",
-      "tile": [
-        10,
-        13
-      ]
-    },
-    {
-      "def": "prop.cairn",
-      "tile": [
-        9,
-        17
-      ]
-    },
-    {
-      "def": "prop.cairn",
       "tile": [
         12,
         17
@@ -288,6 +86,104 @@
         2,
         18
       ]
+    },
+    {
+      "def": "npc.sheep",
+      "tile": [
+        16,
+        18
+      ]
+    },
+    {
+      "def": "prop.trough",
+      "tile": [
+        18,
+        18
+      ]
+    },
+    {
+      "def": "prop.shed",
+      "tile": [
+        8,
+        6
+      ]
+    },
+    {
+      "def": "prop.well",
+      "tile": [
+        13,
+        6
+      ]
+    },
+    {
+      "def": "prop.temple",
+      "tile": [
+        6,
+        12
+      ]
+    },
+    {
+      "def": "prop.shelf",
+      "tile": [
+        13,
+        11
+      ]
+    },
+    {
+      "def": "prop.shelf",
+      "tile": [
+        16,
+        12
+      ]
+    },
+    {
+      "def": "prop.shelf",
+      "tile": [
+        16,
+        11
+      ]
+    },
+    {
+      "def": "prop.sign",
+      "tile": [
+        3,
+        3
+      ]
+    },
+    {
+      "def": "prop.signpost",
+      "tile": [
+        6,
+        3
+      ]
+    },
+    {
+      "def": "prop.rock",
+      "tile": [
+        16,
+        4
+      ]
+    },
+    {
+      "def": "prop.rock",
+      "tile": [
+        15,
+        4
+      ]
+    },
+    {
+      "def": "prop.tree_oak",
+      "tile": [
+        18,
+        10
+      ]
+    },
+    {
+      "def": "prop.tree_oak",
+      "tile": [
+        18,
+        6
+      ]
     }
   ],
   "exits": [
@@ -295,86 +191,22 @@
       "tiles": [
         [
           0,
-          10
-        ],
-        [
-          0,
-          11
-        ],
-        [
-          0,
-          12
-        ],
-        [
-          0,
-          13
-        ],
-        [
-          0,
-          14
-        ],
-        [
-          0,
-          15
-        ],
-        [
-          0,
           16
         ],
         [
           0,
           17
-        ],
-        [
-          0,
-          18
-        ],
-        [
-          0,
-          19
         ]
       ],
       "to": "map.wilderness2",
       "spawns": [
         [
           18,
-          10
-        ],
-        [
-          18,
-          11
-        ],
-        [
-          18,
-          12
-        ],
-        [
-          18,
-          13
-        ],
-        [
-          18,
-          14
-        ],
-        [
-          18,
-          15
-        ],
-        [
-          18,
           16
         ],
         [
           18,
           17
-        ],
-        [
-          18,
-          18
-        ],
-        [
-          18,
-          19
         ]
       ],
       "facing": "left"
@@ -382,8 +214,8 @@
     {
       "tiles": [
         [
-          12,
-          8
+          13,
+          17
         ]
       ],
       "to": "map.shed_interior",

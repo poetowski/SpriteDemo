@@ -36,7 +36,7 @@ TOOLS = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(TOOLS)
 sys.path.insert(0, TOOLS)
 
-from gen import (actor, animal, beast, bird, fx as fx_gen, giant,  # noqa: E402
+from gen import (actor, animal, fx as fx_gen,  # noqa: E402
                  items as items_gen, props as props_gen, tiles as tiles_gen)
 from gen.palette import PALETTE, VARIANTS, resolve                   # noqa: E402
 from pipeline import aseprite                                        # noqa: E402
@@ -48,11 +48,10 @@ TAG_COLOR = (0x4f, 0xa5, 0x55)
 
 # Rigs are interchangeable: same anchor rule, same build_frames shape. Adding a
 # species is a content field, not a pipeline change. A rig names the sheet it
-# belongs on, so a rig too big for the 32x32 frame gets a sheet of its own
-# rather than padding every hero frame out to the size of the largest thing in
-# the game.
-RIGS = {"biped": actor, "quadruped": animal, "giant": giant, "beast": beast,
-        "bird": bird}
+# belongs on, so a rig too big for the 32x32 frame would get a sheet of its
+# own rather than padding every hero frame out to it - but every actor in the
+# game is 32px now, and the sheet that held the big ones is gone with them.
+RIGS = {"biped": actor, "quadruped": animal}
 
 
 # ------------------------------------------------------------ what to draw ---
@@ -96,9 +95,10 @@ def sprite_rigs_from(content):
 
 # ------------------------------------------------------------- generation ---
 def build_atlases(sprite_rigs, content):
-    # One sheet per actor frame size, made when the first sprite needs it: a
-    # 64px giant on the 32px sheet would mean padding every frame in the game
-    # to 64, and the sheet is loaded as a grid of one frame size.
+    # One sheet per actor frame size, made when the first sprite needs it. Only
+    # 32px rigs exist today, so this makes exactly one sheet - but the rule is
+    # kept, because a sheet is loaded as a grid of a single frame size and
+    # mixing two would mean padding every frame to the larger.
     actor_sheets = {}
     anims = {}
     by_sprite = {}
@@ -188,11 +188,6 @@ def build_atlases(sprite_rigs, content):
     prop_canvases = add_props(props, props_gen.PROPS, actor.ANCHOR,
                               props_gen.ANIMATED)
 
-    big = Atlas("props_big", props_gen.BIG_FRAME, props_gen.BIG_FRAME, 4)
-    big_anchor = props_gen.BIG_ANCHOR
-    big_canvases = add_props(big, props_gen.BIG_PROPS, big_anchor,
-                             props_gen.ANIMATED_BIG)
-
     # The two biggest classes go through the same helper as the other two, so a
     # thing four tiles across can move for the same reason a campfire can. They
     # each had their own loop and no animation until the temple wanted fire.
@@ -216,11 +211,11 @@ def build_atlases(sprite_rigs, content):
         fx.add(gid, [canvas], fx_gen.ANCHOR)
         fx_canvases[gid] = canvas
 
-    sheets = [*actor_sheets.values(), tiles, props, big, huge, vast, items, fx]
+    sheets = [*actor_sheets.values(), tiles, props, huge, vast, items, fx]
     sprites = {}
     for a in sheets:
         sprites.update(a.sprites())
-    others = {"props": prop_canvases, "props_big": big_canvases,
+    others = {"props": prop_canvases,
               "props_huge": huge_canvases, "props_vast": vast_canvases,
               "items": item_canvases, "fx": fx_canvases}
     return tile_index, sheets, sprites, anims, tile_canvases, others, by_sprite
@@ -271,18 +266,20 @@ def write_aseprite(by_sprite, tile_canvases, others):
         _verify_ase(path, len(frames), ["shadow", "actor"], len(tags))
         written.append(path)
 
-    for name, canvases, size in (
-            ("tiles", tile_canvases, tiles_gen.SIZE),
-            ("props", others["props"], actor.FRAME),
-            ("props_big", others["props_big"], props_gen.BIG_FRAME),
-            ("props_huge", others["props_huge"], props_gen.HUGE_FRAME),
-            ("props_vast", others["props_vast"], props_gen.VAST_FRAME),
-            ("items", others["items"], items_gen.SIZE),
-            ("fx", others["fx"], fx_gen.SIZE)):
+    # Width and height separately. Every sheet here is square today, but this
+    # took one number for both and a 16x32 class walked straight into it: it
+    # wrote a 16x16 source for a 32px canvas, and only the round trip caught it.
+    for name, canvases, (fw, fh) in (
+            ("tiles", tile_canvases, (tiles_gen.SIZE, tiles_gen.SIZE)),
+            ("props", others["props"], (actor.FRAME, actor.FRAME)),
+            ("props_huge", others["props_huge"], (props_gen.HUGE_FRAME, props_gen.HUGE_FRAME)),
+            ("props_vast", others["props_vast"], (props_gen.VAST_FRAME, props_gen.VAST_FRAME)),
+            ("items", others["items"], (items_gen.SIZE, items_gen.SIZE)),
+            ("fx", others["fx"], (fx_gen.SIZE, fx_gen.SIZE))):
         path = os.path.join(out, f"{name}.aseprite")
         entries = list(canvases.items())
         aseprite.write(
-            path, size, size, [name],
+            path, fw, fh, [name],
             [([c.rgba_bytes()], 100) for _k, c in entries],
             [(rgba, n) for rgba, n in PALETTE.values()],
             [(k, i, i, TAG_COLOR) for i, (k, _c) in enumerate(entries)],
@@ -316,8 +313,8 @@ def library(sheets, sprites, anims, tile_index, looks):
     return {
         "art_version": 1,
         "standard": {"tile": tiles_gen.SIZE, "actor": actor.FRAME,
-                     "giant": giant.FRAME, "prop": actor.FRAME,
-                     "structure": props_gen.BIG_FRAME,
+                     "prop": actor.FRAME,
+                     "structure": props_gen.HUGE_FRAME,
                      "erratic": props_gen.VAST_FRAME,
                      "item": items_gen.SIZE, "fx": fx_gen.SIZE},
         "atlases": {a.name: {**a.meta(), "image": f"atlases/{a.name}.png"}

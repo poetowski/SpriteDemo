@@ -4,5 +4,10 @@
   "sprite": "item.honey",
   "kind": "material",
   "stack": true,
-  "description": "A jar from the hives in the flower meadow."
+  "description": "A jar from the hives in the flower meadow.",
+  "price": 8,
+  "stack_max": 10,
+  "note": "Taken from a hive, and the hive notices.",
+  "consumable": true,
+  "equippable": false
 }

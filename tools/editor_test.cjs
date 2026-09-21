@@ -224,7 +224,28 @@ function dropScratch() {
   await page.evaluate(() => { state.brush = 1; undo(); });
 
   // --- placing and erasing objects -----------------------------------------
-  const spot = [10, 10];
+  // A tile with nothing already standing on it, found rather than assumed.
+  // This was hardcoded at 10,10, which held until someone dropped a crystal
+  // gate - sixteen tiles of it - into the map the scratch copy is taken from,
+  // and the place test started failing for a reason nothing to do with placing.
+  const spot = await page.evaluate(() => {
+    const defOf = (id) => window.editor.M.props[id] || window.editor.M.actors[id]
+                       || window.editor.M.items[id] || {};
+    const taken = new Set();
+    for (const e of state.map.entities)
+      for (const [dx, dy] of defOf(e.def).footprint || [[0, 0]])
+        taken.add(`${e.tile[0] + dx},${e.tile[1] + dy}`);
+    const [w, h] = state.map.size;
+    for (let y = 3; y < h - 3; y++)
+      for (let x = 3; x < w - 3; x++) {
+        let clear = true;
+        for (let dy = -1; dy <= 1; dy++)
+          for (let dx = -1; dx <= 1; dx++)
+            if (taken.has(`${x + dx},${y + dy}`)) clear = false;
+        if (clear) return [x, y];
+      }
+    throw new Error('no clear 3x3 anywhere on the scratch map');
+  });
   await page.evaluate((s) => {
     state.terrain = 'tile.grass';
     state.brush = 3; setTool('paint');
@@ -243,10 +264,22 @@ function dropScratch() {
   }, spot);
   check('a solid will not stack on a solid', blockedAttempt);
 
+  // Found, not assumed. This said place(4, 4) with a comment that it was
+  // water, which was true of the map the scratch used to be copied from and
+  // not of the one it is copied from now - so it placed a barrel successfully,
+  // failed this check, and left an extra entity that broke the erase below.
   const onWater = await page.evaluate(() => {
-    const before = state.map.entities.length;
-    place(4, 4);                                       // water is not walkable
-    return state.map.entities.length === before;
+    const [w, h] = state.map.size;
+    for (let y = 0; y < h; y++)
+      for (let x = 0; x < w; x++) {
+        const t = state.M.tiles[terrainAt(x, y)];
+        if (t && !t.walkable) {
+          const before = state.map.entities.length;
+          place(x, y);
+          return state.map.entities.length === before;
+        }
+      }
+    throw new Error('no unwalkable tile on the scratch map to test against');
   });
   check('nothing can be placed on unwalkable ground', onWater);
 
@@ -654,6 +687,34 @@ function dropScratch() {
         `${moving.stacked} of ${moving.marked.length} keep their other mark`);
   check('and it says how many frames', moving.frames, 'titles carry the count');
 
+  // Terrain that resolves its own edges carries a mark too, for the same
+  // reason: the palette is where you choose what to paint, and "will this
+  // meet the grass with a shore or with a seam?" is the question that decides
+  // the choice. The mark is read off the mask table the build exported - the
+  // one indexAt resolves against - so it cannot claim an edge the painting
+  // will not actually draw.
+  const blending = await page.evaluate(() => ({
+    marked: [...document.querySelectorAll('#pal-terrain .swatch.auto')]
+      .map((e) => e.dataset.id).sort(),
+    withMasks: Object.keys(window.editor.M.tileset.masks).sort(),
+    stacked: [...document.querySelectorAll('#pal-terrain .swatch.auto.solid')]
+      .map((e) => e.dataset.id),
+    titles: [...document.querySelectorAll('#pal-terrain .swatch.auto span')]
+      .every((e) => /autotiles/.test(e.title)),
+    plainTitles: [...document.querySelectorAll('#pal-terrain .swatch:not(.auto) span')]
+      .every((e) => /no transitions/.test(e.title)),
+  }));
+  check('every autotiling terrain is marked, and only those',
+        JSON.stringify(blending.marked) === JSON.stringify(blending.withMasks)
+          && blending.withMasks.length > 0,
+        `${blending.marked.length} marked, ${blending.withMasks.length} carry masks`);
+  check('the A stacks with solid rather than replacing it',
+        blending.stacked.every((id) => blending.marked.includes(id)),
+        blending.stacked.join(', ') || 'no solid terrain autotiles here');
+  check('marked terrain says so in its title', blending.titles, 'titles carry it');
+  check('and unmarked terrain says it has no transitions', blending.plainTitles,
+        'the absence is stated, not left blank');
+
   // --- interiors ------------------------------------------------------------
   // A room entered through a door is not next to the map it is entered from,
   // so the atlas must not place it on the grid as though it were - it gets a
@@ -668,6 +729,7 @@ function dropScratch() {
     }));
     return {
       inside, placed,
+      door: (window.editor.layout.interiors.get('map.shed_interior') || {}).door,
       lines: [...document.querySelectorAll('#world-maps .mapline.inside')]
         .map((n) => n.textContent),
       notes: [...document.querySelectorAll('#world-notes .note')].map((n) => n.textContent),
@@ -683,10 +745,14 @@ function dropScratch() {
           && outdoor.every((o) => !(room.ox < o.ox + o.w && o.ox < room.ox + room.w
                                  && room.oy < o.oy + o.h && o.oy < room.oy + room.h)),
         room ? `at ${room.ox},${room.oy}` : 'not placed');
+  // The coordinate is read off the map rather than written in here: it moved
+  // once when the shed moved, and a test that has to be edited every time the
+  // world is rearranged is a test people start ignoring.
+  const doorAt = rooms.door ? rooms.door.join(',') : null;
   check('and it is tied back to the door it is behind',
-        !!room && room.parent === 'map.wilderness1'
-          && rooms.lines.some((t) => /through the door at 12,8/.test(t)),
-        room ? `parent ${room.parent}` : '-');
+        !!room && room.parent === 'map.wilderness1' && !!doorAt
+          && rooms.lines.some((t) => t.includes(`through the door at ${doorAt}`)),
+        room ? `parent ${room.parent}, door ${doorAt}` : '-');
   // The note about an inland doorway is for a doorway that is not a door into
   // a room. Reporting every interior as an oddity would bury the real ones.
   check('a door into a room is not reported as an oddity',
@@ -778,6 +844,48 @@ function dropScratch() {
         `${loot.gatherSwatches} swatches`);
   check('a swatch is gatherable or scenery, never both', loot.solidAndGather === 0,
         `${loot.solidAndGather} wearing two marks`);
+  // Every swatch is drawn at 48px whatever frame it is really on, so the size
+  // has to be written on it or the palette shows a mushroom and a temple the
+  // same size. It is read off the atlas the sprite is actually in.
+  const sizes = await page.evaluate(() => {
+    const out = [];
+    for (const el of document.querySelectorAll('#pal-objects .swatch')) {
+      const tag = el.querySelector('.size');
+      const rec = window.spriteFor(el.dataset.id);
+      out.push({ id: el.dataset.id, shown: tag ? tag.textContent : null,
+                 real: (() => {
+                   const [w, h] = window.editor.M.atlases[rec.atlas].frame;
+                   return w === h ? w + 'px' : w + 'x' + h;
+                 })() });
+    }
+    return out;
+  });
+  check('every object swatch says what frame it is on',
+        sizes.length > 0 && sizes.every((s) => s.shown === s.real),
+        sizes.filter((s) => s.shown !== s.real)
+             .map((s) => `${s.id} says ${s.shown} not ${s.real}`).join(', ')
+          || `${sizes.length} swatches agree with their atlas`);
+  // Equippable is a property of the item, so the mark has to be read off the
+  // definition rather than off the kind: three of the nineteen items are
+  // armour and four are weapons, and nothing else may carry it.
+  const equip = await page.evaluate(() => {
+    const marked = [...document.querySelectorAll('#pal-objects .swatch')]
+      .filter((e) => e.querySelector('.equip')).map((e) => e.dataset.id).sort();
+    const should = Object.values(window.editor.M.items)
+      .filter((d) => d.equippable).map((d) => d.id).sort();
+    const letters = [...document.querySelectorAll('#pal-objects .equip')]
+      .every((e) => e.textContent === 'E');
+    return { marked, should, letters };
+  });
+  check('every equippable item is marked with an E, and only those',
+        JSON.stringify(equip.marked) === JSON.stringify(equip.should)
+          && equip.should.length > 0 && equip.letters,
+        `${equip.marked.length} marked, ${equip.should.length} equippable`);
+
+  check('and more than one size is actually in use',
+        new Set(sizes.map((s) => s.shown)).size > 1,
+        [...new Set(sizes.map((s) => s.shown))].sort().join(', '));
+
   check('the mark says what it is', loot.titles.every((t) => /gatherable/.test(t)),
         loot.titles.join(' | '));
 
@@ -981,6 +1089,199 @@ function dropScratch() {
         JSON.stringify(marked.named) === JSON.stringify(marked.wanted)
           && marked.named.length > 0 && marked.why,
         marked.named.join(', '));
+
+
+  // --- item and actor sheets --------------------------------------------------
+  // The sheets are the only place these numbers can be read without opening a
+  // JSON file, so what matters is that every definition is offered, that what
+  // is shown is what is on disk, and that a save lands on the right file and
+  // leaves everything it did not touch alone.
+  const sheets = await page.evaluate(async () => {
+    await window.setView('items');
+    const list = [...document.querySelectorAll('#defs-items .list button')];
+    const priced = document.querySelector('#defs-items input[data-key="price"]');
+    const first = list[0].dataset.id;
+    return {
+      offered: list.map((e) => e.dataset.id).sort(),
+      defined: Object.keys(window.editor.M.items).sort(),
+      price: priced ? priced.value : null,
+      onDisk: String(window.editor.M.items[first].price),
+      fields: [...document.querySelectorAll('#defs-items .sheet [data-key]')]
+        .map((e) => e.dataset.key),
+    };
+  });
+  check('every item is offered on the items view',
+        JSON.stringify(sheets.offered) === JSON.stringify(sheets.defined)
+          && sheets.defined.length > 0,
+        `${sheets.offered.length} listed, ${sheets.defined.length} defined`);
+  check('the sheet shows what is on disk', sheets.price === sheets.onDisk,
+        `${sheets.price} vs ${sheets.onDisk}`);
+  check('and it offers the fields it is meant to',
+        ['price', 'consumable', 'equippable', 'stack', 'description']
+          .every((k) => sheets.fields.includes(k)),
+        sheets.fields.join(', '));
+
+  // A cap on something that does not stack is refused by the build, so the
+  // row is not there to be filled in when the flag is off.
+  const capRow = await page.evaluate(async () => {
+    const pick = (id) => {
+      const b = [...document.querySelectorAll('#defs-items .list button')]
+        .find((e) => e.dataset.id === id);
+      b.click();
+    };
+    const rowShown = () => {
+      const el = document.querySelector('#defs-items input[data-key="stack_max"]');
+      return el ? !el.closest('label').hidden : false;
+    };
+    pick('item.berries');                       // stacks
+    const stacking = rowShown();
+    pick('item.axe');                           // does not
+    const notStacking = rowShown();
+    pick('item.berries');
+    const box = document.querySelector('#defs-items input[data-key="stack"]');
+    box.checked = false; box.onchange();
+    const afterUntick = rowShown();
+    box.checked = true; box.onchange();
+    return { stacking, notStacking, afterUntick, backAgain: rowShown() };
+  });
+  check('max stack is shown for a thing that stacks', capRow.stacking);
+  check('and hidden for one that does not', !capRow.notStacking);
+  check('unticking stacks takes the cap away with it',
+        !capRow.afterUntick && capRow.backAgain, 'and ticking brings it back');
+
+  // The save has to be a patch, not a replacement: the sheet knows nothing
+  // about sprite, kind or slot, and must not be able to drop them.
+  const saved = await page.evaluate(async () => {
+    const before = JSON.parse(JSON.stringify(window.editor.M.items['item.berries']));
+    const ok = await window.saveDef('items', 'item.berries',
+      { price: 11, consumable: true, equippable: false, stack: true,
+        stack_max: 25, description: before.description, note: '' }, null);
+    const res = await fetch('/api/def?kind=items&name=berries',
+      { method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ price: before.price, stack_max: before.stack_max }) });
+    const back = (await res.json()).def;
+    return { ok, after: window.editor.M.items['item.berries'], before, back };
+  });
+  check('saving an item writes the number', saved.ok && saved.after.price === 11,
+        `price came back ${saved.after.price}`);
+  check('and leaves the structural fields alone',
+        saved.after.sprite === saved.before.sprite
+          && saved.after.kind === saved.before.kind
+          && saved.after.name === saved.before.name,
+        'sprite, kind and name survived a save that never mentioned them');
+  check('the file is back as it was', saved.back.price === saved.before.price
+          && saved.back.stack_max === saved.before.stack_max,
+        `price ${saved.back.price}, stack_max ${saved.back.stack_max}`);
+
+  const actorSheet = await page.evaluate(async () => {
+    await window.setView('actors');
+    const list = [...document.querySelectorAll('#defs-actors .list button')];
+    const b = list.find((e) => e.dataset.id === 'npc.boar');
+    if (b) b.click();
+    const val = (k) => {
+      const el = document.querySelector(`#defs-actors [data-key="${k}"]`);
+      return el ? el.value : null;
+    };
+    return {
+      offered: list.map((e) => e.dataset.id).sort(),
+      defined: Object.keys(window.editor.M.actors).sort(),
+      level: val('level'), hp: val('hp'), attack: val('attack'), armor: val('armor'),
+      boar: window.editor.M.actors['npc.boar'],
+      goatHp: (() => {
+        const g = [...document.querySelectorAll('#defs-actors .list button')]
+          .find((e) => e.dataset.id === 'npc.goat');
+        if (g) g.click();
+        const el = document.querySelector('#defs-actors [data-key="hp"]');
+        return el ? el.value : null;
+      })(),
+    };
+  });
+  check('every actor is offered on the actors view',
+        JSON.stringify(actorSheet.offered) === JSON.stringify(actorSheet.defined)
+          && actorSheet.defined.length > 0,
+        `${actorSheet.offered.length} listed`);
+  check('an actor sheet reads its stats off the definition',
+        Number(actorSheet.level) === actorSheet.boar.level
+          && Number(actorSheet.hp) === actorSheet.boar.hp
+          && Number(actorSheet.attack) === actorSheet.boar.attack
+          && Number(actorSheet.armor) === actorSheet.boar.armor,
+        `level ${actorSheet.level} hp ${actorSheet.hp} `
+          + `attack ${actorSheet.attack} armor ${actorSheet.armor}`);
+  check('a thing with no hp shows an empty box, not a zero',
+        actorSheet.goatHp === '',
+        `the goat reads ${JSON.stringify(actorSheet.goatHp)}`);
+
+  // behaviour is a word with three values, and the sheet has to offer exactly
+  // those - a free text box here would let "agressive" through to a build that
+  // refuses it. Which actors exist changes, so this names none of them: it
+  // walks the whole list and checks each dropdown against its own definition.
+  const behaviour = await page.evaluate(async () => {
+    await window.setView('actors');
+    const defs = window.editor.M.actors;
+    const pick = (id) => {
+      const b = [...document.querySelectorAll('#defs-actors .list button')]
+        .find((e) => e.dataset.id === id);
+      if (!b) throw new Error('no row for ' + id);
+      b.click();
+    };
+    const sel = () => document.querySelector('#defs-actors [data-key="behaviour"]');
+    const radiusShown = () => {
+      const el = document.querySelector('#defs-actors [data-key="walk_radius"]');
+      return el ? !el.closest('label').hidden : false;
+    };
+    const mismatched = [];
+    for (const id of Object.keys(defs)) {
+      pick(id);
+      if (sel().value !== defs[id].behaviour) {
+        mismatched.push(`${id} shows ${sel().value}, is ${defs[id].behaviour}`);
+      }
+    }
+    const walker = Object.keys(defs).find((k) => defs[k].walking);
+    const stander = Object.keys(defs).find((k) => !defs[k].walking);
+    pick(stander);
+    const standerRadius = radiusShown();
+    pick(walker);
+    const walkerRadius = radiusShown();
+    const walks = document.querySelector('#defs-actors [data-key="walking"]');
+    walks.checked = false; walks.onchange();
+    const afterUntick = radiusShown();
+    walks.checked = true; walks.onchange();
+    return { tag: sel().tagName, options: [...sel().options].map((o) => o.value),
+             mismatched, walkerRadius, standerRadius, afterUntick,
+             back: radiusShown(), defs, walker, stander };
+  });
+  check('behaviour is a choice of exactly the three',
+        behaviour.tag === 'SELECT'
+          && JSON.stringify(behaviour.options)
+             === JSON.stringify(['passive', 'defensive', 'offensive']),
+        behaviour.options.join(', '));
+  check('and every sheet reads what its actor actually is',
+        behaviour.mismatched.length === 0,
+        behaviour.mismatched.join('; ')
+          || `${Object.keys(behaviour.defs).length} actors agree`);
+  check('walk radius is shown for a walker and hidden for a stander',
+        behaviour.walkerRadius && !behaviour.standerRadius,
+        `${behaviour.walker} vs ${behaviour.stander}`);
+  check('unticking walks takes the radius with it',
+        !behaviour.afterUntick && behaviour.back);
+  check('every actor carries the three new fields',
+        Object.values(behaviour.defs).every((d) =>
+          ['passive', 'defensive', 'offensive'].includes(d.behaviour)
+          && typeof d.walking === 'boolean'
+          && Number.isInteger(d.walk_radius)),
+        `${Object.keys(behaviour.defs).length} actors`);
+
+  // The views have to be reachable the way world, quests and talk are.
+  const keys = await page.evaluate(async () => {
+    await window.setView('map');
+    window.dispatchEvent(new KeyboardEvent('keydown', { key: 'i' }));
+    const onItems = document.getElementById('v-items').classList.contains('on');
+    window.dispatchEvent(new KeyboardEvent('keydown', { key: 'a' }));
+    const onActors = document.getElementById('v-actors').classList.contains('on');
+    return { onItems, onActors };
+  });
+  check('I opens the items view', keys.onItems);
+  check('A opens the actors view', keys.onActors);
 
   check('no console errors', problems.length === 0, problems.join(' | '));
 

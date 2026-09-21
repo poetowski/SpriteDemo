@@ -7,6 +7,7 @@ the game does, so what you place is what the game draws. A browser cannot
 write to the repo, so this small server does two things for it:
 
     POST /api/save?map=<id>   write content/maps/<name>.json
+    POST /api/def?kind=&name=  patch fields into content/<kind>/<name>.json
     POST /api/build           run tools/build.py and return its output
 
 Local only. It serves the repository root, so the editor can fetch
@@ -87,6 +88,46 @@ class Handler(SimpleHTTPRequestHandler):
                 json.dump(data, fh, indent=2)
                 fh.write("\n")
             return self._json(HTTPStatus.OK, {"ok": True, "path": os.path.relpath(path, ROOT)})
+
+        # A definition is edited field by field rather than replaced wholesale:
+        # the editor only knows about the handful of fields it shows, and a
+        # whole-file PUT would silently drop sprite, rig, states, wander and
+        # everything else it has never heard of.
+        if url.path == "/api/def":
+            q = parse_qs(url.query)
+            kind = q.get("kind", [""])[0]
+            name = q.get("name", [""])[0]
+            if kind not in ("items", "actors"):
+                return self._json(HTTPStatus.BAD_REQUEST,
+                                  {"error": "kind must be items or actors"})
+            if not name or not all(c.isalnum() or c in "_-" for c in name):
+                return self._json(HTTPStatus.BAD_REQUEST, {"error": "bad name"})
+            try:
+                patch = json.loads(raw.decode("utf-8"))
+            except ValueError as e:
+                return self._json(HTTPStatus.BAD_REQUEST, {"error": f"not JSON: {e}"})
+            path = os.path.join(ROOT, "content", kind, f"{name}.json")
+            if not os.path.exists(path):
+                return self._json(HTTPStatus.NOT_FOUND, {"error": f"no {name}.json"})
+            with open(path, encoding="utf-8") as fh:
+                defn = json.load(fh)
+            # The same rule the maps get: a save may only land on the thing it
+            # came from. id is never in the patch, so it cannot be moved either.
+            if patch.get("id", defn["id"]) != defn["id"]:
+                return self._json(HTTPStatus.CONFLICT, {
+                    "error": f"refusing to write {patch['id']!r} over {defn['id']!r}"})
+            patch.pop("id", None)
+            for key, value in patch.items():
+                if value is None:
+                    defn.pop(key, None)      # None means "take this field out"
+                else:
+                    defn[key] = value
+            with open(path, "w", encoding="utf-8") as fh:
+                json.dump(defn, fh, indent=2)
+                fh.write(chr(10))
+            return self._json(HTTPStatus.OK, {"ok": True,
+                                              "path": os.path.relpath(path, ROOT),
+                                              "def": defn})
 
         if url.path == "/api/build":
             proc = subprocess.run([sys.executable, os.path.join(TOOLS, "build.py")],

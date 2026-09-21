@@ -7,5 +7,8 @@
   "held": "spear",
   "stack": false,
   "description": "Left in the old tower by whoever last kept watch.",
-  "damage": 5
+  "damage": 5,
+  "price": 22,
+  "consumable": false,
+  "equippable": true
 }

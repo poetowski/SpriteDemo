@@ -4,5 +4,9 @@
   "sprite": "item.apple",
   "kind": "material",
   "stack": true,
-  "description": "Windfall from under an oak. Still good."
+  "description": "Windfall from under an oak. Still good.",
+  "price": 2,
+  "stack_max": 20,
+  "consumable": true,
+  "equippable": false
 }

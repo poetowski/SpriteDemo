@@ -30,20 +30,23 @@ def run(content, man, tile_canvases=None):
     # 0 - the art scale standard. Every atlas is drawn at 2x; a rig that drifts
     #     back to the old size, or a new atlas added at the wrong one, fails
     #     here rather than looking subtly chunky in the game.
-    STANDARD = {"actors": 32, "actors_huge": 64, "tiles": 16, "props": 32,
-                "props_big": 48, "props_huge": 64, "props_vast": 128,
-                "items": 16, "fx": 8}
+    # (width, height). Everything here is square, and for a while that was the
+    # rule rather than an observation. It is not enforced any more: a thing can
+    # be taller than it is wide without being a mistake, so what is checked is
+    # that both sides are whole 16px tiles.
+    STANDARD = {"actors": (32, 32), "tiles": (16, 16), "props": (32, 32),
+                "props_huge": (64, 64),
+                "props_vast": (128, 128), "items": (16, 16), "fx": (8, 8)}
     for name, meta in man["atlases"].items():
         w, h = meta["frame"]
-        if w != h:
-            _fail("art-scale", f"atlas {name!r} frame {w}x{h} is not square")
         want = STANDARD.get(name)
         if want is None:
-            if w % 16:
-                _fail("art-scale", f"new atlas {name!r} is {w}px; the standard is "
-                                   f"a multiple of the 16px tile")
-        elif w != want:
-            _fail("art-scale", f"atlas {name!r} is {w}px, the standard is {want}px")
+            if w % 16 or h % 16:
+                _fail("art-scale", f"new atlas {name!r} is {w}x{h}; the standard "
+                                   f"is a whole number of 16px tiles each way")
+        elif (w, h) != want:
+            _fail("art-scale", f"atlas {name!r} is {w}x{h}, the standard is "
+                               f"{want[0]}x{want[1]}")
     passed.append("art-scale")
 
     # 0a - the palette has one entry per key. A dict literal takes the last of
@@ -124,28 +127,31 @@ def run(content, man, tile_canvases=None):
         h = defn.get("hostile")
         if not h:
             continue
-        for field in ("sight", "lose", "charge_speed", "damage", "reach",
+        # "damage" used to live here. It is defn["attack"] now, because a
+        # creature hits just as hard whether it is chasing you or standing
+        # still, and having it under "hostile" meant nothing peaceful could
+        # own a number at all.
+        for field in ("sight", "lose", "charge_speed", "reach",
                       "cooldown_ms", "leash"):
             v = h.get(field)
             if not isinstance(v, (int, float)) or v <= 0:
                 _fail("actor-hostile", f"{defn['_file']}: hostile.{field} must "
                                        f"be a positive number, not {v!r}")
-        # Optional, and a flag rather than a number: "provoked" says the
-        # creature does not use any of the above until it has been hit. A
-        # string or a 1 here would be truthy and quietly work, and then one
-        # day would not.
-        if "provoked" in h and not isinstance(h["provoked"], bool):
-            _fail("actor-hostile", f"{defn['_file']}: hostile.provoked is a "
-                                   f"flag - true or false, not {h['provoked']!r}")
+        # "provoked" used to live here as a flag. It is defn["behaviour"] now,
+        # which says the same thing in one word and leaves room for a third
+        # answer - a creature that walks up and starts it.
+        if "provoked" in h:
+            _fail("actor-hostile", f"{defn['_file']}: hostile.provoked is gone - "
+                                   f"say behaviour: \"defensive\" instead")
         if h["lose"] < h["sight"]:
             _fail("actor-hostile", f"{defn['_file']}: hostile.lose ({h['lose']}) "
                                    f"is inside hostile.sight ({h['sight']}), so "
                                    f"it would drop the chase as it started it")
-        if not defn.get("wander"):
-            _fail("actor-hostile", f"{defn['_file']}: a hostile actor needs "
-                                   f"\"wander\" too - chasing is a mode it "
-                                   f"drops into, and it has to have something "
-                                   f"to drop back to")
+        if not defn.get("walking"):
+            _fail("actor-hostile", f"{defn['_file']}: a fighting actor has to "
+                                   f"walk - chasing is a mode it drops into, "
+                                   f"and it has to have something to drop "
+                                   f"back to")
     passed.append("actor-hostile")
     # A creature dies only if its definition says how much it can take, so "hp"
     # is the one field that decides whether something is a hazard or a target.
@@ -156,10 +162,61 @@ def run(content, man, tile_canvases=None):
         if not isinstance(defn["hp"], int) or isinstance(defn["hp"], bool) or defn["hp"] <= 0:
             _fail("actor-hp", f"{defn['_file']}: hp must be a positive whole "
                               f"number, not {defn['hp']!r}")
-        if not defn.get("wander"):
-            _fail("actor-hp", f"{defn['_file']}: {cid} has hp but does not "
-                              f"\"wander\" - only a walking thing can be struck")
+        if not defn.get("walking"):
+            _fail("actor-hp", f"{defn['_file']}: {cid} has hp but does not walk "
+                              f"- only a walking thing can be struck")
     passed.append("actor-hp")
+    # Every actor carries the four numbers the editor shows, because a sheet
+    # with blanks in it is worse than one with zeroes: zero attack says "does
+    # not fight", a missing attack says nobody has decided yet.
+    for cid, defn in content["actors"].items():
+        d = defn.get("description")
+        if not isinstance(d, str) or not d.strip():
+            _fail("actor-stats", f"{defn['_file']}: needs a description")
+        for field, low in (("level", 1), ("attack", 0), ("armor", 0)):
+            v = defn.get(field)
+            if not isinstance(v, int) or isinstance(v, bool) or v < low:
+                _fail("actor-stats", f"{defn['_file']}: {field} must be a whole "
+                                     f"number >= {low}, not {v!r}")
+        # Armour is subtracted from every blow, so armour at or above what the
+        # hero can swing would make a creature literally unkillable.
+        if defn.get("armor", 0) >= 12:
+            _fail("actor-stats", f"{defn['_file']}: armor {defn['armor']} is at "
+                                 f"or above the heaviest blow in the game")
+        # behaviour and the hostile block are two halves of one fact: the word
+        # says whether it fights, the block says how far it sees and how hard
+        # it presses. One without the other is a creature that cannot act.
+        b = defn.get("behaviour")
+        if b not in ("passive", "defensive", "offensive"):
+            _fail("actor-stats", f"{defn['_file']}: behaviour must be passive, "
+                                 f"defensive or offensive, not {b!r}")
+        if b != "passive" and not defn.get("hostile"):
+            _fail("actor-stats", f"{defn['_file']}: {b} but carries no "
+                                 f"\"hostile\" block to chase with")
+        if b == "passive" and defn.get("hostile"):
+            _fail("actor-stats", f"{defn['_file']}: passive but carries a "
+                                 f"\"hostile\" block that can never be used")
+        if not isinstance(defn.get("walking"), bool):
+            _fail("actor-stats", f"{defn['_file']}: walking is a flag - true or "
+                                 f"false, not {defn.get('walking')!r}")
+        r = defn.get("walk_radius")
+        if not isinstance(r, int) or isinstance(r, bool) or r < 0:
+            _fail("actor-stats", f"{defn['_file']}: walk_radius must be a whole "
+                                 f"number >= 0, not {r!r}")
+        if defn.get("walking") and r < 1:
+            _fail("actor-stats", f"{defn['_file']}: it walks, so walk_radius has "
+                                 f"to be at least 1 - at 0 it stands still")
+        if not defn.get("walking") and r:
+            _fail("actor-stats", f"{defn['_file']}: walk_radius {r} on something "
+                                 f"that does not walk says nothing")
+        if defn.get("walking") and not defn.get("wander"):
+            _fail("actor-stats", f"{defn['_file']}: it walks but has no "
+                                 f"\"wander\" timings to walk by")
+        if defn.get("behaviour") != "passive" and defn.get("attack", 0) <= 0:
+            _fail("actor-stats", f"{defn['_file']}: it is hostile but its attack "
+                                 f"is {defn.get('attack')!r} - it would chase "
+                                 f"the hero and never hurt them")
+    passed.append("actor-stats")
     passed.append("actor-states")
     passed.append("actor-complete")
     passed.append("actor-anchor")
@@ -368,7 +425,9 @@ def run(content, man, tile_canvases=None):
     for cid, defn in content["actors"].items():
         if "display_name" not in defn:
             continue
-        for field in ("level", "hp_max", "hp_per_level", "base_damage",
+        # base_damage was this list's name for the hero's own contribution to
+        # a blow; every actor carries "attack" now and the hero is an actor.
+        for field in ("level", "hp_max", "hp_per_level", "attack",
                       "xp_curve", "gear_slots"):
             if field not in defn:
                 _fail("hero-stats", f"{defn['_file']}: {cid} has a display_name "
@@ -669,6 +728,39 @@ def run(content, man, tile_canvases=None):
             _fail("item-kind", f"{defn['_file']}: a weapon needs a positive "
                                f"integer \"damage\"")
     passed.append("item-kind")
+    # What the editor lets you type, the build has to police.
+    for iid, defn in content["items"].items():
+        if not isinstance(defn.get("description"), str) or not defn["description"].strip():
+            _fail("item-trade", f"{defn['_file']}: needs a description")
+        price = defn.get("price")
+        if not isinstance(price, int) or isinstance(price, bool) or price < 0:
+            _fail("item-trade", f"{defn['_file']}: price must be a whole number "
+                                f">= 0, not {price!r}")
+        for flag in ("stack", "consumable", "equippable"):
+            if not isinstance(defn.get(flag), bool):
+                _fail("item-trade", f"{defn['_file']}: {flag} is a flag - true or "
+                                    f"false, not {defn.get(flag)!r}")
+        # stack_max is only meaningful beside stack, and a cap of one is a
+        # thing that does not stack wearing the wrong flag.
+        if defn["stack"]:
+            m = defn.get("stack_max")
+            if not isinstance(m, int) or isinstance(m, bool) or m < 2:
+                _fail("item-trade", f"{defn['_file']}: it stacks, so stack_max "
+                                    f"must be a whole number >= 2, not {m!r}")
+        elif "stack_max" in defn:
+            _fail("item-trade", f"{defn['_file']}: stack_max beside stack:false "
+                                f"says nothing - drop one of them")
+        # Equippable and slot are two halves of one fact.
+        if defn["equippable"] and not defn.get("slot"):
+            _fail("item-trade", f"{defn['_file']}: equippable but has no slot to "
+                                f"go in")
+        if defn.get("slot") and not defn["equippable"]:
+            _fail("item-trade", f"{defn['_file']}: it has a {defn['slot']!r} slot "
+                                f"but is not marked equippable")
+        if "note" in defn and (not isinstance(defn["note"], str) or not defn["note"].strip()):
+            _fail("item-trade", f"{defn['_file']}: note is there but empty - "
+                                f"leave it out instead")
+    passed.append("item-trade")
     # looks: "<weapon item>|<armor item>" -> sprite base, every combination the
     # actor can be seen in. Armed looks must also carry the slash.
     for cid, defn in content["actors"].items():

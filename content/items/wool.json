@@ -4,5 +4,9 @@
   "sprite": "item.wool",
   "kind": "material",
   "stack": true,
-  "description": "A fleece, shed where the flock grazes."
+  "description": "A fleece, shed where the flock grazes.",
+  "price": 6,
+  "stack_max": 20,
+  "consumable": false,
+  "equippable": false
 }

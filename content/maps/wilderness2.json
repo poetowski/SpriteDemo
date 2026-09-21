@@ -351,13 +351,6 @@
       ]
     },
     {
-      "def": "npc.goat",
-      "tile": [
-        15,
-        7
-      ]
-    },
-    {
       "def": "prop.lamp_post",
       "tile": [
         4,
@@ -454,6 +447,216 @@
         3,
         5
       ]
+    },
+    {
+      "def": "item.fish",
+      "tile": [
+        3,
+        12
+      ]
+    },
+    {
+      "def": "npc.goat",
+      "tile": [
+        1,
+        15
+      ]
+    },
+    {
+      "def": "npc.goat",
+      "tile": [
+        2,
+        15
+      ]
+    },
+    {
+      "def": "prop.tree_dead",
+      "tile": [
+        7,
+        12
+      ]
+    },
+    {
+      "def": "prop.tree_dead",
+      "tile": [
+        6,
+        12
+      ]
+    },
+    {
+      "def": "prop.tombstone",
+      "tile": [
+        5,
+        12
+      ]
+    },
+    {
+      "def": "prop.tombstone",
+      "tile": [
+        4,
+        12
+      ]
+    },
+    {
+      "def": "prop.table",
+      "tile": [
+        8,
+        12
+      ]
+    },
+    {
+      "def": "prop.table",
+      "tile": [
+        11,
+        12
+      ]
+    },
+    {
+      "def": "prop.stump",
+      "tile": [
+        12,
+        12
+      ]
+    },
+    {
+      "def": "prop.stump",
+      "tile": [
+        10,
+        12
+      ]
+    },
+    {
+      "def": "prop.stump",
+      "tile": [
+        11,
+        11
+      ]
+    },
+    {
+      "def": "prop.stump",
+      "tile": [
+        11,
+        13
+      ]
+    },
+    {
+      "def": "prop.statue",
+      "tile": [
+        0,
+        12
+      ]
+    },
+    {
+      "def": "prop.statue",
+      "tile": [
+        11,
+        16
+      ]
+    },
+    {
+      "def": "prop.statue",
+      "tile": [
+        12,
+        16
+      ]
+    },
+    {
+      "def": "prop.statue",
+      "tile": [
+        11,
+        17
+      ]
+    },
+    {
+      "def": "prop.roots",
+      "tile": [
+        4,
+        13
+      ]
+    },
+    {
+      "def": "prop.roots",
+      "tile": [
+        0,
+        5
+      ]
+    },
+    {
+      "def": "prop.roots",
+      "tile": [
+        0,
+        3
+      ]
+    },
+    {
+      "def": "prop.roots",
+      "tile": [
+        0,
+        1
+      ]
+    },
+    {
+      "def": "prop.roots",
+      "tile": [
+        0,
+        1
+      ]
+    },
+    {
+      "def": "prop.roots",
+      "tile": [
+        1,
+        1
+      ]
+    },
+    {
+      "def": "prop.roots",
+      "tile": [
+        2,
+        1
+      ]
+    },
+    {
+      "def": "prop.roots",
+      "tile": [
+        4,
+        1
+      ]
+    },
+    {
+      "def": "prop.roots",
+      "tile": [
+        3,
+        1
+      ]
+    },
+    {
+      "def": "prop.scarecrow",
+      "tile": [
+        7,
+        8
+      ]
+    },
+    {
+      "def": "prop.scarecrow",
+      "tile": [
+        9,
+        8
+      ]
+    },
+    {
+      "def": "prop.scarecrow",
+      "tile": [
+        8,
+        8
+      ]
+    },
+    {
+      "def": "prop.shed",
+      "tile": [
+        14,
+        6
+      ]
     }
   ],
   "exits": [
@@ -461,86 +664,22 @@
       "tiles": [
         [
           19,
-          10
-        ],
-        [
-          19,
-          11
-        ],
-        [
-          19,
-          12
-        ],
-        [
-          19,
-          13
-        ],
-        [
-          19,
-          14
-        ],
-        [
-          19,
-          15
-        ],
-        [
-          19,
           16
         ],
         [
           19,
           17
-        ],
-        [
-          19,
-          18
-        ],
-        [
-          19,
-          19
         ]
       ],
       "to": "map.wilderness1",
       "spawns": [
         [
           1,
-          10
-        ],
-        [
-          1,
-          11
-        ],
-        [
-          1,
-          12
-        ],
-        [
-          1,
-          13
-        ],
-        [
-          1,
-          14
-        ],
-        [
-          1,
-          15
-        ],
-        [
-          1,
           16
         ],
         [
           1,
           17
-        ],
-        [
-          1,
-          18
-        ],
-        [
-          1,
-          19
         ]
       ],
       "facing": "right"

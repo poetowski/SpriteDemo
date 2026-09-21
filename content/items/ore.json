@@ -4,5 +4,9 @@
   "sprite": "item.ore",
   "kind": "material",
   "stack": true,
-  "description": "A lump from the quarry, red where the iron shows."
+  "description": "A lump from the quarry, red where the iron shows.",
+  "price": 12,
+  "stack_max": 20,
+  "consumable": false,
+  "equippable": false
 }

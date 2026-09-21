@@ -371,7 +371,7 @@ class World extends Phaser.Scene {
       this.interactables.push(pick);
       return sprite;
     }
-    if (def.blocks && !def.wander) {
+    if (def.blocks && !def.walking) {
       // Static things claim their tiles once. Something that walks needs a
       // body that travels with it instead - see below.
       for (const [dx, dy] of footprintOf(def)) {
@@ -389,7 +389,7 @@ class World extends Phaser.Scene {
       // position is read from the sprite, so a wandering animal stays talkable
       this.interactables.push({ id: defId, def, sprite });
     }
-    if (def.wander) {
+    if (def.walking) {
       // Wanderers are moved by their body rather than by setting x/y, so the
       // body goes where the animal goes. A solid one is immovable: the player
       // is pushed out of it, and the animal carries on grazing regardless.
@@ -470,8 +470,8 @@ class World extends Phaser.Scene {
     for (const [dx, dy, facing] of dirs) {
       const nx = w.tile[0] + dx;
       const ny = w.tile[1] + dy;
-      if (Math.abs(nx - w.home[0]) > cfg.radius) continue;   // stay near home
-      if (Math.abs(ny - w.home[1]) > cfg.radius) continue;
+      if (Math.abs(nx - w.home[0]) > w.def.walk_radius) continue;   // stay near home
+      if (Math.abs(ny - w.home[1]) > w.def.walk_radius) continue;
       if (!this.canStandAt(w, nx, ny)) continue;
       const c = this.tileCentre(nx, ny);
       this.claim(w, nx, ny);
@@ -517,7 +517,10 @@ class World extends Phaser.Scene {
     // hostile block from the start and simply does not use it until something
     // hits it. See provoke() - which is also the only thing that sets the flag,
     // so nothing in here needs to know what an elk is.
-    if (!cfg || (cfg.provoked && !w.angered)) return false;
+    // "defensive" is the difference between a boar and an elk: it has the
+    // same chase in it, and will not start one. See provoke(), which is the
+    // only thing that sets angered.
+    if (!cfg || (w.def.behaviour === "defensive" && !w.angered)) return false;
     const home = this.tileCentre(w.home[0], w.home[1]);
 
     // Going home. It has broken off and walks back at its own speed, not the
@@ -598,7 +601,10 @@ class World extends Phaser.Scene {
     if (dist <= cfg.reach && w.gore <= 0) {
       w.gore = cfg.cooldown_ms;
       w.swing = this.swingMs(w);
-      this.hurt(cfg.damage);
+      // What it hits with is the creature's own attack, not something filed
+      // under "hostile": the number belongs to the animal, and hurt() takes
+      // the hero's armour off it.
+      this.hurt(w.def.attack);
     }
     return true;
   }
@@ -844,12 +850,16 @@ class World extends Phaser.Scene {
   }
 
   damageDealt() {
-    return this.heroDef.base_damage
+    return this.heroDef.attack
          + (this.weapon ? M.items[this.weapon].damage : 0);
   }
 
+  /** Bare skin plus whatever is worn over it. The hero's own armor is 0 today,
+   *  but it is read rather than assumed, so raising it is an edit to content
+   *  and not to this file. */
   armorWorn() {
-    return this.armor ? M.items[this.armor].defense : 0;
+    return (this.heroDef.armor || 0)
+         + (this.armor ? M.items[this.armor].defense : 0);
   }
 
   /** Landing a blow is worth what it took off. Levels roll over, carrying the
@@ -963,7 +973,10 @@ class World extends Phaser.Scene {
    *  all day, and nothing in here knows which animals those are. */
   wound(w, n) {
     if (!w.def.hp) return false;
-    w.hp -= n;
+    // The same subtraction hurt() does to the hero, from the other side. The
+    // floor of 1 matters: without it, armour equal to a blow would make a
+    // creature unkillable rather than merely tough.
+    w.hp -= Math.max(1, n - (w.def.armor || 0));
     if (w.hp > 0) return false;
     this.kill(w);
     return true;
@@ -1084,8 +1097,8 @@ class World extends Phaser.Scene {
     for (const n of [2, 1]) {
       const nx = w.tile[0] + dir[0] * n;
       const ny = w.tile[1] + dir[1] * n;
-      if (Math.abs(nx - w.home[0]) > cfg.radius + 2) continue;
-      if (Math.abs(ny - w.home[1]) > cfg.radius + 2) continue;
+      if (Math.abs(nx - w.home[0]) > w.def.walk_radius + 2) continue;
+      if (Math.abs(ny - w.home[1]) > w.def.walk_radius + 2) continue;
       if (!this.canStandAt(w, nx, ny)) continue;
       const c = this.tileCentre(nx, ny);
       this.claim(w, nx, ny);              // a bolt is still a step: it has to

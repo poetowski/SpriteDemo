@@ -1,0 +1,16 @@
+# Render blueprint: the game is static, and game/ is committed already built.
+# tools/build.py writes game/art-embed.js and game/page.html; Render only serves
+# them, so there is deliberately no build command here - nothing to install, no
+# Python, no Pillow. Push a rebuilt game/ and the deploy follows.
+services:
+  - type: web
+    name: spritedemo
+    runtime: static
+    staticPublishPath: ./game
+    # Filenames never change between builds (always art-embed.js, main.js), so a
+    # long max-age would hand players a stale world after a content push.
+    # no-cache still revalidates cheaply against the ETag.
+    headers:
+      - path: /*
+        name: Cache-Control
+        value: no-cache

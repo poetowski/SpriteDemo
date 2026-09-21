@@ -4,5 +4,9 @@
   "sprite": "item.fish",
   "kind": "material",
   "stack": true,
-  "description": "Fresh from the shallows. Cold to hold."
+  "description": "Fresh from the shallows. Cold to hold.",
+  "price": 5,
+  "stack_max": 20,
+  "consumable": true,
+  "equippable": false
 }

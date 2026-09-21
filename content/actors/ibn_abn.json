@@ -6,9 +6,15 @@
   "speed": 0,
   "blocks": true,
   "facing": "down",
-  "interact": "dlg.ibn_abn",
   "states": [
     "walk",
     "idle"
-  ]
+  ],
+  "description": "A nomad with a spare robe and an opinion about the road.",
+  "level": 1,
+  "attack": 0,
+  "armor": 0,
+  "behaviour": "passive",
+  "walking": false,
+  "walk_radius": 0
 }

@@ -5,10 +5,16 @@
   "speed": 0,
   "blocks": true,
   "facing": "down",
-  "interact": "dlg.friedrich",
   "rig": "biped",
   "states": [
     "walk",
     "idle"
-  ]
+  ],
+  "description": "Keeps to himself, and keeps count of what passes.",
+  "level": 1,
+  "attack": 0,
+  "armor": 0,
+  "behaviour": "passive",
+  "walking": false,
+  "walk_radius": 0
 }

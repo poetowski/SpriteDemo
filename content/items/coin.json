@@ -4,5 +4,10 @@
   "sprite": "item.coin",
   "kind": "material",
   "stack": true,
-  "description": "Worn smooth. Older than the village."
+  "description": "Worn smooth. Older than the village.",
+  "price": 1,
+  "stack_max": 99,
+  "note": "The currency. Every other price here is counted in these.",
+  "consumable": false,
+  "equippable": false
 }

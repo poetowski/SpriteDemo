@@ -7,5 +7,8 @@
   "worn": "mail",
   "defense": 3,
   "stack": false,
-  "description": "Rings over a padded shirt. Heavier than it looks, and it looks heavy."
+  "description": "Rings over a padded shirt. Heavier than it looks, and it looks heavy.",
+  "price": 60,
+  "consumable": false,
+  "equippable": true
 }

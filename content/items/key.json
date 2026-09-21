@@ -4,5 +4,9 @@
   "sprite": "item.key",
   "kind": "material",
   "stack": false,
-  "description": "Arne's father's. It opens the chest in the barn yard."
+  "description": "Arne's father's. It opens the chest in the barn yard.",
+  "price": 0,
+  "note": "Opens the chest in the shed and nothing else. Worth nothing to anyone.",
+  "consumable": false,
+  "equippable": false
 }
