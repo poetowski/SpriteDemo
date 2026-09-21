@@ -5,53 +5,12 @@
   "nodes": {
     "greet": {
       "text": [
-        "Mind the roots along here, the whole stretch is roots.",
-        "Anything you need hammered, I am up this road till dusk."
+        "Mind the roots along here, the whole stretch is roots."
       ],
       "choices": [
-        {
-          "text": "What do you make?",
-          "goto": "wares"
-        },
         {
           "text": "Any work going?",
-          "goto": "jobs"
-        },
-        {
-          "text": "About that chest.",
-          "goto": "chest_talk",
-          "when": {
-            "flag": "arne.gave_key"
-          }
-        },
-        {
-          "text": "Nothing. Good day."
-        }
-      ]
-    },
-    "wares": {
-      "text": [
-        "Nails, hinges, a blade now and then.",
-        "The one by the anvil is spoken for. Lift it if you think you can."
-      ],
-      "choices": [
-        {
-          "text": "Something else.",
-          "goto": "greet"
-        },
-        {
-          "text": "I should go."
-        }
-      ]
-    },
-    "jobs": {
-      "text": [
-        "Always something. Standing still is the one thing I am no good at."
-      ],
-      "choices": [
-        {
-          "text": "Something I could fetch?",
-          "goto": "berries_ask",
+          "goto": "ask",
           "when": {
             "quest": {
               "id": "quest.arne_berries",
@@ -61,7 +20,7 @@
         },
         {
           "text": "I have your berries.",
-          "goto": "berries_done",
+          "goto": "done",
           "when": {
             "quest": {
               "id": "quest.arne_berries",
@@ -72,7 +31,7 @@
         },
         {
           "text": "Still picking.",
-          "goto": "berries_wait",
+          "goto": "wait",
           "when": {
             "quest": {
               "id": "quest.arne_berries",
@@ -81,126 +40,26 @@
           }
         },
         {
-          "text": "Something worth a blade?",
-          "goto": "boars_ask",
-          "when": {
-            "all": [
-              {
-                "quest": {
-                  "id": "quest.arne_berries",
-                  "is": "done"
-                }
-              },
-              {
-                "quest": {
-                  "id": "quest.arne_boars",
-                  "is": "none"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "text": "Three boars, down.",
-          "goto": "boars_done",
-          "when": {
-            "quest": {
-              "id": "quest.arne_boars",
-              "is": "ready"
-            }
-          },
-          "finish": "quest.arne_boars"
-        },
-        {
-          "text": "Still counting boars.",
-          "goto": "boars_wait",
-          "when": {
-            "quest": {
-              "id": "quest.arne_boars",
-              "is": "active"
-            }
-          }
-        },
-        {
-          "text": "Anything in the way of ore?",
-          "goto": "ore_ask",
-          "when": {
-            "noflag": "arne.wants_ore"
-          },
-          "set": "arne.wants_ore"
-        },
-        {
-          "text": "I have your ore.",
-          "goto": "ore_done",
-          "when": {
-            "all": [
-              {
-                "flag": "arne.wants_ore"
-              },
-              {
-                "noflag": "arne.gave_key"
-              },
-              {
-                "has": "item.ore"
-              }
-            ]
-          },
-          "take": "item.ore",
-          "give": "item.key",
-          "set": "arne.gave_key"
-        },
-        {
-          "text": "Still looking for that ore.",
-          "goto": "ore_wait",
-          "when": {
-            "all": [
-              {
-                "flag": "arne.wants_ore"
-              },
-              {
-                "noflag": "arne.gave_key"
-              },
-              {
-                "nothas": "item.ore"
-              }
-            ]
-          }
-        },
-        {
-          "text": "Another time.",
-          "goto": "greet"
+          "text": "Good day."
         }
       ]
     },
-    "berries_ask": {
+    "ask": {
       "text": [
         "Berries. Three handfuls, the small dark ones off the wood's edge.",
-        "Have a word with the goat before you go. It has the run of that patch and no manners at all."
+        "Have a word with the goat first. It has the run of that patch."
       ],
       "choices": [
         {
           "text": "I'll fetch them.",
-          "goto": "berries_took",
           "start": "quest.arne_berries"
         },
         {
-          "text": "Not today.",
-          "goto": "greet"
+          "text": "Not today."
         }
       ]
     },
-    "berries_took": {
-      "text": [
-        "Good. Up past the old stump, where the light gets in."
-      ],
-      "choices": [
-        {
-          "text": "Right.",
-          "goto": "greet"
-        }
-      ]
-    },
-    "berries_wait": {
+    "wait": {
       "text": [
         "Three handfuls. And the goat first, unless you fancy picking stalks."
       ],
@@ -210,111 +69,14 @@
         }
       ]
     },
-    "berries_done": {
+    "done": {
       "text": [
         "That is the lot, and good weight on them.",
-        "Here - a coin, and my thanks. I will make something of these."
+        "Here - a coin, and my thanks."
       ],
       "choices": [
         {
-          "text": "Thank you.",
-          "goto": "greet"
-        }
-      ]
-    },
-    "boars_ask": {
-      "text": [
-        "Boars. They have come up out of the southern meadow and they are not shy.",
-        "Three fewer would do. Go down and see for yourself first - it is south of the crossing."
-      ],
-      "choices": [
-        {
-          "text": "I'll see to it.",
-          "goto": "boars_took",
-          "start": "quest.arne_boars"
-        },
-        {
-          "text": "I'd rather not.",
-          "goto": "greet"
-        }
-      ]
-    },
-    "boars_took": {
-      "text": [
-        "Mind the tusks. They go for the legs, every time."
-      ],
-      "choices": [
-        {
-          "text": "Right.",
-          "goto": "greet"
-        }
-      ]
-    },
-    "boars_wait": {
-      "text": [
-        "South, past the crossing. You will hear them before you see them."
-      ],
-      "choices": [
-        {
-          "text": "Right."
-        }
-      ]
-    },
-    "boars_done": {
-      "text": [
-        "Three. I will sleep better for that.",
-        "Take this. My father's second best, and better than nothing."
-      ],
-      "choices": [
-        {
-          "text": "Thank you.",
-          "goto": "greet"
-        }
-      ]
-    },
-    "ore_ask": {
-      "text": [
-        "As it happens. The grey outcrops west of here have iron in them - red in the grey.",
-        "Bring me a lump and I will make it worth the walk."
-      ],
-      "choices": [
-        {
-          "text": "I'll have a look.",
-          "goto": "greet"
-        }
-      ]
-    },
-    "ore_wait": {
-      "text": [
-        "West, past the pines. Red in the grey. You will not miss it."
-      ],
-      "choices": [
-        {
-          "text": "Right."
-        }
-      ]
-    },
-    "ore_done": {
-      "text": [
-        "Good weight on that. It will do.",
-        "Here - the key to the chest in the shed, back east.",
-        "It was my father's. I never had the stomach for what is in it."
-      ],
-      "choices": [
-        {
-          "text": "Thank you.",
-          "goto": "greet"
-        }
-      ]
-    },
-    "chest_talk": {
-      "text": [
-        "Open it. Whatever is in there has waited long enough."
-      ],
-      "choices": [
-        {
-          "text": "I will.",
-          "goto": "greet"
+          "text": "Thank you."
         }
       ]
     }
