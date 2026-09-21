@@ -1,9 +1,6 @@
 {
   "id": "map.desert1",
   "name": "Desert I",
-  "tags": [
-    "desert"
-  ],
   "tile_size": 16,
   "size": [
     20,
@@ -22,23 +19,24 @@
     "l": "tile.salt",
     "c": "tile.scrub",
     "s": "tile.sandstone",
-    "X": "tile.portal"
+    "X": "tile.portal",
+    "p": "tile.gravel"
   },
   "ground": [
-    "...............llll.",
-    "..............llllll",
-    "..ooooo.......llllll",
-    ".ooooooo......llllll",
-    ".ooooooo.......lll.l",
-    ".ooooooo............",
+    "........pp.....llll.",
+    "........pp....llllll",
+    "..ooooo.pp....llllll",
+    ".ooooooopp....llllll",
+    ".ooooooopp.....lll.l",
+    ".ooooooopp..........",
     "..ooooo.............",
     "....................",
     "............sssss...",
     ".cccc......sssssss..",
     ".ccccc.....sssssss..",
     "..cccc.....sssssss..",
-    "...........sssssss..",
-    "...........ssXXsss..",
+    "pppppp.....sssssss..",
+    "pppppp.....ssXXsss..",
     "............sssss...",
     "....................",
     "........cccc........",
@@ -291,7 +289,45 @@
         17,
         2
       ]
+    },
+    {
+      "def": "item.coin",
+      "tile": [
+        8,
+        5
+      ]
+    },
+    {
+      "def": "prop.cairn",
+      "tile": [
+        7,
+        2
+      ]
+    },
+    {
+      "def": "prop.cairn",
+      "tile": [
+        10,
+        2
+      ]
+    },
+    {
+      "def": "prop.cairn",
+      "tile": [
+        3,
+        11
+      ]
+    },
+    {
+      "def": "prop.cairn",
+      "tile": [
+        3,
+        14
+      ]
     }
+  ],
+  "tags": [
+    "desert"
   ],
   "exits": [
     {

@@ -27,8 +27,8 @@
     ".t.tt.dddddda...a...",
     "a..atdssssssdt......",
     "t..adss~~~~ssd....t.",
-    ".t.dss~~~~~~ssd...t.",
-    ".t.ds~~~~~~~~sda..,t",
+    "cccccc~~~~~~ssd...t.",
+    "cccccc~~~~~~~sda..,t",
     "..dss~~~~~~~~ssd...t",
     ".adss~~~~~~~~ssd.t..",
     "..dss~~~~~~~~ssd.t..",
@@ -577,6 +577,20 @@
         12,
         17
       ]
+    },
+    {
+      "def": "prop.cairn",
+      "tile": [
+        3,
+        2
+      ]
+    },
+    {
+      "def": "prop.cairn",
+      "tile": [
+        3,
+        5
+      ]
     }
   ],
   "exits": [
@@ -689,12 +703,20 @@
         [
           5,
           16
+        ],
+        [
+          6,
+          16
         ]
       ],
       "to": "map.burrow_interior",
       "spawns": [
         [
           9,
+          27
+        ],
+        [
+          10,
           27
         ]
       ],

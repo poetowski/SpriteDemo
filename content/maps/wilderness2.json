@@ -412,6 +412,34 @@
         4,
         6
       ]
+    },
+    {
+      "def": "prop.cairn",
+      "tile": [
+        16,
+        15
+      ]
+    },
+    {
+      "def": "prop.cairn",
+      "tile": [
+        16,
+        18
+      ]
+    },
+    {
+      "def": "prop.cairn",
+      "tile": [
+        2,
+        8
+      ]
+    },
+    {
+      "def": "prop.cairn",
+      "tile": [
+        2,
+        11
+      ]
     }
   ],
   "exits": [

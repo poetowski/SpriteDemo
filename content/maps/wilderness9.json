@@ -25,7 +25,8 @@
     "d": "tile.dirt",
     "m": "tile.marsh",
     "b": "tile.bog",
-    "s": "tile.cobble"
+    "s": "tile.cobble",
+    "p": "tile.boardwalk"
   },
   "ground": [
     "..dc..t.......,.....t.....,...",
@@ -44,8 +45,8 @@
     "mmmmmmmmmmmtmmmm......t..aaaaa",
     "mmmmmmmmmmmmmmmmmmt.......aaa.",
     "mmmmmmmmmmmmmmmmmmm.....t.a...",
-    "mmmmmmbmmmbbmmmmmmm........t..",
-    "mmmmmbbbbbbmmmmmmmmm..........",
+    "ppppppbmmmbbmmmmmmm........t..",
+    "ppppppbbbbbmmmmmmmmm..........",
     "mmmmmmbbbbbbmmmmmmmm...t......",
     "mmmmmbbbbbmbmmtttmmmmbbb.t....",
     "mmttttbbmmmmmmttttmmmbbmb..,..",
@@ -863,6 +864,34 @@
       "tile": [
         22,
         17
+      ]
+    },
+    {
+      "def": "prop.cairn",
+      "tile": [
+        4,
+        15
+      ]
+    },
+    {
+      "def": "prop.cairn",
+      "tile": [
+        4,
+        18
+      ]
+    },
+    {
+      "def": "prop.cairn",
+      "tile": [
+        2,
+        2
+      ]
+    },
+    {
+      "def": "prop.cairn",
+      "tile": [
+        4,
+        2
       ]
     }
   ],

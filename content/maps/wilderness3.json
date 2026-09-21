@@ -21,12 +21,12 @@
     "e": "tile.wood_floor"
   },
   "ground": [
-    "aaaaaaaaaaaaaaaaaaaa",
-    "aaaaaaaaaaaaaaaaaaaa",
-    "aaaaaaaaaaaaaeeeaaaa",
-    "aaaaaaaaaaaaaeeeaaaa",
-    "aaaaaaaaaaaa...aaaaa",
-    "aaaaaaaaaaa....taaaa",
+    "aaaccaaaaaaaaaaaaaaa",
+    "aaaccaaaaaaaaaaaaaaa",
+    "aaaccaaaaaaaaeeeaaaa",
+    "aaaccaaaaaaaaeeeaaaa",
+    "aaaccaaaaaaa...aaaaa",
+    "aaaccaaaaaa....taaaa",
     "aaaaaaaaataa..taaaaa",
     "aaaaa...t....taaaaaa",
     "aaaa...t....t..aaaaa",
@@ -608,6 +608,34 @@
       "tile": [
         10,
         9
+      ]
+    },
+    {
+      "def": "prop.cairn",
+      "tile": [
+        2,
+        3
+      ]
+    },
+    {
+      "def": "prop.cairn",
+      "tile": [
+        5,
+        3
+      ]
+    },
+    {
+      "def": "prop.cairn",
+      "tile": [
+        16,
+        8
+      ]
+    },
+    {
+      "def": "prop.cairn",
+      "tile": [
+        16,
+        11
       ]
     }
   ],

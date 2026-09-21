@@ -18,14 +18,15 @@
     "t": "tile.grass_tall",
     ",": "tile.grass_flower",
     "a": "tile.leaves",
-    "p": "tile.path"
+    "p": "tile.path",
+    "c": "tile.gravel"
   },
   "ground": [
     "....aaaaaaaaaaa.a.......................",
     "...aaaaaaaaaaaaaa.......................",
     "...aaaaaaaaaaaaaa.......................",
-    "...a.aaaaaaaaaaa.....................ppp",
-    "....aaaaaaaaaaaa..................ppp...",
+    "...a.aaaaaaaaaaa..................cccccc",
+    "....aaaaaaaaaaaa..................cccccc",
     "...............tttt..t........pp........",
     "...aaaa......t.ttttt........pp..........",
     "..aaaaaa....,,..........pp..............",
@@ -35,12 +36,12 @@
     ".........pp....t...t....................",
     "....ppp...........tttttt................",
     ".................ttttttt.t.aaaaaaaaaaa..",
-    ".................tttttt...aaaaaaaaaaaaa.",
-    "..................t...t...aaaaaaaaaaaaa.",
-    "..........,,,.............aaaaaaaaaaaaa.",
-    "..........,,,.............aaaaaaaaaaaaa.",
-    "..........................aaaaaaaaaaaaa.",
-    "...........................aaaaaaaaaa.a."
+    ".................ttttttcc.aaaaaaaaaaaaa.",
+    "..................t...tcc.aaaaaaaaaaaaa.",
+    "..........,,,..........cc.aaaaaaaaaaaaa.",
+    "..........,,,..........cc.aaaaaaaaaaaaa.",
+    ".......................cc.aaaaaaaaaaaaa.",
+    ".......................cc..aaaaaaaaaa.a."
   ],
   "entities": [
     {
@@ -419,6 +420,34 @@
       "tile": [
         8,
         6
+      ]
+    },
+    {
+      "def": "prop.cairn",
+      "tile": [
+        37,
+        2
+      ]
+    },
+    {
+      "def": "prop.cairn",
+      "tile": [
+        37,
+        5
+      ]
+    },
+    {
+      "def": "prop.cairn",
+      "tile": [
+        22,
+        15
+      ]
+    },
+    {
+      "def": "prop.cairn",
+      "tile": [
+        25,
+        15
       ]
     }
   ],

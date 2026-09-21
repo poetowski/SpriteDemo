@@ -274,6 +274,20 @@
         12,
         17
       ]
+    },
+    {
+      "def": "prop.cairn",
+      "tile": [
+        2,
+        15
+      ]
+    },
+    {
+      "def": "prop.cairn",
+      "tile": [
+        2,
+        18
+      ]
     }
   ],
   "exits": [

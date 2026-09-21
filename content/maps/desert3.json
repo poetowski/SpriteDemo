@@ -21,7 +21,8 @@
     "o": "tile.oasis",
     "L": "tile.lily",
     "c": "tile.scrub",
-    "s": "tile.sandstone"
+    "s": "tile.sandstone",
+    "p": "tile.gravel"
   },
   "ground": [
     "oooooooooooccc................",
@@ -36,8 +37,8 @@
     "ooooooooccc...................",
     "oooooocc......................",
     "ooooooocc.....................",
-    "ooooooooccc...................",
-    "ooLLLoooocc...................",
+    "ooooooooccc.............pppppp",
+    "ooLLLoooocc.............pppppp",
     "ooLLLLoooocc..................",
     "ooLLLLooooccc.................",
     "ooLLLooooocc..................",
@@ -481,6 +482,20 @@
       "tile": [
         17,
         16
+      ]
+    },
+    {
+      "def": "prop.cairn",
+      "tile": [
+        27,
+        11
+      ]
+    },
+    {
+      "def": "prop.cairn",
+      "tile": [
+        27,
+        14
       ]
     }
   ],

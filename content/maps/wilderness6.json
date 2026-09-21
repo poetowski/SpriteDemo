@@ -909,6 +909,20 @@
         24,
         18
       ]
+    },
+    {
+      "def": "prop.cairn",
+      "tile": [
+        6,
+        37
+      ]
+    },
+    {
+      "def": "prop.cairn",
+      "tile": [
+        9,
+        37
+      ]
     }
   ],
   "exits": [

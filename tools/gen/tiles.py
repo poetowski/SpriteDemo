@@ -697,6 +697,32 @@ def cave_wall(seed=0, phase=0):
     return c
 
 
+def boardwalk(seed=0, phase=0):
+    """Planks laid over standing water, for the one crossing that needs them.
+
+    Every other road in the game is gravel, on the principle that what makes a
+    seam read as one road is being the same road on both sides. This is the
+    exception the principle allows for: gravel tipped into a bog is not a road,
+    it is gravel in a bog, and the fen between Wilderness IX and X is the only
+    place the way through had to be built rather than worn.
+
+    The boards run across the line of travel. That is what a walkway laid
+    plank by plank looks like, and it is also what keeps a long run of them
+    from reading as one smeared streak the way lengthwise boards would. Four
+    boards to the tile, so the pattern meets itself at the edge."""
+    c = Canvas(SIZE, SIZE)
+    c.rect(0, 0, SIZE - 1, SIZE - 1, "WD")
+    rnd = scatter(0x8A2D + seed * 149)
+    for x in range(0, SIZE, 4):
+        c.col(x, 0, SIZE - 1, "OL")           # the gap between two boards
+        c.col(x + 1, 0, SIZE - 1, "WDL")      # and the lit edge of the next
+    for _ in range(9):                        # grain, and boots
+        _put(c, rnd(SIZE), rnd(SIZE), "WDD")
+    for _ in range(3):
+        _put(c, rnd(SIZE), rnd(SIZE), "WDL")
+    return c
+
+
 BASE = {
     "tile.grass": grass,
     "tile.grass_flower": grass_flower,
@@ -723,6 +749,7 @@ BASE = {
     "tile.straw": straw,
     "tile.cave_floor": cave_floor,
     "tile.cave_wall": cave_wall,
+    "tile.boardwalk": boardwalk,
     "tile.shallow": shallow,
     "tile.water": water,
 }
@@ -733,6 +760,7 @@ TILE_ORDER = list(BASE)
 VARIANTS = {"tile.grass": 3, "tile.grass_tall": 2, "tile.water": 2,
             "tile.sand": 2, "tile.leaves": 2, "tile.wood_floor": 2,
             "tile.straw": 2, "tile.cave_floor": 3, "tile.cave_wall": 2,
+            "tile.boardwalk": 2,
             # Dune needs the most of any base: it is the whole floor of the
             # biome, and one ripple pattern repeated across a map is a rug.
             "tile.dune": 4, "tile.salt": 2, "tile.scrub": 2,
