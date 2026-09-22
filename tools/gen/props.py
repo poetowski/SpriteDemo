@@ -1004,20 +1004,99 @@ def table():
     return c.outline()
 
 
+def _chest_body(c, wood, light, dark, lid=True):
+    """The shared carcass: a box on the ground line and a lid over it."""
+    c.rect(8, 19, 23, BASE_Y, wood)      # body
+    c.col(23, 19, BASE_Y, dark)
+    c.row(8, 23, BASE_Y, dark)
+    if lid:
+        _blob(c, 13, (7, 7, 8, 8, 8, 8), wood, cx=15)   # the domed lid
+        c.row(8, 23, 13, light)
+    c.row(8, 23, 18, dark)
+
+
+def _lock(c, plate="MTL"):
+    c.rect(14, 18, 17, 21, plate)        # the lock plate
+    c.set(15, 20, "OL")
+    c.set(16, 20, "OL")
+
+
 def chest():
     c = Canvas(FRAME, FRAME)
-    c.rect(8, 19, 23, BASE_Y, "WD")      # body
-    c.col(23, 19, BASE_Y, "WDD")
-    c.row(8, 23, BASE_Y, "WDD")
-    _blob(c, 13, (7, 7, 8, 8, 8, 8), "WD", cx=15)   # the domed lid
-    c.row(8, 23, 13, "WDL")
-    c.row(8, 23, 18, "WDD")
+    _chest_body(c, "WD", "WDL", "WDD")
     for x in (11, 20):                   # iron bands over the lid and body
         c.col(x, 13, BASE_Y, "MT")
         c.col(x + 1, 13, BASE_Y, "MTD")
-    c.rect(14, 18, 17, 21, "MTL")        # the lock plate
+    _lock(c)
+    return c.outline()
+
+
+# Four more chests on the same carcass. They differ in what they are made of
+# first and in one small thing second, because a chest is read by its colour
+# from across a room and by its detail only once you are standing at it.
+
+def chest_gilded():
+    """Red lacquer and gold: the one worth robbing, and it says so."""
+    c = Canvas(FRAME, FRAME)
+    _chest_body(c, "RF", "RFL", "RFD")
+    for x in (11, 20):
+        c.col(x, 13, BASE_Y, "GD")
+        c.col(x + 1, 13, BASE_Y, "THD")
+    c.row(8, 23, 19, "GD")               # a gold rim where the lid shuts
+    _lock(c, "GDL")
+    return c.outline()
+
+
+def chest_iron():
+    """A strongbox: flat lid, riveted plate, and no wood anywhere."""
+    c = Canvas(FRAME, FRAME)
+    _chest_body(c, "MT", "MTL", "MTD", lid=False)
+    c.rect(8, 15, 23, 17, "MT")          # a flat lid, not a dome
+    c.row(8, 23, 15, "MTL")
+    c.col(23, 15, 17, "MTD")
+    for x in (9, 22):                    # rivets down each corner
+        for y in (20, 23, 26):
+            c.set(x, y, "MTL")
+    c.rect(14, 18, 17, 21, "MTD")        # the lock is a dark hasp on steel
     c.set(15, 20, "OL")
     c.set(16, 20, "OL")
+    c.row(14, 17, 18, "GD")              # one brass edge to find it by
+    return c.outline()
+
+
+def chest_stone():
+    """A coffer cut from one block, lichen on the lid where the rain sits."""
+    c = Canvas(FRAME, FRAME)
+    _chest_body(c, "ST", "STL", "STD", lid=False)
+    c.rect(7, 15, 24, 18, "ST")          # a slab lid, proud of the body
+    c.row(7, 24, 15, "STL")
+    c.row(7, 24, 18, "STX")
+    c.col(24, 15, 18, "STD")
+    c.rect(11, 21, 20, 25, "STD")        # a sunk panel on the face
+    c.rect(12, 22, 19, 24, "ST")
+    c.rect(9, 15, 12, 16, "MS")          # lichen
+    c.set(20, 15, "MS")
+    c.set(10, 17, "MS")
+    return c.outline()
+
+
+def chest_old():
+    """The first chest left out for years: bleached, rusted, a band gone."""
+    c = Canvas(FRAME, FRAME)
+    _chest_body(c, "PTD", "PT", "DRD")
+    c.col(11, 13, BASE_Y, "MTD")         # one band left, rusted through
+    c.col(12, 13, BASE_Y, "DRD")
+    for y in (16, 23):
+        c.set(11, y, "FID")
+    for y in (14, 21, 25):               # where the other one was nailed
+        c.set(20, y, "DRD")
+    c.col(18, 22, BASE_Y - 1, "DRD")     # a split plank
+    c.rect(14, 18, 17, 21, "MTD")
+    c.set(17, 21, "FID")
+    c.set(15, 20, "OL")
+    c.set(16, 20, "OL")
+    c.rect(18, 13, 21, 14, "MS")         # moss on the lid
+    c.set(22, 15, "MS")
     return c.outline()
 
 
@@ -1483,6 +1562,10 @@ PROPS = {
     "prop.tombstone": tombstone,
     "prop.table": table,
     "prop.chest": chest,
+    "prop.chest_gilded": chest_gilded,
+    "prop.chest_iron": chest_iron,
+    "prop.chest_stone": chest_stone,
+    "prop.chest_old": chest_old,
     "prop.beehive": beehive,
     "prop.scarecrow": scarecrow,
     "prop.campfire": campfire,

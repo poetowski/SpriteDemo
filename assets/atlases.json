@@ -37,8 +37,8 @@
     32
    ],
    "cols": 8,
-   "rows": 7,
-   "count": 56
+   "rows": 8,
+   "count": 60
   },
   "props_huge": {
    "image": "atlases/props_huge.png",
@@ -10154,7 +10154,7 @@
     29
    ]
   },
-  "prop.beehive": {
+  "prop.chest_gilded": {
    "atlas": "props",
    "index": 28,
    "anchor": [
@@ -10162,7 +10162,7 @@
     29
    ]
   },
-  "prop.beehive/1": {
+  "prop.chest_iron": {
    "atlas": "props",
    "index": 29,
    "anchor": [
@@ -10170,7 +10170,7 @@
     29
    ]
   },
-  "prop.beehive/2": {
+  "prop.chest_stone": {
    "atlas": "props",
    "index": 30,
    "anchor": [
@@ -10178,7 +10178,7 @@
     29
    ]
   },
-  "prop.beehive/3": {
+  "prop.chest_old": {
    "atlas": "props",
    "index": 31,
    "anchor": [
@@ -10186,7 +10186,7 @@
     29
    ]
   },
-  "prop.scarecrow": {
+  "prop.beehive": {
    "atlas": "props",
    "index": 32,
    "anchor": [
@@ -10194,7 +10194,7 @@
     29
    ]
   },
-  "prop.campfire": {
+  "prop.beehive/1": {
    "atlas": "props",
    "index": 33,
    "anchor": [
@@ -10202,7 +10202,7 @@
     29
    ]
   },
-  "prop.campfire/1": {
+  "prop.beehive/2": {
    "atlas": "props",
    "index": 34,
    "anchor": [
@@ -10210,7 +10210,7 @@
     29
    ]
   },
-  "prop.campfire/2": {
+  "prop.beehive/3": {
    "atlas": "props",
    "index": 35,
    "anchor": [
@@ -10218,7 +10218,7 @@
     29
    ]
   },
-  "prop.campfire/3": {
+  "prop.scarecrow": {
    "atlas": "props",
    "index": 36,
    "anchor": [
@@ -10226,7 +10226,7 @@
     29
    ]
   },
-  "prop.trough": {
+  "prop.campfire": {
    "atlas": "props",
    "index": 37,
    "anchor": [
@@ -10234,7 +10234,7 @@
     29
    ]
   },
-  "prop.trough/1": {
+  "prop.campfire/1": {
    "atlas": "props",
    "index": 38,
    "anchor": [
@@ -10242,7 +10242,7 @@
     29
    ]
   },
-  "prop.trough/2": {
+  "prop.campfire/2": {
    "atlas": "props",
    "index": 39,
    "anchor": [
@@ -10250,7 +10250,7 @@
     29
    ]
   },
-  "prop.flower_pot": {
+  "prop.campfire/3": {
    "atlas": "props",
    "index": 40,
    "anchor": [
@@ -10258,7 +10258,7 @@
     29
    ]
   },
-  "prop.flowers": {
+  "prop.trough": {
    "atlas": "props",
    "index": 41,
    "anchor": [
@@ -10266,7 +10266,7 @@
     29
    ]
   },
-  "prop.workbench": {
+  "prop.trough/1": {
    "atlas": "props",
    "index": 42,
    "anchor": [
@@ -10274,7 +10274,7 @@
     29
    ]
   },
-  "prop.shelf": {
+  "prop.trough/2": {
    "atlas": "props",
    "index": 43,
    "anchor": [
@@ -10282,7 +10282,7 @@
     29
    ]
   },
-  "prop.hearth": {
+  "prop.flower_pot": {
    "atlas": "props",
    "index": 44,
    "anchor": [
@@ -10290,7 +10290,7 @@
     29
    ]
   },
-  "prop.hearth/1": {
+  "prop.flowers": {
    "atlas": "props",
    "index": 45,
    "anchor": [
@@ -10298,7 +10298,7 @@
     29
    ]
   },
-  "prop.hearth/2": {
+  "prop.workbench": {
    "atlas": "props",
    "index": 46,
    "anchor": [
@@ -10306,7 +10306,7 @@
     29
    ]
   },
-  "prop.hearth/3": {
+  "prop.shelf": {
    "atlas": "props",
    "index": 47,
    "anchor": [
@@ -10314,7 +10314,7 @@
     29
    ]
   },
-  "prop.weapon_rack": {
+  "prop.hearth": {
    "atlas": "props",
    "index": 48,
    "anchor": [
@@ -10322,7 +10322,7 @@
     29
    ]
   },
-  "prop.bed_straw": {
+  "prop.hearth/1": {
    "atlas": "props",
    "index": 49,
    "anchor": [
@@ -10330,7 +10330,7 @@
     29
    ]
   },
-  "prop.dry_bush": {
+  "prop.hearth/2": {
    "atlas": "props",
    "index": 50,
    "anchor": [
@@ -10338,7 +10338,7 @@
     29
    ]
   },
-  "prop.bones": {
+  "prop.hearth/3": {
    "atlas": "props",
    "index": 51,
    "anchor": [
@@ -10346,7 +10346,7 @@
     29
    ]
   },
-  "prop.urn": {
+  "prop.weapon_rack": {
    "atlas": "props",
    "index": 52,
    "anchor": [
@@ -10354,7 +10354,7 @@
     29
    ]
   },
-  "prop.roots": {
+  "prop.bed_straw": {
    "atlas": "props",
    "index": 53,
    "anchor": [
@@ -10362,7 +10362,7 @@
     29
    ]
   },
-  "prop.cave_shroom": {
+  "prop.dry_bush": {
    "atlas": "props",
    "index": 54,
    "anchor": [
@@ -10370,9 +10370,41 @@
     29
    ]
   },
-  "prop.bone_pile": {
+  "prop.bones": {
    "atlas": "props",
    "index": 55,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "prop.urn": {
+   "atlas": "props",
+   "index": 56,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "prop.roots": {
+   "atlas": "props",
+   "index": 57,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "prop.cave_shroom": {
+   "atlas": "props",
+   "index": 58,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "prop.bone_pile": {
+   "atlas": "props",
+   "index": 59,
    "anchor": [
     16,
     29
@@ -12494,10 +12526,10 @@
   "prop.beehive": {
    "atlas": "props",
    "frames": [
-    28,
-    29,
-    30,
-    31
+    32,
+    33,
+    34,
+    35
    ],
    "ms": 170,
    "loop": true
@@ -12505,10 +12537,10 @@
   "prop.campfire": {
    "atlas": "props",
    "frames": [
-    33,
-    34,
-    35,
-    36
+    37,
+    38,
+    39,
+    40
    ],
    "ms": 130,
    "loop": true
@@ -12516,9 +12548,9 @@
   "prop.trough": {
    "atlas": "props",
    "frames": [
-    37,
-    38,
-    39
+    41,
+    42,
+    43
    ],
    "ms": 430,
    "loop": true
@@ -12526,10 +12558,10 @@
   "prop.hearth": {
    "atlas": "props",
    "frames": [
-    44,
-    45,
-    46,
-    47
+    48,
+    49,
+    50,
+    51
    ],
    "ms": 260,
    "loop": true
