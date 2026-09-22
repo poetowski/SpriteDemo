@@ -240,8 +240,8 @@
     {
       "def": "prop.tree_oak",
       "tile": [
-        3,
-        18
+        10,
+        19
       ]
     },
     {
@@ -416,27 +416,48 @@
       "def": "prop.fence",
       "tile": [
         1,
-        17
+        18
       ]
     },
     {
       "def": "prop.fence",
       "tile": [
         2,
-        17
+        18
       ]
     },
     {
       "def": "prop.fence",
       "tile": [
-        5,
-        17
+        3,
+        18
       ]
     },
     {
       "def": "prop.fence",
       "tile": [
         6,
+        18
+      ]
+    },
+    {
+      "def": "prop.fence",
+      "tile": [
+        7,
+        18
+      ]
+    },
+    {
+      "def": "prop.fence",
+      "tile": [
+        1,
+        17
+      ]
+    },
+    {
+      "def": "prop.fence",
+      "tile": [
+        7,
         17
       ]
     },
@@ -457,8 +478,8 @@
     {
       "def": "prop.beehive",
       "tile": [
-        7,
-        17
+        8,
+        15
       ]
     },
     {

@@ -1222,29 +1222,69 @@ def bone_pile():
 
 # ---------------------------------------------------------------- wetland ---
 
-def fence():
-    """A split-rail run. Hedgerow and paddock are most of what a farmed country
-    looks like from above, and there was no way to draw either.
+def fence(mask=0):
+    """One piece of a split-rail run, drawn for the neighbours it has.
 
-    Two things about it are arithmetic rather than taste. The rails are three
-    pixels thick because outline() borders anything thinner on both sides and
-    hands it back as a hair, and they sit six pixels apart because a smaller
-    gap loses its daylight to those same borders and the fence comes back as a
-    plank. And the rails run right to the edge of the frame: outline() borders
-    a pixel only where there is transparency beside it, so a rail that touches
-    the edge grows no end cap and a line of them joins into one run instead of
-    a row of separate pieces each ringed in black."""
+    A fence is a *line*, and a line has to know which way it goes. Drawn as a
+    single east-west piece it was fine along the top of a paddock and absurd
+    down the side: sixteen pixels apart, each tile repeated the same run of
+    horizontal rail, so a north-south fence came out as a stack of little
+    ladders lying on the grass with nothing joining them.
+
+    `mask` is which cardinal neighbours are fence too - N=1, E=2, W=4. South is
+    deliberately not in it: the piece *below* draws its own north connector
+    upwards into this one's foot, so a southward join needs nothing drawn here
+    and the family is eight pieces rather than sixteen.
+
+    The geometry is all arithmetic about the 16px grid:
+
+    - Rails run to the frame edge on a connected side. outline() borders a
+      pixel only where there is transparency beside it, so a rail that touches
+      the edge grows no end cap and butts onto its neighbour; stopping short
+      put a black bar between every pair of tiles.
+    - Three pixels thick, six apart. Thinner and the border eats the rail;
+      closer and it eats the daylight between the two.
+    - The post is seven wide and stops at y16, and the north connector is four
+      wide. A post tall enough to meet its neighbour's would make a vertical
+      run one unbroken bar - a pole, not a fence. The narrow waist between two
+      wide posts is the whole of what says "these are separate posts in a row"
+      when the run is coming towards you."""
+    N, E, W = mask & 1, mask & 2, mask & 4
     c = Canvas(FRAME, FRAME)
-    for y0 in (15, 24):                          # two rails, thick enough to read
-        c.rect(0, y0, FRAME - 1, y0 + 2, "WD")
-        c.row(0, FRAME - 1, y0, "WDL")
-        c.row(0, FRAME - 1, y0 + 2, "WDD")
-    c.rect(13, 11, 16, BASE_Y, "WD")             # the post they are pegged to
-    c.col(13, 11, BASE_Y, "WDL")
-    c.col(16, 11, BASE_Y, "WDD")
-    c.row(13, 16, 11, "WDL")                     # a weathered top
-    c.set(14, 13, "WDD")
+
+    # --- the rails, laid first so the post stands in front of them ----------
+    for y0 in (15, 24):
+        if W:
+            c.rect(0, y0, 16, y0 + 2, "WD")
+            c.row(0, 16, y0, "WDL")
+            c.row(0, 16, y0 + 2, "WDD")
+        if E:
+            c.rect(15, y0, FRAME - 1, y0 + 2, "WD")
+            c.row(15, FRAME - 1, y0, "WDL")
+            c.row(15, FRAME - 1, y0 + 2, "WDD")
+
+    # --- the run coming towards you -----------------------------------------
+    if N:
+        # Two rails going away from you, up to the foot of the post in the tile
+        # above - the same pair as the east-west piece, turned. A single
+        # connector down the middle was tried first and a run of it read as a
+        # chain: one bar between two posts says "joint", and what has to be
+        # said is "rail". They sit a pixel proud of the post on each side,
+        # which is where a split rail actually runs - past the post, not
+        # flush into it.
+        for x0 in (10, 18):          # symmetric about the post centre, x15
+            c.rect(x0, 11, x0 + 2, 18, "WD")
+            c.col(x0, 11, 18, "WDL")
+            c.col(x0 + 2, 11, 18, "WDD")
+
+    # --- the post ------------------------------------------------------------
+    c.rect(12, 16, 18, BASE_Y, "WD")
+    c.col(12, 16, BASE_Y, "WDL")
+    c.col(18, 16, BASE_Y, "WDD")
+    c.row(12, 18, 16, "WDL")                     # a weathered top
+    c.set(15, 19, "WDD")
     return c.outline()
+
 
 
 def haystack():
@@ -1453,6 +1493,17 @@ PROP_ORDER = list(PROPS)
 # purpose: the trees, bushes and flowers are the most numerous things in the
 # game, so animating them multiplies the sheet and draws the eye to the
 # background, and a table has no reason to move by itself.
+# Props that draw themselves differently depending on which of their cardinal
+# neighbours are the same prop. A fence is a *line*, and a line has to know
+# which way it runs; nothing else here does. Mask 0 keeps the plain id as its
+# atlas key, exactly as the first frame of an animated prop does, so the
+# editor palette and the sprite-exists gate are unaffected - the other seven
+# pieces are added beside it and the build picks one per placement.
+# This is not an animation: nothing cycles them.
+LINKED = {"prop.fence": fence}
+LINK_MASKS = range(8)          # N=1, E=2, W=4; south needs no art of its own
+
+
 ANIMATED = {
     "prop.campfire": (4, 130),      # flames, quick
     "prop.hearth": (4, 260),        # banked down, so slower

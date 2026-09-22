@@ -37,8 +37,8 @@
     32
    ],
    "cols": 8,
-   "rows": 8,
-   "count": 60
+   "rows": 9,
+   "count": 67
   },
   "props_huge": {
    "image": "atlases/props_huge.png",
@@ -11506,6 +11506,62 @@
     29
    ]
   },
+  "prop.fence/link/1": {
+   "atlas": "props",
+   "index": 60,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "prop.fence/link/2": {
+   "atlas": "props",
+   "index": 61,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "prop.fence/link/3": {
+   "atlas": "props",
+   "index": 62,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "prop.fence/link/4": {
+   "atlas": "props",
+   "index": 63,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "prop.fence/link/5": {
+   "atlas": "props",
+   "index": 64,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "prop.fence/link/6": {
+   "atlas": "props",
+   "index": 65,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "prop.fence/link/7": {
+   "atlas": "props",
+   "index": 66,
+   "anchor": [
+    16,
+    29
+   ]
+  },
   "prop.cottage": {
    "atlas": "props_huge",
    "index": 0,
@@ -15065,6 +15121,9 @@
   }
  },
  "anim_ms": 420,
+ "linked": [
+  "prop.fence"
+ ],
  "looks": {
   "actor.hero": {
    "|": "actor.hero",

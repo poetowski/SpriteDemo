@@ -216,6 +216,13 @@
     {
       "def": "prop.fence",
       "tile": [
+        3,
+        16
+      ]
+    },
+    {
+      "def": "prop.fence",
+      "tile": [
         4,
         16
       ]

@@ -157,7 +157,7 @@ class World extends Phaser.Scene {
     this.hittable = [];
     this.blocked = new Set();
     for (const e of map.entities) {
-      this.spawn(e.def, e.tile[0], e.tile[1]);
+      this.spawn(e.def, e.tile[0], e.tile[1], e.sprite);
     }
 
     // --- player ----------------------------------------------------------
@@ -340,12 +340,19 @@ class World extends Phaser.Scene {
     });
   }
 
-  /** Create one entity from its definition id, at a tile. */
-  spawn(defId, tx, ty) {
+  /** Create one entity from its definition id, at a tile.
+   *
+   *  `resolved` is a sprite the build worked out for this placement rather
+   *  than for the definition - a fence piece that knows which way its run
+   *  goes. The engine does not know what a fence is and must not: it is told
+   *  which picture to draw, exactly as it is told which tile index to lay for
+   *  a stretch of ground. */
+  spawn(defId, tx, ty, resolved) {
     const def = defOf(defId);
     const isActor = !!M.actors[defId];
     const isItem = !!M.items[defId];
-    const key = isActor ? `${def.sprite}/idle/${def.facing || 'down'}/0` : def.sprite;
+    const key = isActor ? `${def.sprite}/idle/${def.facing || 'down'}/0`
+                        : (resolved || def.sprite);
     const { ox, oy, rec } = originOf(key);
     const p = this.tileCentre(tx, ty);
 

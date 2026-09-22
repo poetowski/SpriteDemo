@@ -188,6 +188,17 @@ def build_atlases(sprite_rigs, content):
     prop_canvases = add_props(props, props_gen.PROPS, actor.ANCHOR,
                               props_gen.ANIMATED)
 
+    # A linked prop gets its other seven pieces beside the plain one. They go
+    # on the same sheet at the same anchor and are picked by the build from a
+    # placement's neighbours, so the engine never learns what a fence is.
+    for pid, fn in props_gen.LINKED.items():
+        for m in props_gen.LINK_MASKS:
+            if m == 0:
+                continue                      # already added as the plain id
+            cel = fn(m)
+            props.add(f"{pid}/link/{m}", [cel], actor.ANCHOR)
+            prop_canvases[f"{pid}/link/{m}"] = cel
+
     # The two biggest classes go through the same helper as the other two, so a
     # thing four tiles across can move for the same reason a campfire can. They
     # each had their own loop and no animation until the temple wanted fire.
@@ -326,6 +337,10 @@ def library(sheets, sprites, anims, tile_index, looks):
                         "anim": {str(i): seq for i, seq in e["anim"].items()}}
                   for tid, e in tile_index.items()},
         "anim_ms": tiles_gen.ANIM_MS,
+        # Which props resolve their piece from their neighbours. The build uses
+        # it to pick a sprite per placement and the editor to do the same live,
+        # which is what keeps the two pictures the same one.
+        "linked": sorted(props_gen.LINKED),
         "looks": looks,
     }
 
