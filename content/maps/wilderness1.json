@@ -1,6 +1,9 @@
 {
   "id": "map.wilderness1",
-  "name": "Wilderness I",
+  "name": "Northmeadow",
+  "tags": [
+    "kingswood"
+  ],
   "tile_size": 16,
   "size": [
     20,
@@ -8,140 +11,458 @@
   ],
   "spawn": {
     "tile": [
-      13,
-      18
+      9,
+      12
     ],
     "facing": "up"
   },
   "legend": {
     ".": "tile.grass",
-    "t": "tile.grass_tall",
     ",": "tile.grass_flower",
+    "t": "tile.grass_tall",
+    "f": "tile.forest",
     "a": "tile.leaves",
-    "c": "tile.gravel",
+    "#": "tile.path",
+    "c": "tile.cobble",
+    "d": "tile.dirt",
+    "F": "tile.field",
     "p": "tile.water",
-    "~": "tile.shallow",
-    "#": "tile.path"
+    "~": "tile.shallow"
   },
   "ground": [
-    ".............aaaaaaa",
-    ".............aaaaaaa",
-    ".tttt........aaaaaaa",
-    ".tttt....ppp.aaaaaaa",
-    ".tttt...~ppp.aaaaaaa",
-    ".......~~ppp.aaaaaaa",
-    "........~pp~....aaaa",
-    "......ttt.......aaaa",
-    ".,,,,.ttt...,...aaaa",
-    ".,,,,....ttt........",
-    ".,,,,....ttt....,...",
-    "..,#,...............",
-    "..,##...............",
-    "....#...............",
-    "....#...............",
-    "....#cc,.,..........",
-    "cccc#ccccc..........",
-    "cccccccccc..........",
-    "....................",
-    "...................."
+    "..fffffffff....ppfff",
+    "..fafffffff...~pppfa",
+    "..aaaf..ff.,,pppppaf",
+    "..ffaff....,~pppppaf",
+    "..ffff.....,.ppppp~f",
+    "..ffft......,p.ppff.",
+    "..tftt......,..ppfff",
+    "..tt...cc..c...pp.f.",
+    "..tt..ccccccc.~pp...",
+    ".....ccccccccc.pp...",
+    "###############~~###",
+    "###############~~###",
+    ".........##....ppdd.",
+    "..,,...,.##ccc.p~ddF",
+    "......,..##ccc.ppFFF",
+    ".........##.c..ppFFF",
+    "....tt...##....ppFFF",
+    "......t.......tppFFF",
+    ".....t......t.t~pFFF",
+    ".......t.....t.ppFdd"
   ],
   "entities": [
     {
-      "def": "prop.shed",
+      "def": "prop.cottage",
+      "tile": [
+        4,
+        7
+      ]
+    },
+    {
+      "def": "prop.cottage",
+      "tile": [
+        9,
+        6
+      ]
+    },
+    {
+      "def": "prop.cottage",
+      "tile": [
+        3,
+        14
+      ]
+    },
+    {
+      "def": "prop.well",
+      "tile": [
+        8,
+        9
+      ]
+    },
+    {
+      "def": "prop.lamp_post",
+      "tile": [
+        6,
+        9
+      ]
+    },
+    {
+      "def": "prop.lamp_post",
+      "tile": [
+        12,
+        9
+      ]
+    },
+    {
+      "def": "prop.statue",
+      "tile": [
+        10,
+        9
+      ]
+    },
+    {
+      "def": "prop.signpost",
+      "tile": [
+        2,
+        9
+      ]
+    },
+    {
+      "def": "prop.flower_pot",
+      "tile": [
+        5,
+        9
+      ]
+    },
+    {
+      "def": "prop.flowers",
+      "tile": [
+        13,
+        9
+      ]
+    },
+    {
+      "def": "npc.arne",
+      "tile": [
+        12,
+        13
+      ]
+    },
+    {
+      "def": "prop.anvil",
+      "tile": [
+        11,
+        13
+      ]
+    },
+    {
+      "def": "prop.workbench",
+      "tile": [
+        13,
+        13
+      ]
+    },
+    {
+      "def": "prop.woodpile",
+      "tile": [
+        13,
+        14
+      ]
+    },
+    {
+      "def": "prop.barrel",
+      "tile": [
+        11,
+        14
+      ]
+    },
+    {
+      "def": "npc.hedda",
+      "tile": [
+        7,
+        9
+      ]
+    },
+    {
+      "def": "prop.crate",
+      "tile": [
+        7,
+        8
+      ]
+    },
+    {
+      "def": "prop.barrel",
+      "tile": [
+        6,
+        8
+      ]
+    },
+    {
+      "def": "npc.osmund",
+      "tile": [
+        3,
+        11
+      ]
+    },
+    {
+      "def": "prop.bridge",
+      "tile": [
+        15,
+        10
+      ]
+    },
+    {
+      "def": "prop.bridge_deck",
+      "tile": [
+        15,
+        11
+      ]
+    },
+    {
+      "def": "prop.bridge",
+      "tile": [
+        16,
+        10
+      ]
+    },
+    {
+      "def": "prop.bridge_deck",
+      "tile": [
+        16,
+        11
+      ]
+    },
+    {
+      "def": "prop.fence",
+      "tile": [
+        3,
+        16
+      ]
+    },
+    {
+      "def": "prop.fence",
+      "tile": [
+        4,
+        16
+      ]
+    },
+    {
+      "def": "prop.fence",
+      "tile": [
+        5,
+        16
+      ]
+    },
+    {
+      "def": "prop.fence",
+      "tile": [
+        6,
+        16
+      ]
+    },
+    {
+      "def": "prop.fence",
+      "tile": [
+        7,
+        16
+      ]
+    },
+    {
+      "def": "prop.fence",
+      "tile": [
+        8,
+        16
+      ]
+    },
+    {
+      "def": "prop.fence",
+      "tile": [
+        3,
+        17
+      ]
+    },
+    {
+      "def": "prop.fence",
+      "tile": [
+        8,
+        17
+      ]
+    },
+    {
+      "def": "prop.fence",
+      "tile": [
+        3,
+        18
+      ]
+    },
+    {
+      "def": "prop.fence",
+      "tile": [
+        8,
+        18
+      ]
+    },
+    {
+      "def": "prop.trough",
+      "tile": [
+        5,
+        18
+      ]
+    },
+    {
+      "def": "npc.sheep",
+      "tile": [
+        4,
+        17
+      ]
+    },
+    {
+      "def": "npc.goat",
+      "tile": [
+        5,
+        17
+      ]
+    },
+    {
+      "def": "npc.sheep",
+      "tile": [
+        7,
+        18
+      ]
+    },
+    {
+      "def": "npc.cow",
+      "tile": [
+        6,
+        17
+      ]
+    },
+    {
+      "def": "prop.haystack",
       "tile": [
         12,
         17
       ]
     },
     {
-      "def": "prop.cairn",
+      "def": "prop.cart",
       "tile": [
-        2,
-        15
+        12,
+        19
       ]
     },
     {
-      "def": "prop.cairn",
+      "def": "prop.scarecrow",
       "tile": [
-        2,
-        18
+        18,
+        16
+      ]
+    },
+    {
+      "def": "npc.wilf",
+      "tile": [
+        18,
+        13
+      ]
+    },
+    {
+      "def": "prop.haystack",
+      "tile": [
+        17,
+        12
+      ]
+    },
+    {
+      "def": "prop.shed",
+      "tile": [
+        9,
+        3
+      ]
+    },
+    {
+      "def": "prop.woodpile",
+      "tile": [
+        8,
+        3
       ]
     },
     {
       "def": "prop.tree_oak",
       "tile": [
-        15,
-        2
-      ]
-    },
-    {
-      "def": "prop.tree_pine",
-      "tile": [
-        18,
-        4
-      ]
-    },
-    {
-      "def": "prop.tree_pine_slim",
-      "tile": [
-        17,
-        7
+        2,
+        3
       ]
     },
     {
       "def": "prop.tree_oak_forked",
       "tile": [
-        3,
+        4,
+        4
+      ]
+    },
+    {
+      "def": "prop.tree_birch",
+      "tile": [
+        6,
+        2
+      ]
+    },
+    {
+      "def": "prop.tree_oak",
+      "tile": [
+        8,
+        1
+      ]
+    },
+    {
+      "def": "prop.tree_birch",
+      "tile": [
+        7,
+        4
+      ]
+    },
+    {
+      "def": "prop.tree_oak_forked",
+      "tile": [
+        18,
+        3
+      ]
+    },
+    {
+      "def": "prop.tree_oak",
+      "tile": [
+        18,
         6
       ]
     },
     {
       "def": "prop.bush",
       "tile": [
-        7,
-        3
+        3,
+        5
+      ]
+    },
+    {
+      "def": "prop.bush",
+      "tile": [
+        14,
+        6
+      ]
+    },
+    {
+      "def": "prop.mushroom",
+      "tile": [
+        3,
+        2
       ]
     },
     {
       "def": "prop.rock",
       "tile": [
-        9,
-        12
+        14,
+        16
       ]
     },
     {
       "def": "prop.log",
       "tile": [
-        6,
-        13
-      ]
-    },
-    {
-      "def": "prop.trough",
-      "tile": [
-        17,
-        18
-      ]
-    },
-    {
-      "def": "npc.sheep",
-      "tile": [
-        15,
-        18
-      ]
-    },
-    {
-      "def": "npc.sheep",
-      "tile": [
-        16,
-        16
+        3,
+        8
       ]
     },
     {
       "def": "item.firewood",
       "tile": [
+        18,
+        9
+      ]
+    },
+    {
+      "def": "item.apple",
+      "tile": [
         5,
-        17
+        4
       ]
     }
   ],
@@ -150,22 +471,166 @@
       "tiles": [
         [
           0,
+          0
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          2
+        ],
+        [
+          0,
+          3
+        ],
+        [
+          0,
+          4
+        ],
+        [
+          0,
+          5
+        ],
+        [
+          0,
+          6
+        ],
+        [
+          0,
+          7
+        ],
+        [
+          0,
+          8
+        ],
+        [
+          0,
+          9
+        ],
+        [
+          0,
+          10
+        ],
+        [
+          0,
+          11
+        ],
+        [
+          0,
+          12
+        ],
+        [
+          0,
+          13
+        ],
+        [
+          0,
+          14
+        ],
+        [
+          0,
+          15
+        ],
+        [
+          0,
           16
         ],
         [
           0,
           17
+        ],
+        [
+          0,
+          18
+        ],
+        [
+          0,
+          19
         ]
       ],
       "to": "map.wilderness2",
       "spawns": [
         [
           18,
+          0
+        ],
+        [
+          18,
+          1
+        ],
+        [
+          18,
+          2
+        ],
+        [
+          18,
+          3
+        ],
+        [
+          18,
+          4
+        ],
+        [
+          18,
+          5
+        ],
+        [
+          18,
+          6
+        ],
+        [
+          18,
+          7
+        ],
+        [
+          18,
+          8
+        ],
+        [
+          18,
+          9
+        ],
+        [
+          18,
+          10
+        ],
+        [
+          18,
+          11
+        ],
+        [
+          18,
+          12
+        ],
+        [
+          18,
+          13
+        ],
+        [
+          18,
+          14
+        ],
+        [
+          18,
+          15
+        ],
+        [
+          18,
           16
         ],
         [
           18,
           17
+        ],
+        [
+          18,
+          18
+        ],
+        [
+          18,
+          19
         ]
       ],
       "facing": "left"
@@ -173,8 +638,8 @@
     {
       "tiles": [
         [
-          13,
-          17
+          10,
+          3
         ]
       ],
       "to": "map.shed_interior",

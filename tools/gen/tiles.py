@@ -135,6 +135,33 @@ def grass_flower(seed=0, phase=0):
     return c
 
 
+def forest(seed=0, phase=0):
+    """The floor under a canopy: turf in shade, not bare earth.
+
+    tile.leaves is the other half of a wood - litter over dark ground - and for
+    a long time it was doing both jobs on its own, which put a brown field at
+    hue 37 beside a meadow at 101 and split every map into two countries. What
+    changes under trees is not the material, it is the light: the ground is
+    still green, it is darker, and its green leans blue where the meadow's
+    leans yellow. Three moods on grass()'s rule - deep shade, even, and a
+    thinner canopy letting more through."""
+    deep, low, lit = ((3, 9, 3), (5, 13, 1), (2, 6, 7))[seed % 3]
+    c = Canvas(SIZE, SIZE)
+    c.rect(0, 0, SIZE - 1, SIZE - 1, "FR")
+    rnd = scatter(0x4E22 + seed * 857)
+    for _ in range(deep):                         # where the canopy closes over
+        _patch(c, rnd, rnd(SIZE), rnd(SIZE), 6, 4, "FRD", 5 + rnd(4))
+    for _ in range(low):                          # low growth - clumps, not blades
+        _patch(c, rnd, rnd(SIZE), rnd(SIZE), 3, 2, "FRD", 2 + rnd(2))
+    for _ in range(lit):                          # sun through a gap in it
+        _blade(c, rnd(SIZE), rnd(SIZE), 1 + rnd(2), "FRL")
+    for _ in range(2):                            # and a little fallen litter
+        x, y = rnd(SIZE), rnd(SIZE)               # dark: at map scale a bright
+        _put(c, x, y, "LFD")                      # speck every few pixels over a
+        _put(c, x + 1, y, "LFD")                  # whole wood reads as confetti
+    return c
+
+
 def path(seed=0, phase=0):
     c = Canvas(SIZE, SIZE)
     c.rect(0, 0, SIZE - 1, SIZE - 1, "PT")
@@ -312,16 +339,27 @@ def field(seed=0, phase=0):
 
 
 def leaves(seed=0, phase=0):
-    """Forest floor: leaf litter over dark earth, where a canopy shades it."""
+    """Fallen leaves lying on the floor of a wood, where the canopy is thick
+    enough that nothing much grows through them.
+
+    This is a patch inside a wood now rather than the wood's whole floor -
+    tile.forest is the ground and this is the worn heart of it - which changes
+    what it is drawn on. It used to be a full tile of dry tan over brown earth,
+    and two of its three leaf colours were the *roof* key, a brick red: a key
+    borrowed from a building is a building's colour wherever you put it, so a
+    stand of trees had an orange carpet under it at hue 37 against a meadow at
+    101. What shows between leaves in a damp wood is the wood's own ground, so
+    that is what it is laid over, and only the leaves themselves are brown.
+    That keeps it a patch of litter rather than a hole of bare earth."""
     c = Canvas(SIZE, SIZE)
-    c.rect(0, 0, SIZE - 1, SIZE - 1, "LFD")
+    c.rect(0, 0, SIZE - 1, SIZE - 1, "FRD")
     rnd = scatter(0x9E11 + seed * 743)
-    for _ in range(18):                           # fallen leaves, two pixels
+    for _ in range(22):                           # fallen leaves, two pixels
+        key = ("LFD", "LF", "DRD")[rnd(3)]        # gone over, dry, and wet
         x, y = rnd(SIZE), rnd(SIZE)
-        key = ("LF", "RFD", "GRX")[rnd(3)]
         _put(c, x, y, key)
         _put(c, x + 1, y, key)
-    for _ in range(8):
+    for _ in range(6):                            # a few still catching light
         _put(c, rnd(SIZE), rnd(SIZE), "LF")
     for _ in range(4):                            # a twig
         x, y = rnd(SIZE), rnd(SIZE)
@@ -449,6 +487,7 @@ BASE = {
     "tile.grass_flower": grass_flower,
     "tile.grass_tall": grass_tall,
     "tile.leaves": leaves,
+    "tile.forest": forest,
     "tile.path": path,
     "tile.gravel": gravel,
     "tile.dirt": dirt,
@@ -468,6 +507,7 @@ TILE_ORDER = list(BASE)
 # How many seeded variants of each base to draw. A cell picks one by position,
 # so the field changes without anyone having authored it.
 VARIANTS = {"tile.grass": 3, "tile.grass_flower": 3, "tile.grass_tall": 3,
+            "tile.forest": 3,
             "tile.leaves": 2, "tile.water": 2, "tile.wood_floor": 2,
             "tile.cave_floor": 3, "tile.cave_wall": 2, "tile.tall_stone": 2}
 
@@ -616,6 +656,35 @@ def _edge_soft(d, which, x, y, over, under, rnd, edge):
     return over
 
 
+def _edge_wood(d, which, x, y, over, under, rnd, phase):
+    """A wood thins, it does not stop. Wind is what rubs out a desert's edge
+    and water a shore's; here it is growth, so the outermost thing in the
+    picture is bracken standing in the turf beyond the last tree.
+
+    It has to be scattered by *position*. Keyed off the depth instead, the
+    bracken came out as a dotted line a fixed distance outside the boundary -
+    which is an outline, drawn in a second colour. Hashing x and y puts the
+    clumps where they fall and lets the band thin out with distance without
+    ever tracing the shape."""
+    if d < -3.4:
+        return under
+    if d < 0:
+        # How far a tuft reaches is decided per 4x4 cell, so the fringe is
+        # ragged along its length: some of the boundary has bracken three
+        # pixels out into the turf and some has none at all. Thinning a band
+        # of fixed width by distance alone still leaves a band, and a band
+        # that follows the shape is an outline drawn in a second colour.
+        reach = 1 + ((x // 4) * 37 + (y // 4) * 23) % 4
+        if -d > reach:
+            return under
+        return "FRD" if (x * 7 + y * 11) % 3 == 0 else under
+    if d < 1.2:                                   # and the turf giving way
+        return over if (x * 5 + y * 3) % 3 else under
+    if d >= 4 and rnd(7) == 0:
+        return "FRL"                              # a gap the sun comes through
+    return over
+
+
 def _edge_kerb(d, which, x, y, over, under, rnd, edge):
     """A laid surface: a hard line, because someone put a kerb there."""
     if d < 0:
@@ -638,57 +707,6 @@ def _edge_shallow(d, which, x, y, over, under, rnd, phase):
     return over
 
 
-def _edge_oasis(d, which, x, y, over, under, rnd, phase):
-    """A pool with no current: a wet margin where the sand darkens, then a
-    thin bright rim, and no foam - foam is what a shore does to moving water,
-    and there is nothing here to move it."""
-    if d < 0:
-        return under
-    if d < 1.2:
-        return "DNX" if rnd(4) == 0 else "DND"               # sand, damp
-    if d < 2.0:
-        return "OAL" if (x * 3 + y + phase) % 3 else "OA"    # the bright rim
-    if d < 3.2 and over == "OAX":
-        return "OAD"                                         # it shelves
-    return over
-
-
-def _edge_drift(d, which, x, y, over, under, rnd, edge):
-    """Sand piled against something: it heaps on the lee side and thins to
-    nothing on the other, so the boundary is a drift rather than a line. That
-    is the one edge the meadow has no use for and the desert needs
-    everywhere."""
-    lee = which in ("S", "E", "cSE", "cSW", "cNE")
-    if d < 0:
-        return under
-    if d < (2.2 if lee else 0.9):
-        return edge if (x + y * 2) % 3 else under
-    if d < (3.4 if lee else 1.8):
-        return over if rnd(2) else edge
-    return over
-
-
-def _edge_sedge(d, which, x, y, over, under, rnd, phase):
-    """What rubs out a marsh's edge is *growth*. The desert's boundary is
-    drifted over by wind and the river's is cut by water; a fen simply seeds
-    itself into the turf beside it, so the outermost thing here is a stalk
-    standing in the grass rather than a line where one ground stops and the
-    next begins. Wider than the other soft edges for the same reason - a
-    fringe a pixel deep is a border, and this is supposed to be a margin.
-
-    Everything it draws goes *outside* the fen, in the turf. The first version
-    scattered lit seed heads in a band just inside the boundary instead, and a
-    band that follows the outline is an outline: the whole patch came out ringed
-    in a dotted yellow line, like something a highlighter had been round."""
-    if d < -2.2:
-        return under
-    if d < -0.4:                                  # sedge colonising the turf
-        return "MAD" if (x * 5 + y * 3) % 9 == 0 else under
-    if d < 1.0:                                   # and the turf giving way
-        return under if (x * 3 + y * 5) % 3 == 0 else over
-    return over
-
-
 STYLE = {
     "tile.water": _edge_water,
     "tile.shallow": _edge_shallow,
@@ -696,6 +714,7 @@ STYLE = {
     "tile.dirt": lambda d, w, x, y, o, u, r, p: _edge_trodden(d, w, x, y, o, u, r, "DRD", "DRL"),
     "tile.gravel": lambda d, w, x, y, o, u, r, p: _edge_soft(d, w, x, y, o, u, r, "STD"),
     "tile.leaves": lambda d, w, x, y, o, u, r, p: _edge_soft(d, w, x, y, o, u, r, "LFD"),
+    "tile.forest": _edge_wood,
     "tile.field": lambda d, w, x, y, o, u, r, p: _edge_trodden(d, w, x, y, o, u, r, "DRD", "TH"),
     "tile.cobble": lambda d, w, x, y, o, u, r, p: _edge_kerb(d, w, x, y, o, u, r, "STD"),
     "tile.plank_wall": _edge_plank,

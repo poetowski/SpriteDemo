@@ -98,6 +98,24 @@ def run(content, man, tile_canvases=None):
     passed.append("sprite-format")
     passed.append("sprite-exists")
 
+    # 2b - a prop that resolves its drawing from its neighbours needs every
+    # piece it can resolve to. Seven of the eight are named by the build rather
+    # than by any file, so a missing one is not a broken reference anywhere -
+    # it is a fence that silently falls back to a lone post on exactly the
+    # corners a fence is for.
+    for cid, defn in content["props"].items():
+        group = defn.get("links")
+        if group is None:
+            continue
+        if not isinstance(group, str) or not group.strip():
+            _fail("prop-link", f"{defn['_file']}: links must name a group")
+        for mask in range(1, 8):
+            key = f"{defn['sprite']}/link/{mask}"
+            if key not in man["sprites"]:
+                _fail("prop-link", f"{defn['_file']}: {cid} links, but {key!r} "
+                                   f"is not in any atlas - run python tools/art.py")
+    passed.append("prop-link")
+
     # 3 - every actor has all facings for every state, and one shared anchor
     for cid, defn in content["actors"].items():
         base = defn["sprite"]

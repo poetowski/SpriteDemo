@@ -28,7 +28,8 @@ def load_content(root):
     return out
 
 
-def build(content, atlases, sprites, anims, tileset=None, grids=None):
+def build(content, atlases, sprites, anims, tileset=None, grids=None,
+          links=None):
     """Assemble the manifest dict the engine consumes."""
     tiles = {}
     for i, (tid, defn) in enumerate(sorted(content["tiles"].items())):
@@ -45,6 +46,14 @@ def build(content, atlases, sprites, anims, tileset=None, grids=None):
         entry = _strip(defn)
         if grids and mid in grids:
             entry["grid"] = grids[mid]        # resolved by pipeline/autotile
+        got = (links or {}).get(mid) or {}
+        if got:
+            # A linked prop carries the piece the build picked for it, so the
+            # engine draws a fence corner without knowing what a fence is - the
+            # same division as the resolved ground grid.
+            entry["entities"] = [
+                {**e, "sprite": got[i]} if i in got else e
+                for i, e in enumerate(entry.get("entities", []))]
         maps[mid] = entry
     return {
         "manifest_version": 1,

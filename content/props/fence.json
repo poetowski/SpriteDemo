@@ -1,6 +1,6 @@
 {
-  "id": "prop.urn",
-  "sprite": "prop.urn",
+  "id": "prop.fence",
+  "sprite": "prop.fence",
   "footprint": [
     [
       0,
@@ -8,5 +8,5 @@
     ]
   ],
   "blocks": true,
-  "hittable": true
+  "links": "fence"
 }

@@ -1,0 +1,33 @@
+{
+  "id": "dlg.hedda_welcome",
+  "speaker": "Hedda",
+  "start": "greet",
+  "nodes": {
+    "greet": {
+      "text": [
+        "Room and a fire, if you want one. Bread's fresh.",
+        "Half the village is out at the hay while the weather holds."
+      ],
+      "choices": [
+        {
+          "text": "What's down the road?",
+          "goto": "road"
+        },
+        {
+          "text": "Thank you."
+        }
+      ]
+    },
+    "road": {
+      "text": [
+        "West, past the fence line, and you're in the wood.",
+        "Mind the boar. It has no manners and a long memory."
+      ],
+      "choices": [
+        {
+          "text": "I'll watch for it."
+        }
+      ]
+    }
+  }
+}

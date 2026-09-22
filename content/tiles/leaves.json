@@ -3,5 +3,6 @@
   "sprite": "tile.leaves",
   "walkable": true,
   "material": "leaves",
-  "blend": true
+  "blend": true,
+  "blend_over": "tile.forest"
 }

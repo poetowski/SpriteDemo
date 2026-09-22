@@ -55,3 +55,49 @@ def resolve(m, tile_defs, lookup):
 def pick_variant(x, y, n):
     """A stable, well-mixed choice of one of n variants for a cell."""
     return ((x * 73856093) ^ (y * 19349663) ^ 0x2F6B) % n
+
+
+# --- linked props ------------------------------------------------------------
+# Ground is not the only thing that has to know what is next to it. A fence is
+# a line, and a line drawn without regard to its neighbours is a row of
+# disconnected pieces - a north-south run came out as a stack of little
+# east-west ladders lying on the grass. So a prop may declare a `links` group,
+# and the build picks its drawing from which cardinal neighbours carry the same
+# group, exactly as resolve() picks a tile from its eight.
+#
+# The mask is N=1, E=2, W=4 and deliberately has no south bit: the piece below
+# draws its own north connector up into this one's foot, so a southward join
+# needs nothing drawn here. Eight pieces instead of sixteen, and one fewer
+# thing to keep in step.
+LINK_BITS = ((1, 0, -1), (2, 1, 0), (4, -1, 0))
+
+
+def link_group(defs, def_id):
+    d = defs.get(def_id)
+    return d.get("links") if d else None
+
+
+def resolve_links(m, defs):
+    """{index in m["entities"]: sprite key} for every placement that links.
+
+    Keyed by position in the entity list rather than by tile, because two
+    things may legitimately stand on one tile and only one of them is a fence.
+    """
+    groups = {}
+    for e in m.get("entities", []):
+        g = link_group(defs, e["def"])
+        if g:
+            groups.setdefault(g, set()).add(tuple(e["tile"]))
+    out = {}
+    for i, e in enumerate(m.get("entities", [])):
+        g = link_group(defs, e["def"])
+        if not g:
+            continue
+        x, y = e["tile"]
+        mask = 0
+        for bit, dx, dy in LINK_BITS:
+            if (x + dx, y + dy) in groups[g]:
+                mask |= bit
+        if mask:
+            out[i] = f"{defs[e['def']]['sprite']}/link/{mask}"
+    return out

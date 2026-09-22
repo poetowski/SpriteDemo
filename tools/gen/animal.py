@@ -27,6 +27,17 @@ SPECIES = {
     "goat": {"wool": False, "horns": True, "beard": True},
     "boar": {"wool": False, "horns": False, "beard": False,
              "bristles": True, "tusks": True},
+    # A milk cow: the deepest barrel of the four, short horns and the blunt
+    # pale muzzle the snout flag draws. `bulk` is what does the work - given
+    # the sheep's body and horns it came out a goat, because at this size an
+    # animal is its depth through the chest before it is anything else.
+    "cow": {"wool": False, "horns": True, "beard": False,
+            "bulk": 2, "snout": True},
+    # And a roe deer, which is the same rig at the other extreme: leggy,
+    # antlered, and carrying the pale rump the rig already knows how to draw
+    # because going away is the view a deer usually gives you.
+    "deer": {"wool": False, "horns": False, "beard": False,
+             "tall": 2, "antlers": True, "rump": True},
 }
 
 

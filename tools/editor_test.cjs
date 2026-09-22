@@ -287,6 +287,44 @@ function dropScratch() {
   const n2 = await page.evaluate(() => state.map.entities.length);
   check('right-click erased it', n2 === n0, `${n1} -> ${n2}`);
 
+  // --- a linked prop joins itself up ----------------------------------------
+  // A fence is a line, and the editor has to work out which way each piece runs
+  // as you paint rather than read the last build's answer - otherwise a run you
+  // have just laid stays a row of disconnected posts until you save and build,
+  // which is the whole thing the resolution exists to spare you.
+  //
+  // Run against a map object made here rather than by painting the scratch one.
+  // The first version placed five fences and then called undo() five times, and
+  // undo restores a whole snapshot per step: it rewound past the terrain paint
+  // further up and left the map identical to what was on disk, so the save
+  // check below stopped testing anything. A read-only check cannot do that.
+  const fence = await page.evaluate(() => {
+    const m = { size: [8, 8], entities: [[2, 1], [2, 2], [2, 3], [3, 3], [4, 3]]
+      .map((tile) => ({ def: 'prop.fence', tile })) };
+    const idx = linkIndex(m);
+    const byRec = new Map(Object.entries(state.M.sprites)
+      .map(([k, r]) => [`${r.atlas}:${r.index}`, k]));
+    const keyAt = (x, y) => {
+      const e = m.entities.find((t) => t.tile[0] === x && t.tile[1] === y);
+      const rec = spriteForEntity(e, idx);
+      return byRec.get(`${rec.atlas}:${rec.index}`);
+    };
+    return {
+      top: keyAt(2, 1),      // nothing above it: the plain post
+      middle: keyAt(2, 2),   // north only
+      corner: keyAt(2, 3),   // north and east
+      run: keyAt(3, 3),      // east and west
+      end: keyAt(4, 3),      // west only
+    };
+  });
+  check('a fence run works out which way it goes',
+    fence.top === 'prop.fence'
+    && fence.middle === 'prop.fence/link/1'
+    && fence.corner === 'prop.fence/link/3'
+    && fence.run === 'prop.fence/link/6'
+    && fence.end === 'prop.fence/link/4',
+    `${fence.top} / ${fence.middle} / ${fence.corner} / ${fence.run} / ${fence.end}`);
+
   // --- spawn, undo ----------------------------------------------------------
   await page.evaluate(() => setTool('spawn'));
   await click(spot);
@@ -502,8 +540,15 @@ function dropScratch() {
     if (row.zone) current = row.zone;
     else zoneOf.push({ map: row.map, under: current, tags: row.tags });
   }
+  // Named zones, as against the "untagged" heading the panel always shows.
+  // This used to look for 'desert' by name, which quietly stopped testing
+  // anything the day the desert left the content: an assertion that names one
+  // piece of content is a test of that content, not of the grouping. What has
+  // to be true is that there is a zone at all and that each heading covers
+  // exactly its own maps.
+  const namedZones = zoneHeads.filter((z) => z.zone && z.zone !== 'untagged');
   check('a zone is a heading over its own maps', zoneHeads.length >= 2
-    && zoneHeads.some((z) => z.zone === 'desert')
+    && namedZones.length >= 1
     && zoneHeads.every((z) => z.count
         === zoneOf.filter((m) => m.under === z.zone).length),
     zoneHeads.map((z) => `${z.zone} ${z.count}`).join(', '));
@@ -540,9 +585,10 @@ function dropScratch() {
       return { zone: g.zone, w: g.w, h: g.h, ink };
     });
   });
-  const desertPlate = plates.find((g) => g.zone === 'desert');
+  // Likewise: the plate that carries a zone, whichever zone that is.
+  const zonedPlate = plates.find((g) => g.zone);
   check('a plate that is all one zone is named on the atlas',
-        plates.length === world.groups && desertPlate && desertPlate.ink > 20
+        plates.length === world.groups && zonedPlate && zonedPlate.ink > 20
         && plates.filter((g) => g.zone).length === 1,
         plates.map((g) => `${g.zone || 'unnamed'} ${g.w}x${g.h} ink=${g.ink}`).join(', '));
 
