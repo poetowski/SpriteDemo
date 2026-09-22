@@ -534,59 +534,6 @@ def _frond(c, x, y, dx, dy, n, key, dark):
             c.set(px, py + 1, dark)
 
 
-def bones(phase=0):
-    """A horned skull sunk in a drift, with two ribs still standing behind it.
-
-    The first pass was a ribcage seen side on: a spine drawn as a solid bar
-    with the ribs hanging off it, which at this size is a comb, and the second
-    was the same comb lying down. What actually reads as bone at 32px is a
-    skull - a pale mass with two black sockets in it - so the skull carries the
-    object and the ribs are two arcs behind, there to say the rest of the
-    animal is under the sand rather than to be read in themselves."""
-    c = Canvas(FRAME, FRAME)
-    # A mound, not a slab: drawn as a rectangle the drift read as a plank the
-    # skull had been laid on.
-    rnd = scatter(0x3B21)
-    for x in range(3, 29):
-        h = round(3 * math.sin((x - 3) / 25 * math.pi)) + (rnd(2) if 5 < x < 26 else 0)
-        if h <= 0:
-            continue
-        c.col(x, BASE_Y - h, BASE_Y, "DR")
-        c.set(x, BASE_Y - h, "DRD")
-
-    # One long bone beside it rather than a ribcage. Three ribs drawn as arcs
-    # at this size ran together into a white crate, and a rib on its own says
-    # nothing: a femur with a knob at each end is the one bone that is legible
-    # lying down.
-    for k in range(8):
-        c.set(21 + k, 24 - k // 3, "CL")
-        c.set(21 + k, 25 - k // 3, "CLD")
-    for kx, ky in ((20, 24), (20, 25), (21, 23), (28, 21), (28, 22), (27, 20)):
-        c.set(kx, ky, "CL")
-
-    # The horns first, so the skull is drawn over where they meet it and they
-    # never look stuck on the front of its face.
-    for side, hx in ((-1, 10), (1, 19)):
-        for k in range(7):
-            x = hx + side * k
-            y = 17 - (k * 3) // 4 - (k > 4)
-            c.set(x, y, "HN")
-            c.set(x, y + 1, "HNS")
-
-    c.rect(10, 16, 19, 22, "CL")                  # the cranium
-    c.row(11, 18, 15, "CL")
-    c.row(12, 17, 15, "CLD")                      # a brow over the sockets
-    c.rect(13, 22, 16, 26, "CL")                  # and the long face under it
-    c.row(13, 16, 26, "CLD")
-    c.col(14, 23, 25, "CLD")                      # the nasal groove
-    c.rect(11, 18, 12, 20, "OL")                  # two sockets, which is the
-    c.rect(17, 18, 18, 20, "OL")                  # whole of why it reads
-    c.set(10, 16, "CLD")
-    c.set(19, 16, "CLD")
-    c.rect(0, BASE_Y + 1, FRAME - 1, FRAME - 1, None)
-    return c.outline()
-
-
 def cairn():
     c = Canvas(FRAME, FRAME)
     for y0, w in ((24, 8), (20, 6), (16, 4), (13, 2)):   # stacked, tapering up
@@ -1255,50 +1202,6 @@ def roots():
     return c.outline()
 
 
-def cave_shroom():
-    """A cluster of pale fungus on the burrow floor - three caps, no two the
-    same height.
-
-    prop.mushroom is a red forest toadstool and reads as woodland at a glance.
-    Down here the cap is salt rather than roof-red: the only thing a hole in
-    the ground gives you to see by is whatever is paler than the dirt."""
-    c = Canvas(FRAME, FRAME)
-    for cx, top, w in ((10, 22, 3), (17, 17, 4), (24, 24, 2)):
-        c.rect(cx - 1, top + 3, cx, BASE_Y, "CLD")           # stem
-        c.col(cx - 1, top + 3, BASE_Y, "CL")
-        _blob(c, top, (w - 2, w, w), "CL", cx=cx - 1)        # cap
-        c.row(cx - 1 - w, cx + w, top + 3, "CLD")            # gills under the rim
-    _shade(c, "CL", "CLL", "CLD")
-    return c.outline()
-
-
-def bone_pile():
-    """What a den leaves behind: a cracked skull and the long bones of
-    something deer-sized, gnawed at the ends and left where they dropped.
-
-    prop.bones is the desert's, and half of that drawing is the sand drift the
-    skull is sunk in. On a cave floor a mound of pale sand reads as something
-    carried in from outside, so this is the same idea with the ground taken
-    away and the bones scattered rather than composed."""
-    c = Canvas(FRAME, FRAME)
-    # Long bones first, so the skull sits over them.
-    for x0, x1, y in ((5, 16, BASE_Y - 1), (9, 21, BASE_Y - 4), (14, 25, BASE_Y)):
-        c.row(x0, x1, y, "CL")
-        c.row(x0, x1, y + 1, "CLD")
-        for x in (x0, x1):                            # knuckled ends
-            c.set(x, y - 1, "CL")
-            c.set(x, y + 1, "CLD")
-    # The skull. A pale mass with two sockets in it is what reads as bone at
-    # this size - a jaw and teeth are below the resolution to bother with.
-    _lobe(c, 20, BASE_Y - 9, 4, "CL")
-    c.rect(15, BASE_Y - 10, 19, BASE_Y - 7, "CL")     # the muzzle
-    _shade(c, "CL", "CLL", "CLD")
-    for x in (17, 21):
-        c.set(x, BASE_Y - 10, "OL")                   # sockets
-        c.set(x, BASE_Y - 9, "OL")
-    return c.outline()
-
-
 # ---------------------------------------------------------------- wetland ---
 
 def fence(mask=0):
@@ -1565,10 +1468,7 @@ PROPS = {
     "prop.hearth": hearth,
     "prop.weapon_rack": weapon_rack,
     "prop.bed_straw": bed_straw,
-    "prop.bones": bones,
     "prop.roots": roots,
-    "prop.cave_shroom": cave_shroom,
-    "prop.bone_pile": bone_pile,
 }
 PROP_ORDER = list(PROPS)
 

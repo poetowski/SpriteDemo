@@ -38,7 +38,7 @@
    ],
    "cols": 8,
    "rows": 9,
-   "count": 71
+   "count": 68
   },
   "props_huge": {
    "image": "atlases/props_huge.png",
@@ -11506,7 +11506,7 @@
     29
    ]
   },
-  "prop.bones": {
+  "prop.roots": {
    "atlas": "props",
    "index": 60,
    "anchor": [
@@ -11514,7 +11514,7 @@
     29
    ]
   },
-  "prop.roots": {
+  "prop.fence/link/1": {
    "atlas": "props",
    "index": 61,
    "anchor": [
@@ -11522,7 +11522,7 @@
     29
    ]
   },
-  "prop.cave_shroom": {
+  "prop.fence/link/2": {
    "atlas": "props",
    "index": 62,
    "anchor": [
@@ -11530,7 +11530,7 @@
     29
    ]
   },
-  "prop.bone_pile": {
+  "prop.fence/link/3": {
    "atlas": "props",
    "index": 63,
    "anchor": [
@@ -11538,7 +11538,7 @@
     29
    ]
   },
-  "prop.fence/link/1": {
+  "prop.fence/link/4": {
    "atlas": "props",
    "index": 64,
    "anchor": [
@@ -11546,7 +11546,7 @@
     29
    ]
   },
-  "prop.fence/link/2": {
+  "prop.fence/link/5": {
    "atlas": "props",
    "index": 65,
    "anchor": [
@@ -11554,7 +11554,7 @@
     29
    ]
   },
-  "prop.fence/link/3": {
+  "prop.fence/link/6": {
    "atlas": "props",
    "index": 66,
    "anchor": [
@@ -11562,33 +11562,9 @@
     29
    ]
   },
-  "prop.fence/link/4": {
-   "atlas": "props",
-   "index": 67,
-   "anchor": [
-    16,
-    29
-   ]
-  },
-  "prop.fence/link/5": {
-   "atlas": "props",
-   "index": 68,
-   "anchor": [
-    16,
-    29
-   ]
-  },
-  "prop.fence/link/6": {
-   "atlas": "props",
-   "index": 69,
-   "anchor": [
-    16,
-    29
-   ]
-  },
   "prop.fence/link/7": {
    "atlas": "props",
-   "index": 70,
+   "index": 67,
    "anchor": [
     16,
     29
