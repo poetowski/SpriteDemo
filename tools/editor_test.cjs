@@ -502,8 +502,15 @@ function dropScratch() {
     if (row.zone) current = row.zone;
     else zoneOf.push({ map: row.map, under: current, tags: row.tags });
   }
+  // Named zones, as against the "untagged" heading the panel always shows.
+  // This used to look for 'desert' by name, which quietly stopped testing
+  // anything the day the desert left the content: an assertion that names one
+  // piece of content is a test of that content, not of the grouping. What has
+  // to be true is that there is a zone at all and that each heading covers
+  // exactly its own maps.
+  const namedZones = zoneHeads.filter((z) => z.zone && z.zone !== 'untagged');
   check('a zone is a heading over its own maps', zoneHeads.length >= 2
-    && zoneHeads.some((z) => z.zone === 'desert')
+    && namedZones.length >= 1
     && zoneHeads.every((z) => z.count
         === zoneOf.filter((m) => m.under === z.zone).length),
     zoneHeads.map((z) => `${z.zone} ${z.count}`).join(', '));
@@ -540,9 +547,10 @@ function dropScratch() {
       return { zone: g.zone, w: g.w, h: g.h, ink };
     });
   });
-  const desertPlate = plates.find((g) => g.zone === 'desert');
+  // Likewise: the plate that carries a zone, whichever zone that is.
+  const zonedPlate = plates.find((g) => g.zone);
   check('a plate that is all one zone is named on the atlas',
-        plates.length === world.groups && desertPlate && desertPlate.ink > 20
+        plates.length === world.groups && zonedPlate && zonedPlate.ink > 20
         && plates.filter((g) => g.zone).length === 1,
         plates.map((g) => `${g.zone || 'unnamed'} ${g.w}x${g.h} ink=${g.ink}`).join(', '));
 

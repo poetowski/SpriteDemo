@@ -1,0 +1,21 @@
+{
+  "id": "npc.wilf",
+  "sprite": "actor.farmer",
+  "rig": "biped",
+  "name": "Wilf",
+  "states": [
+    "walk",
+    "idle"
+  ],
+  "speed": 0,
+  "blocks": true,
+  "facing": "down",
+  "interact": "dlg.wilf_field",
+  "description": "Getting the hay in, and counting what the boar owes him in rails.",
+  "level": 1,
+  "attack": 0,
+  "armor": 0,
+  "behaviour": "passive",
+  "walking": false,
+  "walk_radius": 0
+}

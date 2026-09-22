@@ -3,5 +3,6 @@
   "sprite": "tile.cobble",
   "walkable": true,
   "material": "stone",
-  "blend": true
+  "blend": true,
+  "family": "earth"
 }

@@ -1,0 +1,11 @@
+{
+  "id": "prop.fence",
+  "sprite": "prop.fence",
+  "footprint": [
+    [
+      0,
+      0
+    ]
+  ],
+  "blocks": true
+}

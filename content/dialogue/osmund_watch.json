@@ -1,0 +1,33 @@
+{
+  "id": "dlg.osmund_watch",
+  "speaker": "Osmund",
+  "start": "greet",
+  "nodes": {
+    "greet": {
+      "text": [
+        "Quiet week. That's how I like them.",
+        "Keep to the road and it stays quiet."
+      ],
+      "choices": [
+        {
+          "text": "Any trouble about?",
+          "goto": "boar"
+        },
+        {
+          "text": "Good day."
+        }
+      ]
+    },
+    "boar": {
+      "text": [
+        "Boar in the wood, and it has been going at the fences.",
+        "Wilf has lost three rails to it. He is not pleased."
+      ],
+      "choices": [
+        {
+          "text": "I'll take a look."
+        }
+      ]
+    }
+  }
+}
