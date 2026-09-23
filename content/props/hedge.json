@@ -1,0 +1,13 @@
+{
+  "id": "prop.hedge",
+  "sprite": "prop.hedge",
+  "footprint": [
+    [
+      0,
+      0
+    ]
+  ],
+  "blocks": true,
+  "links": "hedge",
+  "hittable": true
+}

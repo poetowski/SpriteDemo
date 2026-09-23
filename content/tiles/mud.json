@@ -1,0 +1,8 @@
+{
+  "id": "tile.mud",
+  "sprite": "tile.mud",
+  "walkable": true,
+  "material": "mud",
+  "blend": true,
+  "family": "earth"
+}

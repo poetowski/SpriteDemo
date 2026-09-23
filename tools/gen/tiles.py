@@ -482,6 +482,130 @@ def cave_wall(seed=0, phase=0):
     return c
 
 
+# ------------------------------------------------------- the farmed valley --
+def mud(seed=0, phase=0):
+    """Trampled wet earth: what the ground turns to round a trough, a well or
+    a gate, where feet and hooves have been at it all year.
+
+    It sits on the ladder the wetland set - ground with water in it is darker
+    than turf - one step below tile.dirt, so from across a map the yard in
+    front of a byre reads as churned before any detail can be made out. The
+    detail is what says *why*: a puddle holding a bit of sky, and hoof marks
+    pressed into it in pairs."""
+    c = Canvas(SIZE, SIZE)
+    c.rect(0, 0, SIZE - 1, SIZE - 1, "DRD")
+    rnd = scatter(0x3D0D + seed * 457)
+    for _ in range(3):                            # wetter hollows
+        _patch(c, rnd, rnd(SIZE), rnd(SIZE), 6, 3, "LFD", 5 + rnd(3))
+    if seed % 3 == 1:
+        # A puddle, in one variant of three. Put in every tile, the same small
+        # pool came back on a grid and a yard of mud read as a sheet of blue
+        # gems. Flat and wide, with the sky on its far edge.
+        px, py = rnd(SIZE), rnd(SIZE)
+        _pool(c, px, py, 4, 2, "WAD")
+        for k in range(-2, 2):
+            _put(c, px + k, py - 1, "WA")
+        _put(c, px - 2, py - 1, "WAL")
+    for _ in range(1 + seed % 2):                 # cloven prints, in pairs
+        x, y = rnd(SIZE), rnd(SIZE)
+        _put(c, x, y, "OL")
+        _put(c, x + 2, y, "OL")
+        _put(c, x, y + 1, "DR")
+        _put(c, x + 2, y + 1, "DR")
+    for _ in range(5):                            # ridges catching the light
+        x, y = rnd(SIZE), rnd(SIZE)
+        _put(c, x, y, "DR")
+        _put(c, x + 1, y, "DR")
+    return c
+
+
+def tilled(seed=0, phase=0):
+    """A kitchen garden: dug beds with rows of something coming up in them.
+
+    tile.field is the plough - furrows and stubble, a crop that has been cut.
+    This is the spade, at the scale of a household, so the rows are short
+    and what stands in them is green and round rather than gold and straight.
+    The rows run across the tile at a 4px pitch so a bed of several tiles
+    reads as one set of drills; the plants in them are placed on a pitch too,
+    because a garden is the one thing here somebody lined up on purpose."""
+    c = Canvas(SIZE, SIZE)
+    c.rect(0, 0, SIZE - 1, SIZE - 1, "DR")
+    rnd = scatter(0x7111 + seed * 283)
+    for y in range(0, SIZE, 4):                   # the drills
+        c.row(0, SIZE - 1, y, "DRD")
+        c.row(0, SIZE - 1, (y + 3) % SIZE, "DRL")
+    kind = seed % 2
+    for row, y in enumerate(range(1, SIZE, 4)):
+        off = (row % 2) * 2
+        for x in range(off, SIZE + off, 4):
+            if rnd(6) == 0:
+                continue                          # a gap where one failed
+            if kind == 0:                         # cabbages: a lit round head
+                _put(c, x, y, "BU")
+                _put(c, x + 1, y, "BUL")
+                _put(c, x, y + 1, "BUD")
+                _put(c, x + 1, y + 1, "BU")
+            else:                                 # onions: upright leaves
+                _put(c, x, y + 1, "BU")
+                _put(c, x, y, "GRL")
+                _put(c, x + 1, y + 1, "BUD")
+    return c
+
+
+def flagstone(seed=0, phase=0):
+    """A floor of stone flags, for a house that is better than the shed: the
+    inn, a chapel, a cottage kitchen.
+
+    Cobble is setts - small, round, all one size, laid for cartwheels. Flags
+    are big and laid flat for feet, so there are only three or four to a tile,
+    in two courses that break joint. The first version cut the tile into
+    seven slabs in four tones with a lit rim on every one, and a floor of it
+    read as a maze of glyphs; a floor is the thing in a room that should be
+    quiet. So: one stone, a dark joint, a lit arris only along the top of each
+    course, and grit."""
+    c = Canvas(SIZE, SIZE)
+    c.rect(0, 0, SIZE - 1, SIZE - 1, "ST")
+    rnd = scatter(0xF1A6 + seed * 541)
+    off = (0, 3)[seed % 2]
+    for y0, joints in ((0, (0, 9)), (8, (4, 12))):
+        c.row(0, SIZE - 1, y0, "STD")             # the bed joint
+        c.row(0, SIZE - 1, y0 + 1, "STL")         # and the arris under it
+        for jx in joints:
+            for dy in range(8):
+                _put(c, jx + off, y0 + dy, "STD")
+    for _ in range(3):                            # a flag worn hollow
+        _patch(c, rnd, rnd(SIZE), rnd(SIZE), 4, 2, "STD", 2)
+    for _ in range(7):                            # grit
+        _put(c, rnd(SIZE), rnd(SIZE), "STL" if rnd(2) else "STD")
+    return c
+
+
+def plaster_wall(seed=0, phase=0):
+    """A limewashed wall between timbers, seen from inside: the cottage's own
+    outside turned in, so a room reads as being in the house you walked into.
+
+    It is the cloth shade rather than the cloth: indoors a wall is where the
+    light falls off, and at full white it would be the brightest thing in the
+    room and the floor would sink. The timbers are the dark wood: a rail the
+    length of the wall, and posts at uneven spacing, so a run comes out framed
+    in bays the way the cottage is."""
+    c = Canvas(SIZE, SIZE)
+    c.rect(0, 0, SIZE - 1, SIZE - 1, "CLD")
+    rnd = scatter(0x9A57 + seed * 199)
+    for _ in range(6):                            # the limewash, uneven
+        _patch(c, rnd, rnd(SIZE), rnd(SIZE), 4, 3, "CL", 3)
+    for _ in range(3):
+        _put(c, rnd(SIZE), rnd(SIZE), "HNS")      # a stain or two
+    c.row(0, SIZE - 1, 11, "WDD")                 # the mid rail, the whole run
+    c.row(0, SIZE - 1, 12, "WD")
+    if seed % 2:
+        # A post in one variant of two, so the bays come out uneven. On every
+        # tile the frame was a grid of squares and a wall read as a window.
+        c.col(7, 0, SIZE - 1, "WDD")
+        c.col(8, 0, SIZE - 1, "WD")
+    return c
+
+
 BASE = {
     "tile.grass": grass,
     "tile.grass_flower": grass_flower,
@@ -501,6 +625,10 @@ BASE = {
     "tile.cave_wall": cave_wall,
     "tile.shallow": shallow,
     "tile.water": water,
+    "tile.mud": mud,
+    "tile.tilled": tilled,
+    "tile.flagstone": flagstone,
+    "tile.plaster_wall": plaster_wall,
 }
 TILE_ORDER = list(BASE)
 
@@ -509,7 +637,9 @@ TILE_ORDER = list(BASE)
 VARIANTS = {"tile.grass": 3, "tile.grass_flower": 3, "tile.grass_tall": 3,
             "tile.forest": 3,
             "tile.leaves": 2, "tile.water": 2, "tile.wood_floor": 2,
-            "tile.cave_floor": 3, "tile.cave_wall": 2, "tile.tall_stone": 2}
+            "tile.cave_floor": 3, "tile.cave_wall": 2, "tile.tall_stone": 2,
+            "tile.mud": 3, "tile.tilled": 2, "tile.flagstone": 2,
+            "tile.plaster_wall": 2}
 
 # Tiles drawn in several phases. The art pipeline emits every phase as its own
 # frame and the engine cycles them; the base frame is what the map resolves to.
@@ -707,6 +837,25 @@ def _edge_shallow(d, which, x, y, over, under, rnd, phase):
     return over
 
 
+def _edge_plaster(d, which, x, y, over, under, rnd, phase):
+    """A plastered wall standing on a stone floor: _edge_plank's shape in
+    the cottage's materials. The face you can see ends in a dark timber sole
+    plate, because that is what a timber-framed wall stands on, and it throws
+    its shadow on the flags."""
+    downhill = which in ("S", "cSE", "cSW")
+    if d < 0:
+        return "STD" if downhill and d >= -1.5 else under    # shadow on the flags
+    if downhill:
+        if d >= 3:
+            return over
+        if d >= 2:
+            return "CL"                                      # the lit face
+        return "WDD"                                         # the sole plate
+    if d < 1:
+        return "WD"                                          # the frame's edge
+    return over
+
+
 STYLE = {
     "tile.water": _edge_water,
     "tile.shallow": _edge_shallow,
@@ -720,6 +869,9 @@ STYLE = {
     "tile.plank_wall": _edge_plank,
     "tile.stone": _edge_stone,
     "tile.tall_stone": _edge_stone,
+    "tile.mud": lambda d, w, x, y, o, u, r, p: _edge_soft(d, w, x, y, o, u, r, "DR"),
+    "tile.tilled": lambda d, w, x, y, o, u, r, p: _edge_trodden(d, w, x, y, o, u, r, "DRD", "DRL"),
+    "tile.plaster_wall": _edge_plaster,
 }
 
 

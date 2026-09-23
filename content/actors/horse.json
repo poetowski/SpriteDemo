@@ -1,0 +1,33 @@
+{
+  "id": "npc.horse",
+  "sprite": "actor.horse",
+  "rig": "quadruped",
+  "name": "Horse",
+  "states": [
+    "walk",
+    "idle",
+    "graze"
+  ],
+  "speed": 22,
+  "blocks": true,
+  "facing": "down",
+  "wander": {
+    "idle_ms": [
+      1000,
+      2400
+    ],
+    "graze_ms": [
+      2500,
+      6000
+    ],
+    "graze_chance": 0.6
+  },
+  "description": "A heavy bay for the cart and the plough, grazing when it is not wanted.",
+  "level": 3,
+  "hp": 30,
+  "attack": 0,
+  "armor": 0,
+  "behaviour": "passive",
+  "walking": true,
+  "walk_radius": 5
+}

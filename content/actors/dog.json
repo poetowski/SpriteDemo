@@ -1,0 +1,33 @@
+{
+  "id": "npc.dog",
+  "sprite": "actor.dog",
+  "rig": "quadruped",
+  "name": "Farm Dog",
+  "states": [
+    "walk",
+    "idle",
+    "graze"
+  ],
+  "speed": 30,
+  "blocks": true,
+  "facing": "down",
+  "wander": {
+    "idle_ms": [
+      400,
+      1200
+    ],
+    "graze_ms": [
+      1000,
+      2500
+    ],
+    "graze_chance": 0.3
+  },
+  "description": "Belongs to the farm and knows it. Trots about as if on an errand.",
+  "level": 2,
+  "hp": 14,
+  "attack": 0,
+  "armor": 0,
+  "behaviour": "passive",
+  "walking": true,
+  "walk_radius": 6
+}

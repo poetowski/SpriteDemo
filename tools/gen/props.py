@@ -1269,6 +1269,179 @@ def fence(mask=0):
 
 
 
+# Hedge and wall are the fence's idea carried over to things that are solid
+# rather than open: a run is one continuous mass, so where the fence's rails
+# butt together these have to *be* one body across the join. Two rules make
+# that work, and both come from the frame being 32 wide on a 16px grid:
+#
+# - Neighbouring pieces overlap by half a frame, so every texture here is a
+#   function of x % 16 (and y % 16 down a run). Anything else puts a seam
+#   every tile where the next piece's pattern lands over this one's.
+# - Light is worked out with the frame edge counted as *more of the same*,
+#   not as air. _shade treats the edge as open and lights it, which drew a
+#   pale stripe down every join; a run is only lit where it really ends.
+def _run(mask, top, body, arm, fill):
+    """The mass of one linked piece: the tile's own body, arms out east and
+    west to the frame edge, and a spine north to meet the piece above. Returns
+    the canvas filled with whatever `fill(x, y, edge)` says, where edge is
+    "top", "left", "right", "foot" or None for the inside."""
+    N, E, W = mask & 1, mask & 2, mask & 4
+    c = Canvas(FRAME, FRAME)
+    if N and not (E or W) and not callable(arm):
+        # The foot of a north-south run is the end of it seen head on, so it
+        # is only as wide as the spine. Drawn at full width, every piece down
+        # the run stuck its front face out either side and a straight wall
+        # came out notched like a caterpillar.
+        body = arm
+    x0 = 0 if W else body[0]
+    x1 = FRAME - 1 if E else body[1]
+    solid = set()
+    for x in range(x0, x1 + 1):
+        t = top(x)
+        # a free end is rounded off rather than cut square
+        if not W and x < body[0] + 3:
+            t += body[0] + 3 - x
+        if not E and x > body[1] - 3:
+            t += x - (body[1] - 3)
+        for y in range(t, BASE_Y + 1):
+            solid.add((x, y))
+    if N:
+        for y in range(0, BASE_Y + 1):
+            lo, hi = arm(y) if callable(arm) else arm
+            for x in range(lo, hi + 1):
+                solid.add((x, y))
+
+    def filled(x, y):
+        if not (0 <= x < FRAME) or y < 0:
+            return True                           # the next piece carries on
+        return (x, y) in solid
+    for x, y in solid:
+        if not filled(x, y - 1):
+            edge = "top"
+        elif not filled(x - 1, y):
+            edge = "left"
+        elif not filled(x + 1, y) or y == BASE_Y:
+            edge = "right" if not filled(x + 1, y) else "foot"
+        else:
+            edge = None
+        c.set(x, y, fill(x, y, edge))
+    return c
+
+
+def hedge(mask=0):
+    """A hawthorn hedgerow, one piece of a run, drawn for its neighbours.
+
+    The thing a fence cannot do: say that a field boundary is old. A hedge is
+    a green wall with a ragged top, so the top is a sum of two ripples at the
+    16px period and every tile of a run lifts and dips in the same place -
+    which, repeated, reads as growth rather than as a stamp only because it
+    is broken up by the texture inside it. A few sprays of blossom say
+    hawthorn, and they are the cloth white, which is the only white thing in
+    the meadow and so reads from across a field."""
+    def top(x):
+        u = x % 16
+        return 12 + round(1.4 * math.sin(u / 16 * 2 * math.pi)
+                          + 0.8 * math.sin(u / 16 * 6 * math.pi + 1.0))
+
+    def leafy(x, y):
+        """Leaf clumps on a 4px lattice, staggered each band: a lit pixel with
+        a crescent of shade under it, which is the bush's own trick at a
+        smaller scale. One-pixel speckle was tried first and a run of it read
+        as carpet."""
+        u, v = x % 16, y % 16
+        band = v // 4
+        a, b = (u + (2 if band % 2 else 0)) % 4, v % 4
+        if (a, b) == (1, 0):
+            return "light"
+        if (a, b) in ((2, 1), (1, 2), (2, 2)):
+            return "shade"
+        return None
+
+    def fill(x, y, edge):
+        leaf = leafy(x, y)
+        if edge == "top":
+            return "BUL"
+        if edge == "right" or y >= BASE_Y - 1:
+            return "BUD"
+        if edge == "left":
+            return "BUL" if leaf != "shade" else "BU"
+        if leaf == "light":
+            return "BUL" if y < 24 else "BU"
+        if leaf == "shade":
+            return "BUD"
+        return "BU" if y < 25 else ("BUD" if (x + y) % 3 == 0 else "BU")
+
+    def spine(y):
+        v = y % 16                                # a hedge's sides are not ruled
+        wob = (0, 1, 1, 0, -1, 0, 1, 0, 0, -1, -1, 0, 1, 1, 0, 0)
+        return 8 + wob[v], 23 + wob[(v + 5) % 16]
+    c = _run(mask, top, (8, 23), spine, fill)
+    # Blossom, and only a little of it. Every piece repeats on a 16px period,
+    # so whatever is drawn here comes back every tile; in the bright white it
+    # was a string of lights along the top. In the cloth's shade it is a
+    # sprinkle that says hawthorn only once you look.
+    for x, y in ((12, 16), (5, 22)):
+        for bx in (x, x + 16):
+            for dx, dy, k in ((0, 0, "CL"), (1, 1, "CLD")):
+                if c.get(bx + dx, y + dy) in ("BU", "BUL", "BUD"):
+                    c.set(bx + dx, y + dy, k)
+    return c.outline()
+
+
+def wall(mask=0):
+    """A dry-stone field wall, one piece of a run, drawn for its neighbours.
+
+    Uncoursed stone read at 16px is a grey band with a crack in it, so the
+    two things that say "dry-stone" are exaggerated: the joints are deep and
+    dark, because nothing fills them, and the top is a row of stones set on
+    edge, because that coping is the one part of the wall with a silhouette.
+    Knee high - lower than the hedge, so the two read as different things
+    when a field has one on each side."""
+    def top(x):
+        u = x % 16
+        return 16 + (0, 1, 0, 0, 1, 2, 1, 0, 0, 1, 0, 1, 2, 1, 0, 0)[u]
+
+    # Courses of stones as (row start, height, joint offsets); a joint is a
+    # dark column, and staggering them course to course is what makes stone.
+    courses = ((19, 3, (0, 7, 12)), (22, 3, (3, 10)), (25, 4, (1, 6, 13)))
+
+    def fill(x, y, edge):
+        u, v = x % 16, y % 16
+        if y < 19:                                # the coping, stones on edge
+            if u % 3 == 0:
+                return "STX"
+            return "STL" if edge == "top" or y == top(x) else "ST"
+        for y0, h, joints in courses:
+            if y0 <= y < y0 + h:
+                if y == y0:
+                    return "STX"                  # the bed joint
+                if u in joints:
+                    return "STX"
+                if y == y0 + 1:
+                    return "STL" if edge != "right" else "ST"
+                return "STD" if edge == "right" or y == y0 + h - 1 else "ST"
+        return "STD"
+
+    def fill_run(x, y, edge):
+        # Down the northward spine the wall is seen from above: coping along
+        # its length, one stone every four rows, lit on the west side.
+        if (mask & 1) and 11 <= x <= 20 and y < 19:
+            if y % 4 == 0:
+                return "STX"
+            if x == 11:
+                return "STL"
+            if x == 20:
+                return "STD"
+            return "ST" if (x + y // 4) % 3 else "STL"
+        return fill(x, y, edge)
+    c = _run(mask, top, (8, 23), (11, 20), fill_run)
+    for x, y in ((4, 27), (5, 27), (19, 26)):     # lichen low on the stones
+        if c.get(x, y) in ("ST", "STD"):
+            c.set(x, y, "MS")
+    return c.outline()
+
+
+
 def haystack():
     """Cut grass built round a pole and left to dry.
 
@@ -1421,6 +1594,263 @@ def bridge_deck():
 
 
 
+# ------------------------------------------------------------ the country ---
+# What a farmed valley grows and builds that the first set did not: the plants
+# the items come from, and the few fixtures a village hangs its life on. Every
+# one is in the palette the meadow already uses, because the point of them is
+# to make one country denser rather than to start a second.
+
+def _leaf(c, base, ctrl, tip, width, key, light, dark, serrate=True):
+    """A leaf or frond on a curve: from `base` through `ctrl` to `tip`, as wide
+    as `width` at the foot and tapering to a point, with leaflets across it.
+
+    It is swept rather than walked: at each step along the curve a short
+    line is laid *across* the direction of growth, sampled finely enough that
+    a diagonal leaf comes out solid rather than as a chequerboard. The palm's
+    _frond was tried first and set its leaflets above and below a rib that
+    was meant to lie flat; stood upright, those leaflets ran along the rib and
+    outline() handed every fern back as a tuft of black hairs.
+
+    The side facing up-left is lit and the rib is dark, which is all the
+    modelling a thing three to five pixels wide can carry."""
+    (ax, ay), (bx, by), (ex, ey) = base, ctrl, tip
+    steps = 48
+    for i in range(steps + 1):
+        t = i / steps
+        x = (1 - t) ** 2 * ax + 2 * (1 - t) * t * bx + t * t * ex
+        y = (1 - t) ** 2 * ay + 2 * (1 - t) * t * by + t * t * ey
+        tx = 2 * (1 - t) * (bx - ax) + 2 * t * (ex - bx)
+        ty = 2 * (1 - t) * (by - ay) + 2 * t * (ey - by)
+        m = math.hypot(tx, ty) or 1
+        nx, ny = -ty / m, tx / m
+        w = width * (1 - t) ** 0.7
+        if serrate and int(t * 14) % 2:
+            w *= 0.55                             # the gaps between leaflets
+        k = -w
+        while k <= w:
+            px, py = round(x + nx * k), round(y + ny * k)
+            lit = (nx * k + ny * k) < 0           # the half turned up-left
+            c.set(px, py, light if lit else key)
+            k += 0.5
+        c.set(round(x), round(y), dark)           # the rib
+
+
+def bramble():
+    """A blackberry thicket: low, wider than it is tall, arching canes, and
+    fruit on it - because item.berries has to come off something.
+
+    A bush with dots on it is a bush with dots on it. What makes a bramble is
+    the canes: they arch *out* of the mound and come back down to root, so the
+    silhouette is a heap with loops standing off it. The canes are the roof's
+    dark red, the one warm note, which is also the colour a bramble stem is.
+    The fruit is the berry item's own blue-black, so what you pick is visibly
+    what was growing."""
+    c = Canvas(FRAME, FRAME)
+    for cx, cy, r in ((15, 22, 7), (8, 24, 5), (23, 24, 5), (12, 18, 4),
+                      (20, 19, 4), (4, 26, 3), (27, 26, 3)):
+        _lobe(c, cx, cy, r, "BU")
+    c.rect(0, BASE_Y + 1, FRAME - 1, FRAME - 1, None)
+    rnd = scatter(0xB4A3)
+    for _ in range(22):                          # leaf texture through the mass
+        x, y = 2 + rnd(28), 14 + rnd(14)
+        if c.get(x, y) == "BU":
+            c.set(x, y, "BUD")
+    _shade(c, "BU", "BUL", "BUD")
+    # Canes sprayed out of the mound and falling back to root beyond it, two
+    # pixels thick: one pixel of cane plus its outline is a hair. Drawn as
+    # three matching arches over the top they read as horseshoes - a bramble
+    # is untidy, so these leave from different heights and land at different
+    # distances, and only on the sides.
+    for (ax, ay), (bx, by), (ex, ey) in (((11, 17), (3, 10), (0, BASE_Y - 2)),
+                                         ((20, 18), (28, 12), (31, BASE_Y - 4)),
+                                         ((17, 16), (22, 9), (26, 15))):
+        for i in range(25):
+            t = i / 24
+            x = round((1 - t) ** 2 * ax + 2 * (1 - t) * t * bx + t * t * ex)
+            y = round((1 - t) ** 2 * ay + 2 * (1 - t) * t * by + t * t * ey)
+            c.set(x, y, "WDD")
+            c.set(x, y + 1, "WDD")
+            if c.get(x, y - 1) is None:
+                c.set(x, y, "RFD")                # lit along its top
+    # Fruit in clusters of three, each with a glint: a single dark pixel on dark
+    # leaves is a hole, three with one lit is a berry.
+    for x, y in ((9, 21), (18, 17), (22, 23), (13, 25), (5, 25), (26, 20)):
+        for dx, dy in ((0, 0), (1, 0), (0, 1), (1, 1)):
+            c.set(x + dx, y + dy, "WAD")
+        c.set(x, y, "WAL")
+        c.set(x + 2, y + 1, "WAX")
+    for x, y in ((15, 20), (11, 17)):            # a flower or two still out
+        c.set(x, y, "CLL")
+        c.set(x + 1, y, "CL")
+    return c.outline()
+
+
+def tree_apple():
+    """An orchard tree: short, crooked, wider than it is tall, and hung with
+    fruit - the other half of item.apple.
+
+    It has to read apart from the oak at a glance, which is the rule for any
+    second tree: same palette, different silhouette. An apple is pruned, so
+    the crown is low and broad and starts barely a tile off the ground, and
+    the trunk leans and kinks where the oak's rises straight and flares. The
+    apples are the item's own red with a lit side, and a couple lie in the
+    grass under it, because an apple tree in autumn always has windfalls."""
+    c = Canvas(FRAME, FRAME)
+    for y in range(17, BASE_Y + 1):              # a leaning, kinked bole
+        x = 15 + (1 if y < 23 else 0) + (1 if y < 19 else 0)
+        c.row(x - 1, x + 1, y, "WD")
+    for cx, cy, r in ((15, 28, 3), (11, 29, 2), (19, 29, 2)):
+        _lobe(c, cx, cy, r, "WD")                # a root flare, not a stake
+    c.rect(0, BASE_Y + 1, FRAME - 1, FRAME - 1, None)
+    _twig(c, 16, 18, 9, 12, 1, "WD")
+    _twig(c, 17, 17, 23, 13, 1, "WD")
+    _crown(c,
+           [(15, 11, 7), (7, 13, 5), (24, 13, 5), (11, 7, 4), (20, 7, 4),
+            (15, 15, 5), (3, 15, 3), (28, 15, 3)],
+           [(10, 15, 4), (21, 15, 4)],
+           [(11, 6, 3), (19, 7, 2)],
+           [(8, 9), (22, 10), (15, 4), (4, 12), (27, 12), (13, 18)])
+    _shade(c, "BU", "BUL", "BUD")
+    _shade(c, "WD", "WDL", "WDD")
+    for x, y in ((7, 11), (13, 8), (20, 11), (25, 14), (10, 15), (17, 14),
+                 (4, 15), (22, 7)):
+        c.rect(x, y, x + 1, y + 1, "RF")         # fruit, two by two
+        c.set(x, y, "RFL")
+        c.set(x + 1, y + 1, "RFD")
+    c.rect(22, BASE_Y - 1, 23, BASE_Y, "RF")     # a windfall
+    c.set(22, BASE_Y - 1, "RFL")
+    return c.outline()
+
+
+def bracken():
+    """A clump of fern for the wood floor: something green and low between
+    the trunks, so a wood can be dense without being more trees.
+
+    Each frond is a _leaf: a rib that climbs and arches over, with leaflets
+    set across it so it is several pixels wide the whole way up. The palm's
+    _frond was tried first and set its leaflets along an upright rib, which
+    outline() handed back as a tuft of black hairs. One of the six has
+    turned, because bracken browns from the tips in autumn and a
+    clump of one green reads as a bush."""
+    c = Canvas(FRAME, FRAME)
+    B = (15, BASE_Y - 1)
+    for ctrl, tip, w, key, light in (
+            ((6, 14), (1, 21), 3.2, "LF", "DRL"),      # turned, lying lowest
+            ((25, 15), (30, 22), 3.0, "BU", "BUL"),
+            ((8, 7), (4, 13), 3.4, "BU", "BUL"),
+            ((22, 6), (27, 12), 3.4, "BU", "BUL"),
+            ((12, 3), (10, 9), 3.0, "BUL", "GRL"),
+            ((19, 4), (22, 8), 2.8, "BU", "BUL")):
+        _leaf(c, B, ctrl, tip, w, key, light, "BUD" if key != "LF" else "LFD")
+    _lobe(c, 15, BASE_Y, 2, "BUD")               # the crown they spring from
+    c.rect(0, BASE_Y + 1, FRAME - 1, FRAME - 1, None)
+    return c.outline()
+
+
+def reeds():
+    """A clump of bulrush for the edge of the water.
+
+    The last reed bed here was six parallel stalks, and outline() turned it
+    into a dark comb. So: three stalks, not six, each two pixels wide, and at
+    least six apart where they rise from the clump - the first gap that shows
+    daylight between two bordered stalks. What says bulrush is the brown head,
+    and it is the one thing drawn fat. Leaf blades arch off the base in the
+    light green, standing clear of the stems."""
+    c = Canvas(FRAME, FRAME)
+    for x, top, lean in ((9, 6, -1), (16, 3, 0), (23, 8, 1)):
+        for y in range(top, BASE_Y + 1):
+            dx = lean * max(0, (20 - y)) // 8
+            c.set(x + dx, y, "THD")
+            c.set(x + dx + 1, y, "TH")
+        hx = x + lean * max(0, (20 - top - 3)) // 8
+        c.rect(hx - 1, top + 2, hx + 2, top + 7, "WD")      # the head
+        c.col(hx - 1, top + 2, top + 7, "WDL")
+        c.col(hx + 2, top + 3, top + 7, "WDD")
+        c.set(hx, top, "THD")                              # the spike above it
+        c.set(hx, top + 1, "THD")
+    for base, ctrl, tip in (((13, BASE_Y - 2), (8, 12), (3, 16)),
+                            ((19, BASE_Y - 2), (26, 13), (30, 18)),
+                            ((15, BASE_Y - 2), (12, 10), (12, 5))):
+        _leaf(c, base, ctrl, tip, 1.6, "BU", "GRL", "BUD", serrate=False)
+    for cx, r in ((11, 3), (16, 3), (21, 3)):    # the clump the stems stand in
+        _lobe(c, cx, BASE_Y, r, "BU")
+    c.rect(0, BASE_Y + 1, FRAME - 1, FRAME - 1, None)
+    _shade(c, "BU", "BUL", "BUD")
+    return c.outline()
+
+
+def inn_sign():
+    """The sign that says a cottage is an inn: a post, a bracket, and a board
+    hung off it on two chains, painted with a tankard.
+
+    Hanging is what says "inn" rather than "notice": a board on a post is the
+    signpost. The emblem is drawn big and simple - a mug is a pale box with a
+    handle and a head of foam - because it is read from across a green."""
+    c = Canvas(FRAME, FRAME)
+    _post(c, 6, 4, BASE_Y)
+    c.rect(5, 4, 8, BASE_Y, "WD")
+    c.col(5, 4, BASE_Y, "WDL")
+    c.col(8, 4, BASE_Y, "WDD")
+    c.rect(4, BASE_Y - 1, 9, BASE_Y, "WDD")        # its foot
+    c.rect(8, 5, 29, 7, "WD")                    # the bracket arm
+    c.row(8, 29, 5, "WDL")
+    c.row(8, 29, 7, "WDD")
+    for i in range(5):                           # a brace under it, three wide
+        c.rect(9 + i, 12 - i, 10 + i, 12 - i, "WDD")
+    for x in (15, 26):                           # chains
+        c.col(x, 8, 11, "MT")
+        c.col(x + 1, 8, 11, "MTD")
+    X = 2                                        # the board hangs clear of the post
+    c.rect(11 + X, 12, 27 + X, 25, "WD")         # the board
+    c.row(11 + X, 27 + X, 12, "WDL")
+    c.col(27 + X, 12, 25, "WDD")
+    c.row(11 + X, 27 + X, 25, "WDD")
+    c.rect(12 + X, 13, 26 + X, 24, "RFD")        # painted field
+    c.rect(15 + X, 16, 21 + X, 23, "TH")         # the tankard
+    c.col(15 + X, 16, 23, "THL")
+    c.col(21 + X, 16, 23, "THD")
+    c.row(16 + X, 20 + X, 19, "THD")             # a hoop round it
+    c.rect(22 + X, 17, 24 + X, 21, "TH")         # the handle
+    c.rect(22 + X, 18, 23 + X, 20, "RFD")
+    c.rect(14 + X, 14, 22 + X, 15, "CLL")        # the head, spilling over
+    c.set(22 + X, 16, "CLL")
+    return c.outline()
+
+
+def notice_board():
+    """Two posts and a little roof over a board with notices pinned to it -
+    the place a village puts up what it wants done.
+
+    The papers are what make it a notice board and not a sign, so there are
+    several, of different sizes, each pinned a little crooked. The roof is
+    shingle, not tile: roof red is kept for houses, so that a warm mass on
+    the map always means somebody lives there."""
+    c = Canvas(FRAME, FRAME)
+    for x in (7, 23):
+        c.rect(x, 12, x + 2, BASE_Y, "WD")
+        c.col(x, 12, BASE_Y, "WDL")
+        c.col(x + 2, 12, BASE_Y, "WDD")
+    c.rect(9, 13, 23, 25, "WDD")                 # the board, in the shade
+    c.row(9, 23, 13, "WD")
+    for y0, x0, x1 in ((6, 13, 18), (7, 10, 21), (8, 7, 24), (9, 5, 26), (10, 4, 27)):
+        c.row(x0, x1, y0, "WD")                  # a shingle roof
+    for x in range(5, 27, 3):
+        c.set(x, 10, "WDD")
+    c.row(4, 27, 11, "WDD")
+    c.row(13, 18, 6, "WDL")
+    for x0, y0, x1, y1, key in ((10, 15, 14, 21, "CL"), (16, 14, 21, 18, "CLL"),
+                                (16, 20, 22, 24, "CL"), (11, 22, 14, 24, "CLL")):
+        c.rect(x0, y0, x1, y1, key)
+        c.row(x0, x1, y1, "CLD")
+        for y in range(y0 + 2, y1, 2):           # lines of writing, not text
+            c.row(x0 + 1, x1 - 1, y, "CLD")
+    c.set(10, 15, "CLD")                         # a curled corner
+    for x, y in ((12, 15), (18, 14), (19, 20)):
+        c.set(x, y, "RF")                        # pins, and a seal
+    c.rect(12, 23, 13, 24, "RF")
+    return c.outline()
+
+
 PROPS = {
     "prop.bush": bush,
     "prop.bridge": bridge,
@@ -1429,6 +1859,8 @@ PROPS = {
     "prop.cart": cart,
     "prop.haystack": haystack,
     "prop.fence": fence,
+    "prop.hedge": hedge,
+    "prop.wall": wall,
     "prop.rock": rock,
     "prop.sign": sign,
     "prop.tree_pine": tree_pine,
@@ -1469,6 +1901,12 @@ PROPS = {
     "prop.weapon_rack": weapon_rack,
     "prop.bed_straw": bed_straw,
     "prop.roots": roots,
+    "prop.bramble": bramble,
+    "prop.tree_apple": tree_apple,
+    "prop.bracken": bracken,
+    "prop.reeds": reeds,
+    "prop.inn_sign": inn_sign,
+    "prop.notice_board": notice_board,
 }
 PROP_ORDER = list(PROPS)
 
@@ -1483,7 +1921,7 @@ PROP_ORDER = list(PROPS)
 # editor palette and the sprite-exists gate are unaffected - the other seven
 # pieces are added beside it and the build picks one per placement.
 # This is not an animation: nothing cycles them.
-LINKED = {"prop.fence": fence}
+LINKED = {"prop.fence": fence, "prop.hedge": hedge, "prop.wall": wall}
 LINK_MASKS = range(8)          # N=1, E=2, W=4; south needs no art of its own
 
 
@@ -1725,10 +2163,87 @@ def cottage():
     return c.outline()
 
 
+def market_stall():
+    """A trestle stall under a striped awning, with the valley's produce laid
+    out on it: apples, cabbages, loaves and a basket of eggs.
+
+    The awning is the stall, the way the wheel is the cart: at map scale a
+    table with things on it is a table, and a striped roof on poles is a
+    market. The stripes are roof red and cloth, the cottage's two colours, so
+    the stall reads as belonging to the same village. Two tiles wide and
+    solid only along the counter - the awning overhangs ground you can walk
+    under, which is where you would stand to buy."""
+    Y = HUGE_BASE_Y
+    c = Canvas(HUGE_FRAME, HUGE_FRAME)
+    for x in (15, 46):                           # the poles
+        c.rect(x, 20, x + 2, Y, "WD")
+        c.col(x, 20, Y, "WDL")
+        c.col(x + 2, 20, Y, "WDD")
+    c.rect(16, 42, 47, Y, "WD")                  # the counter front
+    for x in range(19, 47, 5):
+        c.col(x, 44, Y, "WDD")
+    c.rect(14, 38, 49, 41, "WDL")                # its top
+    c.row(14, 49, 41, "WDD")
+    # Produce, each lot in its own basket or crate along the counter top. Heaped
+    # straight on the boards the apples ran into one red lump and the cabbages
+    # into one green one - inside a silhouette nothing draws an edge for you,
+    # so every lot brings its own container and a dark line under its rim.
+    def basket(x0, x1):
+        c.rect(x0, 35, x1, 37, "THD")
+        c.row(x0, x1, 35, "TH")
+        c.row(x0, x1, 38, "OL")
+        c.col(x0 - 1, 35, 37, "OL")
+        c.col(x1 + 1, 35, 37, "OL")
+    for cx, cy in ((19, 33), (23, 33), (21, 31)):          # apples
+        _lobe(c, cx, cy, 2, "RF")
+        c.set(cx - 1, cy - 1, "RFL")
+        c.set(cx + 1, cy + 1, "RFD")
+    basket(16, 25)
+    for cx in (30, 35):                                    # cabbages
+        _lobe(c, cx, 33, 3, "BUL")
+        c.set(cx, 33, "BU")
+        c.set(cx + 1, 34, "BU")
+        c.set(cx - 1, 32, "GRL")
+    c.col(32, 30, 34, "BUD")                               # the gap between them
+    basket(27, 37)
+    c.rect(40, 32, 48, 37, "WD")                           # a crate of loaves
+    for x0 in (41, 45):
+        c.rect(x0, 30, x0 + 2, 33, "TH")
+        c.row(x0, x0 + 2, 30, "THL")
+        c.set(x0 + 1, 32, "THD")
+    c.row(40, 48, 34, "WDL")
+    c.row(40, 48, 38, "OL")
+    c.col(39, 32, 37, "OL")
+    # The awning: a sloped cloth roof in stripes, with a scalloped valance.
+    for i, y in enumerate(range(12, 22)):
+        c.row(13 - i // 3, 50 + i // 3, y, "CL")
+    for x in range(10, 54):
+        if (x // 5) % 2 == 0:
+            for y in range(12, 25):
+                if c.get(x, y) == "CL":
+                    c.set(x, y, "RF")
+    c.row(13, 50, 12, "CLL")
+    for x in range(10, 54):                      # the valance, scalloped
+        k = "RF" if (x // 5) % 2 == 0 else "CL"
+        depth = 2 if x % 5 in (1, 2, 3) else 1
+        c.col(x, 22, 22 + depth, k)
+    for y in range(12, 25):                      # the underside, in shadow
+        for x in range(10, 54):
+            if c.get(x, y) == "RF" and c.get(x, y + 1) is None:
+                c.set(x, y, "RFD")
+            elif c.get(x, y) == "CL" and c.get(x, y + 1) is None:
+                c.set(x, y, "CLD")
+    c.rect(24, 8, 39, 11, "WD")                  # a ridge board, and the name
+    c.row(24, 39, 8, "WDL")
+    c.row(26, 37, 10, "WDD")
+    return c.outline()
+
+
 HUGE_PROPS = {
     "prop.cottage": cottage,
     "prop.shed": shed,
     "prop.burrow_tree": burrow_tree,
+    "prop.market_stall": market_stall,
 }
 HUGE_PROP_ORDER = list(HUGE_PROPS)
 

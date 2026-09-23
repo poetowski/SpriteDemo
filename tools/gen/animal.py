@@ -38,6 +38,29 @@ SPECIES = {
     # because going away is the view a deer usually gives you.
     "deer": {"wool": False, "horns": False, "beard": False,
              "tall": 2, "antlers": True, "rump": True},
+    # A pig is the boar with everything wild taken off it: no bristles, no
+    # tusks, short in the leg, and the blunt snout the cow already has - in
+    # pink, which is the whole of the joke.
+    "pig": {"wool": False, "horns": False, "beard": False,
+            "bulk": 1, "tall": -1, "snout": True, "curl": True},
+    # A farm dog: the wolf's brush of a tail, but soft drop ears and a warm
+    # ginger coat, because those two are what stop it being a small wolf.
+    # A black-and-white collie was tried first, with the white on the face
+    # shade, and the white landed on everything that key touches - it came
+    # out a rabbit in braces.
+    "dog": {"wool": False, "horns": False, "beard": False, "brush": True},
+    # A work horse: the deer's legs, a deeper barrel, a mane standing off the
+    # neck and a long tail. At 32px a horse is the neck and the tail; the body
+    # between them is only there to join them up.
+    "horse": {"wool": False, "horns": False, "beard": False,
+              "tall": 2, "bulk": 1, "crest": True, "long_tail": True},
+    # The wolf is the dog run the other way: grey, a size up, and the shaggy
+    # ruff the mane flag draws - which on the dog is a white collar and here
+    # is what makes the head look too big for the animal.
+    # Its ears are short: the full-height prick ears the jackal carried made
+    # a wolf head-on into a donkey.
+    "wolf": {"wool": False, "horns": False, "beard": False,
+             "tall": 1, "prick_ears": "short", "brush": True, "mane": True},
 }
 
 
@@ -102,6 +125,19 @@ def _side_body(c, bob, shape):
         c.col(8, 19 + bob - tall, 21 + bob - tall, "AFS")   # leaves the rump
     elif shape.get("stub_tail"):                  # barely there, and that is the
         c.rect(7 - bulk, 21 + bob, 8 - bulk, 22 + bob, "ABS")     # look of it
+    elif shape.get("curl"):
+        # A pig's tail is a loop, and a loop needs a gap in the middle: the
+        # smallest one that survives outline() is a ring three across.
+        x, y = 6 - bulk, 18 + bob - tall
+        for dx, dy in ((0, 0), (1, 0), (2, 0), (2, 1), (2, 2), (1, 2), (0, 2), (0, 1)):
+            c.set(x + dx, y + dy, "ABS")
+    elif shape.get("long_tail"):
+        # A horse's tail falls to the hocks, and it is the mane's colour: a
+        # dark switch hanging off a brown rump is the half of the silhouette
+        # the head does not do.
+        for i, y in enumerate(range(18 + bob - tall - bulk, 26 + bob - tall)):
+            x = 6 - bulk - (i > 1) - (i > 4)
+            c.rect(x, y, x + 1 + (i < 3), y, "AFS")
     else:
         c.rect(6, 19 + bob - tall, 7, 21 + bob - tall, "ABS")     # tail
         if not shape["wool"]:
@@ -133,12 +169,14 @@ def _side_head(c, bob, shape, down=0, lunge=0):
     elif shape.get("prick_ears"):
         # A triangle standing clear of the skull. At 32px a dog is its ears,
         # so this is the one part worth three pixels of width.
+        short = shape["prick_ears"] == "short"
         c.rect(hx - 1, hy - 1, hx + 2, hy - 1, "AF")
         c.rect(hx - 1, hy - 2, hx + 1, hy - 2, "AF")
-        c.rect(hx - 1, hy - 3, hx, hy - 3, "AF")
-        c.set(hx - 1, hy - 4, "AF")
+        if not short:
+            c.rect(hx - 1, hy - 3, hx, hy - 3, "AF")
+            c.set(hx - 1, hy - 4, "AF")
         c.set(hx, hy - 2, "AB")                     # lit inside the cup
-        c.set(hx - 1, hy - 4, "AFS")
+        c.set(hx - 1, hy - (2 if short else 4), "AFS")
     else:
         c.rect(hx - 1, hy + 1, hx, hy + 1, "AF")    # ear
     if shape["horns"]:
@@ -253,14 +291,16 @@ def draw_front(shape, pose):
         # Wide at the base and outside the skull rather than on top of it:
         # drawn two pixels wide against the head they vanished into it, and a
         # jackal without ears is a small dog of no particular kind.
-        for i in range(5):
-            c.rect(10 + (i < 2), hy - 8 + i, 12, hy - 8 + i, "AF")
-            c.rect(19, hy - 8 + i, 21 - (i < 2), hy - 8 + i, "AF")
-        for i in range(3):                              # lit inside the cup
-            c.set(11, hy - 6 + i, "AB")
-            c.set(20, hy - 6 + i, "AB")
-        c.set(11, hy - 8, "AFS")
-        c.set(20, hy - 8, "AFS")
+        n = 3 if shape["prick_ears"] == "short" else 5
+        top = hy - 3 - n
+        for i in range(n):
+            c.rect(10 + (i < 2), top + i, 12, top + i, "AF")
+            c.rect(19, top + i, 21 - (i < 2), top + i, "AF")
+        for i in range(n - 2):                          # lit inside the cup
+            c.set(11, top + 2 + i, "AB")
+            c.set(20, top + 2 + i, "AB")
+        c.set(11, top, "AFS")
+        c.set(20, top, "AFS")
     else:
         c.rect(10, hy + 1, 11, hy + 2, "AF")            # ears
         c.rect(20, hy + 1, 21, hy + 2, "AF")
@@ -343,6 +383,12 @@ def draw_back(shape, pose):
             c.set(16 + w, y, "AFS")
     elif shape.get("stub_tail"):
         c.rect(15, 20 + bob - tall, 16, 21 + bob - tall, "ABS")
+    elif shape.get("curl"):
+        for dx, dy in ((0, 0), (1, 0), (2, 0), (2, 1), (2, 2), (1, 2), (0, 2), (0, 1)):
+            c.set(14 + dx, 17 + bob - tall + dy, "ABS")
+    elif shape.get("long_tail"):
+        c.rect(14, 16 + bob - tall, 17, 26 + bob - tall, "AFS")
+        c.col(15, 17 + bob - tall, 25 + bob - tall, "AF")
     else:
         c.rect(15, 16 + bob - tall, 16, 20 + bob - tall, "ABS")  # tail
         if not shape["wool"]:
@@ -353,11 +399,13 @@ def draw_back(shape, pose):
         c.rect(10, 11 + bob - tall, 12, 13 + bob - tall, "AF")   # thing on it
         c.rect(19, 11 + bob - tall, 21, 13 + bob - tall, "AF")
     elif shape.get("prick_ears"):
-        for i in range(4):
-            c.rect(11 + i // 3, 10 + bob - tall + i, 12, 10 + bob - tall + i, "AF")
-            c.rect(19, 10 + bob - tall + i, 20 - i // 3, 10 + bob - tall + i, "AF")
-        c.set(11, 10 + bob - tall, "AFS")
-        c.set(20, 10 + bob - tall, "AFS")
+        n = 2 if shape["prick_ears"] == "short" else 4
+        top = 14 - n + bob - tall
+        for i in range(n):
+            c.rect(11 + i // 3, top + i, 12, top + i, "AF")
+            c.rect(19, top + i, 20 - i // 3, top + i, "AF")
+        c.set(11, top, "AFS")
+        c.set(20, top, "AFS")
     else:
         c.rect(11, 13 + bob - tall, 12, 14 + bob - tall, "AF")   # ear tips, over
         c.rect(19, 13 + bob - tall, 20, 14 + bob - tall, "AF")   # the shoulders

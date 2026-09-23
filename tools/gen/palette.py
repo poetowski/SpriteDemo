@@ -149,6 +149,13 @@ VARIANTS = {
         "HRL": (0x6c, 0x62, 0x59, 255),
     },
     "sheep": {},                          # the base animal palette is the sheep
+    "chicken": {
+        # A speckled brown hen rather than a white one: white is the sheep's,
+        # and a hen the sheep's colour at a fifth of its size reads as a lamb.
+        "AB":  (0xa8, 0x6a, 0x3a, 255),
+        "ABS": (0x7c, 0x4a, 0x26, 255),
+        "ABL": (0xc8, 0x8c, 0x56, 255),
+    },
     "goat": {
         "AB":  (0xa8, 0x82, 0x52, 255),   # tan coat instead of wool
         "ABS": (0x83, 0x62, 0x3c, 255),
@@ -188,6 +195,50 @@ VARIANTS = {
         "AF":  (0x2e, 0x24, 0x1d, 255),
         "AFS": (0x20, 0x19, 0x14, 255),
         "AH":  (0x1d, 0x17, 0x12, 255),
+    },
+    # Four more animals for the farmed valley, every one a remap.
+    "pig": {
+        # Pink, and the snout is the horn keys pointed at a deeper pink: a
+        # pig has no horns, so those two keys are free to be its nose.
+        "AB":  (0xe0, 0xa0, 0x98, 255),
+        "ABS": (0xbc, 0x7a, 0x74, 255),
+        "ABL": (0xf2, 0xc2, 0xb8, 255),
+        "AF":  (0xd6, 0x92, 0x8a, 255),
+        "AFS": (0xa8, 0x68, 0x62, 255),
+        "AH":  (0x6e, 0x4a, 0x44, 255),
+        "HN":  (0xc8, 0x78, 0x74, 255),
+        "HNS": (0x9c, 0x56, 0x52, 255),
+    },
+    "dog": {
+        # Ginger, darker along the back and at the muzzle and paws: the
+        # colour a farm dog is, and one nothing else in the valley wears.
+        "AB":  (0xb8, 0x74, 0x3c, 255),
+        "ABS": (0x8a, 0x52, 0x28, 255),
+        "ABL": (0xd6, 0x96, 0x5a, 255),
+        "AF":  (0xa4, 0x64, 0x32, 255),
+        "AFS": (0x5a, 0x36, 0x1c, 255),
+        "AH":  (0x3e, 0x28, 0x18, 255),
+    },
+    "horse": {
+        # A bay: red-brown with black points, which is the commonest colour
+        # a work horse comes in and the one with the most contrast between
+        # the body and the mane and tail.
+        "AB":  (0x8a, 0x55, 0x30, 255),
+        "ABS": (0x64, 0x3c, 0x21, 255),
+        "ABL": (0xaa, 0x70, 0x44, 255),
+        "AF":  (0x7a, 0x4a, 0x2a, 255),
+        "AFS": (0x26, 0x1e, 0x1c, 255),
+        "AH":  (0x26, 0x1e, 0x1c, 255),
+    },
+    "wolf": {
+        # Grey going darker over the back, with the ruff a shade lighter than
+        # the rest - which is what makes it read as fur standing up.
+        "AB":  (0x7a, 0x78, 0x72, 255),
+        "ABS": (0x55, 0x53, 0x50, 255),
+        "ABL": (0x9c, 0x9a, 0x92, 255),
+        "AF":  (0x68, 0x66, 0x61, 255),
+        "AFS": (0x3c, 0x3a, 0x38, 255),
+        "AH":  (0x33, 0x31, 0x2f, 255),
     },
 }
 

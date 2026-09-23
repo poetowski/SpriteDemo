@@ -1,0 +1,12 @@
+{
+  "id": "prop.wall",
+  "sprite": "prop.wall",
+  "footprint": [
+    [
+      0,
+      0
+    ]
+  ],
+  "blocks": true,
+  "links": "wall"
+}

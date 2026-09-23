@@ -1,0 +1,12 @@
+{
+  "id": "prop.bracken",
+  "sprite": "prop.bracken",
+  "footprint": [
+    [
+      0,
+      0
+    ]
+  ],
+  "blocks": false,
+  "hittable": true
+}

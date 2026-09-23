@@ -1,0 +1,8 @@
+{
+  "id": "tile.plaster_wall",
+  "sprite": "tile.plaster_wall",
+  "walkable": false,
+  "material": "plaster",
+  "blend": true,
+  "blend_over": "tile.flagstone"
+}
