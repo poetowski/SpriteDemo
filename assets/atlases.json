@@ -38,7 +38,7 @@
    ],
    "cols": 8,
    "rows": 12,
-   "count": 90
+   "count": 94
   },
   "props_huge": {
    "image": "atlases/props_huge.png",
@@ -13722,7 +13722,7 @@
     29
    ]
   },
-  "prop.fence": {
+  "prop.scarecrow_ragged": {
    "atlas": "props",
    "index": 6,
    "anchor": [
@@ -13730,7 +13730,7 @@
     29
    ]
   },
-  "prop.hedge": {
+  "prop.scarecrow_sack": {
    "atlas": "props",
    "index": 7,
    "anchor": [
@@ -13738,7 +13738,7 @@
     29
    ]
   },
-  "prop.wall": {
+  "prop.hay_stook": {
    "atlas": "props",
    "index": 8,
    "anchor": [
@@ -13746,7 +13746,7 @@
     29
    ]
   },
-  "prop.rock": {
+  "prop.hay_bale": {
    "atlas": "props",
    "index": 9,
    "anchor": [
@@ -13754,7 +13754,7 @@
     29
    ]
   },
-  "prop.sign": {
+  "prop.fence": {
    "atlas": "props",
    "index": 10,
    "anchor": [
@@ -13762,7 +13762,7 @@
     29
    ]
   },
-  "prop.tree_pine": {
+  "prop.hedge": {
    "atlas": "props",
    "index": 11,
    "anchor": [
@@ -13770,7 +13770,7 @@
     29
    ]
   },
-  "prop.tree_pine_slim": {
+  "prop.wall": {
    "atlas": "props",
    "index": 12,
    "anchor": [
@@ -13778,7 +13778,7 @@
     29
    ]
   },
-  "prop.tree_oak": {
+  "prop.rock": {
    "atlas": "props",
    "index": 13,
    "anchor": [
@@ -13786,7 +13786,7 @@
     29
    ]
   },
-  "prop.tree_oak_forked": {
+  "prop.sign": {
    "atlas": "props",
    "index": 14,
    "anchor": [
@@ -13794,7 +13794,7 @@
     29
    ]
   },
-  "prop.tree_dead": {
+  "prop.tree_pine": {
    "atlas": "props",
    "index": 15,
    "anchor": [
@@ -13802,7 +13802,7 @@
     29
    ]
   },
-  "prop.stump": {
+  "prop.tree_pine_slim": {
    "atlas": "props",
    "index": 16,
    "anchor": [
@@ -13810,7 +13810,7 @@
     29
    ]
   },
-  "prop.log": {
+  "prop.tree_oak": {
    "atlas": "props",
    "index": 17,
    "anchor": [
@@ -13818,7 +13818,7 @@
     29
    ]
   },
-  "prop.boulder": {
+  "prop.tree_oak_forked": {
    "atlas": "props",
    "index": 18,
    "anchor": [
@@ -13826,7 +13826,7 @@
     29
    ]
   },
-  "prop.cairn": {
+  "prop.tree_dead": {
    "atlas": "props",
    "index": 19,
    "anchor": [
@@ -13834,7 +13834,7 @@
     29
    ]
   },
-  "prop.mushroom": {
+  "prop.stump": {
    "atlas": "props",
    "index": 20,
    "anchor": [
@@ -13842,7 +13842,7 @@
     29
    ]
   },
-  "prop.well": {
+  "prop.log": {
    "atlas": "props",
    "index": 21,
    "anchor": [
@@ -13850,7 +13850,7 @@
     29
    ]
   },
-  "prop.crate": {
+  "prop.boulder": {
    "atlas": "props",
    "index": 22,
    "anchor": [
@@ -13858,7 +13858,7 @@
     29
    ]
   },
-  "prop.barrel": {
+  "prop.cairn": {
    "atlas": "props",
    "index": 23,
    "anchor": [
@@ -13866,7 +13866,7 @@
     29
    ]
   },
-  "prop.sack": {
+  "prop.mushroom": {
    "atlas": "props",
    "index": 24,
    "anchor": [
@@ -13874,7 +13874,7 @@
     29
    ]
   },
-  "prop.woodpile": {
+  "prop.well": {
    "atlas": "props",
    "index": 25,
    "anchor": [
@@ -13882,7 +13882,7 @@
     29
    ]
   },
-  "prop.anvil": {
+  "prop.crate": {
    "atlas": "props",
    "index": 26,
    "anchor": [
@@ -13890,7 +13890,7 @@
     29
    ]
   },
-  "prop.lamp_post": {
+  "prop.barrel": {
    "atlas": "props",
    "index": 27,
    "anchor": [
@@ -13898,7 +13898,7 @@
     29
    ]
   },
-  "prop.lamp_post/1": {
+  "prop.sack": {
    "atlas": "props",
    "index": 28,
    "anchor": [
@@ -13906,7 +13906,7 @@
     29
    ]
   },
-  "prop.lamp_post/2": {
+  "prop.woodpile": {
    "atlas": "props",
    "index": 29,
    "anchor": [
@@ -13914,7 +13914,7 @@
     29
    ]
   },
-  "prop.lamp_post/3": {
+  "prop.anvil": {
    "atlas": "props",
    "index": 30,
    "anchor": [
@@ -13922,7 +13922,7 @@
     29
    ]
   },
-  "prop.signpost": {
+  "prop.lamp_post": {
    "atlas": "props",
    "index": 31,
    "anchor": [
@@ -13930,7 +13930,7 @@
     29
    ]
   },
-  "prop.statue": {
+  "prop.lamp_post/1": {
    "atlas": "props",
    "index": 32,
    "anchor": [
@@ -13938,7 +13938,7 @@
     29
    ]
   },
-  "prop.tombstone": {
+  "prop.lamp_post/2": {
    "atlas": "props",
    "index": 33,
    "anchor": [
@@ -13946,7 +13946,7 @@
     29
    ]
   },
-  "prop.table": {
+  "prop.lamp_post/3": {
    "atlas": "props",
    "index": 34,
    "anchor": [
@@ -13954,7 +13954,7 @@
     29
    ]
   },
-  "prop.chest": {
+  "prop.signpost": {
    "atlas": "props",
    "index": 35,
    "anchor": [
@@ -13962,7 +13962,7 @@
     29
    ]
   },
-  "prop.chest_gilded": {
+  "prop.statue": {
    "atlas": "props",
    "index": 36,
    "anchor": [
@@ -13970,7 +13970,7 @@
     29
    ]
   },
-  "prop.chest_iron": {
+  "prop.tombstone": {
    "atlas": "props",
    "index": 37,
    "anchor": [
@@ -13978,7 +13978,7 @@
     29
    ]
   },
-  "prop.chest_stone": {
+  "prop.table": {
    "atlas": "props",
    "index": 38,
    "anchor": [
@@ -13986,7 +13986,7 @@
     29
    ]
   },
-  "prop.chest_old": {
+  "prop.chest": {
    "atlas": "props",
    "index": 39,
    "anchor": [
@@ -13994,7 +13994,7 @@
     29
    ]
   },
-  "prop.beehive": {
+  "prop.chest_gilded": {
    "atlas": "props",
    "index": 40,
    "anchor": [
@@ -14002,7 +14002,7 @@
     29
    ]
   },
-  "prop.beehive/1": {
+  "prop.chest_iron": {
    "atlas": "props",
    "index": 41,
    "anchor": [
@@ -14010,7 +14010,7 @@
     29
    ]
   },
-  "prop.beehive/2": {
+  "prop.chest_stone": {
    "atlas": "props",
    "index": 42,
    "anchor": [
@@ -14018,7 +14018,7 @@
     29
    ]
   },
-  "prop.beehive/3": {
+  "prop.chest_old": {
    "atlas": "props",
    "index": 43,
    "anchor": [
@@ -14026,7 +14026,7 @@
     29
    ]
   },
-  "prop.scarecrow": {
+  "prop.beehive": {
    "atlas": "props",
    "index": 44,
    "anchor": [
@@ -14034,7 +14034,7 @@
     29
    ]
   },
-  "prop.campfire": {
+  "prop.beehive/1": {
    "atlas": "props",
    "index": 45,
    "anchor": [
@@ -14042,7 +14042,7 @@
     29
    ]
   },
-  "prop.campfire/1": {
+  "prop.beehive/2": {
    "atlas": "props",
    "index": 46,
    "anchor": [
@@ -14050,7 +14050,7 @@
     29
    ]
   },
-  "prop.campfire/2": {
+  "prop.beehive/3": {
    "atlas": "props",
    "index": 47,
    "anchor": [
@@ -14058,7 +14058,7 @@
     29
    ]
   },
-  "prop.campfire/3": {
+  "prop.scarecrow": {
    "atlas": "props",
    "index": 48,
    "anchor": [
@@ -14066,7 +14066,7 @@
     29
    ]
   },
-  "prop.trough": {
+  "prop.campfire": {
    "atlas": "props",
    "index": 49,
    "anchor": [
@@ -14074,7 +14074,7 @@
     29
    ]
   },
-  "prop.trough/1": {
+  "prop.campfire/1": {
    "atlas": "props",
    "index": 50,
    "anchor": [
@@ -14082,7 +14082,7 @@
     29
    ]
   },
-  "prop.trough/2": {
+  "prop.campfire/2": {
    "atlas": "props",
    "index": 51,
    "anchor": [
@@ -14090,7 +14090,7 @@
     29
    ]
   },
-  "prop.flower_pot": {
+  "prop.campfire/3": {
    "atlas": "props",
    "index": 52,
    "anchor": [
@@ -14098,7 +14098,7 @@
     29
    ]
   },
-  "prop.flowers": {
+  "prop.trough": {
    "atlas": "props",
    "index": 53,
    "anchor": [
@@ -14106,7 +14106,7 @@
     29
    ]
   },
-  "prop.workbench": {
+  "prop.trough/1": {
    "atlas": "props",
    "index": 54,
    "anchor": [
@@ -14114,7 +14114,7 @@
     29
    ]
   },
-  "prop.shelf": {
+  "prop.trough/2": {
    "atlas": "props",
    "index": 55,
    "anchor": [
@@ -14122,7 +14122,7 @@
     29
    ]
   },
-  "prop.hearth": {
+  "prop.flower_pot": {
    "atlas": "props",
    "index": 56,
    "anchor": [
@@ -14130,7 +14130,7 @@
     29
    ]
   },
-  "prop.hearth/1": {
+  "prop.flowers": {
    "atlas": "props",
    "index": 57,
    "anchor": [
@@ -14138,7 +14138,7 @@
     29
    ]
   },
-  "prop.hearth/2": {
+  "prop.workbench": {
    "atlas": "props",
    "index": 58,
    "anchor": [
@@ -14146,7 +14146,7 @@
     29
    ]
   },
-  "prop.hearth/3": {
+  "prop.shelf": {
    "atlas": "props",
    "index": 59,
    "anchor": [
@@ -14154,7 +14154,7 @@
     29
    ]
   },
-  "prop.weapon_rack": {
+  "prop.hearth": {
    "atlas": "props",
    "index": 60,
    "anchor": [
@@ -14162,7 +14162,7 @@
     29
    ]
   },
-  "prop.bed_straw": {
+  "prop.hearth/1": {
    "atlas": "props",
    "index": 61,
    "anchor": [
@@ -14170,7 +14170,7 @@
     29
    ]
   },
-  "prop.roots": {
+  "prop.hearth/2": {
    "atlas": "props",
    "index": 62,
    "anchor": [
@@ -14178,7 +14178,7 @@
     29
    ]
   },
-  "prop.bramble": {
+  "prop.hearth/3": {
    "atlas": "props",
    "index": 63,
    "anchor": [
@@ -14186,7 +14186,7 @@
     29
    ]
   },
-  "prop.tree_apple": {
+  "prop.weapon_rack": {
    "atlas": "props",
    "index": 64,
    "anchor": [
@@ -14194,7 +14194,7 @@
     29
    ]
   },
-  "prop.bracken": {
+  "prop.bed_straw": {
    "atlas": "props",
    "index": 65,
    "anchor": [
@@ -14202,7 +14202,7 @@
     29
    ]
   },
-  "prop.reeds": {
+  "prop.roots": {
    "atlas": "props",
    "index": 66,
    "anchor": [
@@ -14210,7 +14210,7 @@
     29
    ]
   },
-  "prop.inn_sign": {
+  "prop.bramble": {
    "atlas": "props",
    "index": 67,
    "anchor": [
@@ -14218,7 +14218,7 @@
     29
    ]
   },
-  "prop.notice_board": {
+  "prop.tree_apple": {
    "atlas": "props",
    "index": 68,
    "anchor": [
@@ -14226,7 +14226,7 @@
     29
    ]
   },
-  "prop.fence/link/1": {
+  "prop.bracken": {
    "atlas": "props",
    "index": 69,
    "anchor": [
@@ -14234,7 +14234,7 @@
     29
    ]
   },
-  "prop.fence/link/2": {
+  "prop.reeds": {
    "atlas": "props",
    "index": 70,
    "anchor": [
@@ -14242,7 +14242,7 @@
     29
    ]
   },
-  "prop.fence/link/3": {
+  "prop.inn_sign": {
    "atlas": "props",
    "index": 71,
    "anchor": [
@@ -14250,7 +14250,7 @@
     29
    ]
   },
-  "prop.fence/link/4": {
+  "prop.notice_board": {
    "atlas": "props",
    "index": 72,
    "anchor": [
@@ -14258,7 +14258,7 @@
     29
    ]
   },
-  "prop.fence/link/5": {
+  "prop.fence/link/1": {
    "atlas": "props",
    "index": 73,
    "anchor": [
@@ -14266,7 +14266,7 @@
     29
    ]
   },
-  "prop.fence/link/6": {
+  "prop.fence/link/2": {
    "atlas": "props",
    "index": 74,
    "anchor": [
@@ -14274,7 +14274,7 @@
     29
    ]
   },
-  "prop.fence/link/7": {
+  "prop.fence/link/3": {
    "atlas": "props",
    "index": 75,
    "anchor": [
@@ -14282,7 +14282,7 @@
     29
    ]
   },
-  "prop.hedge/link/1": {
+  "prop.fence/link/4": {
    "atlas": "props",
    "index": 76,
    "anchor": [
@@ -14290,7 +14290,7 @@
     29
    ]
   },
-  "prop.hedge/link/2": {
+  "prop.fence/link/5": {
    "atlas": "props",
    "index": 77,
    "anchor": [
@@ -14298,7 +14298,7 @@
     29
    ]
   },
-  "prop.hedge/link/3": {
+  "prop.fence/link/6": {
    "atlas": "props",
    "index": 78,
    "anchor": [
@@ -14306,7 +14306,7 @@
     29
    ]
   },
-  "prop.hedge/link/4": {
+  "prop.fence/link/7": {
    "atlas": "props",
    "index": 79,
    "anchor": [
@@ -14314,7 +14314,7 @@
     29
    ]
   },
-  "prop.hedge/link/5": {
+  "prop.hedge/link/1": {
    "atlas": "props",
    "index": 80,
    "anchor": [
@@ -14322,7 +14322,7 @@
     29
    ]
   },
-  "prop.hedge/link/6": {
+  "prop.hedge/link/2": {
    "atlas": "props",
    "index": 81,
    "anchor": [
@@ -14330,7 +14330,7 @@
     29
    ]
   },
-  "prop.hedge/link/7": {
+  "prop.hedge/link/3": {
    "atlas": "props",
    "index": 82,
    "anchor": [
@@ -14338,7 +14338,7 @@
     29
    ]
   },
-  "prop.wall/link/1": {
+  "prop.hedge/link/4": {
    "atlas": "props",
    "index": 83,
    "anchor": [
@@ -14346,7 +14346,7 @@
     29
    ]
   },
-  "prop.wall/link/2": {
+  "prop.hedge/link/5": {
    "atlas": "props",
    "index": 84,
    "anchor": [
@@ -14354,7 +14354,7 @@
     29
    ]
   },
-  "prop.wall/link/3": {
+  "prop.hedge/link/6": {
    "atlas": "props",
    "index": 85,
    "anchor": [
@@ -14362,7 +14362,7 @@
     29
    ]
   },
-  "prop.wall/link/4": {
+  "prop.hedge/link/7": {
    "atlas": "props",
    "index": 86,
    "anchor": [
@@ -14370,7 +14370,7 @@
     29
    ]
   },
-  "prop.wall/link/5": {
+  "prop.wall/link/1": {
    "atlas": "props",
    "index": 87,
    "anchor": [
@@ -14378,7 +14378,7 @@
     29
    ]
   },
-  "prop.wall/link/6": {
+  "prop.wall/link/2": {
    "atlas": "props",
    "index": 88,
    "anchor": [
@@ -14386,9 +14386,41 @@
     29
    ]
   },
-  "prop.wall/link/7": {
+  "prop.wall/link/3": {
    "atlas": "props",
    "index": 89,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "prop.wall/link/4": {
+   "atlas": "props",
+   "index": 90,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "prop.wall/link/5": {
+   "atlas": "props",
+   "index": 91,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "prop.wall/link/6": {
+   "atlas": "props",
+   "index": 92,
+   "anchor": [
+    16,
+    29
+   ]
+  },
+  "prop.wall/link/7": {
+   "atlas": "props",
+   "index": 93,
    "anchor": [
     16,
     29
@@ -17403,10 +17435,10 @@
   "prop.lamp_post": {
    "atlas": "props",
    "frames": [
-    27,
-    28,
-    29,
-    30
+    31,
+    32,
+    33,
+    34
    ],
    "ms": 210,
    "loop": true
@@ -17414,10 +17446,10 @@
   "prop.beehive": {
    "atlas": "props",
    "frames": [
-    40,
-    41,
-    42,
-    43
+    44,
+    45,
+    46,
+    47
    ],
    "ms": 170,
    "loop": true
@@ -17425,10 +17457,10 @@
   "prop.campfire": {
    "atlas": "props",
    "frames": [
-    45,
-    46,
-    47,
-    48
+    49,
+    50,
+    51,
+    52
    ],
    "ms": 130,
    "loop": true
@@ -17436,9 +17468,9 @@
   "prop.trough": {
    "atlas": "props",
    "frames": [
-    49,
-    50,
-    51
+    53,
+    54,
+    55
    ],
    "ms": 430,
    "loop": true
@@ -17446,10 +17478,10 @@
   "prop.hearth": {
    "atlas": "props",
    "frames": [
-    56,
-    57,
-    58,
-    59
+    60,
+    61,
+    62,
+    63
    ],
    "ms": 260,
    "loop": true

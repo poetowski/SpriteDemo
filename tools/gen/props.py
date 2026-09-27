@@ -1851,6 +1851,196 @@ def notice_board():
     return c.outline()
 
 
+
+def hay_bale():
+    """Cut hay pressed into a bound bale, which is the flat answer to the
+    rick's tall one.
+
+    The three hay props are a silhouette ladder, the way the boulders are a
+    size ladder: a field of one shape reads as a stamp repeated however
+    carefully it is scattered, and at 32px shape is nearly all you have. This
+    one is a low horizontal block against the rick's cone.
+
+    A block of gold on its own is a crate, so what has to say "hay" is the
+    twine and the ends: two dark bands round it, a top that sags between them
+    rather than running straight, and cut stalks breaking the outline all over.
+    Drawn with a flat top and no twine it was a chest lying down."""
+    c = Canvas(FRAME, FRAME)
+    c.rect(4, 17, 27, BASE_Y, "TH")
+    for x, y in ((4, 17), (27, 17), (4, BASE_Y), (27, BASE_Y)):
+        c.set(x, y, None)                        # the corners knocked off
+    c.row(6, 25, 16, "TH")                       # and the top sagging between
+    c.row(9, 22, 15, "TH")                       # where the strings pull it in
+    rnd = scatter(0x2B7D)
+    for _ in range(30):                          # cut stalks, end on
+        x, y = 4 + rnd(24), 15 + rnd(14)
+        if c.get(x, y) == "TH":
+            c.set(x, y, "THD" if rnd(2) else "THL")
+    for x in (10, 21):                           # the twine, sunk into the bale
+        c.col(x, 15, BASE_Y, "THD")
+        c.col(x + 1, 15, BASE_Y, "WDD")
+        c.col(x + 2, 15, BASE_Y, "THD")
+    for x, y in ((3, 22), (28, 24), (2, 26), (29, 20)):
+        c.set(x, y, "THL")                       # loose ends, low on the sides
+        c.set(x, y + 1, "THD")                   # - up at the corners they read
+                                                 #   as a pair of ears
+    _shade(c, "TH", "THL", "THD")
+    return c.outline()
+
+
+def hay_stook():
+    """Sheaves leaned against each other to dry in the field - the third hay
+    shape, and the only one you can see daylight through.
+
+    That gap is the whole of it: a solid mass of gold is the rick again
+    whatever its outline does, so what makes this a different object at map
+    scale is that the ground shows between its legs.
+
+    The first attempt built it from three thin legs converging on a shared
+    point with the ears blobbed over the top, and it came back a squid - the
+    legs met two pixels apart and merged into a stalk under a bulb. It is two
+    sheaves now, each as thick as a bundle of cut corn actually is, crossing
+    near the top with their heads splayed past each other. Two fat legs and
+    one clear triangle of grass between them reads; three thin ones do not,
+    because three legs three pixels wide with the gaps outline() needs leave
+    nothing of either."""
+    c = Canvas(FRAME, FRAME)
+    # Each sheaf is a band from a wide foot to a narrow neck, leaning in.
+    for foot_c, neck_c in ((8, 14), (23, 17)):
+        for y in range(11, BASE_Y + 1):
+            t = (y - 11) / (BASE_Y - 11)
+            cx = neck_c + (foot_c - neck_c) * t
+            half = 2.2 + 2.8 * t                 # flaring to the cut ends
+            c.rect(round(cx - half), y, round(cx + half), y, "TH")
+        c.row(round(neck_c + (foot_c - neck_c) * 0.42) - 3,
+              round(neck_c + (foot_c - neck_c) * 0.42) + 3, 18, "THD")
+    # The heads, bunched where the two sheaves cross and splaying above it.
+    # Left open down the middle they read as a waistband and the whole thing
+    # came out a pair of trousers - the crossing has to be solid, and the
+    # notch that says "two bundles" belongs in the top two rows only.
+    c.rect(9, 8, 22, 10, "TH")
+    c.rect(10, 6, 14, 7, "TH")
+    c.rect(17, 6, 21, 7, "TH")
+    c.row(15, 16, 7, "THD")
+    rnd = scatter(0x51C4)
+    for _ in range(30):                          # stalks, all over it
+        x, y = 3 + rnd(26), 7 + rnd(21)
+        if c.get(x, y) == "TH":
+            c.set(x, y, "THD" if rnd(2) else "THL")
+    _shade(c, "TH", "THL", "THD")
+    return c.outline()
+
+
+def scarecrow_sack():
+    """The second scarecrow: a sack for a head, and everything on it hanging.
+
+    Posture is what separates one of these from another at 32px - three straw
+    men in three hats are one straw man in three hats - so this one droops
+    where the first stands square. The crossbar sags, and it is drawn wider
+    than the coat on purpose: hidden behind the body it may as well not be
+    there, and the sag is the whole reason to look at this one.
+
+    The head went wrong twice. Flat-topped and in the pale cloth it came back
+    a chef's hat - a white lozenge over a dark body is a hat wherever it is
+    put. A sack is round, gathered where it is tied, and *darker* than the
+    straw it is stuffed with. The coat is shaded by hand rather than through
+    _shade, which rim-lights every pixel with a gap up-left of it: on a mass
+    this small that is nearly all of them, and a dark coat came out pale."""
+    c = Canvas(FRAME, FRAME)
+    _post(c, 15, 12, BASE_Y)
+
+    # The crossbar, sagging - and reaching past the sleeves so it is seen.
+    for x in range(4, 27):
+        drop = 0 if 12 <= x <= 18 else (1 if 8 <= x <= 22 else 2)
+        c.set(x, 15 + drop, "WD")
+        c.set(x, 16 + drop, "WDD")
+        if x in (4, 26):
+            c.set(x, 17 + drop, "WDD")
+
+    for x0 in (6, 21):                           # sleeves, clear of the body
+        c.rect(x0, 18, x0 + 2, 23, "CLD")
+        c.col(x0, 18, 23, "CL")
+        c.rect(x0, 23, x0 + 2, 24, "TH")         # straw out of the cuffs
+
+    c.rect(11, 17, 19, 25, "CLD")                # a dark coat, narrow
+    c.col(11, 17, 25, "CL")                      # lit down one side only
+    c.row(11, 19, 17, "CL")
+    c.col(15, 18, 24, "WDD")                     # where it hangs open
+    c.rect(12, 25, 18, 26, "TH")                 # straw at the hem
+
+    _blob(c, 6, (3, 4, 4, 4, 4, 3), "CLD")       # the sack, round and dull
+    c.row(13, 17, 5, "CLD")                      # gathered where it is tied
+    c.row(14, 16, 4, "WDD")
+    c.row(13, 17, 12, "WDD")                     # and again at the neck
+    for y in range(6, 12):                       # one lit side, by hand
+        for x in range(FRAME):
+            if c.get(x, y) == "CLD" and c.get(x - 1, y) is None:
+                c.set(x, y, "CL")
+    for x in (13, 17):                           # a face daubed on it
+        c.set(x, 8, "OL")
+        c.set(x, 9, "OL")
+    c.row(14, 16, 11, "OL")
+    return c.outline()
+
+
+def scarecrow_ragged():
+    """The third: one that has been out in the weather too long, and leans.
+
+    The lean is what it is for. Three upright straw men in a field are a row
+    of fenceposts however carefully each is drawn, and a tilt reads from very
+    much further away than any amount of texture does - so this one is picked
+    out at map scale by being the only thing in the field that is not square.
+
+    Two things had to be true before it read as leaning at all. The tilt has
+    to be *worth* drawing: two pixels over the frame is a mistake, not a lean,
+    and the first version looked like a scarecrow drawn slightly badly. And
+    every part has to carry the same tilt at its own height - the first one
+    leaned the post but drew the shirt square over the middle of it and the
+    head square above that, so the only post you could see was a stub between
+    the two, and the whole thing read as a mushroom on a stick.
+
+    The rest is the same drawing failing: one arm of the crossbar broken to a
+    stub, the shirt torn with straw coming out of the tear as well as the hem,
+    and the hem cut short so the leaning post shows under it."""
+    c = Canvas(FRAME, FRAME)
+    tilt = lambda y: round((BASE_Y - y) * 0.26)  # about five pixels of it
+
+    for y in range(11, BASE_Y + 1):              # the post, all the way down
+        x = 13 + tilt(y)
+        c.rect(x - 1, y, x + 1, y, "WD")
+        c.set(x - 1, y, "WDL")
+        c.set(x + 1, y, "WDD")
+
+    bar = 13 + tilt(15)
+    for i in range(11):                          # the one arm left, drooping
+        c.set(bar + i, 15 + i // 4, "WD")
+        c.set(bar + i, 16 + i // 4, "WDD")
+    c.rect(bar - 4, 15, bar - 2, 16, "WDD")      # the stub of the other
+
+    for y in range(16, 25):                      # the shirt, leaning with it
+        x = 13 + tilt(y)
+        c.rect(x - 5, y, x + 5, y, "CL")
+        c.set(x - 5, y, "CLL")
+        c.set(x + 5, y, "CLD")
+    c.row(13 + tilt(16) - 5, 13 + tilt(16) + 5, 16, "CLL")
+    for dx, y in ((0, 20), (1, 21), (-1, 21), (1, 19), (2, 22)):
+        c.set(13 + tilt(y) + dx, y, "TH")        # the tear, and straw from it
+    for y in (25, 26):                           # a short hem, so the post shows
+        x = 13 + tilt(y)
+        c.rect(x - 4, y, x + 4, y, "TH")
+    for i, y in ((6, 17), (7, 18), (-6, 17)):
+        c.set(13 + tilt(y) + i, y, "TH")         # and the cuffs
+
+    # Narrower than the shirt and sat straight on the post: drawn as wide as
+    # the shoulders with a long neck under it, a straw head is a mushroom cap.
+    head = 13 + tilt(11)
+    _blob(c, 7, (2, 3, 3, 3, 2), "TH", cx=head)
+    _shade(c, "TH", "THL", "THD")
+    c.set(head - 1, 9, "OL")
+    c.set(head + 1, 9, "OL")
+    c.set(head, 11, "OL")
+    return c.outline()
+
 PROPS = {
     "prop.bush": bush,
     "prop.bridge": bridge,
@@ -1858,6 +2048,10 @@ PROPS = {
     "prop.tree_birch": tree_birch,
     "prop.cart": cart,
     "prop.haystack": haystack,
+    "prop.scarecrow_ragged": scarecrow_ragged,
+    "prop.scarecrow_sack": scarecrow_sack,
+    "prop.hay_stook": hay_stook,
+    "prop.hay_bale": hay_bale,
     "prop.fence": fence,
     "prop.hedge": hedge,
     "prop.wall": wall,

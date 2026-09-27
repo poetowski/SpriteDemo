@@ -347,7 +347,7 @@
       ]
     },
     {
-      "def": "prop.haystack",
+      "def": "prop.hay_bale",
       "tile": [
         17,
         12
@@ -463,6 +463,27 @@
       "tile": [
         5,
         4
+      ]
+    },
+    {
+      "def": "prop.hay_stook",
+      "tile": [
+        19,
+        14
+      ]
+    },
+    {
+      "def": "prop.hay_stook",
+      "tile": [
+        17,
+        17
+      ]
+    },
+    {
+      "def": "prop.scarecrow_sack",
+      "tile": [
+        18,
+        19
       ]
     }
   ],

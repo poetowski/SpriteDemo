@@ -558,6 +558,20 @@
         10,
         3
       ]
+    },
+    {
+      "def": "prop.hay_bale",
+      "tile": [
+        7,
+        16
+      ]
+    },
+    {
+      "def": "prop.scarecrow_ragged",
+      "tile": [
+        5,
+        17
+      ]
     }
   ],
   "exits": [
