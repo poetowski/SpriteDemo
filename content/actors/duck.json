@@ -1,0 +1,34 @@
+{
+  "id": "npc.duck",
+  "sprite": "actor.duck",
+  "rig": "fowl",
+  "name": "Mallard",
+  "states": [
+    "walk",
+    "idle",
+    "graze"
+  ],
+  "speed": 14,
+  "blocks": false,
+  "facing": "down",
+  "interact": "dlg.duck",
+  "wander": {
+    "idle_ms": [
+      700,
+      1800
+    ],
+    "graze_ms": [
+      900,
+      2600
+    ],
+    "graze_chance": 0.5
+  },
+  "description": "Works the reeds along the mere and resents company.",
+  "level": 1,
+  "hp": 3,
+  "attack": 0,
+  "armor": 0,
+  "behaviour": "passive",
+  "walking": true,
+  "walk_radius": 3
+}

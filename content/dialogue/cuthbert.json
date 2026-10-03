@@ -1,0 +1,55 @@
+{
+  "id": "dlg.cuthbert",
+  "speaker": "Cuthbert",
+  "start": "greet",
+  "nodes": {
+    "greet": {
+      "text": [
+        "Bridge toll's been abolished. I still stand here."
+      ],
+      "choices": [
+        {
+          "text": "Why?",
+          "goto": "a0"
+        },
+        {
+          "text": "Any trouble?",
+          "goto": "a1"
+        },
+        {
+          "text": "Good day."
+        }
+      ]
+    },
+    "a0": {
+      "text": [
+        "Somebody has to watch the road. Might as well be me.",
+        "And the view of the mill is the best in the valley."
+      ],
+      "choices": [
+        {
+          "text": "I see.",
+          "goto": "greet"
+        },
+        {
+          "text": "Farewell."
+        }
+      ]
+    },
+    "a1": {
+      "text": [
+        "Wolves came down to the brook last winter.",
+        "Rook saw them off. I watched. Somebody has to."
+      ],
+      "choices": [
+        {
+          "text": "I see.",
+          "goto": "greet"
+        },
+        {
+          "text": "Farewell."
+        }
+      ]
+    }
+  }
+}

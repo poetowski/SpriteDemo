@@ -1,0 +1,55 @@
+{
+  "id": "dlg.marta",
+  "speaker": "Marta",
+  "start": "greet",
+  "nodes": {
+    "greet": {
+      "text": [
+        "Ribbons, needles, news. The news is free."
+      ],
+      "choices": [
+        {
+          "text": "What news?",
+          "goto": "a0"
+        },
+        {
+          "text": "Where do you go next?",
+          "goto": "a1"
+        },
+        {
+          "text": "Good day."
+        }
+      ]
+    },
+    "a0": {
+      "text": [
+        "Northmeadow's smith wants berries, of all things.",
+        "And the boar's been at Wilf's fence again."
+      ],
+      "choices": [
+        {
+          "text": "I see.",
+          "goto": "greet"
+        },
+        {
+          "text": "Farewell."
+        }
+      ]
+    },
+    "a1": {
+      "text": [
+        "Wherever the road does. It's never asked me.",
+        "Back through Northmeadow, then on east."
+      ],
+      "choices": [
+        {
+          "text": "I see.",
+          "goto": "greet"
+        },
+        {
+          "text": "Farewell."
+        }
+      ]
+    }
+  }
+}

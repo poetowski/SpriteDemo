@@ -1,0 +1,55 @@
+{
+  "id": "dlg.anselm",
+  "speaker": "Brother Anselm",
+  "start": "greet",
+  "nodes": {
+    "greet": {
+      "text": [
+        "Rest your feet a while. The dead won't mind the company."
+      ],
+      "choices": [
+        {
+          "text": "Whose graves are these?",
+          "goto": "a0"
+        },
+        {
+          "text": "The bell?",
+          "goto": "a1"
+        },
+        {
+          "text": "Good day."
+        }
+      ]
+    },
+    "a0": {
+      "text": [
+        "Millers, mostly. Three generations of them.",
+        "And a miner or two the hill didn't give back."
+      ],
+      "choices": [
+        {
+          "text": "I see.",
+          "goto": "greet"
+        },
+        {
+          "text": "Farewell."
+        }
+      ]
+    },
+    "a1": {
+      "text": [
+        "I ring it at dusk. Tobin says he grinds by it.",
+        "Rook says it scares the deer. I ring it anyway."
+      ],
+      "choices": [
+        {
+          "text": "I see.",
+          "goto": "greet"
+        },
+        {
+          "text": "Farewell."
+        }
+      ]
+    }
+  }
+}

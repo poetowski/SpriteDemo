@@ -1,0 +1,21 @@
+{
+  "id": "npc.anselm",
+  "sprite": "actor.priest",
+  "name": "Brother Anselm",
+  "speed": 0,
+  "blocks": true,
+  "facing": "down",
+  "interact": "dlg.anselm",
+  "rig": "biped",
+  "states": [
+    "walk",
+    "idle"
+  ],
+  "description": "Rings the chapel bell at dusk and tends the graves between.",
+  "level": 1,
+  "attack": 0,
+  "armor": 0,
+  "behaviour": "passive",
+  "walking": false,
+  "walk_radius": 0
+}

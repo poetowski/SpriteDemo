@@ -1190,8 +1190,34 @@ def signpost():
     return c.outline()
 
 
-def tombstone():
+def tombstone(variant=0):
+    """A grave marker. Variant 0 is the drawing this always was, untouched, so
+    every map that already places one keeps the stone it had.
+
+    A churchyard drawn from one stone is a stamp repeated in rows, and rows are
+    exactly how a churchyard is laid out - so the stones have to differ in
+    shape, not in shade, or the rank reads as a fence. The cross and the leaning
+    slab are those shapes: one breaks the outline upwards, the other breaks the
+    rhythm sideways, and either is legible at a glance among the round ones."""
     c = Canvas(FRAME, FRAME)
+    if variant == 1:                              # a cross on a stepped base
+        c.rect(14, 10, 17, BASE_Y - 3, "ST")
+        c.rect(10, 13, 21, 16, "ST")
+        c.rect(11, BASE_Y - 3, 20, BASE_Y, "ST")
+        c.rect(9, BASE_Y - 1, 22, BASE_Y, "STD")
+        _shade(c, "ST", "STL", "STD")
+        _moss(c, [(12, BASE_Y - 2, 2)], seed=0x51)
+        return c.outline()
+    if variant == 2:                              # an old slab, leaning
+        for y in range(13, BASE_Y + 1):
+            lean = (BASE_Y - y) // 4              # a pixel every four rows
+            c.row(11 + lean, 19 + lean, y, "ST")
+        _blob(c, 10, (2, 3, 4), "ST", cx=19)
+        c.rect(9, BASE_Y - 1, 21, BASE_Y, "STD")
+        _shade(c, "ST", "STL", "STD")
+        _moss(c, [(15, 17, 3), (18, 23, 2)], seed=0x52)
+        _crack(c, [(14, 15), (16, 20), (15, 24)])
+        return c.outline()
     c.rect(11, 16, 20, BASE_Y, "ST")
     _blob(c, 12, (2, 3, 4, 4), "ST")     # rounded top
     c.rect(9, BASE_Y - 1, 22, BASE_Y, "STD")    # it has sunk into the turf
@@ -2547,6 +2573,126 @@ def scarecrow_ragged():
     c.set(head, 11, "OL")
     return c.outline()
 
+
+def tent():
+    """A canvas tent, for anyone sleeping out - the hunter in the deep wood,
+    the woodcutters in their clearing.
+
+    A triangle of pale cloth is a sail or a pennant until something says it
+    stands on the ground, so the opening is cut into the foot of it in the
+    darkest key there is, and the shaded half is a different tone from the lit
+    one: the ridge running away from you is what makes it a volume rather
+    than a flat shape."""
+    c = Canvas(FRAME, FRAME)
+    for y in range(8, BASE_Y + 1):
+        t = (y - 8) / (BASE_Y - 8)
+        half = round(1 + 12 * t)
+        c.row(15 - half, 15, y, "CL")             # the side turned to the light
+        c.row(16, 16 + half, y, "CLD")            # and the side turned away
+    c.col(15, 8, BASE_Y, "CLL")                   # the ridge, catching it
+    for y in range(17, BASE_Y + 1):               # the way in
+        t = (y - 17) / (BASE_Y - 17)
+        half = round(4 * t)
+        c.row(16 - half, 15 + half, y, "OL")
+    for y in range(18, BASE_Y + 1, 2):            # a flap tied back
+        c.set(15 - round(5 * (y - 17) / (BASE_Y - 17)) - 1, y, "CLL")
+    c.rect(15, 5, 16, 8, "WD")                    # the pole through the top
+    for x in (2, 29):                             # pegs
+        c.rect(x, BASE_Y - 1, x + 1, BASE_Y, "WDD")
+    return c.outline()
+
+
+def boat():
+    """A rowing boat pulled into the shallows, oars shipped.
+
+    Every footprint tile has to be ground you could stand on, so a boat is
+    drawn for the shallows rather than open water, which is also where a boat
+    nobody is using actually sits. Seen from a little above it is a lens with
+    a darker lens inside it - the hull and the bilge - and the thwarts across
+    it are what stop it reading as a log."""
+    c = Canvas(FRAME, FRAME)
+    for x in range(3, 29):                        # the hull, a lens
+        t = (x - 15.5) / 12.5
+        half = round(5.5 * (1 - t * t) ** 0.6)
+        if half <= 0:
+            continue
+        c.col(x, 22 - half, 22 + half, "WD")
+    for x in range(6, 26):                        # the bilge inside it
+        t = (x - 15.5) / 9.5
+        half = round(3.4 * (1 - t * t) ** 0.6)
+        if half <= 0:
+            continue
+        c.col(x, 21 - half, 21 + half, "WDD")
+    for x in range(3, 29):                        # planking along it
+        for y in range(15, 29):
+            if c.get(x, y) == "WD" and y in (24, 26):
+                c.set(x, y, "WDD")
+    for x in range(4, 28):                        # the gunwale, lit along the top
+        for y in range(10, 30):
+            if c.get(x, y) == "WD":
+                c.set(x, y, "WDL")
+                break
+    for x0 in (11, 19):                           # two thwarts
+        c.rect(x0, 18, x0 + 1, 24, "WD")
+        c.col(x0, 18, 24, "WDL")
+    for i in range(14):                           # an oar across both
+        c.set(8 + i, 16 + i // 3, "WDL")
+        c.set(8 + i, 17 + i // 3, "WD")
+    c.rect(20, 20, 23, 22, "WDL")                 # its blade
+    return c.outline()
+
+
+def pumpkins(variant=0):
+    """Pumpkins in their patch - the thing a farm in this country is known for.
+
+    Three drawings, and each is a different arrangement rather than a
+    different pumpkin: one big one on its vine, three of a size along a row,
+    and a heap somebody has started gathering. What makes a pumpkin at this
+    size is the ribs and the stalk. Without the ribs it is an orange, and
+    without the stalk a pumpkin is a ball."""
+    c = Canvas(FRAME, FRAME)
+
+    def gourd(cx, base, w, h):
+        for y in range(base - h, base + 1):
+            t = (y - (base - h / 2)) / (h / 2 + 0.5)
+            half = round(w * (1 - t * t) ** 0.5)
+            if half > 0:
+                c.row(cx - half, cx + half, y, "PK")
+        for dx in (-w // 2, w // 2):              # the ribs
+            for y in range(base - h + 2, base - 1):
+                if c.get(cx + dx, y) == "PK":
+                    c.set(cx + dx, y, "PKD")
+        c.col(cx, base - h + 1, base - 2, "PKD")
+        c.rect(cx, base - h - 2, cx + 1, base - h, "GRD")   # the stalk
+        c.set(cx + 2, base - h - 2, "GRD")
+
+    def leaf(x, y):
+        _lobe(c, x, y, 2, "BU")
+        c.set(x - 1, y - 1, "BUL")
+
+    if variant == 0:                              # one, big, on its vine
+        for x in range(3, 29):
+            c.set(x, BASE_Y - 1 - (2 if 9 < x < 21 else 0), "GRD")
+        leaf(5, BASE_Y - 3)
+        leaf(26, BASE_Y - 4)
+        gourd(15, BASE_Y, 8, 11)
+    elif variant == 1:                            # three along a row
+        for x in range(1, 31):
+            c.set(x, BASE_Y - 2, "GRD")
+        for x, w, h in ((6, 4, 7), (16, 5, 8), (25, 4, 6)):
+            gourd(x, BASE_Y, w, h)
+        leaf(11, BASE_Y - 6)
+        leaf(21, BASE_Y - 7)
+    else:                                         # gathered into a heap
+        gourd(9, BASE_Y, 5, 8)
+        gourd(22, BASE_Y, 5, 8)
+        gourd(15, BASE_Y - 6, 5, 8)
+        leaf(28, BASE_Y - 2)
+    _shade(c, "PK", "PKL", "PKD")
+    _shade(c, "BU", "BUL", "BUD")
+    return c.outline()
+
+
 PROPS = {
     "prop.bush": bush,
     "prop.bridge": bridge,
@@ -2554,6 +2700,9 @@ PROPS = {
     "prop.tree_birch": tree_birch,
     "prop.cart": cart,
     "prop.haystack": haystack,
+    "prop.pumpkins": pumpkins,
+    "prop.boat": boat,
+    "prop.tent": tent,
     "prop.scarecrow_ragged": scarecrow_ragged,
     "prop.scarecrow_sack": scarecrow_sack,
     "prop.hay_stook": hay_stook,
@@ -2622,6 +2771,8 @@ PROP_ORDER = list(PROPS)
 # histories rather than five sizes.
 VARIANTS = {
     "prop.barrel": 3,
+    "prop.tombstone": 3,
+    "prop.pumpkins": 3,
     "prop.crate": 5,
     "prop.tree_oak": 5,
     "prop.tree_pine": 5,
@@ -2654,7 +2805,9 @@ ANIMATED = {
     "prop.beehive": (4, 170),
     "prop.trough": (3, 430),        # standing water barely moves
 }
-ANIMATED_HUGE = {}                  # nothing this size moves yet
+ANIMATED_HUGE = {
+    "prop.watermill": (4, 160),     # the wheel, turning
+}
 ANIMATED_VAST = {
 }
 # One table per frame size, because that is how the sheets are built - but the
@@ -2965,7 +3118,241 @@ def market_stall():
     return c.outline()
 
 
+# ------------------------------------------------------------- landmarks ---
+# Three buildings a stretch of country is remembered by, each four tiles wide.
+# They are told apart by material first and outline second: the mill is thatch
+# over a wheel, the chapel is pale stone under dark slate, and the mine is not
+# a building at all but a hole in rock with timber holding it open.
+
+def watermill(phase=0):
+    """A mill on the bank with its wheel turning in the stream.
+
+    The house stands on the two left-hand tiles and the wheel hangs over the
+    two right-hand ones, which are water - so the footprint is the house alone
+    and the map has to put the stream there. Thatch rather than the cottage's
+    red tile, because a building that looks like every other house on the
+    road stops being a landmark.
+
+    The wheel is the crystal gate's rule again: eight paddles, each advancing a
+    quarter of its own spacing per frame, so after four frames every paddle has
+    arrived where its neighbour started and the loop closes with nothing
+    jumping. Turning each a quarter of the way round instead is four separate
+    pictures shown in sequence, and reads as a stutter."""
+    Y = HUGE_BASE_Y
+    c = Canvas(HUGE_FRAME, HUGE_FRAME)
+
+    # --- the house: drystone below, timber and plaster above ----------------
+    c.rect(2, 37, 31, Y, "ST")
+    for i, y in enumerate(range(41, Y, 5)):          # coursed, joints staggered
+        c.row(2, 31, y, "STD")
+        for x in range(4 + (i % 2) * 5, 31, 10):
+            c.col(x, y - 4, y - 1, "STD")
+    _shade(c, "ST", "STL", "STD")
+    c.rect(3, 25, 30, 36, "CL")                       # the floor over it
+    _shade(c, "CL", "CLL", "CLD")
+    for x in (3, 12, 21, 30):
+        c.col(x, 25, 36, "WDD")
+    c.row(3, 30, 36, "WDD")
+    c.row(3, 30, 25, "WDD")
+    c.rect(14, 28, 19, 33, "FIL")                     # a lit window up there
+    c.col(16, 28, 33, "WDD")
+    c.col(17, 28, 33, "WDD")
+    c.row(13, 20, 27, "WDD")
+    c.row(13, 20, 34, "WDD")
+
+    # --- a thatched roof, steep, overhanging both gables --------------------
+    for y in range(7, 26):
+        t = (y - 7) / 18
+        c.row(round(9 - 9 * t), round(24 + 9 * t), y, "TH")
+    for y in range(10, 26, 3):                        # the courses it was laid in
+        for x in range(HUGE_FRAME):
+            if c.get(x, y) == "TH":
+                c.set(x, y, "THD")
+    rnd = scatter(0x77A1)
+    for _ in range(40):                               # straw ends standing proud
+        x, y = rnd(36), 8 + rnd(17)
+        if c.get(x, y) == "TH":
+            c.set(x, y, "THL" if rnd(2) else "THD")
+    c.row(8, 25, 7, "THL")                            # a lit ridge
+    c.row(8, 25, 6, "THD")
+
+    # --- the door, and a step worn into the threshold -----------------------
+    c.rect(6, 46, 13, Y, "WD")
+    c.col(6, 46, Y, "WDL")
+    c.col(13, 46, Y, "WDD")
+    c.col(9, 47, Y - 1, "WDD")
+    c.row(5, 14, 45, "WDD")
+    c.row(5, 14, Y, "STL")
+
+    # --- the wheel -----------------------------------------------------------
+    cx, cy, R = 46, 47, 13
+    c.rect(29, cy - 2, cx, cy + 1, "WDD")             # the axle into the wall
+    c.row(29, cx, cy - 2, "WD")
+    for a in range(0, 360, 4):                        # rim, two pixels deep
+        for r in (R - 1, R):
+            x = round(cx + math.cos(math.radians(a)) * r)
+            y = round(cy + math.sin(math.radians(a)) * r)
+            c.set(x, y, "WD" if r == R else "WDD")
+    spin = phase * 45 / 4                             # a quarter of a spacing
+    for k in range(4):                                # four spokes, eight ends
+        a = math.radians(spin + k * 45)
+        for s in range(-R + 2, R - 1):
+            x = round(cx + math.cos(a) * s)
+            y = round(cy + math.sin(a) * s)
+            c.set(x, y, "WDD")
+            c.set(x + 1, y, "WD")
+    for k in range(8):                                # paddles proud of the rim
+        a = math.radians(spin + k * 45 + 22.5)
+        for r in range(R, R + 4):
+            for w in (-1, 0, 1):
+                x = round(cx + math.cos(a) * r - math.sin(a) * w)
+                y = round(cy + math.sin(a) * r + math.cos(a) * w)
+                c.set(x, y, "WDL" if r == R + 3 else "WD")
+    _lobe(c, cx, cy, 2, "MTD")                        # the hub
+    c.set(cx - 1, cy - 1, "MTL")
+
+    for y in range(Y + 1, HUGE_FRAME):                # cut at the waterline
+        for x in range(HUGE_FRAME):
+            c.set(x, y, None)
+    c = c.outline()
+    # Foam where the paddles come down into the race, after the outline - a
+    # splash with a hard black line round it is a pebble in the air.
+    rnd = scatter(0x5A1 + phase * 7)
+    for _ in range(9):
+        x, y = cx - 8 + rnd(16), Y - 3 + rnd(4)
+        if c.get(x, y) is None:
+            c.set(x, y, "WAL" if rnd(3) else "CLL")
+    return c
+
+
+def chapel():
+    """A small stone chapel with a bell hung in a cote on the gable.
+
+    Pale stone under dark slate is the whole colour idea, and it is a value
+    idea rather than a hue one: the guardians on the old temple were cut in
+    the same stone as their podium and vanished into it completely, so the
+    walls and the roof are kept at opposite ends of the stone ramp and never
+    meet in the middle. The windows are lancets - tall, narrow, pointed - and
+    lit, because a pointed arch with light in it is the one shape here that
+    says "chapel" before you can see anything else about the building."""
+    Y = HUGE_BASE_Y
+    c = Canvas(HUGE_FRAME, HUGE_FRAME)
+
+    # --- the nave walls ------------------------------------------------------
+    c.rect(5, 33, 58, Y, "STL")
+    for i, y in enumerate(range(37, Y, 4)):           # dressed courses
+        c.row(5, 58, y, "ST")
+        for x in range(7 + (i % 2) * 4, 58, 8):
+            c.set(x, y - 2, "ST")
+    for x0 in (20, 41):                               # buttresses between bays
+        c.rect(x0, 36, x0 + 2, Y, "ST")
+        c.col(x0, 36, Y, "STL")
+        c.col(x0 + 2, 36, Y, "STD")
+        c.row(x0 - 1, x0 + 3, 36, "STD")
+    c.row(5, 58, Y, "STD")
+
+    # --- the roof: dark slate, laid in courses, a lit lip at the eaves ------
+    for y in range(13, 34):
+        t = (y - 13) / 20
+        c.row(round(12 - 10 * t), round(51 + 10 * t), y, "STX")
+    for y in range(15, 34, 3):
+        for x in range(HUGE_FRAME):
+            if c.get(x, y) == "STX":
+                c.set(x, y, "STD")
+    c.row(2, 61, 33, "ST")                            # the eaves catch the light
+    c.row(12, 51, 13, "STD")                          # and so does the ridge
+
+    # --- the bell-cote on the right-hand gable -------------------------------
+    c.rect(43, 1, 53, 14, "STL")
+    c.col(43, 1, 14, "ST")
+    c.col(53, 1, 14, "STD")
+    c.rect(45, 4, 51, 11, "OL")                       # the opening, in shadow
+    c.row(46, 50, 3, "OL")
+    c.row(42, 54, 0, "STD")                           # a little gabled cap
+    c.rect(46, 6, 50, 10, "MT")                       # the bell
+    c.row(46, 50, 6, "MTL")
+    c.row(45, 51, 10, "MTD")
+    c.set(48, 11, "MTD")                              # and its clapper
+
+    # --- the door: a pointed arch in a dressed surround ---------------------
+    c.rect(26, 44, 37, Y, "STD")
+    for i, x in enumerate(range(26, 32)):             # the arch, two arcs meeting
+        c.set(x, 43 - i // 2, "STD")
+        c.set(63 - x, 43 - i // 2, "STD")
+    c.rect(28, 45, 35, Y, "WD")
+    for i, x in enumerate(range(28, 32)):
+        c.set(x, 44 - i // 2, "WD")
+        c.set(63 - x, 44 - i // 2, "WD")
+    c.col(28, 45, Y, "WDL")
+    c.col(31, 44, Y - 1, "WDD")
+    c.col(32, 44, Y - 1, "WDD")
+    c.set(34, 52, "MTL")                              # a ring for a handle
+    c.row(25, 38, Y, "STL")                           # the step
+
+    # --- two lancets, lit -----------------------------------------------------
+    for x0 in (11, 49):
+        c.rect(x0, 41, x0 + 4, 53, "STD")             # the reveal
+        c.rect(x0 + 1, 42, x0 + 3, 52, "FIL")
+        c.set(x0 + 2, 40, "STD")
+        c.set(x0 + 2, 41, "FI")                       # pointed at the head
+        c.set(x0 + 1, 42, "FI")
+        c.row(x0 + 1, x0 + 3, 47, "STD")              # a transom across it
+    return c.outline()
+
+
+def mine():
+    """An adit driven into a crag, held open with timber - the way into the
+    hill, and the only one of the three that is not a building.
+
+    Rock first, and the opening cut into it afterwards, so the hole is the
+    darkest thing for a screen in any direction. A dark doorway in pale rock
+    is what reads as "a way in"; framed in timber it also reads as made by
+    somebody, which is what separates a mine from a cave. The track comes out
+    of it towards you, its rails a pixel further apart every few rows - that
+    widening is all the perspective a 64px frame has room for, and without it
+    two rails with sleepers across them are just as readily a ladder."""
+    Y = HUGE_BASE_Y
+    c = Canvas(HUGE_FRAME, HUGE_FRAME)
+    _mass(c, [(31, 34, 22), (12, 44, 13), (52, 44, 12), (23, 22, 12),
+              (41, 20, 11), (32, 14, 8), (8, 54, 9), (56, 54, 8)], Y)
+    _form(c, "ST", 0x3C1, tilt=0.06, grit=0.6)
+    _rim(c, ROCK, "STL", "STD")
+    _crack(c, [(10, 40), (15, 34), (13, 28)])
+    _crack(c, [(48, 32), (53, 38), (51, 46)])
+    _moss(c, [(20, 18, 4), (44, 17, 3), (6, 50, 3), (57, 51, 3)], seed=0x2D)
+
+    # --- the adit -------------------------------------------------------------
+    c.rect(24, 38, 39, Y, "STX")
+    c.rect(26, 40, 37, Y, "OL")                       # the dark beyond the light
+    # --- the timbering --------------------------------------------------------
+    for x0 in (21, 39):                               # two posts
+        c.rect(x0, 37, x0 + 3, Y, "WD")
+        c.col(x0, 37, Y, "WDL")
+        c.col(x0 + 3, 37, Y, "WDD")
+    c.rect(19, 33, 44, 37, "WD")                      # and a cap over them
+    c.row(19, 44, 33, "WDL")
+    c.row(19, 44, 37, "WDD")
+    for x in (24, 31, 38):
+        c.set(x, 35, "WDD")                           # pegged
+    # --- a lantern on the left-hand post --------------------------------------
+    c.rect(16, 41, 19, 45, "MTD")
+    c.rect(17, 42, 18, 44, "FIL")
+    c.row(17, 18, 40, "MT")
+    # --- the track, coming out towards you ------------------------------------
+    for y in range(42, Y + 1, 3):                     # sleepers first
+        w = (y - 42) // 6
+        c.row(28 - w, 35 + w, y, "WDD")
+    for y in range(41, Y + 1):                        # then the rails over them
+        w = (y - 41) // 6
+        c.set(28 - w, y, "MTL")
+        c.set(35 + w, y, "MT")
+    return c.outline()
+
+
 HUGE_PROPS = {
+    "prop.watermill": watermill,
+    "prop.chapel": chapel,
+    "prop.mine": mine,
     "prop.cottage": cottage,
     "prop.shed": shed,
     "prop.burrow_tree": burrow_tree,

@@ -1,0 +1,55 @@
+{
+  "id": "dlg.ada",
+  "speaker": "Ada",
+  "start": "greet",
+  "nodes": {
+    "greet": {
+      "text": [
+        "Mind the step, it's been mind-the-step for thirty years."
+      ],
+      "choices": [
+        {
+          "text": "A room?",
+          "goto": "a0"
+        },
+        {
+          "text": "Who comes through?",
+          "goto": "a1"
+        },
+        {
+          "text": "Good day."
+        }
+      ]
+    },
+    "a0": {
+      "text": [
+        "Two upstairs, one over the stable. The stable one's warmer.",
+        "The horse disagrees, but the horse isn't paying."
+      ],
+      "choices": [
+        {
+          "text": "I see.",
+          "goto": "greet"
+        },
+        {
+          "text": "Farewell."
+        }
+      ]
+    },
+    "a1": {
+      "text": [
+        "Carters from the mine, Marta when she's passing, Hedda's lot from Northmeadow.",
+        "And Rook, twice a year, who drinks nothing and listens to everything."
+      ],
+      "choices": [
+        {
+          "text": "I see.",
+          "goto": "greet"
+        },
+        {
+          "text": "Farewell."
+        }
+      ]
+    }
+  }
+}

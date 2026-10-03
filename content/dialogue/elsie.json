@@ -1,0 +1,55 @@
+{
+  "id": "dlg.elsie",
+  "speaker": "Elsie",
+  "start": "greet",
+  "nodes": {
+    "greet": {
+      "text": [
+        "Pumpkins this year, more than we can eat. Take one if you like."
+      ],
+      "choices": [
+        {
+          "text": "The farm's yours?",
+          "goto": "a0"
+        },
+        {
+          "text": "Need a hand?",
+          "goto": "a1"
+        },
+        {
+          "text": "Good day."
+        }
+      ]
+    },
+    "a0": {
+      "text": [
+        "Mine and the bees'. The bees think it's theirs.",
+        "The pigs agree with them, which is new."
+      ],
+      "choices": [
+        {
+          "text": "I see.",
+          "goto": "greet"
+        },
+        {
+          "text": "Farewell."
+        }
+      ]
+    },
+    "a1": {
+      "text": [
+        "Not unless you can make hay stand up in the rain.",
+        "Ask at the mill. Tobin always needs carrying done."
+      ],
+      "choices": [
+        {
+          "text": "I see.",
+          "goto": "greet"
+        },
+        {
+          "text": "Farewell."
+        }
+      ]
+    }
+  }
+}

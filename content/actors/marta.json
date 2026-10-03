@@ -1,0 +1,21 @@
+{
+  "id": "npc.marta",
+  "sprite": "actor.peddler",
+  "name": "Marta",
+  "speed": 0,
+  "blocks": true,
+  "facing": "down",
+  "interact": "dlg.marta",
+  "rig": "biped",
+  "states": [
+    "walk",
+    "idle"
+  ],
+  "description": "Sells ribbons and needles at the crossroads, and news for nothing.",
+  "level": 1,
+  "attack": 0,
+  "armor": 0,
+  "behaviour": "passive",
+  "walking": false,
+  "walk_radius": 0
+}

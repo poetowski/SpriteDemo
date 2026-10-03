@@ -1,0 +1,21 @@
+{
+  "id": "npc.elsie",
+  "sprite": "actor.farmer",
+  "name": "Elsie",
+  "speed": 0,
+  "blocks": true,
+  "facing": "down",
+  "interact": "dlg.elsie",
+  "rig": "biped",
+  "states": [
+    "walk",
+    "idle"
+  ],
+  "description": "Runs the farmstead by the orchard, and the pumpkins run her.",
+  "level": 1,
+  "attack": 0,
+  "armor": 0,
+  "behaviour": "passive",
+  "walking": false,
+  "walk_radius": 0
+}

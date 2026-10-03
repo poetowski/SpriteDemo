@@ -25,6 +25,13 @@ FOOT_Y = 28
 
 SPECIES = {
     "chicken": {"comb": True},
+    # A mallard is the hen with three things changed, and each is a flag so the
+    # hen reads none of them: the bill is long and flat where a beak is a
+    # point, the tail sits low behind instead of standing up, and the head is
+    # drawn on its own key so the palette can make it green. That green head
+    # is the duck - a brown bird with a flat bill is just as readily a hen
+    # somebody drew badly.
+    "duck": {"bill": True, "hood": True, "flat_tail": True},
 }
 
 
@@ -49,18 +56,30 @@ def draw_side(shape, pose):
     c.row(13, 16, 21 + bob, "AB")
     # The tail, cocked up behind: the one part of a hen's outline that is not
     # round, which is why it has to be there in every view that can show it.
-    for y, x0, x1 in ((15, 10, 11), (16, 9, 12), (17, 9, 12), (18, 10, 12)):
-        c.row(x0, x1, y + bob, "AB")
-    c.set(9, 16 + bob, "ABS")
+    if shape.get("flat_tail"):
+        # A duck's is short and carried level, with the one curl a drake has.
+        for y, x0, x1 in ((19, 9, 12), (20, 9, 11)):
+            c.row(x0, x1, y + bob, "AB")
+        c.set(10, 18 + bob, "AF")
+    else:
+        for y, x0, x1 in ((15, 10, 11), (16, 9, 12), (17, 9, 12), (18, 10, 12)):
+            c.row(x0, x1, y + bob, "AB")
+        c.set(9, 16 + bob, "ABS")
     # The head, on a short neck; pecking takes it down to the ground in front.
     hx, hy = 19 + peck // 2, 14 + bob + peck
-    c.rect(18, 17 + bob, 20, 20 + bob, "AB")      # neck
+    head = "AF" if shape.get("hood") else "AB"
+    c.rect(18, 17 + bob, 20, 20 + bob, head)      # neck
     if peck:
         for i in range(peck):
-            c.rect(19 + i // 2, 17 + bob + i, 21 + i // 2, 18 + bob + i, "AB")
-    c.rect(hx, hy, hx + 3, hy + 3, "AB")
+            c.rect(19 + i // 2, 17 + bob + i, 21 + i // 2, 18 + bob + i, head)
+    c.rect(hx, hy, hx + 3, hy + 3, head)
+    if shape.get("hood"):
+        c.row(18, 20, 19 + bob, "ABL")            # the white collar under it
     c.set(hx + 2, hy + 1, "OL")                   # eye
-    c.rect(hx + 4, hy + 2, hx + 5, hy + 2, "FL")  # beak
+    if shape.get("bill"):
+        c.rect(hx + 4, hy + 2, hx + 6, hy + 3, "FL")   # long, flat, and broad
+    else:
+        c.rect(hx + 4, hy + 2, hx + 5, hy + 2, "FL")   # beak
     if shape.get("comb"):
         c.rect(hx, hy - 1, hx + 2, hy - 1, "RF")
         c.set(hx + 1, hy - 2, "RF")
@@ -82,10 +101,15 @@ def draw_front(shape, pose):
     c.col(11, 21 + bob, 23 + bob, "ABS")          # wings held in at the sides
     c.col(20, 21 + bob, 23 + bob, "ABS")
     hy = 14 + bob + peck // 2
-    c.rect(14, hy, 17, hy + 4, "AB")              # head over the breast
+    head = "AF" if shape.get("hood") else "AB"
+    c.rect(14, hy, 17, hy + 4, head)              # head over the breast
     c.set(14, hy + 1, "OL")
     c.set(17, hy + 1, "OL")
-    c.rect(15, hy + 2, 16, hy + 3, "FL")          # beak, end on
+    if shape.get("bill"):
+        c.rect(14, hy + 3, 17, hy + 4, "FL")      # a bill is wider than it is deep
+        c.row(14, 17, hy + 5, "ABL")              # and the collar under it
+    else:
+        c.rect(15, hy + 2, 16, hy + 3, "FL")      # beak, end on
     if shape.get("comb"):
         c.rect(15, hy - 2, 16, hy - 1, "RF")
         c.rect(15, hy + 4, 16, hy + 5, "RF")      # wattles under the beak
@@ -103,11 +127,17 @@ def draw_back(shape, pose):
     c.row(12, 19, 25 + bob, "ABS")
     # From behind the tail is a fan standing over the rump, and it is most of
     # what you see; the head only shows its comb over the top.
-    for y, x0, x1 in ((14, 14, 17), (15, 13, 18), (16, 13, 18), (17, 13, 18),
-                      (18, 14, 17)):
-        c.row(x0, x1, y + bob, "AB")
-    c.col(15, 15 + bob, 18 + bob, "ABS")
-    c.col(16, 15 + bob, 18 + bob, "ABL")
+    if shape.get("flat_tail"):
+        # No fan: from behind a duck is its head over a low rump.
+        c.rect(14, 14 + bob, 17, 18 + bob, "AF")
+        c.row(14, 17, 18 + bob, "ABL")
+        c.rect(15, 24 + bob, 16, 26 + bob, "AF")  # the tail curl
+    else:
+        for y, x0, x1 in ((14, 14, 17), (15, 13, 18), (16, 13, 18), (17, 13, 18),
+                          (18, 14, 17)):
+            c.row(x0, x1, y + bob, "AB")
+        c.col(15, 15 + bob, 18 + bob, "ABS")
+        c.col(16, 15 + bob, 18 + bob, "ABL")
     if shape.get("comb"):
         c.rect(15, 12 + bob, 16, 13 + bob, "RF")
     return c.outline()

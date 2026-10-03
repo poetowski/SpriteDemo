@@ -1,0 +1,55 @@
+{
+  "id": "dlg.tobin",
+  "speaker": "Old Tobin",
+  "start": "greet",
+  "nodes": {
+    "greet": {
+      "text": [
+        "Flour on your boots now. Everyone leaves with some."
+      ],
+      "choices": [
+        {
+          "text": "How old is the mill?",
+          "goto": "a0"
+        },
+        {
+          "text": "Busy season?",
+          "goto": "a1"
+        },
+        {
+          "text": "Good day."
+        }
+      ]
+    },
+    "a0": {
+      "text": [
+        "The stones are older than me. The wheel's newer.",
+        "Rebuilt it twice. The brook took it once."
+      ],
+      "choices": [
+        {
+          "text": "I see.",
+          "goto": "greet"
+        },
+        {
+          "text": "Farewell."
+        }
+      ]
+    },
+    "a1": {
+      "text": [
+        "Harvest's in. Elsie's sent half the valley's wheat.",
+        "And Gunnar's carts shake the dust down on everything."
+      ],
+      "choices": [
+        {
+          "text": "I see.",
+          "goto": "greet"
+        },
+        {
+          "text": "Farewell."
+        }
+      ]
+    }
+  }
+}

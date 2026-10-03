@@ -87,6 +87,14 @@ PALETTE = {
     # from the desert's salt, which tied two props in the meadow to a biome
     # that no longer exists here - a shared key is a dependency, not a saving.
     "CLL": ((0xf1, 0xed, 0xe1, 255), "cloth light"),
+    # Pumpkin. Its own family because nothing else here is this colour, and a
+    # crop borrowed from the fire keys would change every time somebody
+    # retuned a flame - the cloth's pale tone above is the same lesson. A
+    # notch more yellow than fire, and duller: a field of it should read as
+    # harvest at a distance, not as something burning.
+    "PK":  ((0xd6, 0x83, 0x31, 255), "pumpkin"),
+    "PKD": ((0xa0, 0x55, 0x22, 255), "pumpkin shade"),
+    "PKL": ((0xef, 0xa8, 0x4f, 255), "pumpkin light"),
     # animals - generic keys so a species is a palette swap of one rig
     "AB":  ((0xe4, 0xde, 0xcd, 255), "animal body"),
     "ABS": ((0xc0, 0xb8, 0xa4, 255), "animal body shade"),
@@ -148,6 +156,84 @@ VARIANTS = {
         "HR":  (0x4a, 0x42, 0x3c, 255),
         "HRL": (0x6c, 0x62, 0x59, 255),
     },
+    # The people of the wood and its edges. Each is told apart from the others
+    # by the one colour that dominates their figure at map scale, chosen round
+    # the wheel from the four already living here - wine, rust, steel and
+    # linen - so that no two people in one frame are the same note.
+    "woodcutter": {
+        "TU":  (0x7a, 0x55, 0x32, 255),   # a leather jerkin
+        "TUS": (0x55, 0x3a, 0x21, 255),
+        "TUL": (0x9a, 0x72, 0x48, 255),
+        "PN":  (0x4c, 0x5a, 0x6e, 255),   # over blue breeches
+        "PNS": (0x34, 0x3e, 0x4e, 255),
+        "HR":  (0x8e, 0x4a, 0x22, 255),   # ginger
+        "HRL": (0xb0, 0x66, 0x34, 255),
+    },
+    "miller": {
+        # The palest figure anywhere: flour on everything, hair included.
+        "TU":  (0xe4, 0xdd, 0xcc, 255),
+        "TUS": (0xb8, 0xb0, 0x9c, 255),
+        "TUL": (0xf6, 0xf2, 0xe8, 255),
+        "PN":  (0xa8, 0x9e, 0x88, 255),
+        "PNS": (0x80, 0x77, 0x64, 255),
+        "HR":  (0xc8, 0xc4, 0xbc, 255),
+        "HRL": (0xe6, 0xe2, 0xda, 255),
+    },
+    "fisher": {
+        "TU":  (0xd8, 0xb2, 0x3a, 255),   # oilskin, the one yellow coat
+        "TUS": (0xa8, 0x84, 0x22, 255),
+        "TUL": (0xee, 0xd0, 0x66, 255),
+        "PN":  (0x2f, 0x3e, 0x5c, 255),
+        "PNS": (0x20, 0x2a, 0x40, 255),
+        "HR":  (0x3a, 0x30, 0x2a, 255),
+        "HRL": (0x56, 0x48, 0x3e, 255),
+    },
+    "hunter": {
+        # Darker and duller than the hero's green, which is the point of it:
+        # a hunter is the one figure meant to be hard to see in a wood.
+        "TU":  (0x3a, 0x52, 0x34, 255),
+        "TUS": (0x27, 0x38, 0x23, 255),
+        "TUL": (0x52, 0x6c, 0x48, 255),
+        "PN":  (0x5a, 0x43, 0x2c, 255),
+        "PNS": (0x3e, 0x2d, 0x1d, 255),
+        "HR":  (0x24, 0x1f, 0x1c, 255),
+        "HRL": (0x3a, 0x33, 0x2e, 255),
+    },
+    "priest": {
+        # Bald, which is a remap and not a drawing: the rig puts a crown of
+        # hair over the skull, so pointing the hair keys at the skin leaves a
+        # shaved head with the light still on the dome. And robed to the
+        # ankle, so the breeches are the robe too.
+        "HR":  (0xf2, 0xc2, 0x92, 255),
+        "HRL": (0xff, 0xdd, 0xb4, 255),
+        "TU":  (0x2c, 0x29, 0x33, 255),
+        "TUS": (0x1d, 0x1b, 0x22, 255),
+        "TUL": (0x45, 0x41, 0x4f, 255),
+        "PN":  (0x2c, 0x29, 0x33, 255),
+        "PNS": (0x1d, 0x1b, 0x22, 255),
+        "BT":  (0x6b, 0x4c, 0x2c, 255),
+        "BTS": (0x49, 0x33, 0x1d, 255),
+    },
+    "miner": {
+        "TU":  (0x5c, 0x58, 0x52, 255),   # soot-grey, warmer than the guard's steel
+        "TUS": (0x40, 0x3d, 0x38, 255),
+        "TUL": (0x78, 0x73, 0x6b, 255),
+        "PN":  (0x6a, 0x4e, 0x33, 255),
+        "PNS": (0x4a, 0x36, 0x23, 255),
+        "HR":  (0x2a, 0x24, 0x20, 255),
+        "HRL": (0x40, 0x38, 0x32, 255),
+        "SK":  (0xd8, 0xa8, 0x80, 255),   # and the grime on the skin
+        "SKS": (0xa8, 0x7a, 0x58, 255),
+    },
+    "peddler": {
+        "TU":  (0x6e, 0x3e, 0x72, 255),   # plum: nobody else here can afford dye
+        "TUS": (0x4c, 0x29, 0x50, 255),
+        "TUL": (0x8e, 0x5a, 0x92, 255),
+        "PN":  (0x4a, 0x40, 0x36, 255),
+        "PNS": (0x33, 0x2c, 0x25, 255),
+        "HR":  (0x5c, 0x38, 0x22, 255),
+        "HRL": (0x7c, 0x50, 0x34, 255),
+    },
     "sheep": {},                          # the base animal palette is the sheep
     "chicken": {
         # A speckled brown hen rather than a white one: white is the sheep's,
@@ -155,6 +241,17 @@ VARIANTS = {
         "AB":  (0xa8, 0x6a, 0x3a, 255),
         "ABS": (0x7c, 0x4a, 0x26, 255),
         "ABL": (0xc8, 0x8c, 0x56, 255),
+    },
+    "duck": {
+        # A mallard drake: grey-brown body, a bottle-green head and a yellow
+        # bill. The bill is drawn on the flower key the hen's beak uses, so
+        # this remap is the only place a duck's bill is told to be yellow.
+        "AB":  (0x9a, 0x8e, 0x7c, 255),
+        "ABS": (0x6e, 0x64, 0x55, 255),
+        "ABL": (0xe8, 0xe4, 0xd8, 255),
+        "AF":  (0x2e, 0x6b, 0x3e, 255),
+        "AFS": (0x1f, 0x4a, 0x2b, 255),
+        "FL":  (0xe8, 0xb0, 0x3a, 255),
     },
     "goat": {
         "AB":  (0xa8, 0x82, 0x52, 255),   # tan coat instead of wool

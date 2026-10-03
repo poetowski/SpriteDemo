@@ -1,0 +1,21 @@
+{
+  "id": "npc.rook",
+  "sprite": "actor.hunter",
+  "name": "Rook",
+  "speed": 0,
+  "blocks": true,
+  "facing": "down",
+  "interact": "dlg.rook",
+  "rig": "biped",
+  "states": [
+    "walk",
+    "idle"
+  ],
+  "description": "Keeps a camp in the deep wood and an eye on what moves in it.",
+  "level": 1,
+  "attack": 0,
+  "armor": 0,
+  "behaviour": "passive",
+  "walking": false,
+  "walk_radius": 0
+}

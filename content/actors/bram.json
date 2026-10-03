@@ -1,0 +1,21 @@
+{
+  "id": "npc.bram",
+  "sprite": "actor.woodcutter",
+  "name": "Bram",
+  "speed": 0,
+  "blocks": true,
+  "facing": "right",
+  "interact": "dlg.bram",
+  "rig": "biped",
+  "states": [
+    "walk",
+    "idle"
+  ],
+  "description": "Fells oak in the clearing and talks to it first, out of manners.",
+  "level": 1,
+  "attack": 0,
+  "armor": 0,
+  "behaviour": "passive",
+  "walking": false,
+  "walk_radius": 0
+}

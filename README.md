@@ -399,16 +399,15 @@ writes rather than something the content has to spell out.
   it beside an item and checks the crouch played and the bag grew by one;
   `--bag` presses **I** and checks the panel opened and the cursor moves;
   `--give item.axe --slash` arms the hero, presses **Space** and checks the
-  swing played and handed control back. `--map` renders the whole 96×72 world
-  as one frame; `--pose slash,1 --page` freezes the strike and photographs the
-  page with its bag and buttons.
-- `node tools/shot.cjs --on map.wilderness2 --quest` takes every errand the
-  people on a map can offer and runs each one to the end: it finds its own way
-  through the conversation to the reply that starts the quest, has a word with
-  the goat, picks the berries off the ground, crosses a map edge, kills the
-  boars, comes back and hands it in — then checks the quest is done, the
-  berries are gone, the reward is in the bag and the journal survived the
-  crossing. Nothing in it names a quest, a reply or an item, so it goes on
+  swing played and handed control back. `--map` renders the whole map as one
+  frame; `--pose slash,1 --page` freezes the strike and photographs the page
+  with its bag and buttons.
+- `node tools/shot.cjs --quest` takes every errand the people on a map can
+  offer and runs each one to the end: it finds its own way through the
+  conversation to the reply that starts the quest, has a word with the goat,
+  crosses a map edge, picks the berries off the ground in Millbrook, comes back
+  and hands it in — then checks the quest is done, the berries are gone, the
+  reward is in the bag and the journal survived the crossing. Nothing in it names a quest, a reply or an item, so it goes on
   testing the system rather than one errand somebody wrote down in the test.
 - `node tools/editor_test.cjs` drives the editor the same way: it erases the
   berries on the open map and checks the quest board goes short *before*

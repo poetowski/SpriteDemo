@@ -1,0 +1,21 @@
+{
+  "id": "npc.ada",
+  "sprite": "actor.innkeeper",
+  "name": "Ada",
+  "speed": 0,
+  "blocks": true,
+  "facing": "down",
+  "interact": "dlg.ada",
+  "rig": "biped",
+  "states": [
+    "walk",
+    "idle"
+  ],
+  "description": "Keeps the Millbrook inn, and the only clock in the valley that runs.",
+  "level": 1,
+  "attack": 0,
+  "armor": 0,
+  "behaviour": "passive",
+  "walking": false,
+  "walk_radius": 0
+}

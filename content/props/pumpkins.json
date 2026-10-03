@@ -1,0 +1,11 @@
+{
+  "id": "prop.pumpkins",
+  "sprite": "prop.pumpkins",
+  "footprint": [
+    [
+      0,
+      0
+    ]
+  ],
+  "blocks": true
+}

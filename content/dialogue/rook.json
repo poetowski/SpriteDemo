@@ -1,0 +1,55 @@
+{
+  "id": "dlg.rook",
+  "speaker": "Rook",
+  "start": "greet",
+  "nodes": {
+    "greet": {
+      "text": [
+        "Keep your voice down. Things hear further than you'd like in here."
+      ],
+      "choices": [
+        {
+          "text": "What's out there?",
+          "goto": "a0"
+        },
+        {
+          "text": "Why camp out here?",
+          "goto": "a1"
+        },
+        {
+          "text": "Good day."
+        }
+      ]
+    },
+    "a0": {
+      "text": [
+        "Deer in the glades. Boar where the ground's soft.",
+        "Wolves north of the standing stones. Not after dark."
+      ],
+      "choices": [
+        {
+          "text": "I see.",
+          "goto": "greet"
+        },
+        {
+          "text": "Farewell."
+        }
+      ]
+    },
+    "a1": {
+      "text": [
+        "Because the deer don't come to the village.",
+        "And because nobody comes to me."
+      ],
+      "choices": [
+        {
+          "text": "I see.",
+          "goto": "greet"
+        },
+        {
+          "text": "Farewell."
+        }
+      ]
+    }
+  }
+}

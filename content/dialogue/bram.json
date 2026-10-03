@@ -1,0 +1,55 @@
+{
+  "id": "dlg.bram",
+  "speaker": "Bram",
+  "start": "greet",
+  "nodes": {
+    "greet": {
+      "text": [
+        "Mind the chips. They fly further than you'd think."
+      ],
+      "choices": [
+        {
+          "text": "What do you cut?",
+          "goto": "a0"
+        },
+        {
+          "text": "And the great oak?",
+          "goto": "a1"
+        },
+        {
+          "text": "Good day."
+        }
+      ]
+    },
+    "a0": {
+      "text": [
+        "Oak, when I can get it. Pine splits and birch rots.",
+        "Tobin wants a new paddle for the wheel by midsummer."
+      ],
+      "choices": [
+        {
+          "text": "I see.",
+          "goto": "greet"
+        },
+        {
+          "text": "Farewell."
+        }
+      ]
+    },
+    "a1": {
+      "text": [
+        "Nobody fells the old one. Nobody's fool enough.",
+        "My father said it was here before the road was."
+      ],
+      "choices": [
+        {
+          "text": "I see.",
+          "goto": "greet"
+        },
+        {
+          "text": "Farewell."
+        }
+      ]
+    }
+  }
+}

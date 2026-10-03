@@ -1,0 +1,13 @@
+{
+  "id": "dlg.duck",
+  "speaker": "Mallard",
+  "start": "quack",
+  "nodes": {
+    "quack": {
+      "text": [
+        "Quack.",
+        "It regards you with one bright eye and waddles off towards the reeds."
+      ]
+    }
+  }
+}

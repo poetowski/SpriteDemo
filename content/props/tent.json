@@ -1,0 +1,11 @@
+{
+  "id": "prop.tent",
+  "sprite": "prop.tent",
+  "footprint": [
+    [
+      0,
+      0
+    ]
+  ],
+  "blocks": true
+}

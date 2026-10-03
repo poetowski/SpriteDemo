@@ -1,0 +1,21 @@
+{
+  "id": "npc.cuthbert",
+  "sprite": "actor.guard",
+  "name": "Cuthbert",
+  "speed": 0,
+  "blocks": true,
+  "facing": "left",
+  "interact": "dlg.cuthbert",
+  "rig": "biped",
+  "states": [
+    "walk",
+    "idle"
+  ],
+  "description": "Stands at the bridge. The toll is long gone; he is not.",
+  "level": 1,
+  "attack": 0,
+  "armor": 0,
+  "behaviour": "passive",
+  "walking": false,
+  "walk_radius": 0
+}

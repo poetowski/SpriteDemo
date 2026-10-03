@@ -248,6 +248,41 @@ def water(seed=0, phase=0):
     return c
 
 
+def lily(seed=0, phase=0):
+    """Lily pads on open water.
+
+    The water under them is the water tile's own, phase for phase, so a lily
+    bed shimmers in step with the mere round it; only the pads hold still,
+    which is what floating things do. They share the water's family and do
+    not blend, and that is the whole of why: drawn as a terrain of their own,
+    every water tile touching a bed would see different ground beside it and
+    draw a shore against it, and the lilies would come out ringed in bank in
+    the middle of the lake. The price is that a bed must not touch dry ground,
+    where it would stop on the tile grid - keep it out in the water.
+
+    The pads are the meadow's bush green, a notch cut into each: a green disc
+    on blue is a lily pad only once it has the notch."""
+    c = water(seed, phase)
+    rnd = scatter(0x711E + seed * 431)
+    for _ in range(3 + seed % 2):
+        cx, cy, r = rnd(SIZE), rnd(SIZE), 2 + rnd(2)
+        for dy in range(-r, r + 1):
+            for dx in range(-r, r + 1):
+                if dx * dx + dy * dy > r * r + 1:
+                    continue
+                if dx > 0 and abs(dy) <= dx // 2:          # the notch
+                    continue
+                lit = dx + dy < -1
+                _put(c, cx + dx, cy + dy, "BUL" if lit else "BU")
+        _put(c, cx - 1, cy + r, "BUD")                     # its shadow side
+        _put(c, cx, cy + r, "BUD")
+        if rnd(3) == 0:                                    # a flower, now and then
+            _put(c, cx - 1, cy - 1, "CLL")
+            _put(c, cx, cy - 1, "FL")
+            _put(c, cx - 1, cy, "FL")
+    return c
+
+
 def stone(seed=0, phase=0):
     """Flagstones: courses with staggered joints, each stone lit along its top.
 
@@ -681,6 +716,7 @@ BASE = {
     "tile.cave_wall": cave_wall,
     "tile.shallow": shallow,
     "tile.water": water,
+    "tile.lily": lily,
     "tile.mud": mud,
     "tile.tilled": tilled,
     "tile.flagstone": flagstone,
@@ -699,7 +735,7 @@ VARIANTS = {"tile.grass": 5, "tile.grass_flower": 3, "tile.grass_tall": 3,
             "tile.cave_floor": 3, "tile.cave_wall": 3, "tile.tall_stone": 3,
             "tile.dirt": 3, "tile.field": 3, "tile.gravel": 3, "tile.path": 3,
             "tile.cobble": 3, "tile.plank_wall": 3, "tile.stone": 3,
-            "tile.shallow": 3,
+            "tile.shallow": 3, "tile.lily": 3,
             "tile.mud": 3, "tile.tilled": 2, "tile.flagstone": 2,
             "tile.plaster_wall": 2}
 
@@ -707,7 +743,7 @@ VARIANTS = {"tile.grass": 5, "tile.grass_flower": 3, "tile.grass_tall": 3,
 # frame and the engine cycles them; the base frame is what the map resolves to.
 # One clock for everything that moves on the floor is what keeps the scene
 # from twitching, so they all run at the same frame time.
-ANIMATED = {"tile.water": 3, "tile.shallow": 2}
+ANIMATED = {"tile.water": 3, "tile.shallow": 2, "tile.lily": 3}
 ANIM_MS = 420
 
 

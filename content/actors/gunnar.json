@@ -1,0 +1,21 @@
+{
+  "id": "npc.gunnar",
+  "sprite": "actor.miner",
+  "name": "Gunnar",
+  "speed": 0,
+  "blocks": true,
+  "facing": "down",
+  "interact": "dlg.gunnar",
+  "rig": "biped",
+  "states": [
+    "walk",
+    "idle"
+  ],
+  "description": "Works the old copper adit in the crags, mostly alone.",
+  "level": 1,
+  "attack": 0,
+  "armor": 0,
+  "behaviour": "passive",
+  "walking": false,
+  "walk_radius": 0
+}

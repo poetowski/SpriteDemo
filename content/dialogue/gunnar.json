@@ -1,0 +1,55 @@
+{
+  "id": "dlg.gunnar",
+  "speaker": "Gunnar",
+  "start": "greet",
+  "nodes": {
+    "greet": {
+      "text": [
+        "Copper. Mostly copper. Mind the rails."
+      ],
+      "choices": [
+        {
+          "text": "Mostly?",
+          "goto": "a0"
+        },
+        {
+          "text": "Working alone?",
+          "goto": "a1"
+        },
+        {
+          "text": "Good day."
+        }
+      ]
+    },
+    "a0": {
+      "text": [
+        "Some say there's something else further in.",
+        "Something keeps stealing my candles. Every one I leave lit."
+      ],
+      "choices": [
+        {
+          "text": "I see.",
+          "goto": "greet"
+        },
+        {
+          "text": "Farewell."
+        }
+      ]
+    },
+    "a1": {
+      "text": [
+        "Had a crew once. They went to work the fields.",
+        "Fields don't fall on you. I understand them."
+      ],
+      "choices": [
+        {
+          "text": "I see.",
+          "goto": "greet"
+        },
+        {
+          "text": "Farewell."
+        }
+      ]
+    }
+  }
+}

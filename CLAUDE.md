@@ -80,24 +80,24 @@ node tools/shot.cjs --map    # 3. and shoot the whole world
    # Coordinates are per map and these are real ones: the examples used to
    # name tiles on the 96x72 Riverside map, which has not existed for a long
    # time, so every one of them pointed off the edge of the world.
-   node tools/shot.cjs --on map.wilderness6 --tile 24,19   # stand at a tile and look
-   node tools/shot.cjs --on map.wilderness2 --talk --tile 13,17  # talk to Arne
-   node tools/shot.cjs --on map.wilderness2 --talk --choose 2 --tile 13,17  # take reply 2
-   node tools/shot.cjs --on map.wilderness2 --gather --tile 4,7  # press E by an item
+   node tools/shot.cjs --on map.wilderness2 --tile 33,29   # stand at a tile and look
+   node tools/shot.cjs --talk --tile 12,14  # talk to Arne
+   node tools/shot.cjs --talk --choose 2 --tile 12,14  # take reply 2
+   node tools/shot.cjs --on map.wilderness2 --gather --tile 40,11  # press E by the ore
    node tools/shot.cjs --give item.axe --slash # arm the hero and swing
    node tools/shot.cjs --give item.axe --bag   # open the bag (I), check the cursor moves
    node tools/shot.cjs --pose slash,1 --page   # freeze the strike, shoot the whole page
-   node tools/shot.cjs --map                # the whole world in one frame
+   node tools/shot.cjs --map                # the whole map in one frame
    node tools/shot.cjs --on map.wilderness2 # start on another map, not the default
    node tools/shot.cjs --cross              # walk out of the map, check the bag arrives
-   node tools/shot.cjs --exit 3 --cross     # ...by its fourth doorway, not its first
-   node tools/shot.cjs --on map.wilderness3 --boar   # stand still, get charged
-   node tools/shot.cjs --on map.wilderness9 --tile 9,17   # the fen, and a heron over it
-   node tools/shot.cjs --on map.wilderness9 --talk --tile 15,29  # Goor, at the gate
+   node tools/shot.cjs --exit 1 --cross     # ...by its second doorway, not its first
+   node tools/shot.cjs --on map.wilderness2 --boar   # stand still, get charged
+   node tools/shot.cjs --on map.wilderness2 --talk --tile 19,23  # Tobin, at the mill
+   node tools/shot.cjs --on map.wilderness2 --talk --tile 28,39  # Anselm, at the chapel
    node tools/shot.cjs --quest              # take every errand on offer and run it
    node tools/shot.cjs --kill               # strike a hostile until it dies
-   node tools/shot.cjs --journal            # open the quest log
-   node tools/shot.cjs --spawn npc.troll     # something no map carries yet
+   node tools/shot.cjs --quest --journal    # run the errands, then open the quest log
+   node tools/shot.cjs --spawn npc.duck     # put one beside the hero and look
    ```
 
 3. **Publish.** `game/page.html` is the whole game in one file. Publish it with
@@ -512,7 +512,7 @@ greens or the local golds reads as a floor tile somebody laid.
 tools/gen/palette.py   the one palette; a character variant is a key remap
 tools/gen/actor.py     the biped rig      (32x32 frame, anchor [16, 29])
 tools/gen/animal.py    the quadruped rig  (same frame, same contract)
-tools/gen/fowl.py      the ground-bird rig (same frame; the hen, two legs)
+tools/gen/fowl.py      the ground-bird rig (same frame; the hen and the duck)
 tools/gen/giant.py     the giant rig      (64x64 frame, anchor [24, 61])
 tools/gen/beast.py     the big-quadruped rig (64x64 frame, anchor [24, 61])
 tools/gen/bird.py      the flier rig      (32x32 frame, drawn in the air)
@@ -556,7 +556,7 @@ flickering in step reads as one object repeated rather than as several things
 burning. The palette marks them, from the animations that exist rather than
 from a second list that could drift.
 
-Seven move: campfire, hearth, lamp_post, beehive, trough, windmill and temple.
+Six move: campfire, hearth, lamp_post, beehive, trough and watermill.
 Everything else is still on purpose - the trees, bushes and flowers are the most
 numerous props in the game, so animating them multiplies the sheet and pulls the
 eye to the background, and a table has no reason to move by itself.
@@ -890,7 +890,12 @@ leaves you alone, because a test that only watched it charge would pass just as
 well with the flag deleted. **Give a wanderer room to charge in**: `leash` is
 measured from where it spawned, so a wide `wander.radius` and a short leash
 leaves it no distance to charge in at all - it notices, takes two steps, and
-breaks off at the end of its own tether.
+breaks off at the end of its own tether. Room is ground as well as distance:
+Millbrook's first boar lived in the pines beside the brook, trunks on three
+sides and water on the fourth. `--boar` found no clear side to stand the hero
+on, fell back to one in the brook, and failed on "noticed and closed in". The
+fix was to move the animal out to the meadow at the wood's edge, not to touch
+the numbers.
 
 Damage to the hero goes through `hurt()`, which subtracts armour but never all
 of it, and running out of hp is not death: `blackOut()` puts you back at the

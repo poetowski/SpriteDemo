@@ -1,0 +1,21 @@
+{
+  "id": "npc.nell",
+  "sprite": "actor.fisher",
+  "name": "Nell",
+  "speed": 0,
+  "blocks": true,
+  "facing": "left",
+  "interact": "dlg.nell",
+  "rig": "biped",
+  "states": [
+    "walk",
+    "idle"
+  ],
+  "description": "Fishes the mere from the jetty and knows every duck by its temper.",
+  "level": 1,
+  "attack": 0,
+  "armor": 0,
+  "behaviour": "passive",
+  "walking": false,
+  "walk_radius": 0
+}

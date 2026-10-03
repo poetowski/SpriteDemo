@@ -1,0 +1,7 @@
+{
+  "id": "tile.lily",
+  "sprite": "tile.lily",
+  "walkable": false,
+  "material": "water",
+  "family": "water"
+}

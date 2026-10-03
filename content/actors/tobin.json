@@ -1,0 +1,21 @@
+{
+  "id": "npc.tobin",
+  "sprite": "actor.miller",
+  "name": "Old Tobin",
+  "speed": 0,
+  "blocks": true,
+  "facing": "down",
+  "interact": "dlg.tobin",
+  "rig": "biped",
+  "states": [
+    "walk",
+    "idle"
+  ],
+  "description": "Has ground the valley's corn since before the wheel was rebuilt.",
+  "level": 1,
+  "attack": 0,
+  "armor": 0,
+  "behaviour": "passive",
+  "walking": false,
+  "walk_radius": 0
+}

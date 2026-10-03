@@ -1,0 +1,55 @@
+{
+  "id": "dlg.nell",
+  "speaker": "Nell",
+  "start": "greet",
+  "nodes": {
+    "greet": {
+      "text": [
+        "Quiet on the boards. You'll frighten the perch."
+      ],
+      "choices": [
+        {
+          "text": "Anything biting?",
+          "goto": "a0"
+        },
+        {
+          "text": "The ducks?",
+          "goto": "a1"
+        },
+        {
+          "text": "Good day."
+        }
+      ]
+    },
+    "a0": {
+      "text": [
+        "Perch, if you're patient. Pike, if you're lucky.",
+        "Something big under the lilies. Won't take a hook."
+      ],
+      "choices": [
+        {
+          "text": "I see.",
+          "goto": "greet"
+        },
+        {
+          "text": "Farewell."
+        }
+      ]
+    },
+    "a1": {
+      "text": [
+        "Don't feed them. They'll follow you all the way to Northmeadow.",
+        "The drake with the bent wing is the worst of them."
+      ],
+      "choices": [
+        {
+          "text": "I see.",
+          "goto": "greet"
+        },
+        {
+          "text": "Farewell."
+        }
+      ]
+    }
+  }
+}
