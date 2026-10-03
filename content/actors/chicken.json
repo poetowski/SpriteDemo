@@ -1,0 +1,33 @@
+{
+  "id": "npc.chicken",
+  "sprite": "actor.chicken",
+  "rig": "fowl",
+  "name": "Hen",
+  "states": [
+    "walk",
+    "idle",
+    "graze"
+  ],
+  "speed": 16,
+  "blocks": false,
+  "facing": "down",
+  "wander": {
+    "idle_ms": [
+      500,
+      1400
+    ],
+    "graze_ms": [
+      800,
+      2400
+    ],
+    "graze_chance": 0.6
+  },
+  "description": "Scratches at the ground, all day, wherever the ground is.",
+  "level": 1,
+  "hp": 3,
+  "attack": 0,
+  "armor": 0,
+  "behaviour": "passive",
+  "walking": true,
+  "walk_radius": 3
+}

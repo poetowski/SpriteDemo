@@ -1,0 +1,13 @@
+{
+  "id": "dlg.cow_low",
+  "speaker": "Cow",
+  "start": "low",
+  "nodes": {
+    "low": {
+      "text": [
+        "Mmmmrrr.",
+        "It swings its head round, looks at you for a while, and goes back to the grass."
+      ]
+    }
+  }
+}

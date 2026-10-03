@@ -1,0 +1,11 @@
+{
+  "id": "prop.inn_sign",
+  "sprite": "prop.inn_sign",
+  "footprint": [
+    [
+      0,
+      0
+    ]
+  ],
+  "blocks": true
+}

@@ -492,6 +492,7 @@ greens or the local golds reads as a floor tile somebody laid.
 tools/gen/palette.py   the one palette; a character variant is a key remap
 tools/gen/actor.py     the biped rig      (32x32 frame, anchor [16, 29])
 tools/gen/animal.py    the quadruped rig  (same frame, same contract)
+tools/gen/fowl.py      the ground-bird rig (same frame; the hen, two legs)
 tools/gen/giant.py     the giant rig      (64x64 frame, anchor [24, 61])
 tools/gen/beast.py     the big-quadruped rig (64x64 frame, anchor [24, 61])
 tools/gen/bird.py      the flier rig      (32x32 frame, drawn in the air)

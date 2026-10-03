@@ -1,0 +1,33 @@
+{
+  "id": "npc.pig",
+  "sprite": "actor.pig",
+  "rig": "quadruped",
+  "name": "Pig",
+  "states": [
+    "walk",
+    "idle",
+    "graze"
+  ],
+  "speed": 11,
+  "blocks": true,
+  "facing": "down",
+  "wander": {
+    "idle_ms": [
+      900,
+      2200
+    ],
+    "graze_ms": [
+      2500,
+      6000
+    ],
+    "graze_chance": 0.7
+  },
+  "description": "Roots about the yard and will eat anything that is put down.",
+  "level": 1,
+  "hp": 16,
+  "attack": 0,
+  "armor": 0,
+  "behaviour": "passive",
+  "walking": true,
+  "walk_radius": 3
+}

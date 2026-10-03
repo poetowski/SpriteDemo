@@ -1,0 +1,11 @@
+{
+  "id": "prop.bridge_deck",
+  "sprite": "prop.bridge_deck",
+  "footprint": [
+    [
+      0,
+      0
+    ]
+  ],
+  "blocks": false
+}

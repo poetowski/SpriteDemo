@@ -3,5 +3,6 @@
   "sprite": "tile.path",
   "walkable": true,
   "material": "dirt",
-  "blend": true
+  "blend": true,
+  "family": "earth"
 }

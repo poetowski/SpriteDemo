@@ -1,0 +1,21 @@
+{
+  "id": "npc.osmund",
+  "sprite": "actor.guard",
+  "rig": "biped",
+  "name": "Osmund",
+  "states": [
+    "walk",
+    "idle"
+  ],
+  "speed": 0,
+  "blocks": true,
+  "facing": "left",
+  "interact": "dlg.osmund_watch",
+  "description": "Watches the west road. Would rather the week stayed dull.",
+  "level": 3,
+  "attack": 4,
+  "armor": 2,
+  "behaviour": "passive",
+  "walking": false,
+  "walk_radius": 0
+}

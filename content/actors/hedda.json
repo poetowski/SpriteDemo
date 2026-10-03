@@ -1,0 +1,21 @@
+{
+  "id": "npc.hedda",
+  "sprite": "actor.innkeeper",
+  "rig": "biped",
+  "name": "Hedda",
+  "states": [
+    "walk",
+    "idle"
+  ],
+  "speed": 0,
+  "blocks": true,
+  "facing": "down",
+  "interact": "dlg.hedda_welcome",
+  "description": "Keeps the house on the square. Knows every road out of it.",
+  "level": 1,
+  "attack": 0,
+  "armor": 0,
+  "behaviour": "passive",
+  "walking": false,
+  "walk_radius": 0
+}

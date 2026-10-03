@@ -99,6 +99,10 @@ def assemble():
 
     grids = {mid: autotile.resolve(m, content["tiles"], lookup)
              for mid, m in content["maps"].items()}
+    # A fence works out which way it runs from what is beside it, the same way
+    # the ground works out its edges. Content only ever says "prop.fence".
+    links = {mid: autotile.resolve_links(m, content["props"])
+             for mid, m in content["maps"].items()}
     blocking = sorted(
         i for tid, e in tiles.items()
         if tid in content["tiles"] and not content["tiles"][tid].get("walkable", True)
@@ -118,7 +122,7 @@ def assemble():
     }
     sheets = [Sheet(name, meta) for name, meta in lib["atlases"].items()]
     man = manifest_mod.build(content, sheets, lib["sprites"], lib["anims"],
-                             tileset=tileset, grids=grids)
+                             tileset=tileset, grids=grids, links=links)
     return content, lib, man
 
 

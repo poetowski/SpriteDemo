@@ -1,0 +1,33 @@
+{
+  "id": "dlg.wilf_field",
+  "speaker": "Wilf",
+  "start": "greet",
+  "nodes": {
+    "greet": {
+      "text": [
+        "Hay's in, near enough. Another day of this and it's done.",
+        "You'd not think three rails would matter. They matter."
+      ],
+      "choices": [
+        {
+          "text": "Three rails?",
+          "goto": "rails"
+        },
+        {
+          "text": "Good luck with it."
+        }
+      ]
+    },
+    "rails": {
+      "text": [
+        "Boar came through the bottom fence. Twice.",
+        "I can mend a fence. I cannot mend it every morning."
+      ],
+      "choices": [
+        {
+          "text": "I'll see to the boar."
+        }
+      ]
+    }
+  }
+}

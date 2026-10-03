@@ -1,0 +1,15 @@
+{
+  "id": "prop.market_stall",
+  "sprite": "prop.market_stall",
+  "footprint": [
+    [
+      0,
+      0
+    ],
+    [
+      1,
+      0
+    ]
+  ],
+  "blocks": true
+}

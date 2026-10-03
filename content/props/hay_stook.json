@@ -1,0 +1,11 @@
+{
+  "id": "prop.hay_stook",
+  "sprite": "prop.hay_stook",
+  "footprint": [
+    [
+      0,
+      0
+    ]
+  ],
+  "blocks": true
+}

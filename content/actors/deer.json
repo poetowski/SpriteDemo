@@ -1,0 +1,33 @@
+{
+  "id": "npc.deer",
+  "sprite": "actor.deer",
+  "rig": "quadruped",
+  "name": "Roe Deer",
+  "states": [
+    "walk",
+    "idle",
+    "graze"
+  ],
+  "speed": 26,
+  "blocks": true,
+  "facing": "down",
+  "wander": {
+    "idle_ms": [
+      500,
+      1400
+    ],
+    "graze_ms": [
+      1500,
+      3500
+    ],
+    "graze_chance": 0.5
+  },
+  "description": "Feeds at the wood's edge and is gone the moment you are seen.",
+  "level": 2,
+  "hp": 14,
+  "attack": 0,
+  "armor": 0,
+  "behaviour": "passive",
+  "walking": true,
+  "walk_radius": 7
+}

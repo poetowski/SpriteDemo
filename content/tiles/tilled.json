@@ -1,0 +1,8 @@
+{
+  "id": "tile.tilled",
+  "sprite": "tile.tilled",
+  "walkable": true,
+  "material": "dirt",
+  "blend": true,
+  "blend_over": "tile.dirt"
+}

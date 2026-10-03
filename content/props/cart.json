@@ -1,0 +1,11 @@
+{
+  "id": "prop.cart",
+  "sprite": "prop.cart",
+  "footprint": [
+    [
+      0,
+      0
+    ]
+  ],
+  "blocks": true
+}

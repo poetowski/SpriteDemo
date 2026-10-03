@@ -1,0 +1,11 @@
+{
+  "id": "prop.notice_board",
+  "sprite": "prop.notice_board",
+  "footprint": [
+    [
+      0,
+      0
+    ]
+  ],
+  "blocks": true
+}

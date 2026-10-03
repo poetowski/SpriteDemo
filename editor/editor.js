@@ -183,6 +183,46 @@ function defOf(id) {
   return M.props[id] || M.actors[id] || M.items[id] || null;
 }
 
+// --- linked props ------------------------------------------------------------
+// A prop that declares a `links` group picks its drawing from which cardinal
+// neighbours carry the same group - a fence is a line and has to know which way
+// it runs. The build does exactly this in pipeline/autotile.resolve_links, and
+// the editor has to do it live rather than read the last build's answer, or a
+// fence you have just painted stays a row of disconnected posts until you save.
+// Same rule, same masks: N=1, E=2, W=4, and no south bit because the piece
+// below draws its own north connector up into this one's foot.
+const LINK_BITS = [[1, 0, -1], [2, 1, 0], [4, -1, 0]];
+
+/** {group: Set("x,y")} for one map, built once per draw rather than per prop. */
+function linkIndex(m) {
+  const out = new Map();
+  for (const e of m.entities || []) {
+    const g = (defOf(e.def) || {}).links;
+    if (!g) continue;
+    if (!out.has(g)) out.set(g, new Set());
+    out.get(g).add(`${e.tile[0]},${e.tile[1]}`);
+  }
+  return out;
+}
+
+/** The atlas record to draw this placement with, resolved if it links. */
+function spriteForEntity(e, index) {
+  const d = defOf(e.def);
+  // The drawing the map rolled for this placement, which stands unless the
+  // piece resolves from its neighbours - the same precedence the engine uses,
+  // and the editor has to agree or it draws a different world than it builds.
+  const plain = spriteFor(e.def, e.variant || 0);
+  const g = d && d.links;
+  if (!g || !index || !index.has(g)) return plain;
+  const here = index.get(g);
+  let mask = 0;
+  for (const [bit, dx, dy] of LINK_BITS) {
+    if (here.has(`${e.tile[0] + dx},${e.tile[1] + dy}`)) mask |= bit;
+  }
+  if (!mask) return plain;
+  return state.M.sprites[`${d.sprite}/link/${mask}`] || plain;
+}
+
 /** Every definition some quest depends on, and why - so the map view can mark
  *  them and the status bar can say which errand an object belongs to. */
 function questTargets() {
@@ -303,8 +343,9 @@ function render() {
 
   // Entities in the order the game draws them: by the y their anchor sits on.
   const ents = [...m.entities].sort((a, b) => a.tile[1] - b.tile[1]);
+  const links = linkIndex(m);
   for (const e of ents) {
-    const rec = spriteFor(e.def, e.variant || 0);
+    const rec = spriteForEntity(e, links);
     if (!rec) continue;
     drawSprite(ctx, rec, e.tile[0] * ts + ts / 2, e.tile[1] * ts + ts / 2, z);
   }

@@ -1,0 +1,12 @@
+{
+  "id": "prop.bramble",
+  "sprite": "prop.bramble",
+  "footprint": [
+    [
+      0,
+      0
+    ]
+  ],
+  "blocks": true,
+  "hittable": true
+}

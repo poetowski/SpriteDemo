@@ -1,0 +1,11 @@
+{
+  "id": "prop.tree_apple",
+  "sprite": "prop.tree_apple",
+  "footprint": [
+    [
+      0,
+      0
+    ]
+  ],
+  "blocks": true
+}

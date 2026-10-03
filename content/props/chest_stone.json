@@ -1,0 +1,11 @@
+{
+  "id": "prop.chest_stone",
+  "sprite": "prop.chest_stone",
+  "footprint": [
+    [
+      0,
+      0
+    ]
+  ],
+  "blocks": true
+}

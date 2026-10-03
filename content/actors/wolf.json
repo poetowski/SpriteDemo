@@ -1,0 +1,42 @@
+{
+  "id": "npc.wolf",
+  "sprite": "actor.wolf",
+  "rig": "quadruped",
+  "name": "Wolf",
+  "states": [
+    "walk",
+    "idle",
+    "graze",
+    "attack"
+  ],
+  "speed": 20,
+  "blocks": true,
+  "facing": "down",
+  "wander": {
+    "idle_ms": [
+      600,
+      1600
+    ],
+    "graze_ms": [
+      1500,
+      3500
+    ],
+    "graze_chance": 0.35
+  },
+  "hostile": {
+    "sight": 80,
+    "lose": 150,
+    "charge_speed": 70,
+    "reach": 18,
+    "cooldown_ms": 1000,
+    "leash": 96
+  },
+  "description": "Comes out of the deep wood after the flocks, and will not back off from you.",
+  "level": 4,
+  "hp": 24,
+  "attack": 6,
+  "armor": 1,
+  "behaviour": "offensive",
+  "walking": true,
+  "walk_radius": 5
+}

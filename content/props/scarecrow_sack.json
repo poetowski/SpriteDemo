@@ -1,0 +1,12 @@
+{
+  "id": "prop.scarecrow_sack",
+  "sprite": "prop.scarecrow_sack",
+  "footprint": [
+    [
+      0,
+      0
+    ]
+  ],
+  "blocks": true,
+  "hittable": true
+}

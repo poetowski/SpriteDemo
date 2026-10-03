@@ -1,6 +1,9 @@
 {
   "id": "map.wilderness2",
-  "name": "Wilderness II",
+  "name": "Oakhollow",
+  "tags": [
+    "kingswood"
+  ],
   "tile_size": 16,
   "size": [
     20,
@@ -8,221 +11,574 @@
   ],
   "spawn": {
     "tile": [
-      12,
-      18
+      16,
+      10
     ],
-    "facing": "up"
+    "facing": "left"
   },
   "legend": {
     ".": "tile.grass",
-    "t": "tile.grass_tall",
     ",": "tile.grass_flower",
+    "t": "tile.grass_tall",
+    "f": "tile.forest",
     "a": "tile.leaves",
-    "c": "tile.gravel",
+    "#": "tile.path",
     "d": "tile.dirt"
   },
   "ground": [
-    "aaaaaaaaa...........",
-    "aaaaaaaaa...........",
-    "aaaaaaaaa.tttt......",
-    "aaaaaaaaa.tttt......",
-    "aaaaaaaaa.tttt......",
-    "aaaaaaaaa...........",
-    "aaaaaaaaa...........",
-    "aaaaa...............",
-    "aaaaa...............",
-    "aaaaa...............",
-    "....................",
-    ".......,,,,.........",
-    ".......,,,,.........",
-    "....................",
-    "............ddddd...",
-    "............ddddd...",
-    "..........cccccccccc",
-    "..........cccccccccc",
-    "....................",
-    "...................."
+    "...f.fffff..fff.....",
+    "..ffffffffffffff....",
+    ".fffaffffaffffffff..",
+    "fffafaffaaffffffff..",
+    "ffffaaffaaffffffff..",
+    "fffa.a.fffffffffff..",
+    ".ff....fffffffffff..",
+    "fffff..f..ffff......",
+    "fffff.fff.fff..t.t..",
+    "ffffffffft.t....tt..",
+    "####################",
+    "####################",
+    "..f##faff.fffff..,..",
+    "..f##dfffffffff.....",
+    "ffddddaffff.ff......",
+    "ffddddfffffff.,,,,..",
+    "ffdfffftfffff,.,,,..",
+    "fffff..fffff.,,.....",
+    "ffffft.tfff....,....",
+    "..f..ttt............"
   ],
   "entities": [
     {
-      "def": "npc.arne",
-      "tile": [
-        14,
-        14
-      ]
-    },
-    {
-      "def": "prop.workbench",
+      "def": "prop.great_oak",
       "tile": [
         13,
-        13
-      ]
-    },
-    {
-      "def": "prop.anvil",
-      "tile": [
-        16,
-        14
-      ]
-    },
-    {
-      "def": "prop.woodpile",
-      "tile": [
-        17,
-        13
-      ]
-    },
-    {
-      "def": "npc.goat",
-      "tile": [
-        4,
         8
       ]
     },
     {
-      "def": "item.berries",
+      "def": "prop.tree_oak",
+      "tile": [
+        3,
+        3
+      ],
+      "variant": 1
+    },
+    {
+      "def": "prop.tree_oak",
+      "tile": [
+        5,
+        2
+      ]
+    },
+    {
+      "def": "prop.tree_oak",
+      "tile": [
+        4,
+        5
+      ],
+      "variant": 1
+    },
+    {
+      "def": "prop.tree_oak",
+      "tile": [
+        7,
+        2
+      ],
+      "variant": 1
+    },
+    {
+      "def": "prop.tree_oak",
+      "tile": [
+        9,
+        4
+      ]
+    },
+    {
+      "def": "prop.tree_oak",
+      "tile": [
+        6,
+        5
+      ]
+    },
+    {
+      "def": "prop.tree_oak",
+      "tile": [
+        2,
+        7
+      ],
+      "variant": 1
+    },
+    {
+      "def": "prop.tree_oak",
+      "tile": [
+        8,
+        7
+      ],
+      "variant": 1
+    },
+    {
+      "def": "prop.tree_oak",
+      "tile": [
+        11,
+        4
+      ],
+      "variant": 1
+    },
+    {
+      "def": "prop.tree_oak",
+      "tile": [
+        12,
+        2
+      ]
+    },
+    {
+      "def": "prop.tree_oak",
+      "tile": [
+        3,
+        10
+      ]
+    },
+    {
+      "def": "prop.tree_oak",
+      "tile": [
+        1,
+        5
+      ],
+      "variant": 1
+    },
+    {
+      "def": "prop.tree_oak",
+      "tile": [
+        10,
+        2
+      ],
+      "variant": 1
+    },
+    {
+      "def": "prop.tree_oak",
+      "tile": [
+        7,
+        6
+      ]
+    },
+    {
+      "def": "prop.tree_birch",
+      "tile": [
+        6,
+        3
+      ]
+    },
+    {
+      "def": "prop.tree_birch",
+      "tile": [
+        10,
+        6
+      ]
+    },
+    {
+      "def": "prop.tree_birch",
       "tile": [
         2,
         4
       ]
     },
     {
-      "def": "item.berries",
+      "def": "prop.tree_birch",
       "tile": [
-        5,
+        12,
         5
       ]
     },
     {
-      "def": "item.berries",
+      "def": "prop.tree_birch",
       "tile": [
-        3,
-        8
-      ]
-    },
-    {
-      "def": "prop.tree_oak",
-      "tile": [
-        1,
+        8,
         1
       ]
     },
     {
-      "def": "prop.tree_oak",
+      "def": "prop.tree_birch",
       "tile": [
-        6,
-        2
-      ],
-      "variant": 1
-    },
-    {
-      "def": "prop.tree_pine",
-      "tile": [
-        3,
-        0
+        4,
+        14
       ]
     },
     {
-      "def": "prop.tree_pine",
+      "def": "prop.tree_oak",
       "tile": [
-        7,
-        5
-      ],
-      "variant": 1
+        2,
+        13
+      ]
+    },
+    {
+      "def": "prop.tree_birch",
+      "tile": [
+        9,
+        17
+      ]
+    },
+    {
+      "def": "prop.tree_birch",
+      "tile": [
+        10,
+        16
+      ]
+    },
+    {
+      "def": "prop.tree_birch",
+      "tile": [
+        5,
+        19
+      ]
+    },
+    {
+      "def": "prop.tree_birch",
+      "tile": [
+        11,
+        13
+      ]
+    },
+    {
+      "def": "prop.tree_oak",
+      "tile": [
+        8,
+        13
+      ]
+    },
+    {
+      "def": "prop.tree_oak",
+      "tile": [
+        10,
+        19
+      ]
+    },
+    {
+      "def": "prop.tree_birch",
+      "tile": [
+        13,
+        15
+      ]
     },
     {
       "def": "prop.bush",
       "tile": [
-        1,
-        9
+        5,
+        4
+      ]
+    },
+    {
+      "def": "prop.bush",
+      "tile": [
+        9,
+        6
+      ]
+    },
+    {
+      "def": "prop.bush",
+      "tile": [
+        3,
+        6
+      ]
+    },
+    {
+      "def": "prop.bush",
+      "tile": [
+        11,
+        3
+      ]
+    },
+    {
+      "def": "prop.bush",
+      "tile": [
+        6,
+        14
+      ]
+    },
+    {
+      "def": "prop.bush",
+      "tile": [
+        9,
+        14
+      ]
+    },
+    {
+      "def": "prop.bush",
+      "tile": [
+        8,
+        16
+      ]
+    },
+    {
+      "def": "prop.bush",
+      "tile": [
+        12,
+        14
+      ]
+    },
+    {
+      "def": "prop.mushroom",
+      "tile": [
+        4,
+        3
+      ]
+    },
+    {
+      "def": "prop.mushroom",
+      "tile": [
+        8,
+        5
       ]
     },
     {
       "def": "prop.mushroom",
       "tile": [
         6,
-        8
+        13
       ]
     },
     {
-      "def": "prop.cairn",
+      "def": "prop.mushroom",
       "tile": [
-        17,
+        10,
         15
       ]
     },
     {
+      "def": "prop.stump",
+      "tile": [
+        7,
+        9
+      ]
+    },
+    {
+      "def": "prop.log",
+      "tile": [
+        8,
+        9
+      ]
+    },
+    {
+      "def": "prop.woodpile",
+      "tile": [
+        6,
+        9
+      ]
+    },
+    {
+      "def": "prop.tree_dead",
+      "tile": [
+        15,
+        3
+      ]
+    },
+    {
+      "def": "prop.roots",
+      "tile": [
+        12,
+        9
+      ]
+    },
+    {
+      "def": "prop.boulder",
+      "tile": [
+        16,
+        6
+      ]
+    },
+    {
+      "def": "prop.rock",
+      "tile": [
+        17,
+        5
+      ]
+    },
+    {
+      "def": "prop.rock",
+      "tile": [
+        15,
+        7
+      ]
+    },
+    {
       "def": "prop.cairn",
       "tile": [
         17,
-        18
+        10
       ]
     },
     {
       "def": "prop.signpost",
       "tile": [
+        16,
+        11
+      ]
+    },
+    {
+      "def": "prop.cottage",
+      "tile": [
+        3,
+        16
+      ]
+    },
+    {
+      "def": "prop.fence",
+      "tile": [
+        1,
+        18
+      ]
+    },
+    {
+      "def": "prop.fence",
+      "tile": [
+        2,
+        18
+      ]
+    },
+    {
+      "def": "prop.fence",
+      "tile": [
+        3,
+        18
+      ]
+    },
+    {
+      "def": "prop.fence",
+      "tile": [
+        6,
+        18
+      ]
+    },
+    {
+      "def": "prop.fence",
+      "tile": [
+        7,
+        18
+      ]
+    },
+    {
+      "def": "prop.fence",
+      "tile": [
+        1,
+        17
+      ]
+    },
+    {
+      "def": "prop.fence",
+      "tile": [
+        7,
+        17
+      ]
+    },
+    {
+      "def": "prop.haystack",
+      "tile": [
+        6,
+        16
+      ]
+    },
+    {
+      "def": "prop.cart",
+      "tile": [
+        2,
+        12
+      ]
+    },
+    {
+      "def": "prop.beehive",
+      "tile": [
+        8,
+        15
+      ]
+    },
+    {
+      "def": "prop.trough",
+      "tile": [
+        1,
+        14
+      ]
+    },
+    {
+      "def": "npc.cow",
+      "tile": [
+        1,
+        15
+      ]
+    },
+    {
+      "def": "prop.flowers",
+      "tile": [
+        4,
+        12
+      ]
+    },
+    {
+      "def": "npc.boar",
+      "tile": [
+        9,
+        12
+      ]
+    },
+    {
+      "def": "npc.deer",
+      "tile": [
+        14,
+        5
+      ]
+    },
+    {
+      "def": "npc.deer",
+      "tile": [
         11,
+        17
+      ]
+    },
+    {
+      "def": "item.berries",
+      "tile": [
+        13,
+        12
+      ]
+    },
+    {
+      "def": "item.berries",
+      "tile": [
+        15,
+        13
+      ]
+    },
+    {
+      "def": "item.berries",
+      "tile": [
+        14,
+        16
+      ]
+    },
+    {
+      "def": "item.flower",
+      "tile": [
+        16,
         15
       ]
     },
     {
       "def": "item.apple",
       "tile": [
-        9,
+        10,
         3
       ]
     },
     {
-      "def": "item.flower",
+      "def": "prop.hay_bale",
       "tile": [
-        8,
-        12
+        7,
+        16
       ]
     },
     {
-      "def": "prop.bones",
+      "def": "prop.scarecrow_ragged",
       "tile": [
-        12,
-        8
-      ]
-    },
-    {
-      "def": "prop.bones",
-      "tile": [
-        14,
-        8
-      ],
-      "variant": 1
-    },
-    {
-      "def": "prop.bones",
-      "tile": [
-        15,
-        8
-      ],
-      "variant": 1
-    },
-    {
-      "def": "prop.bones",
-      "tile": [
-        15,
-        7
-      ],
-      "variant": 1
-    },
-    {
-      "def": "prop.bones",
-      "tile": [
-        14,
-        7
-      ],
-      "variant": 1
-    },
-    {
-      "def": "prop.campfire",
-      "tile": [
-        3,
-        14
+        5,
+        17
       ]
     }
   ],
@@ -231,22 +587,166 @@
       "tiles": [
         [
           19,
+          0
+        ],
+        [
+          19,
+          1
+        ],
+        [
+          19,
+          2
+        ],
+        [
+          19,
+          3
+        ],
+        [
+          19,
+          4
+        ],
+        [
+          19,
+          5
+        ],
+        [
+          19,
+          6
+        ],
+        [
+          19,
+          7
+        ],
+        [
+          19,
+          8
+        ],
+        [
+          19,
+          9
+        ],
+        [
+          19,
+          10
+        ],
+        [
+          19,
+          11
+        ],
+        [
+          19,
+          12
+        ],
+        [
+          19,
+          13
+        ],
+        [
+          19,
+          14
+        ],
+        [
+          19,
+          15
+        ],
+        [
+          19,
           16
         ],
         [
           19,
           17
+        ],
+        [
+          19,
+          18
+        ],
+        [
+          19,
+          19
         ]
       ],
       "to": "map.wilderness1",
       "spawns": [
         [
           1,
+          0
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          1,
+          2
+        ],
+        [
+          1,
+          3
+        ],
+        [
+          1,
+          4
+        ],
+        [
+          1,
+          5
+        ],
+        [
+          1,
+          6
+        ],
+        [
+          1,
+          7
+        ],
+        [
+          1,
+          8
+        ],
+        [
+          1,
+          9
+        ],
+        [
+          1,
+          10
+        ],
+        [
+          1,
+          11
+        ],
+        [
+          1,
+          12
+        ],
+        [
+          1,
+          13
+        ],
+        [
+          1,
+          14
+        ],
+        [
+          1,
+          15
+        ],
+        [
+          1,
           16
         ],
         [
           1,
           17
+        ],
+        [
+          1,
+          18
+        ],
+        [
+          1,
+          19
         ]
       ],
       "facing": "right"
