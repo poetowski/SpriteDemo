@@ -82,18 +82,20 @@
       ]
     },
     {
-      "def": "prop.tree_pine_slim",
+      "def": "prop.tree_pine",
       "tile": [
         17,
         7
-      ]
+      ],
+      "variant": 1
     },
     {
-      "def": "prop.tree_oak_forked",
+      "def": "prop.tree_oak",
       "tile": [
         3,
         6
-      ]
+      ],
+      "variant": 1
     },
     {
       "def": "prop.bush",
@@ -142,6 +144,13 @@
       "tile": [
         5,
         17
+      ]
+    },
+    {
+      "def": "npc.sheep",
+      "tile": [
+        8,
+        10
       ]
     }
   ],

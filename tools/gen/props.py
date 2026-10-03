@@ -249,38 +249,133 @@ def _moss(c, patches, key="MS", seed=5):
 
 
 # ----------------------------------------------------------------- nature ---
-def bush():
+def bush(variant=0):
+    """Five bushes. The light crescent stays on the upper left and the shade on
+    the lower right throughout - what changes is the mass under them, because a
+    bush is a silhouette and nothing else at this size: round, sprawling,
+    double, leggy, and upright."""
     c = Canvas(FRAME, FRAME)
-    for y, x0, x1 in ((16, 11, 20), (17, 9, 22), (18, 8, 23), (19, 7, 24),
-                      (20, 6, 25), (21, 6, 25), (22, 6, 25), (23, 6, 25),
-                      (24, 6, 25), (25, 6, 25), (26, 6, 25),
-                      (27, 7, 24), (28, 9, 22)):
-        c.row(x0, x1, y, "BU")
-    for y, x0, x1 in ((17, 12, 15), (18, 10, 16), (19, 9, 15),
-                      (20, 8, 13), (21, 8, 11), (22, 9, 10)):
-        c.row(x0, x1, y, "BUL")          # light crescent on the upper left
-    for y, x0, x1 in ((22, 22, 25), (23, 21, 25), (24, 20, 25), (25, 18, 25),
-                      (26, 16, 25), (27, 7, 24), (28, 9, 22)):
-        c.row(x0, x1, y, "BUD")          # shade curves round the lower right
-    for x, y in ((13, 16), (18, 16)):
-        c.set(x, y, None)                # notch the crown so it reads as leaves
-    for x, y in ((14, 21), (11, 25), (19, 19)):
-        c.set(x, y, "BUD")
+    if variant == 1:                     # low and sprawling, wider than tall
+        for y, x0, x1 in ((20, 9, 22), (21, 6, 25), (22, 4, 27), (23, 3, 28),
+                          (24, 3, 28), (25, 3, 28), (26, 4, 27), (27, 5, 26),
+                          (28, 8, 23)):
+            c.row(x0, x1, y, "BU")
+        for y, x0, x1 in ((21, 8, 14), (22, 6, 13), (23, 5, 12), (24, 5, 10)):
+            c.row(x0, x1, y, "BUL")
+        for y, x0, x1 in ((25, 20, 28), (26, 18, 27), (27, 14, 26), (28, 12, 23)):
+            c.row(x0, x1, y, "BUD")
+        for x, y in ((11, 20), (19, 20), (24, 22)):
+            c.set(x, y, None)
+    elif variant == 2:                   # two crowns from one root
+        for y, x0, x1 in ((17, 6, 12), (18, 4, 14), (19, 3, 15), (20, 3, 16),
+                          (21, 3, 16), (22, 4, 17), (23, 5, 18)):
+            c.row(x0, x1, y, "BU")
+        for y, x0, x1 in ((20, 17, 25), (21, 16, 27), (22, 15, 28), (23, 15, 28),
+                          (24, 14, 28), (25, 14, 27)):
+            c.row(x0, x1, y, "BU")
+        for y, x0, x1 in ((24, 5, 26), (25, 5, 26), (26, 6, 25),
+                          (27, 7, 24), (28, 9, 22)):
+            c.row(x0, x1, y, "BU")
+        for y, x0, x1 in ((18, 5, 9), (19, 4, 8), (20, 4, 7), (21, 16, 20),
+                          (22, 15, 19)):
+            c.row(x0, x1, y, "BUL")
+        for y, x0, x1 in ((24, 20, 28), (25, 19, 27), (26, 17, 25),
+                          (27, 14, 24), (28, 11, 22)):
+            c.row(x0, x1, y, "BUD")
+        for x, y in ((9, 17), (13, 21), (22, 20), (17, 24)):
+            c.set(x, y, None)
+    elif variant == 3:                   # leggy, with its stems showing
+        # Three tufts on their own stems rather than one disc over all of them:
+        # a single mass sitting on legs is an umbrella, and no amount of
+        # notching the rim talks it out of that.
+        for x0, y0, x1, y1 in ((15, 22, 11, 28), (16, 21, 20, 28), (15, 20, 15, 28)):
+            _twig(c, x0, y0, x1, y1, 0, "WDD")
+        for cx, cy, r in ((11, 19, 4), (20, 18, 4), (15, 15, 5)):
+            _lobe(c, cx, cy, r, "BU")
+        for cx, cy, r in ((10, 17, 2), (13, 13, 2), (18, 16, 2)):
+            _lobe(c, cx, cy, r, "BUL")
+        for cx, cy, r in ((22, 20, 2), (13, 21, 2), (17, 18, 2)):
+            _lobe(c, cx, cy, r, "BUD")
+        for x, y in ((8, 19), (23, 18), (15, 11), (14, 19)):
+            c.set(x, y, None)
+    elif variant == 4:                   # upright, taller than it is wide
+        for y, x0, x1 in ((12, 13, 18), (13, 11, 20), (14, 10, 21), (15, 9, 22),
+                          (16, 9, 22), (17, 9, 22), (18, 9, 22), (19, 8, 23),
+                          (20, 8, 23), (21, 8, 23), (22, 9, 22), (23, 9, 22),
+                          (24, 10, 21), (25, 10, 21), (26, 11, 20),
+                          (27, 12, 19), (28, 13, 18)):
+            c.row(x0, x1, y, "BU")
+        for y, x0, x1 in ((13, 13, 17), (14, 11, 16), (15, 10, 15),
+                          (16, 10, 14), (17, 10, 13), (18, 10, 12)):
+            c.row(x0, x1, y, "BUL")
+        for y, x0, x1 in ((21, 18, 23), (22, 17, 22), (23, 16, 22),
+                          (24, 15, 21), (25, 14, 21), (26, 13, 20)):
+            c.row(x0, x1, y, "BUD")
+        for x, y in ((15, 12), (19, 15), (12, 22)):
+            c.set(x, y, None)
+    else:                                # round, the one everything else is not
+        for y, x0, x1 in ((16, 11, 20), (17, 9, 22), (18, 8, 23), (19, 7, 24),
+                          (20, 6, 25), (21, 6, 25), (22, 6, 25), (23, 6, 25),
+                          (24, 6, 25), (25, 6, 25), (26, 6, 25),
+                          (27, 7, 24), (28, 9, 22)):
+            c.row(x0, x1, y, "BU")
+        for y, x0, x1 in ((17, 12, 15), (18, 10, 16), (19, 9, 15),
+                          (20, 8, 13), (21, 8, 11), (22, 9, 10)):
+            c.row(x0, x1, y, "BUL")      # light crescent on the upper left
+        for y, x0, x1 in ((22, 22, 25), (23, 21, 25), (24, 20, 25), (25, 18, 25),
+                          (26, 16, 25), (27, 7, 24), (28, 9, 22)):
+            c.row(x0, x1, y, "BUD")      # shade curves round the lower right
+        for x, y in ((13, 16), (18, 16)):
+            c.set(x, y, None)            # notch the crown so it reads as leaves
+        for x, y in ((14, 21), (11, 25), (19, 19)):
+            c.set(x, y, "BUD")
     return c.outline()
 
 
-def rock():
+def rock(variant=0):
+    """Five small stones. The first is the original drawing; the rest are built
+    from _mass and _form, which is the vocabulary the big boulders use - one
+    stone, a flat one, two together, a split shard, and a scatter of three.
+
+    A rock field drawn from one rock reads as a repeated stamp however it is
+    scattered, and at this size the fix is the number and arrangement of lumps
+    rather than any amount of detail inside one."""
     c = Canvas(FRAME, FRAME)
-    for y, x0, x1 in ((20, 13, 18), (21, 11, 20), (22, 10, 21), (23, 9, 22),
-                      (24, 9, 22), (25, 9, 22), (26, 10, 21), (27, 11, 20),
-                      (28, 12, 19)):
-        c.row(x0, x1, y, "ST")
-    for y, x0, x1 in ((20, 14, 17), (21, 12, 17), (22, 11, 16), (23, 10, 14)):
-        c.row(x0, x1, y, "STL")          # lit top-left facet
-    for y, x0, x1 in ((25, 16, 22), (26, 15, 21), (27, 13, 20), (28, 12, 19)):
-        c.row(x0, x1, y, "STD")
-    c.set(15, 23, "STD")                 # a crack, so it is not a smooth blob
-    c.set(16, 24, "STD")
+    if variant == 1:                     # flat, half sunk in the turf
+        _mass(c, [(15, 27, 6), (10, 28, 4), (21, 28, 4)], BASE_Y)
+        _form(c, "ST", 0x31, tilt=0.10)
+        _rim(c, ROCK, "STL", "STD")
+    elif variant == 2:                   # two, one leaning on the other
+        _mass(c, [(11, 25, 5), (20, 27, 4)], BASE_Y)
+        _form(c, "ST", 0x5D, tilt=0.16)
+        _rim(c, ROCK, "STL", "STD")
+        _crack(c, [(16, 21), (16, 28)])
+    elif variant == 3:                   # a shard, standing on its point
+        # Pointed, which none of the other four are. Drawn as rows rather than
+        # lobes because _mass rounds everything it touches, and the whole of
+        # this one is that it has corners.
+        for y, x0, x1 in ((17, 15, 16), (18, 14, 17), (19, 13, 18), (20, 13, 19),
+                          (21, 12, 19), (22, 11, 20), (23, 11, 20), (24, 10, 21),
+                          (25, 10, 21), (26, 11, 21), (27, 12, 20), (28, 13, 19)):
+            c.row(x0, x1, y, "ST")
+        _form(c, "ST", 0x7B, tilt=0.02, grit=0.2)
+        _rim(c, ROCK, "STL", "STD")
+        _crack(c, [(15, 18), (17, 23), (15, 28)])
+    elif variant == 4:                   # three pebbles, none of them the same
+        _mass(c, [(9, 27, 3), (16, 26, 4), (23, 28, 3)], BASE_Y)
+        _form(c, "ST", 0x2F, tilt=0.20)
+        _rim(c, ROCK, "STL", "STD")
+    else:
+        for y, x0, x1 in ((20, 13, 18), (21, 11, 20), (22, 10, 21), (23, 9, 22),
+                          (24, 9, 22), (25, 9, 22), (26, 10, 21), (27, 11, 20),
+                          (28, 12, 19)):
+            c.row(x0, x1, y, "ST")
+        for y, x0, x1 in ((20, 14, 17), (21, 12, 17), (22, 11, 16), (23, 10, 14)):
+            c.row(x0, x1, y, "STL")      # lit top-left facet
+        for y, x0, x1 in ((25, 16, 22), (26, 15, 21), (27, 13, 20), (28, 12, 19)):
+            c.row(x0, x1, y, "STD")
+        c.set(15, 23, "STD")             # a crack, so it is not a smooth blob
+        c.set(16, 24, "STD")
     return c.outline()
 
 
@@ -323,53 +418,93 @@ def _crown(c, lobes, shade, light, holes):
         c.set(x, y, None)                         # sky through it
 
 
-def tree_oak():
-    """A broad oak: a short trunk that flares straight into the crown, which is
-    what an oak grown in the open does.
-
-    The trunk tapers rather than standing as a rectangle, and the roots are
-    three humps rather than two rows - the old one read as a post driven into
-    the grass because nothing about its base said it had grown there."""
-    c = Canvas(FRAME, FRAME)
-    _taper(c, 13, BASE_Y, 1, 3, "WD")
-    for cx, cy, r in ((15, 27, 4), (10, 28, 3), (21, 28, 3)):
-        _lobe(c, cx, cy, r, "WD")
-    for x0, y0, x1, y1 in ((14, 15, 9, 10), (17, 14, 22, 10), (15, 13, 15, 8)):
-        _twig(c, x0, y0, x1, y1, 1, "WD")
-    _crown(c,
-           [(15, 9, 8), (7, 12, 5), (24, 12, 5), (15, 4, 6),
-            (9, 6, 4), (22, 6, 4), (15, 15, 6)],
-           [(11, 14, 4), (20, 13, 4), (15, 17, 3)],
-           [(12, 5, 3), (20, 8, 3)],
-           [(10, 9), (21, 11), (15, 2), (17, 16), (6, 12), (25, 13)])
-    _twig(c, 13, 16, 10, 13)                      # limb ends, over the leaves
-    _twig(c, 18, 15, 21, 12)
-    _shade(c, "BU", "BUL", "BUD")
-    _shade(c, "WD", "WDL", "WDD")
-    return c.outline()
-
-
-def tree_oak_forked():
-    """The same species grown crowded: the trunk forks low and carries two
-    crowns that have merged into one lopsided mass.
+def tree_oak(variant=0):
+    """Five oaks, told apart by what shape they grew into.
 
     A second oak is only worth having if it is a different silhouette - a
     recoloured or slightly wider copy of the first reads as the first one at a
-    glance, which is the whole failure mode of a variant."""
+    glance, which is the whole failure mode of a variant. So these are five
+    histories rather than five sizes: grown in the open, grown crowded and
+    forked, grown against the wind, drawn up thin in a wood, and grown old.
+    """
     c = Canvas(FRAME, FRAME)
-    _taper(c, 20, BASE_Y, 1, 3, "WD")             # one trunk to the fork
-    for cx, cy, r in ((15, 27, 4), (10, 28, 3), (21, 28, 3)):
-        _lobe(c, cx, cy, r, "WD")
-    _twig(c, 15, 21, 10, 12, 1, "WD")             # then two limbs, not one
-    _twig(c, 16, 21, 21, 13, 1, "WD")
-    _crown(c,
-           [(9, 10, 7), (21, 11, 6), (14, 7, 5), (6, 15, 4),
-            (24, 15, 4), (15, 13, 5)],
-           [(8, 14, 4), (22, 14, 3), (14, 11, 3)],
-           [(8, 6, 3), (19, 8, 3)],
-           [(9, 12), (20, 10), (12, 5), (5, 14), (24, 17)])
-    _twig(c, 12, 15, 8, 12, 0)
-    _twig(c, 18, 15, 22, 13, 0)
+    if variant == 1:                              # grown crowded: forks low
+        _taper(c, 20, BASE_Y, 1, 3, "WD")
+        for cx, cy, r in ((15, 27, 4), (10, 28, 3), (21, 28, 3)):
+            _lobe(c, cx, cy, r, "WD")
+        _twig(c, 15, 21, 10, 12, 1, "WD")         # then two limbs, not one
+        _twig(c, 16, 21, 21, 13, 1, "WD")
+        _crown(c,
+               [(9, 10, 7), (21, 11, 6), (14, 7, 5), (6, 15, 4),
+                (24, 15, 4), (15, 13, 5)],
+               [(8, 14, 4), (22, 14, 3), (14, 11, 3)],
+               [(8, 6, 3), (19, 8, 3)],
+               [(9, 12), (20, 10), (12, 5), (5, 14), (24, 17)])
+        _twig(c, 12, 15, 8, 12, 0)
+        _twig(c, 18, 15, 22, 13, 0)
+    elif variant == 2:                            # grown against the wind
+        # The trunk leans and the crown is streamed off to one side, with the
+        # windward face cut back almost to the limbs. A tree bent by weather is
+        # the one silhouette here that is not symmetrical about anything.
+        _twig(c, 14, BASE_Y, 19, 15, 1, "WD")
+        for cx, cy, r in ((14, 27, 4), (9, 28, 3), (19, 28, 3)):
+            _lobe(c, cx, cy, r, "WD")
+        _twig(c, 18, 17, 24, 13, 1, "WD")
+        _twig(c, 18, 18, 13, 16, 0, "WD")
+        _crown(c,
+               [(22, 11, 7), (27, 14, 4), (17, 13, 5), (24, 6, 5), (13, 10, 4)],
+               [(19, 15, 4), (26, 16, 3)],
+               [(24, 7, 3), (20, 9, 3)],
+               [(23, 13), (27, 12), (16, 11), (12, 9)])
+        _twig(c, 20, 14, 26, 11, 0)
+    elif variant == 3:                            # drawn up thin in a wood
+        # Bare for most of its height, because in company an oak throws
+        # everything at the light and keeps nothing below it. The crown is
+        # small, high and nearly round - the opposite of the open-grown one.
+        _taper(c, 11, BASE_Y, 1, 2, "WD")
+        for cx, cy, r in ((15, 28, 3), (11, 29, 2), (19, 29, 2)):
+            _lobe(c, cx, cy, r, "WD")
+        for y in range(16, 26, 4):                # branch scars down the bole
+            c.set(13, y, "WDD")
+            c.set(18, y + 2, "WDD")
+        _twig(c, 15, 13, 10, 9, 1, "WD")
+        _twig(c, 16, 13, 21, 9, 1, "WD")
+        _crown(c,
+               [(15, 7, 6), (9, 10, 4), (22, 10, 4), (15, 3, 4)],
+               [(11, 12, 3), (20, 12, 3)],
+               [(13, 3, 3)],
+               [(10, 8), (21, 8), (15, 11)])
+    elif variant == 4:                            # grown old and spreading
+        # Heavy in the bole, low and wide in the crown, and carrying one limb
+        # that has died and been left - which is what tells an old tree from a
+        # merely big one at this size.
+        _taper(c, 17, BASE_Y, 2, 4, "WD")
+        for cx, cy, r in ((15, 27, 5), (8, 28, 3), (23, 28, 3)):
+            _lobe(c, cx, cy, r, "WD")
+        _twig(c, 14, 19, 7, 15, 1, "WD")
+        _twig(c, 17, 19, 25, 16, 1, "WD")
+        _crown(c,
+               [(15, 14, 7), (6, 16, 5), (25, 17, 5), (10, 10, 5),
+                (21, 10, 5), (15, 8, 5)],
+               [(9, 19, 4), (22, 20, 4), (15, 18, 4)],
+               [(11, 8, 3), (20, 8, 3), (15, 12, 3)],
+               [(8, 14), (23, 15), (15, 6), (12, 18), (19, 17), (3, 17)])
+        _twig(c, 18, 13, 27, 8, 0, "WDD")         # the dead limb, out of the
+        _twig(c, 24, 10, 26, 6, 0, "WDD")         # leaves and bare
+    else:                                         # grown in the open
+        _taper(c, 13, BASE_Y, 1, 3, "WD")
+        for cx, cy, r in ((15, 27, 4), (10, 28, 3), (21, 28, 3)):
+            _lobe(c, cx, cy, r, "WD")
+        for x0, y0, x1, y1 in ((14, 15, 9, 10), (17, 14, 22, 10), (15, 13, 15, 8)):
+            _twig(c, x0, y0, x1, y1, 1, "WD")
+        _crown(c,
+               [(15, 9, 8), (7, 12, 5), (24, 12, 5), (15, 4, 6),
+                (9, 6, 4), (22, 6, 4), (15, 15, 6)],
+               [(11, 14, 4), (20, 13, 4), (15, 17, 3)],
+               [(12, 5, 3), (20, 8, 3)],
+               [(10, 9), (21, 11), (15, 2), (17, 16), (6, 12), (25, 13)])
+        _twig(c, 13, 16, 10, 13)                  # limb ends, over the leaves
+        _twig(c, 18, 15, 21, 12)
     _shade(c, "BU", "BUL", "BUD")
     _shade(c, "WD", "WDL", "WDD")
     return c.outline()
@@ -438,51 +573,131 @@ def _conifer(c, rows, top, seed, trunk_from):
     return c
 
 
-def tree_pine():
-    """A mature pine: six whorls, none of them the same width as its
-    neighbours and none of them symmetrical."""
+def tree_pine(variant=0):
+    """Five pines from five whorl profiles, because at this size the profile is
+    the whole of what a conifer silhouette is.
+
+    Mature, drawn up in company, a sapling, a spire, and one broad and flat
+    topped with age. Two trees that differ only in width read as one tree drawn
+    twice, so what changes between these is where the crown starts and how fast
+    it widens - not how big it is."""
     c = Canvas(FRAME, FRAME)
-    rows = [(0, 1), (1, 1), (2, 2), (3, 3),
-            (1, 2), (2, 3), (3, 4), (4, 4),
-            (2, 3), (3, 4), (4, 5), (5, 6),
-            (4, 4), (5, 6), (6, 7), (7, 7),
-            (5, 6), (6, 7), (7, 8), (8, 9),
-            (7, 8), (8, 9), (9, 10), (10, 10),
-            (9, 9)]
-    _conifer(c, rows, 2, 0x2B71, 22)
+    if variant == 1:                              # grown in company
+        rows = [(0, 1), (1, 1), (2, 2),
+                (1, 2), (2, 2), (3, 3),
+                (2, 3), (3, 3), (4, 4),
+                (3, 4), (4, 5), (5, 5),
+                (4, 5), (5, 6), (6, 6)]
+        _conifer(c, rows, 2, 0x6D34, 14)
+        for y in range(20, BASE_Y, 4):            # branch scars down the bare
+            c.set(13, y, "WDD")                   # half of it
+            c.set(18, y + 1, "WDD")
+    elif variant == 2:                            # a sapling
+        # Short, and skirted to the ground with no bare trunk at all, which is
+        # what keeps it from reading as the mature one scaled down.
+        rows = [(0, 1), (1, 1), (2, 2),
+                (1, 2), (2, 3), (3, 3),
+                (2, 3), (3, 4), (4, 5),
+                (3, 4), (4, 5), (5, 6)]
+        _conifer(c, rows, 16, 0x41C9, 29)
+    elif variant == 3:                            # a spire
+        # Tall, and widening so slowly it is nearly a column - a pine grown
+        # where there was nothing to reach for sideways.
+        rows = [(0, 1), (1, 1), (1, 2), (2, 2),
+                (1, 2), (2, 2), (2, 3), (3, 3),
+                (2, 3), (3, 3), (3, 4), (4, 4),
+                (3, 4), (4, 4), (4, 5), (5, 5),
+                (4, 5), (5, 5), (5, 6), (6, 6),
+                (5, 6), (6, 6), (6, 7), (7, 7),
+                (6, 7), (7, 7)]
+        _conifer(c, rows, 1, 0x1F53, 27)
+    elif variant == 4:                            # old, broad, flat topped
+        # The leader has stopped and gone flat while the lower whorls kept
+        # spreading - the one profile here that is wider than it is tall.
+        rows = [(3, 3), (4, 4), (4, 4),
+                (3, 4), (4, 5), (5, 6),
+                (5, 6), (6, 7), (7, 8),
+                (7, 8), (8, 9), (9, 10),
+                (9, 10), (10, 11), (11, 11),
+                (10, 11), (11, 12)]
+        _conifer(c, rows, 9, 0x8E22, 26)
+    else:                                         # mature
+        rows = [(0, 1), (1, 1), (2, 2), (3, 3),
+                (1, 2), (2, 3), (3, 4), (4, 4),
+                (2, 3), (3, 4), (4, 5), (5, 6),
+                (4, 4), (5, 6), (6, 7), (7, 7),
+                (5, 6), (6, 7), (7, 8), (8, 9),
+                (7, 8), (8, 9), (9, 10), (10, 10),
+                (9, 9)]
+        _conifer(c, rows, 2, 0x2B71, 22)
     return c.outline()
 
 
-def tree_pine_slim():
-    """A pine grown in company: bare for half its height, then four narrow
-    whorls where it finally reached the light.
+def tree_dead(variant=0):
+    """Five dead trees: standing, snapped off, leaning, a bare skeleton, and a
+    hollow shell.
 
-    The bare trunk is the point of it - placed beside the broad one it reads as
-    the same species at a different age, which is what a second version is for.
-    Two trees that differ only in width read as one tree drawn twice."""
+    All bark and no leaves, so the silhouette is doing all of the work and
+    there is nothing else to tell one from another - which makes the shape of
+    what is left the whole design of each."""
     c = Canvas(FRAME, FRAME)
-    rows = [(0, 1), (1, 1), (2, 2),
-            (1, 2), (2, 2), (3, 3),
-            (2, 3), (3, 3), (4, 4),
-            (3, 4), (4, 5), (5, 5),
-            (4, 5), (5, 6), (6, 6)]
-    _conifer(c, rows, 2, 0x6D34, 14)
-    for y in range(20, BASE_Y, 4):               # branch scars down the bare
-        c.set(13, y, "WDD")                      # half of it
-        c.set(18, y + 1, "WDD")
-    return c.outline()
-
-
-def tree_dead():
-    c = Canvas(FRAME, FRAME)
-    c.rect(14, 7, 17, BASE_Y, "WDD")
-    for x, y in ((13, 14), (12, 13), (11, 12), (10, 11), (10, 10), (9, 9)):
-        c.set(x, y, "WDD")               # branch reaching left
-        c.set(x, y - 1, "WDD")
-    for x, y in ((18, 12), (19, 11), (20, 10), (21, 10), (22, 9), (22, 8)):
-        c.set(x, y, "WDD")               # and one right, at a different height
-    c.row(12, 19, 27, "WDD")
-    c.row(11, 20, 28, "WDD")
+    if variant == 1:                     # snapped off, splintered at the break
+        c.rect(13, 16, 18, BASE_Y, "WDD")
+        for x, y in ((13, 15), (15, 14), (16, 15), (18, 13), (14, 16), (17, 14)):
+            c.set(x, y, "WDD")           # the splinters, at no two heights
+        c.row(11, 20, 27, "WDD")
+        c.row(10, 21, 28, "WDD")
+        c.rect(14, 17, 17, 19, "WD")     # the open grain of the break
+    elif variant == 2:                   # leaning, its roots half out
+        # Drawn as rows that step sideways and narrow as they rise, not as one
+        # stroke of constant width: a bar at the same thickness end to end is
+        # a log lying across the frame, whichever angle it is drawn at.
+        for i, y in enumerate(range(BASE_Y, 8, -1)):
+            x = 12 + (i * 9) // 18
+            w = 3 - (i * 2) // 18
+            c.row(x - w, x + w, y, "WDD")
+        for x0, y0, x1, y1 in ((17, 16, 23, 13), (16, 19, 10, 15), (19, 11, 24, 9)):
+            _twig(c, x0, y0, x1, y1, 0, "WDD")
+        c.row(8, 17, 27, "WDD")          # the root plate, lifting on one side
+        c.row(7, 15, 28, "WDD")
+        for x, y in ((7, 26), (9, 25)):  # roots torn out of the ground with it
+            c.set(x, y, "WDD")
+    elif variant == 3:                   # a bare skeleton, still full of branches
+        c.rect(14, 5, 17, BASE_Y, "WDD")
+        for x0, y0, x1, y1 in ((14, 11, 6, 6), (17, 10, 25, 5), (14, 17, 7, 13),
+                               (17, 15, 24, 11), (15, 7, 11, 2), (16, 7, 21, 3)):
+            _twig(c, x0, y0, x1, y1, 0, "WDD")
+        for x0, y0, x1, y1 in ((9, 8, 6, 4), (23, 7, 26, 3), (9, 15, 5, 12)):
+            _twig(c, x0, y0, x1, y1, 0, "WDD")
+        c.row(11, 20, 27, "WDD")
+        c.row(10, 21, 28, "WDD")
+    elif variant == 4:                   # a hollow shell, broken open
+        for y, x0, x1 in ((12, 13, 18), (13, 12, 19), (14, 12, 19), (15, 11, 20),
+                          (16, 11, 20), (17, 11, 20), (18, 11, 21), (19, 11, 21),
+                          (20, 10, 21), (21, 10, 21), (22, 10, 22), (23, 10, 22),
+                          (24, 9, 22), (25, 9, 23), (26, 9, 23)):
+            c.row(x0, x1, y, "WDD")      # the shell, widening to the root
+        for y, x0, x1 in ((16, 14, 17), (17, 13, 18), (18, 13, 18), (19, 13, 18),
+                          (20, 14, 18), (21, 14, 17)):
+            c.row(x0, x1, y, None)       # the cavity: an opening, not a window
+        c.set(13, 15, None)
+        c.set(18, 22, None)
+        for x, y in ((13, 11), (16, 11), (19, 12), (15, 12)):
+            c.set(x, y, "WD")            # the broken rim, seen into from above
+        c.set(14, 12, None)              # and chewed away at no two heights
+        c.set(17, 11, None)
+        _twig(c, 20, 15, 25, 10, 0, "WDD")
+        c.row(8, 23, 27, "WDD")
+        c.row(7, 24, 28, "WDD")
+    else:                                # still standing, two branches
+        c.rect(14, 7, 17, BASE_Y, "WDD")
+        for x, y in ((13, 14), (12, 13), (11, 12), (10, 11), (10, 10), (9, 9)):
+            c.set(x, y, "WDD")           # branch reaching left
+            c.set(x, y - 1, "WDD")
+        for x, y in ((18, 12), (19, 11), (20, 10), (21, 10), (22, 9), (22, 8)):
+            c.set(x, y, "WDD")           # and one right, at a different height
+        c.row(12, 19, 27, "WDD")
+        c.row(11, 20, 28, "WDD")
     _shade(c, "WDD", "WD", "WDD")
     return c.outline()
 
@@ -516,16 +731,43 @@ def log():
     return c.outline()
 
 
-def boulder():
+def boulder(variant=0):
+    """Five boulders: the original round one, a flat slab, one split in two, a
+    tall angular block, and a low one gone over to lichen.
+
+    What separates them is the number of lumps and how they sit, because a
+    boulder is a silhouette with facets in it - a second one differing only in
+    its shading reads as the first with the light moved."""
     c = Canvas(FRAME, FRAME)
-    _blob(c, 13, (4, 7, 9, 10, 11, 11, 11, 11, 11, 11, 11, 11, 11, 10, 9, 8), "ST")
-    for y, x0, x1 in ((15, 12, 19), (16, 10, 20), (17, 9, 19),
-                      (18, 8, 17), (19, 7, 15), (20, 7, 12)):
-        c.row(x0, x1, y, "STL")          # one broad facet catching the light
-    for y, x0, x1 in ((23, 19, 26), (24, 18, 26), (25, 17, 26),
-                      (26, 16, 25), (27, 15, 24)):
-        c.row(x0, x1, y, "STD")          # and one turned away from it
-    _shade(c, "ST", "STL", "STD")
+    if variant == 1:                     # a flat slab, wider than it is tall
+        _mass(c, [(15, 26, 9), (7, 27, 6), (24, 27, 6)], BASE_Y)
+        _form(c, "ST", 0x13, tilt=0.08, grit=0.5)
+        _rim(c, ROCK, "STL", "STD")
+        _crack(c, [(8, 24), (16, 22), (23, 25)])
+    elif variant == 2:                   # split, with daylight down the cleft
+        _mass(c, [(9, 22, 7), (10, 27, 6)], BASE_Y)
+        _mass(c, [(22, 24, 6), (22, 28, 5)], BASE_Y)
+        _form(c, "ST", 0x47, tilt=0.14)
+        _rim(c, ROCK, "STL", "STD")
+    elif variant == 3:                   # tall and angular, standing on a corner
+        _mass(c, [(15, 13, 5), (14, 19, 7), (16, 26, 8)], BASE_Y)
+        _form(c, "ST", 0x6B, tilt=0.03, grit=0.25)
+        _rim(c, ROCK, "STL", "STD")
+        _crack(c, [(12, 10), (17, 17), (13, 24)])
+    elif variant == 4:                   # low, and gone over to lichen
+        _mass(c, [(15, 24, 8), (8, 27, 5), (23, 27, 5)], BASE_Y)
+        _form(c, "ST", 0x29, tilt=0.18)
+        _rim(c, ROCK, "STL", "STD")
+        _moss(c, [(11, 25, 4), (20, 27, 3), (16, 21, 3)], seed=11)
+    else:
+        _blob(c, 13, (4, 7, 9, 10, 11, 11, 11, 11, 11, 11, 11, 11, 11, 10, 9, 8), "ST")
+        for y, x0, x1 in ((15, 12, 19), (16, 10, 20), (17, 9, 19),
+                          (18, 8, 17), (19, 7, 15), (20, 7, 12)):
+            c.row(x0, x1, y, "STL")      # one broad facet catching the light
+        for y, x0, x1 in ((23, 19, 26), (24, 18, 26), (25, 17, 26),
+                          (26, 16, 25), (27, 15, 24)):
+            c.row(x0, x1, y, "STD")      # and one turned away from it
+        _shade(c, "ST", "STL", "STD")
     return c.outline()
 
 
@@ -753,16 +995,60 @@ def dry_bush(phase=0):
     return c.outline()
 
 
-def bones(phase=0):
-    """A horned skull sunk in a drift, with two ribs still standing behind it.
+def bones(phase=0, variant=0):
+    """Three lots of bones: a horned skull sunk in a drift, a scattered pile,
+    and a ribcage still standing out of the ground.
 
-    The first pass was a ribcage seen side on: a spine drawn as a solid bar
-    with the ribs hanging off it, which at this size is a comb, and the second
-    was the same comb lying down. What actually reads as bone at 32px is a
-    skull - a pale mass with two black sockets in it - so the skull carries the
-    object and the ribs are two arcs behind, there to say the rest of the
-    animal is under the sand rather than to be read in themselves."""
+    What actually reads as bone at 32px is a skull - a pale mass with two black
+    sockets in it - which is why two of the three are built round one. The
+    third is the exception and had to earn it: a ribcage drawn side on with a
+    solid spine and ribs hanging off it is a comb, so this one buries the spine
+    and draws the ribs as separate arcs with daylight between them, which is
+    what a ribcage looks like from outside anyway.
+    """
     c = Canvas(FRAME, FRAME)
+    if variant == 1:                                  # scattered, on bare ground
+        # Was prop.bone_pile: what a den leaves behind, gnawed at the ends and
+        # left where it dropped. No drift under it - on a cave floor a mound of
+        # pale sand reads as something carried in from outside.
+        for x0, x1, y in ((5, 16, BASE_Y - 1), (9, 21, BASE_Y - 4), (14, 25, BASE_Y)):
+            c.row(x0, x1, y, "CL")
+            c.row(x0, x1, y + 1, "CLD")
+            for x in (x0, x1):                        # knuckled ends
+                c.set(x, y - 1, "CL")
+                c.set(x, y + 1, "CLD")
+        _lobe(c, 20, BASE_Y - 9, 4, "CL")
+        c.rect(15, BASE_Y - 10, 19, BASE_Y - 7, "CL")  # the muzzle
+        _shade(c, "CL", "SLL", "CLD")
+        for x in (17, 21):
+            c.set(x, BASE_Y - 10, "OL")               # sockets
+            c.set(x, BASE_Y - 9, "OL")
+        return c.outline()
+    if variant == 2:                                  # a ribcage, still standing
+        rnd = scatter(0x5C19)
+        for x in range(7, 25):                        # the ground it is sunk in
+            h = round(2 * math.sin((x - 7) / 17 * math.pi))
+            if h <= 0:
+                continue
+            c.col(x, BASE_Y - h, BASE_Y, "DND")
+            c.set(x, BASE_Y - h, "DNX")
+        # The animal is on its side and the spine is under the mound, so the
+        # ribs rise out of the ground and lean in towards each other - a dome
+        # of separate arcs with daylight between them. Curved all the same way
+        # and run together at the foot they came out as a palm frond.
+        for bx, rise in ((8, 11), (12, 14), (16, 15), (20, 13), (24, 10)):
+            for k in range(rise):
+                y = 26 - k
+                t = k / max(1, rise - 1)
+                x = bx + round((15.5 - bx) * t * t * 0.55)
+                c.set(x, y, "CL")
+                c.set(x + 1, y, "CLD")
+            c.set(bx + round((15.5 - bx) * 0.55), 26 - rise, "CL")
+        for x, y in ((11, 26), (17, 27), (22, 26)):
+            c.set(x, y, "CLD")                        # vertebrae showing through
+        c.set(9 + rnd(2), 27, "CL")
+        c.rect(0, BASE_Y + 1, FRAME - 1, FRAME - 1, None)
+        return c.outline()
     # A mound, not a slab: drawn as a rectangle the drift read as a plank the
     # skull had been laid on.
     rnd = scatter(0x3B21)
@@ -806,29 +1092,47 @@ def bones(phase=0):
     return c.outline()
 
 
-def urn(phase=0):
-    """A storage jar, banded. Lapis and gold on sandstone is the whole colour
-    idea of this biome in one object."""
-    c = Canvas(FRAME, FRAME)
-    _blob(c, 12, (2, 3, 5, 6, 6, 6, 5, 5, 4, 3, 3, 3, 3, 3, 3, 3, 4), "SS")
-    c.rect(13, 10, 18, 12, "SSD")                 # the neck and its lip
-    c.row(12, 19, 10, "SSL")
-    _shade(c, "SS", "SSL", "SSD")
-    c.row(11, 20, 17, "LP")                       # a band round the shoulder
-    c.row(11, 20, 18, "LPD")
-    c.row(12, 19, 21, "GD")
-    c.set(15, 20, "GDL")
-    c.set(16, 22, "GDL")
-    c.rect(0, BASE_Y + 1, FRAME - 1, FRAME - 1, None)
-    return c.outline()
+def cairn(variant=0):
+    """Five cairns: the plain taper, a tall one, a squat one, one that has
+    settled out of true, and one that has come down altogether.
 
-
-def cairn():
+    A cairn is stones somebody stacked, so the variants are five states of that
+    stack rather than five sizes of the same pile - the toppled one especially,
+    which is the only way this prop can say that time passed."""
     c = Canvas(FRAME, FRAME)
-    for y0, w in ((24, 8), (20, 6), (16, 4), (13, 2)):   # stacked, tapering up
-        c.rect(15 - w, y0, 16 + w, y0 + 4, "ST")
+    if variant == 1:                     # tall and narrow, five courses
+        courses = ((25, 6), (21, 5), (17, 4), (13, 3), (9, 2))
+        step = 3
+    elif variant == 2:                   # squat, three heavy courses
+        courses = ((24, 10), (19, 8), (15, 5))
+        step = 4
+    elif variant == 3:                   # settled out of true
+        # The offsets alternate and stay small. Climbing in one direction - the
+        # first thing tried here - is not a leaning cairn, it is a staircase,
+        # and at four courses there is no reading it any other way.
+        for (y0, w, off) in ((24, 8, 0), (20, 6, 2), (16, 4, -1), (13, 2, 1)):
+            c.rect(15 - w + off, y0, 16 + w + off, y0 + 4, "ST")
+            c.row(15 - w + off, 16 + w + off, y0, "STL")
+            c.row(15 - w + off, 16 + w + off, y0 + 4, "STD")
+        c.rect(0, BASE_Y + 1, FRAME - 1, FRAME - 1, None)
+        _shade(c, "ST", "STL", "STD")
+        return c.outline()
+    elif variant == 4:                   # come down: a low heap and its strays
+        _mass(c, [(14, 26, 5), (19, 27, 4), (9, 28, 3)], BASE_Y)
+        _form(c, "ST", 0x9C, tilt=0.15)
+        _rim(c, ROCK, "STL", "STD")
+        for x, y, w in ((24, 27, 2), (5, 26, 1)):     # stones that rolled clear
+            c.rect(x - w, y, x + w, y + 1, "ST")
+            c.row(x - w, x + w, y, "STL")
+            c.row(x - w, x + w, y + 1, "STD")
+        return c.outline()
+    else:                                # stacked, tapering up
+        courses = ((24, 8), (20, 6), (16, 4), (13, 2))
+        step = 4
+    for y0, w in courses:
+        c.rect(15 - w, y0, 16 + w, y0 + step, "ST")
         c.row(15 - w, 16 + w, y0, "STL")
-        c.row(15 - w, 16 + w, y0 + 4, "STD")
+        c.row(15 - w, 16 + w, y0 + step, "STD")
     c.rect(0, BASE_Y + 1, FRAME - 1, FRAME - 1, None)
     _shade(c, "ST", "STL", "STD")
     return c.outline()
@@ -864,29 +1168,145 @@ def well():
     return c.outline()
 
 
-def crate():
+def crate(variant=0):
+    """Five crates: nailed shut, a tall chest, one open with straw coming out
+    of it, two stacked, and one that has been staved in.
+
+    A box is the hardest thing here to vary, because a box is a rectangle and
+    a slightly different rectangle is the same rectangle. So four of the five
+    break the outline somewhere - a lid standing off it, a second box on top,
+    a corner gone - and only the first is the plain square it started as."""
     c = Canvas(FRAME, FRAME)
-    _plank(c, 9, 16, 22, BASE_Y)
-    c.col(22, 16, BASE_Y, "WDD")
-    c.rect(9, 16, 22, 17, "WDL")         # lid
-    for i in range(12):                  # the diagonal brace across the face
-        c.set(10 + i, 18 + i, "WDD")
-        c.set(21 - i, 18 + i, "WDD")
-    c.col(9, 16, BASE_Y, "WDD")
+    if variant == 1:                     # a tall chest, banded rather than braced
+        _plank(c, 11, 10, 20, BASE_Y)
+        c.col(20, 10, BASE_Y, "WDD")
+        c.col(11, 10, BASE_Y, "WDD")
+        c.rect(11, 10, 20, 11, "WDL")    # the lid
+        for y in (16, 22, 27):           # iron bands down its height
+            c.row(11, 20, y, "MT")
+            c.set(11, y, "MTL")
+        c.set(20, 19, "MTD")
+    elif variant == 2:                   # open, with the packing coming out
+        _plank(c, 9, 18, 22, BASE_Y)
+        c.col(22, 18, BASE_Y, "WDD")
+        c.col(9, 18, BASE_Y, "WDD")
+        c.rect(10, 18, 21, 20, "WDD")    # down into it, past the near boards
+        for i in range(12):
+            c.set(10 + i, 22 + i, "WDD")
+        # Straw over the edge, which is what says open rather than lidless -
+        # an empty box with its top row darkened is just a box in shadow.
+        for x, y, h in ((11, 16, 3), (14, 15, 4), (18, 16, 3), (21, 17, 2)):
+            for i in range(h):
+                c.set(x + (i % 2), y + i, "TH")
+            c.set(x, y, "THL")
+        # The lid leans against the near side. Drawn as a level board above
+        # the box it floated, because nothing in the picture said what was
+        # holding it up - so it slants, and its foot is on the ground.
+        for i in range(11):
+            y = 28 - i
+            x = 23 + i // 3
+            c.set(x, y, "WDL")
+            c.set(x + 1, y, "WD")
+            c.set(x + 2, y, "WDD")
+    elif variant == 3:                   # two, the smaller one on top
+        _plank(c, 8, 20, 23, BASE_Y)
+        c.col(23, 20, BASE_Y, "WDD")
+        c.col(8, 20, BASE_Y, "WDD")
+        c.rect(8, 20, 23, 21, "WDL")
+        for i in range(8):
+            c.set(9 + i, 22 + i, "WDD")
+            c.set(22 - i, 22 + i, "WDD")
+        _plank(c, 12, 11, 22, 19)        # the second one, set back and over
+        c.col(22, 11, 19, "WDD")
+        c.col(12, 11, 19, "WDD")
+        c.rect(12, 11, 22, 12, "WDL")
+        for i in range(7):
+            c.set(13 + i, 13 + i, "WDD")
+    elif variant == 4:                   # staved in, one corner gone
+        _plank(c, 9, 16, 22, BASE_Y)
+        c.col(22, 16, BASE_Y, "WDD")
+        c.col(9, 16, BASE_Y, "WDD")
+        c.rect(9, 16, 22, 17, "WDL")
+        for i in range(12):
+            c.set(21 - i, 18 + i, "WDD")
+        # A hole through the face, ragged, with the corners of the box left
+        # standing - a clean diagonal off one corner is a wedge, not damage.
+        for y, x0, x1 in ((20, 13, 18), (21, 12, 19), (22, 11, 19),
+                          (23, 12, 20), (24, 13, 19), (25, 14, 18)):
+            c.row(x0, x1, y, None)
+        c.set(11, 21, None)
+        c.set(20, 22, None)
+        c.set(15, 19, None)
+        for x, y in ((12, 19), (17, 19), (19, 21), (13, 26), (18, 26), (11, 23)):
+            c.set(x, y, "WDD")           # splinters left round the break
+        for x, y in ((14, 20), (16, 25)):
+            c.set(x, y, "WDL")           # and the lit edge of a snapped board
+        for x, y in ((24, 27), (25, 27), (26, 28), (27, 28)):
+            c.set(x, y, "WDD")           # a board that ended up on the floor
+        c.set(24, 26, "WDL")
+    else:                                # nailed shut, braced across the face
+        _plank(c, 9, 16, 22, BASE_Y)
+        c.col(22, 16, BASE_Y, "WDD")
+        c.rect(9, 16, 22, 17, "WDL")     # lid
+        for i in range(12):              # the diagonal brace across the face
+            c.set(10 + i, 18 + i, "WDD")
+            c.set(21 - i, 18 + i, "WDD")
+        c.col(9, 16, BASE_Y, "WDD")
     return c.outline()
 
 
-def barrel():
+def barrel(variant=0):
+    """Three barrels, all of them standing on end: headed up, open, and a tall
+    cask with a tap in it.
+
+    They differ in proportion and in state rather than in dimensions, because a
+    barrel one pixel wider is the first barrel drawn twice. A fourth was drawn
+    lying on its side, which is the easiest way to make a barrel look like a
+    different object and the wrong one here - a barrel on the floor reads as
+    something knocked over, and stock standing in a store room should not.
+    """
     c = Canvas(FRAME, FRAME)
-    _blob(c, 14, (4, 5, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 5, 4), "WD")
-    _shade(c, "WD", "WDL", "WDD")
-    for y in (17, 22, 26):
-        for x in range(9, 23):
-            if c.get(x, y) is not None:
-                c.set(x, y, "MT")        # iron hoops
-    c.row(12, 19, 14, "WDL")             # the lid, seen from above
-    c.set(20, 18, "MTL")
-    c.set(20, 23, "MTL")
+    if variant == 1:                     # the head off, and you can see in
+        _blob(c, 12, (5, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 5, 4, 3), "WD")
+        _shade(c, "WD", "WDL", "WDD")
+        for y in (17, 22, 26):
+            for x in range(8, 24):
+                if c.get(x, y) is not None:
+                    c.set(x, y, "MT")    # three hoops, as on the closed one
+        for y, x0, x1 in ((12, 11, 19), (13, 10, 20), (14, 11, 19)):
+            c.row(x0, x1, y, "WDD")      # the far wall inside it, in shadow -
+        c.row(10, 20, 12, "MTD")         # dark enough to read as a hole and
+        c.set(9, 13, "MTL")              # not as a lid
+        c.set(21, 13, "MTD")
+    elif variant == 2:                   # a tall cask, and it has been tapped
+        _blob(c, 9, (3, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 4, 4, 4, 3, 3, 2), "WD")
+        _shade(c, "WD", "WDL", "WDD")
+        for y in (13, 18, 23, 27):       # four hoops, because it is taller
+            for x in range(9, 22):
+                if c.get(x, y) is not None:
+                    c.set(x, y, "MT")
+        c.row(12, 18, 9, "WDL")          # the head, seen from above
+        c.set(19, 13, "MTL")             # light on a hoop, where there is one
+        # The tap is the whole of what tells this one from the first at a
+        # glance, so it breaks the silhouette instead of being painted on the
+        # face. Drawn down the middle of the near side first, it was three
+        # dark pixels inside the outline and read as a knot in the wood.
+        c.set(10, 22, "MTD")
+        c.set(9, 22, "MT")
+        c.set(8, 22, "MT")
+        c.set(8, 23, "MTL")              # the spout turning down
+        c.set(8, 24, "MTD")
+        c.set(9, 21, "MTL")              # and the key on top of it
+    else:                                # headed up, the plain one
+        _blob(c, 14, (4, 5, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 5, 4), "WD")
+        _shade(c, "WD", "WDL", "WDD")
+        for y in (17, 22, 26):
+            for x in range(9, 23):
+                if c.get(x, y) is not None:
+                    c.set(x, y, "MT")    # iron hoops
+        c.row(12, 19, 14, "WDL")         # the lid, seen from above
+        c.set(20, 18, "MTL")
+        c.set(20, 23, "MTL")
     return c.outline()
 
 
@@ -965,21 +1385,6 @@ def signpost():
     c.row(13, 26, 18, "WDD")
     for y in (9, 16):                    # carved lines, not readable text
         c.row(8, 16, y, "WDD")
-    return c.outline()
-
-
-def statue():
-    c = Canvas(FRAME, FRAME)
-    c.rect(8, 24, 23, BASE_Y, "ST")      # plinth
-    c.row(8, 23, 24, "STL")
-    c.rect(10, 21, 21, 23, "ST")
-    c.rect(12, 12, 19, 21, "ST")         # robed body
-    _blob(c, 6, (2, 3, 3, 3, 2), "ST")   # head
-    c.rect(9, 13, 11, 15, "ST")          # arms held out
-    c.rect(20, 13, 22, 15, "ST")
-    _shade(c, "ST", "STL", "STD")
-    c.set(14, 8, "STD")                  # eyes, worn almost flat
-    c.set(17, 8, "STD")
     return c.outline()
 
 
@@ -1362,29 +1767,6 @@ def weapon_rack():
     return c.outline()
 
 
-def bed_straw():
-    """A pallet of straw under a blanket: where whoever works the shed sleeps
-    when the weather shuts them in."""
-    c = Canvas(FRAME, FRAME)
-    c.rect(3, 16, 28, BASE_Y, "TH")               # the straw
-    for x in range(4, 28, 3):
-        c.col(x, 17, BASE_Y - 1, "THD")
-    c.row(3, 28, 16, "THL")
-    c.rect(3, 21, 28, 27, "TU")                   # a blanket thrown over it
-    c.row(3, 28, 21, "TUL")
-    c.row(3, 28, 27, "TUS")
-    for x in range(5, 28, 6):                     # its folds
-        c.col(x, 22, 26, "TUS")
-    _lobe(c, 8, 18, 4, "CL")                      # a bolster at the head
-    _lobe(c, 7, 17, 3, "CLD")
-    return c.outline()
-
-
-# ----------------------------------------------------------- the burrow ---
-# Four props that only make sense underground. They share a constraint the
-# outdoor set does not have: the floor they stand on is dark, so anything drawn
-# in a mid tone sinks into it. Each of these is either paler than the floor or
-# outlined hard against it.
 def roots():
     """Tree roots broken through the roof of the burrow and left hanging.
 
@@ -1429,42 +1811,13 @@ def cave_shroom():
     return c.outline()
 
 
-def bone_pile():
-    """What a den leaves behind: a cracked skull and the long bones of
-    something deer-sized, gnawed at the ends and left where they dropped.
-
-    prop.bones is the desert's, and half of that drawing is the sand drift the
-    skull is sunk in. On a cave floor a mound of pale sand reads as something
-    carried in from outside, so this is the same idea with the ground taken
-    away and the bones scattered rather than composed."""
-    c = Canvas(FRAME, FRAME)
-    # Long bones first, so the skull sits over them.
-    for x0, x1, y in ((5, 16, BASE_Y - 1), (9, 21, BASE_Y - 4), (14, 25, BASE_Y)):
-        c.row(x0, x1, y, "CL")
-        c.row(x0, x1, y + 1, "CLD")
-        for x in (x0, x1):                            # knuckled ends
-            c.set(x, y - 1, "CL")
-            c.set(x, y + 1, "CLD")
-    # The skull. A pale mass with two sockets in it is what reads as bone at
-    # this size - a jaw and teeth are below the resolution to bother with.
-    _lobe(c, 20, BASE_Y - 9, 4, "CL")
-    c.rect(15, BASE_Y - 10, 19, BASE_Y - 7, "CL")     # the muzzle
-    _shade(c, "CL", "SLL", "CLD")
-    for x in (17, 21):
-        c.set(x, BASE_Y - 10, "OL")                   # sockets
-        c.set(x, BASE_Y - 9, "OL")
-    return c.outline()
-
-
 # ---------------------------------------------------------------- wetland ---
 PROPS = {
     "prop.bush": bush,
     "prop.rock": rock,
     "prop.sign": sign,
     "prop.tree_pine": tree_pine,
-    "prop.tree_pine_slim": tree_pine_slim,
     "prop.tree_oak": tree_oak,
-    "prop.tree_oak_forked": tree_oak_forked,
     "prop.tree_dead": tree_dead,
     "prop.stump": stump,
     "prop.log": log,
@@ -1479,7 +1832,6 @@ PROPS = {
     "prop.anvil": anvil,
     "prop.lamp_post": lamp_post,
     "prop.signpost": signpost,
-    "prop.statue": statue,
     "prop.tombstone": tombstone,
     "prop.table": table,
     "prop.chest": chest,
@@ -1493,15 +1845,37 @@ PROPS = {
     "prop.shelf": shelf,
     "prop.hearth": hearth,
     "prop.weapon_rack": weapon_rack,
-    "prop.bed_straw": bed_straw,
     "prop.dry_bush": dry_bush,
     "prop.bones": bones,
-    "prop.urn": urn,
     "prop.roots": roots,
     "prop.cave_shroom": cave_shroom,
-    "prop.bone_pile": bone_pile,
 }
 PROP_ORDER = list(PROPS)
+
+# How many drawings of a prop exist. Unlike a tile's variants - picked by where
+# the cell is, so a map looks the same every time it loads - a prop's is rolled
+# once when it is placed and written into the map, because a prop is a thing
+# somebody put there and which one it is deserves to be part of the map rather
+# than a function of the square it stands on. Variant 0 keeps the plain id as
+# its sprite key, so everything that only wants a picture of the thing is
+# unaffected.
+#
+# A variant earns its frame by being a different object at a glance. A barrel
+# one pixel wider is the first barrel drawn twice, and a tree one shade
+# greener is the first tree drawn twice - see tree_oak, whose five are five
+# histories rather than five sizes.
+VARIANTS = {
+    "prop.barrel": 3,
+    "prop.bones": 3,
+    "prop.crate": 5,
+    "prop.tree_oak": 5,
+    "prop.tree_pine": 5,
+    "prop.tree_dead": 5,
+    "prop.cairn": 5,
+    "prop.bush": 5,
+    "prop.boulder": 5,
+    "prop.rock": 5,
+}
 
 # Which props move, and how long a frame lasts. Everything else is still on
 # purpose: the trees, bushes and flowers are the most numerous things in the
@@ -1525,11 +1899,15 @@ ANIMATED_VAST = {
 ANIMATED_ALL = (ANIMATED, ANIMATED_HUGE, ANIMATED_VAST)
 
 
-def prop_frames(pid, table=None):
-    """Every frame of a prop, first frame first. One frame for most of them."""
+def prop_frames(pid, table=None, variant=0):
+    """Every frame of one variant of a prop, first frame first. One frame for
+    most of them, and variant 0 for most of them."""
     fns = table if table is not None else PROPS
     n = next((t[pid][0] for t in ANIMATED_ALL if pid in t), 1)
-    return [fns[pid](phase=p) if n > 1 else fns[pid]() for p in range(n)]
+    kw = {"variant": variant} if pid in VARIANTS else {}
+    if n == 1:
+        return [fns[pid](**kw)]
+    return [fns[pid](phase=p, **kw) for p in range(n)]
 
 
 def shed():

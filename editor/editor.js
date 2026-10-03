@@ -144,12 +144,17 @@ function autotiles(tid) {
   return Boolean(state.M.tileset.masks[tid]);
 }
 
-/** The atlas index for a cell, resolved exactly as the build resolves it. */
+/** The atlas index for a cell, resolved exactly as the build resolves it.
+ *
+ *  The variant is chosen first and the arrangement second - `masks` is one
+ *  table per variant - because a terrain painted narrow enough to be all edge
+ *  would otherwise be variant 0 from end to end. */
 function indexAt(x, y, m = state.map) {
   const tid = terrainAt(x, y, m);
   const entry = state.M.tileset.masks[tid];
   const variants = state.M.tileset.variants[tid] || [state.M.tiles[tid].index];
-  if (!entry) return variants[pickVariant(x, y, variants.length)];
+  const v = pickVariant(x, y, variants.length);
+  if (!entry) return variants[v];
   const fam = familyOf(tid);
   let mask = 0;
   for (const [bit, dx, dy] of NEIGHBOURS) {
@@ -157,9 +162,9 @@ function indexAt(x, y, m = state.map) {
     if (n === null || familyOf(n) === fam) mask |= bit;
   }
   mask = canonical(mask);
-  if (mask === 255) return variants[pickVariant(x, y, variants.length)];
-  const idx = entry[String(mask)];
-  return idx === undefined ? variants[0] : idx;
+  if (mask === 255) return variants[v];
+  const idx = entry[v][String(mask)];
+  return idx === undefined ? variants[v] : idx;
 }
 
 /** Char for a terrain id, adding it to the legend when it is new. */
@@ -225,8 +230,9 @@ function gatherableOf(id) {
 const spriteCache = new Map();
 let byAtlasIndex = null;
 
-function spriteFor(id) {
-  if (spriteCache.has(id)) return spriteCache.get(id);
+function spriteFor(id, variant = 0) {
+  const ck = variant ? `${id}/v${variant}` : id;
+  if (spriteCache.has(ck)) return spriteCache.get(ck);
   const M = state.M;
   const d = defOf(id);
   let rec = null;
@@ -241,10 +247,22 @@ function spriteFor(id) {
       rec = byAtlasIndex.get(`${anim.atlas}:${anim.frames[0]}`) || null;
     }
   } else if (d) {
-    rec = M.sprites[d.sprite] || null;
+    // Variant 0 is the plain key. A variant the library does not hold falls
+    // back to the first drawing rather than vanishing, so a map made against
+    // newer art still shows something here - the map-variant gate is what
+    // refuses it, and it says so in words.
+    rec = (variant && M.sprites[`${d.sprite}/v${variant}`])
+       || M.sprites[d.sprite] || null;
   }
-  spriteCache.set(id, rec);
+  spriteCache.set(ck, rec);
   return rec;
+}
+
+/** How many drawings of this definition exist. Props carry the count; actors
+ *  and items have one each. */
+function variantsOf(id) {
+  const d = defOf(id);
+  return (d && state.M.props[id] && d.variants) || 1;
 }
 
 // ------------------------------------------------------------- rendering --
@@ -286,7 +304,7 @@ function render() {
   // Entities in the order the game draws them: by the y their anchor sits on.
   const ents = [...m.entities].sort((a, b) => a.tile[1] - b.tile[1]);
   for (const e of ents) {
-    const rec = spriteFor(e.def);
+    const rec = spriteFor(e.def, e.variant || 0);
     if (!rec) continue;
     drawSprite(ctx, rec, e.tile[0] * ts + ts / 2, e.tile[1] * ts + ts / 2, z);
   }
@@ -468,7 +486,7 @@ function buildPalettes() {
     // field and that is worth knowing before painting one.
     const nvar = (t.variants || [t.index]).length;
     const vtag = document.createElement("i");
-    vtag.className = "size";
+    vtag.className = "vars";
     vtag.textContent = "×" + nvar;
     vtag.title = nvar > 1
       ? `${nvar} variants, picked per cell by position`
@@ -525,6 +543,18 @@ function buildPalettes() {
       size.className = "size";
       size.textContent = px;
       el.append(size);
+      // Only when there is more than one: forty props each saying x1 is noise,
+      // where a terrain saying it is a warning that it will repeat over a
+      // field. The swatch draws the first variant, so the badge is also the
+      // only hint that placing this will not always give you what you see.
+      const nvar = variantsOf(id);
+      if (nvar > 1) {
+        const vtag = document.createElement("i");
+        vtag.className = "vars";
+        vtag.textContent = "×" + nvar;
+        vtag.title = `${nvar} drawings - one is picked at random when you place it`;
+        el.append(vtag);
+      }
       const label = document.createElement("span");
       label.textContent = id.split(".")[1];
       const d = defOf(id);
@@ -543,6 +573,7 @@ function buildPalettes() {
                   : blocksOf(id) ? "solid" : "walkable")
         + (frames > 1 ? `, animated - ${frames} frames` : "")
         + (d && d.equippable ? ", equippable" : "")
+        + (nvar > 1 ? `, ${nvar} variants` : "")
         + `, ${px} frame)`;
       el.append(label);
       el.onclick = () => { state.object = id; setTool("place"); markSelection(); };
@@ -638,7 +669,15 @@ function place(x, y) {
       }
     }
   }
-  m.entities.push({ def: id, tile: [x, y] });
+  // Which drawing goes down is rolled here and written into the map, not
+  // worked out from the tile the way a terrain variant is: a prop is a thing
+  // somebody put there, so placing two barrels on neighbouring squares should
+  // be able to give you two different barrels, and moving one should not
+  // silently turn it into another.
+  const n = variantsOf(id);
+  const e = { def: id, tile: [x, y] };
+  if (n > 1) e.variant = Math.floor(Math.random() * n);
+  m.entities.push(e);
   return true;
 }
 

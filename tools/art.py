@@ -128,7 +128,7 @@ def build_atlases(sprite_rigs, content):
         defn = content["tiles"].get(tid)
         if defn is None:
             continue                      # drawn but not defined: not shipped
-        entry = {"base": [], "masks": {}, "anim": {}}
+        entry = {"base": [], "masks": [], "anim": {}}
         phases = tiles_gen.ANIMATED.get(tid, 1)
 
         def add_frames(key, draw, entry=entry, phases=phases):
@@ -144,7 +144,8 @@ def build_atlases(sprite_rigs, content):
                 entry["anim"][first] = seq
             return first
 
-        for v in range(tiles_gen.VARIANTS.get(tid, 1)):
+        nvar = tiles_gen.VARIANTS.get(tid, 1)
+        for v in range(nvar):
             key = tid if v == 0 else f"{tid}/v{v}"
             entry["base"].append(
                 add_frames(key, lambda ph, v=v: tiles_gen.frame(tid, v, ph)))
@@ -156,12 +157,22 @@ def build_atlases(sprite_rigs, content):
             if tid not in tiles_gen.STYLE:
                 sys.exit(f"[tile-blend] {defn['_file']}: blend is set but "
                          f"tools/gen/tiles.py has no edge style for {tid!r}")
-            for mask in tiles_gen.ALL_MASKS:
-                if mask == tiles_gen.FULL:
-                    continue
-                entry["masks"][mask] = add_frames(
-                    f"{tid}/m{mask}",
-                    lambda ph, m=mask: tiles_gen.blend(tid, m, ph, under))
+            # One mask table per variant, so a cell picks its variant first and
+            # then its arrangement. Without this a terrain that is all edge -
+            # any path narrow enough to be worth walking down - draws variant 0
+            # everywhere and the variants are art nothing can reach.
+            for v in range(nvar):
+                table = {}
+                for mask in tiles_gen.ALL_MASKS:
+                    if mask == tiles_gen.FULL:
+                        continue
+                    key = (f"{tid}/m{mask}" if v == 0
+                           else f"{tid}/v{v}/m{mask}")
+                    table[mask] = add_frames(
+                        key,
+                        lambda ph, m=mask, v=v: tiles_gen.blend(
+                            tid, m, ph, under, v))
+                entry["masks"].append(table)
         tile_index[tid] = entry
 
     # Props. Most are one frame; the few that move get the rest of theirs
@@ -171,17 +182,23 @@ def build_atlases(sprite_rigs, content):
     def add_props(sheet, table, anchor, animated):
         canvases = {}
         for pid in table:
-            frames = props_gen.prop_frames(pid, table)
-            idx = sheet.add(pid, [frames[0]], anchor)
-            canvases[pid] = frames[0]
-            if len(frames) == 1:
-                continue
-            indices = [idx]
-            for ph, cel in enumerate(frames[1:], start=1):
-                indices.append(sheet.add(f"{pid}/{ph}", [cel], anchor))
-                canvases[f"{pid}/{ph}"] = cel
-            anims[pid] = {"atlas": sheet.name, "frames": indices,
-                          "ms": animated[pid][1], "loop": True}
+            # Variant 0 keeps the plain id as its key and every later one takes
+            # `/v1`, `/v2` - the same spelling tiles use - so the palette, the
+            # sprite-exists gate and every map already written go on naming
+            # the thing and get the first drawing of it.
+            for v in range(props_gen.VARIANTS.get(pid, 1)):
+                key = pid if v == 0 else f"{pid}/v{v}"
+                frames = props_gen.prop_frames(pid, table, v)
+                idx = sheet.add(key, [frames[0]], anchor)
+                canvases[key] = frames[0]
+                if len(frames) == 1:
+                    continue
+                indices = [idx]
+                for ph, cel in enumerate(frames[1:], start=1):
+                    indices.append(sheet.add(f"{key}/{ph}", [cel], anchor))
+                    canvases[f"{key}/{ph}"] = cel
+                anims[key] = {"atlas": sheet.name, "frames": indices,
+                              "ms": animated[pid][1], "loop": True}
         return canvases
 
     props = Atlas("props", actor.FRAME, actor.FRAME, 8)
@@ -322,7 +339,8 @@ def library(sheets, sprites, anims, tile_index, looks):
         "sprites": sprites,
         "anims": anims,
         "tiles": {tid: {"base": e["base"],
-                        "masks": {str(m): i for m, i in e["masks"].items()},
+                        "masks": [{str(m): i for m, i in t.items()}
+                                  for t in e["masks"]],
                         "anim": {str(i): seq for i, seq in e["anim"].items()}}
                   for tid, e in tile_index.items()},
         "anim_ms": tiles_gen.ANIM_MS,

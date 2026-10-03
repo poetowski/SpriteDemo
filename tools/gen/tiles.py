@@ -79,15 +79,23 @@ def _pool(c, cx, cy, rx, ry, key):
 
 # ------------------------------------------------------------ base textures --
 def grass(seed=0, phase=0):
-    """Turf, in three moods: even, damp and dry.
+    """Turf, in five moods: even, damp, dry, rank and cropped.
 
-    Reseeding alone was not enough. Three variants drawn with the same counts
-    differ only in where their blades landed, and a field of them reads as one
-    texture repeating - which is what it was. So the counts change with the
-    seed as well: 1 is damper, with more deep patches and more blades in
-    shadow; 2 is drier, with fewer of both and more tips catching the light.
-    The same grass over three kinds of ground, rather than one grass shuffled."""
-    deep, shade, light = ((2, 8, 6), (4, 12, 3), (1, 5, 10))[seed % 3]
+    Reseeding alone was not enough. Variants drawn with the same counts differ
+    only in where their blades landed, and a field of them reads as one texture
+    repeating - which is what it was. So the counts change with the seed as
+    well: 1 is damper, with more deep patches and more blades in shadow; 2 is
+    drier, with fewer of both and more tips catching the light; 3 is rank, thick
+    with both; and 4 is cropped, the ground showing through between what little
+    is left standing. The same grass over five kinds of ground, rather than one
+    grass shuffled.
+
+    The moods are the variants, so this tuple and VARIANTS["tile.grass"] have to
+    be the same length. Indexing it `% len` and raising the count on its own is
+    the failure that hid in tall_stone: the extra variants come back as earlier
+    ones reseeded, which is the thing the paragraph above says does not work."""
+    deep, shade, light = ((2, 8, 6), (4, 12, 3), (1, 5, 10),
+                          (3, 14, 9), (4, 5, 4))[seed % 5]
     c = Canvas(SIZE, SIZE)
     c.rect(0, 0, SIZE - 1, SIZE - 1, "GR")
     rnd = scatter(0x6A55 + seed * 977)
@@ -132,6 +140,29 @@ def grass_flower(seed=0, phase=0):
         head = lead if i % 2 else other           # and the head
         _put(c, x, y, head)
         _put(c, x - 1, y, head)
+    return c
+
+
+def grass_leaf(seed=0, phase=0):
+    """Grass with fallen leaves lying on it: under the edge of a canopy, where
+    the litter has not yet closed over into tile.leaves.
+
+    It is the same turf underneath - grass(seed), the way grass_flower is - so
+    it is the grass family and meets a path or a shore exactly as plain grass
+    does. What makes it its own tile is only what has come down on it, and the
+    variants are how much: one leaf, two, or three. A leaf is the two-pixel
+    mark leaves() uses with a darker stalk off one end, because at this size a
+    leaf drawn any smaller is grit and any larger is a bush."""
+    n, lead = ((1, "LF"), (3, "RFD"), (2, "LF"))[seed % 3]
+    c = grass(seed)
+    rnd = scatter(0x1EAF + seed * 487)
+    other = "RFD" if lead == "LF" else "LF"
+    for i in range(n):
+        x, y = rnd(SIZE), rnd(SIZE)
+        key = lead if i % 2 else other
+        _put(c, x, y, key)                        # the blade of the leaf
+        _put(c, x + 1, y, key)
+        _put(c, x + 2, y + 1, "LFD")              # and the stalk off its end
     return c
 
 
@@ -191,7 +222,12 @@ def water(seed=0, phase=0):
 
 
 def stone(seed=0, phase=0):
-    """Flagstones: courses with staggered joints, each stone lit along its top."""
+    """Flagstones: courses with staggered joints, each stone lit along its top.
+
+    The courses are fixed - a floor whose mortar lines jogged at the tile
+    boundary would read as the grid it is - but the joints across them are not,
+    and a variant moves them. That is how flagstone actually varies: the
+    courses run true and no two of them break in the same place."""
     c = Canvas(SIZE, SIZE)
     c.rect(0, 0, SIZE - 1, SIZE - 1, "ST")
     rnd = scatter(0x51A7 + seed * 257)
@@ -199,7 +235,7 @@ def stone(seed=0, phase=0):
         c.row(0, SIZE - 1, y, "STD")              # the mortar between courses
         if y > 0:
             c.row(0, SIZE - 1, y - 1, "STL")      # each block lit along its top
-        for x in range((i % 2) * 5, SIZE, 9):
+        for x in range(((i % 2) * 5 + seed * 3) % 9, SIZE, 9):
             for yy in range(max(0, y - 4), y):
                 _put(c, x, yy, "STD")
     for _ in range(4):                            # pitting
@@ -221,8 +257,10 @@ def tall_stone(seed=0, phase=0):
     the course throws on the one behind it. Stacked, that repeats as cap, face,
     shadow - a wall in courses rather than a floor with lines on it.
 
-    The two variants carry their perpends at different offsets, so a run of
-    them breaks up instead of ruling one line down every tile boundary."""
+    The variants carry their perpends at different offsets, so a run of them
+    breaks up instead of ruling one line down every tile boundary - which is
+    the whole of what a variant of this tile is, so there are as many of them
+    as there are offsets that fit."""
     c = Canvas(SIZE, SIZE)
     c.rect(0, 0, SIZE - 1, 4, "STL")              # the cap, facing the sky
     c.row(0, SIZE - 1, 5, "ST")                   # the arris it turns on
@@ -230,7 +268,7 @@ def tall_stone(seed=0, phase=0):
     c.rect(0, 11, SIZE - 1, 13, "STD")
     c.rect(0, 14, SIZE - 1, SIZE - 1, "STX")      # and the shadow at its foot
     rnd = scatter(0x7C3B + seed * 191)
-    for x in ((0, 8), (4, 12))[seed % 2]:         # perpends, cap and face
+    for x in ((0, 8), (4, 12), (2, 10))[seed % 3]:  # perpends, cap and face
         c.col(x, 0, 13, "STD")
         c.set(x, 4, "ST")                         # catching light on the cap
     for _ in range(5):                            # pitting, so neither surface
@@ -276,16 +314,26 @@ def gravel(seed=0, phase=0):
 
 
 def cobble(seed=0, phase=0):
-    """Village paving: rounded setts in staggered courses."""
+    """Village paving: rounded setts in staggered courses.
+
+    The laying is fixed - setts that jogged at the tile boundary would read as
+    a seam rather than as paving - so a variant changes the stone and not the
+    courses: which setts are a darker stone, which a paler one, and which have
+    been worn smooth in the middle. That is what tells one stretch of paving
+    from another anyway; nobody reads the bond."""
     c = Canvas(SIZE, SIZE)
     c.rect(0, 0, SIZE - 1, SIZE - 1, "STD")
     rnd = scatter(0x3C0B + seed * 613)
     for row, y in enumerate((0, 4, 8, 12)):
         off = (row % 2) * 2
         for x in range(off, SIZE + off, 4):
+            # Most setts are the one grey; a few are their own stone. The lit
+            # top-left goes on afterwards either way, so a dark sett still
+            # reads as a rounded block and not as a hole.
+            tone = ("ST", "ST", "ST", "ST", "STD", "STL")[rnd(6)]
             for dy in range(3):                   # a 3x3 sett, lit top-left
                 for dx in range(3):
-                    _put(c, x + dx, y + dy, "ST")
+                    _put(c, x + dx, y + dy, tone)
             _put(c, x, y, "STL")
             _put(c, x + 1, y, "STL")
             _put(c, x + 2, y + 2, "STD")
@@ -388,8 +436,15 @@ def plank_wall(seed=0, phase=0):
     for x in (4, 12):                             # the studs behind them
         c.col(x, 0, SIZE - 1, "OL")
         c.col(x + 1, 0, SIZE - 1, "WDD")
-    for _ in range(7):                            # knots and grain
+    # The boards and the studs both have to line up with the tile above and
+    # beside, so a variant of a wall is a variant of its timber: where the
+    # knots are, and which boards show grain running along them.
+    for _ in range(7):                            # knots
         _put(c, rnd(SIZE), rnd(SIZE), "OL")
+    for _ in range(5):                            # grain, running with the board
+        x, y = rnd(SIZE), (rnd(4) * 4 + 2) % SIZE
+        _put(c, x, y, "WDL")
+        _put(c, x + 1, y, "WDL")
     return c
 
 
@@ -448,6 +503,7 @@ BASE = {
     "tile.grass": grass,
     "tile.grass_flower": grass_flower,
     "tile.grass_tall": grass_tall,
+    "tile.grass_leaf": grass_leaf,
     "tile.leaves": leaves,
     "tile.path": path,
     "tile.gravel": gravel,
@@ -467,9 +523,13 @@ TILE_ORDER = list(BASE)
 
 # How many seeded variants of each base to draw. A cell picks one by position,
 # so the field changes without anyone having authored it.
-VARIANTS = {"tile.grass": 3, "tile.grass_flower": 3, "tile.grass_tall": 3,
-            "tile.leaves": 2, "tile.water": 2, "tile.wood_floor": 2,
-            "tile.cave_floor": 3, "tile.cave_wall": 2, "tile.tall_stone": 2}
+VARIANTS = {"tile.grass": 5, "tile.grass_flower": 3, "tile.grass_tall": 3,
+            "tile.grass_leaf": 3,
+            "tile.leaves": 3, "tile.water": 3, "tile.wood_floor": 3,
+            "tile.cave_floor": 3, "tile.cave_wall": 3, "tile.tall_stone": 3,
+            "tile.dirt": 3, "tile.field": 3, "tile.gravel": 3, "tile.path": 3,
+            "tile.cobble": 3, "tile.plank_wall": 3, "tile.stone": 3,
+            "tile.shallow": 3}
 
 # Tiles drawn in several phases. The art pipeline emits every phase as its own
 # frame and the engine cycles them; the base frame is what the map resolves to.
@@ -707,18 +767,27 @@ STYLE = {
 BLEND_OVER = "tile.grass"      # what a terrain carves out of, unless it says
 
 
-def blend(tid, mask, phase=0, under_tid=BLEND_OVER):
+def blend(tid, mask, phase=0, under_tid=BLEND_OVER, variant=0):
     """The tile for `tid` with this neighbour arrangement, carved out of the
     terrain it sits on - grass for most things, but a field is cut out of bare
-    earth and a shoal out of sand, which is what those edges look like."""
-    over = frame(tid, 0, phase)
-    under = BASE[under_tid](sum(map(ord, tid)) % VARIANTS.get(under_tid, 1))
+    earth and a shoal out of sand, which is what those edges look like.
+
+    Every transition is drawn once per variant, because a terrain narrow enough
+    to be all edge - a path two tiles wide has no cell with eight neighbours of
+    its own - would otherwise be variant 0 from end to end however many
+    variants were drawn for it. `variant` folds into the seeds rather than
+    replacing them, so variant 0 is byte-identical to what a single-variant
+    terrain drew before."""
+    over = frame(tid, variant, phase)
+    under = BASE[under_tid]((sum(map(ord, tid)) + variant)
+                            % VARIANTS.get(under_tid, 1))
     style = STYLE[tid]
     c = Canvas(SIZE, SIZE)
     for y in range(SIZE):
         # The rng restarts per row from the mask, so every phase of an animated
         # tile makes the same sand and wear decisions and only the water moves.
-        rnd = scatter(0x5EED ^ (mask * 7919) ^ sum(map(ord, tid)) ^ (y * 331))
+        rnd = scatter(0x5EED ^ (mask * 7919) ^ sum(map(ord, tid)) ^ (y * 331)
+                      ^ (variant * 0x9E37))
         for x in range(SIZE):
             d, which = depth(x, y, mask)
             c.set(x, y, style(d, which, x, y, over.px[y][x], under.px[y][x], rnd, phase))

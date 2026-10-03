@@ -1,0 +1,7 @@
+{
+  "id": "tile.grass_leaf",
+  "sprite": "tile.grass_leaf",
+  "walkable": true,
+  "material": "grass",
+  "family": "grass"
+}

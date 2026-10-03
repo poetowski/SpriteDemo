@@ -133,13 +133,6 @@
       ]
     },
     {
-      "def": "prop.bed_straw",
-      "tile": [
-        15,
-        15
-      ]
-    },
-    {
       "def": "prop.crate",
       "tile": [
         5,

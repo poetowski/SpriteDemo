@@ -157,7 +157,7 @@ class World extends Phaser.Scene {
     this.hittable = [];
     this.blocked = new Set();
     for (const e of map.entities) {
-      this.spawn(e.def, e.tile[0], e.tile[1]);
+      this.spawn(e.def, e.tile[0], e.tile[1], e.variant || 0);
     }
 
     // --- player ----------------------------------------------------------
@@ -341,11 +341,14 @@ class World extends Phaser.Scene {
   }
 
   /** Create one entity from its definition id, at a tile. */
-  spawn(defId, tx, ty) {
+  spawn(defId, tx, ty, variant = 0) {
     const def = defOf(defId);
     const isActor = !!M.actors[defId];
     const isItem = !!M.items[defId];
-    const key = isActor ? `${def.sprite}/idle/${def.facing || 'down'}/0` : def.sprite;
+    // Which drawing of it the map asked for. Variant 0 is the plain key, so
+    // every entity written before props had variants still names its sprite.
+    const still = variant ? `${def.sprite}/v${variant}` : def.sprite;
+    const key = isActor ? `${def.sprite}/idle/${def.facing || 'down'}/0` : still;
     const { ox, oy, rec } = originOf(key);
     const p = this.tileCentre(tx, ty);
 
@@ -353,12 +356,12 @@ class World extends Phaser.Scene {
     sprite.setDepth(p.y);
     if (isActor) {
       sprite.play(`${def.sprite}/idle/${def.facing || 'down'}`);
-    } else if (M.anims[def.sprite]) {
+    } else if (M.anims[still]) {
       // A prop that moves of its own accord - a fire, a sail, the bees. Each
       // one starts at a different point in the cycle, keyed off its tile:
       // a row of campfires flickering in step reads as one object repeated
       // rather than as several things burning.
-      sprite.play(def.sprite);
+      sprite.play(still);
       sprite.anims.setProgress((((tx * 7 + ty * 13) % 16) + 0.5) / 16);
     }
 

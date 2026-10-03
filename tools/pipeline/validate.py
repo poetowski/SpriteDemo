@@ -269,6 +269,19 @@ def run(content, man, tile_canvases=None):
             ex, ey = e["tile"]
             if not (0 <= ex < w and 0 <= ey < h):
                 _fail("map-entity", f"{mid}: {e['def']} at {e['tile']} is off the map")
+            # A variant is a drawing that has to exist. The editor rolls one
+            # when a prop is placed and writes it into the map, so a map can
+            # outlive the art it was made against - dropping a variant from a
+            # generator has to fail here rather than spawn a blank sprite.
+            var = e.get("variant", 0)
+            nvar = defn.get("variants", 1)
+            if not isinstance(var, int) or isinstance(var, bool) or var < 0:
+                _fail("map-variant", f"{mid}: {e['def']} at {e['tile']} has "
+                                     f"variant {var!r}, which is not an index")
+            if var >= nvar:
+                _fail("map-variant",
+                      f"{mid}: {e['def']} at {e['tile']} asks for variant {var}, "
+                      f"but only {nvar} {'is' if nvar == 1 else 'are'} drawn")
             for dx, dy in defn.get("footprint") or [[0, 0]]:
                 fx, fy = ex + dx, ey + dy
                 where = f"{e['def']} at {e['tile']}"
@@ -304,6 +317,7 @@ def run(content, man, tile_canvases=None):
     passed.append("map-shape")
     passed.append("map-legend")
     passed.append("map-entity")
+    passed.append("map-variant")
     passed.append("map-footprint")
     passed.append("map-overlap")
     passed.append("map-spawn")

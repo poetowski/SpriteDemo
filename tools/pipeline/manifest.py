@@ -28,6 +28,21 @@ def load_content(root):
     return out
 
 
+def _prop(defn, sprites):
+    """A prop record, plus how many drawings of it the art library holds.
+
+    Counted off the sprite keys rather than declared in the content, because
+    the drawings are what a variant actually is - a number in a JSON file that
+    the art does not back would have the editor roll a variant nothing can
+    draw."""
+    out = _strip(defn)
+    n = 1
+    while f"{defn['sprite']}/v{n}" in sprites:
+        n += 1
+    out["variants"] = n
+    return out
+
+
 def build(content, atlases, sprites, anims, tileset=None, grids=None):
     """Assemble the manifest dict the engine consumes."""
     tiles = {}
@@ -52,7 +67,7 @@ def build(content, atlases, sprites, anims, tileset=None, grids=None):
         "sprites": sprites,
         "anims": anims,
         "tiles": tiles,
-        "props": {k: _strip(v) for k, v in content["props"].items()},
+        "props": {k: _prop(v, sprites) for k, v in content["props"].items()},
         "actors": {k: _strip(v) for k, v in content["actors"].items()},
         "items": {k: _strip(v) for k, v in content["items"].items()},
         "dialogue": {k: _strip(v) for k, v in content["dialogue"].items()},

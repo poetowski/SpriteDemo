@@ -204,6 +204,69 @@ function dropScratch() {
   check('a surrounded tile resolves to the plain fill',
         middle.plain.includes(middle.index), `index ${middle.index}`);
 
+  // A terrain narrow enough to be all edge still has to vary. A one-tile-wide
+  // run has no cell with eight neighbours of its own, so while transitions
+  // were drawn only for variant 0 every tile of a path was the same drawing -
+  // the other variants sat in the atlas with nothing able to reach them. The
+  // check is on a copy of the map, so it paints nothing and undoes nothing.
+  const strip = await page.evaluate(() => {
+    const m = structuredClone(state.map);
+    const used = new Set(Object.keys(m.legend));
+    const found = Object.entries(m.legend).find(([, id]) => id === 'tile.gravel');
+    let ch = found && found[0];
+    if (!ch) {
+      ch = [...'@!$%^&*'].find((c) => !used.has(c));
+      m.legend[ch] = 'tile.gravel';
+    }
+    const y = 9, row = [...m.ground[y]], idx = [];
+    for (let x = 2; x < 14; x++) row[x] = ch;
+    m.ground[y] = row.join('');
+    for (let x = 2; x < 14; x++) idx.push(indexAt(x, y, m));
+    return { idx, variants: state.M.tileset.variants['tile.gravel'] };
+  });
+  check('a one-tile-wide run varies along its length',
+        new Set(strip.idx).size > 1,
+        `${new Set(strip.idx).size} distinct frames over ${strip.idx.length} tiles`);
+  check('and none of them is the plain fill, because none is surrounded',
+        strip.idx.every((i) => !strip.variants.includes(i)),
+        `frames ${[...new Set(strip.idx)].sort((a, b) => a - b).join(',')}`);
+
+  // A prop with several drawings is rolled when it is placed and the roll is
+  // written into the map, which is the difference between a prop variant and
+  // a terrain one: the same prop on the same square twice may be two different
+  // things, and moving one must not silently redraw it. Placed on a copy, so
+  // the test paints nothing it has to undo.
+  const rolled = await page.evaluate(() => {
+    const id = Object.keys(state.M.props).find((k) => (state.M.props[k].variants || 1) > 1);
+    if (!id) return { id: null };
+    const n = state.M.props[id].variants;
+    const keep = state.map;
+    state.map = structuredClone(keep);
+    state.object = id;
+    const seen = new Set();
+    let placed = 0;
+    for (let y = 1; y < 19 && placed < 60; y++) {
+      for (let x = 1; x < 19 && placed < 60; x++) {
+        const before = state.map.entities.length;
+        place(x, y);
+        if (state.map.entities.length === before) continue;
+        placed++;
+        seen.add(state.map.entities[state.map.entities.length - 1].variant || 0);
+      }
+    }
+    const badge = document.querySelector(`#pal-objects .swatch[data-id="${id}"] .vars`);
+    state.map = keep;
+    return { id, n, placed, seen: [...seen].sort(), badge: badge && badge.textContent };
+  });
+  check('a prop with several drawings rolls one when it is placed',
+        rolled.id && rolled.seen.length > 1,
+        `${rolled.id}: ${rolled.placed} placed, variants seen ${JSON.stringify(rolled.seen)}`);
+  check('and over enough placements every drawing comes up',
+        rolled.id && rolled.seen.length === rolled.n,
+        `${rolled.seen && rolled.seen.length} of ${rolled.n}`);
+  check('the palette says how many drawings there are',
+        rolled.badge === "×" + rolled.n, `badge ${rolled.badge}`);
+
   // Flooding ground that something stands on has to take the object with it,
   // or the build would refuse the map.
   const flood = await page.evaluate(() => {
@@ -717,7 +780,7 @@ function dropScratch() {
   const vars = await page.evaluate(() => {
     const out = [];
     for (const el of document.querySelectorAll('#pal-terrain .swatch')) {
-      const tag = el.querySelector('.size');
+      const tag = el.querySelector('.vars');
       const t = window.editor.M.tiles[el.dataset.id];
       out.push({ id: el.dataset.id, shown: tag ? tag.textContent : null,
                  real: '×' + (t.variants || [t.index]).length });

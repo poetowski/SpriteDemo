@@ -89,24 +89,28 @@ def assemble():
                      f"run python tools/art.py")
 
     def lookup(tid, x, y, mask):
+        # The cell picks its variant first and its arrangement second, so a
+        # terrain varies along an edge as well as across an interior.
         entry = tiles[tid]
+        v = autotile.pick_variant(x, y, len(entry["base"]))
         if mask != FULL and entry["masks"]:
-            return entry["masks"][str(mask)]
-        return entry["base"][autotile.pick_variant(x, y, len(entry["base"]))]
+            return entry["masks"][v][str(mask)]
+        return entry["base"][v]
 
     grids = {mid: autotile.resolve(m, content["tiles"], lookup)
              for mid, m in content["maps"].items()}
     blocking = sorted(
         i for tid, e in tiles.items()
         if tid in content["tiles"] and not content["tiles"][tid].get("walkable", True)
-        for i in list(e["base"]) + list(e["masks"].values())
+        for i in list(e["base"]) + [j for t in e["masks"] for j in t.values()]
         + [j for seq in e["anim"].values() for j in seq])
     tileset = {
         "blocking": blocking,
         "animated": {i: seq for e in tiles.values() for i, seq in e["anim"].items()},
         "anim_ms": lib["anim_ms"],
         "variants": {tid: e["base"] for tid, e in tiles.items()},
-        "transitions": {tid: len(e["masks"]) for tid, e in tiles.items() if e["masks"]},
+        "transitions": {tid: len(e["masks"][0])
+                        for tid, e in tiles.items() if e["masks"]},
         # the full mask table, so the editor can resolve edges live exactly
         # the way the build does
         "masks": {tid: e["masks"] for tid, e in tiles.items() if e["masks"]},

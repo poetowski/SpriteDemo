@@ -108,11 +108,12 @@
       ]
     },
     {
-      "def": "prop.tree_oak_forked",
+      "def": "prop.tree_oak",
       "tile": [
         6,
         2
-      ]
+      ],
+      "variant": 1
     },
     {
       "def": "prop.tree_pine",
@@ -122,11 +123,12 @@
       ]
     },
     {
-      "def": "prop.tree_pine_slim",
+      "def": "prop.tree_pine",
       "tile": [
         7,
         5
-      ]
+      ],
+      "variant": 1
     },
     {
       "def": "prop.bush",
@@ -185,32 +187,36 @@
       ]
     },
     {
-      "def": "prop.bone_pile",
+      "def": "prop.bones",
       "tile": [
         14,
         8
-      ]
+      ],
+      "variant": 1
     },
     {
-      "def": "prop.bone_pile",
+      "def": "prop.bones",
       "tile": [
         15,
         8
-      ]
+      ],
+      "variant": 1
     },
     {
-      "def": "prop.bone_pile",
+      "def": "prop.bones",
       "tile": [
         15,
         7
-      ]
+      ],
+      "variant": 1
     },
     {
-      "def": "prop.bone_pile",
+      "def": "prop.bones",
       "tile": [
         14,
         7
-      ]
+      ],
+      "variant": 1
     },
     {
       "def": "prop.campfire",
