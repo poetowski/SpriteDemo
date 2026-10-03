@@ -124,9 +124,6 @@ async function openMap(name) {
   const scroller = document.querySelector(".main");
   if (scroller) { scroller.scrollLeft = 0; scroller.scrollTop = 0; }
   state.viewOrigin = [0, 0];
-  if (state.fit) {
-    state.zoom = fitZoom();
-  }
   render();
   message(`opened ${name}`);
 }
@@ -350,219 +347,6 @@ function viewport() {
   return { fw, fh, vw, vh, ox, oy, span };
 }
 
-// Zoom steps, small to large. Below the first detail step a tile is too small
-// for its sprite to say anything, and the map is drawn as an overview instead.
-const ZOOMS = [0.125, 0.25, 0.5, 1, 2, 3];
-const OVERVIEW_BELOW = 8;          // pixels a tile
-
-/** The zoom at which the whole map fits the window. */
-function fitZoom() {
-  const main = document.querySelector(".main");
-  const [w, h] = state.map.size;
-  const ts = state.map.tile_size;
-  const fw = (main && main.clientWidth) || w * ts;
-  const fh = (main && main.clientHeight) || h * ts;
-  return Math.max(0.02, Math.min(fw / (w * ts), fh / (h * ts)));
-}
-
-/** Change zoom, holding one point of the window still - the cursor when the
- *  wheel asked, the middle of the window otherwise - so zooming is moving in on
- *  something rather than being thrown back to the corner. */
-function setZoom(value, anchor) {
-  if (!state.map) return;
-  const main = document.querySelector(".main");
-  const ts = state.map.tile_size;
-  const before = ts * state.zoom;
-  const ax = anchor ? anchor[0] : main.clientWidth / 2;
-  const ay = anchor ? anchor[1] : main.clientHeight / 2;
-  // A map smaller than the window sits centred in it, so the window point is
-  // offset by that margin before it means a place on the map.
-  const ext = $("view-extent");
-  const margin = () => [parseFloat(ext.style.marginLeft) || 0, parseFloat(ext.style.marginTop) || 0];
-  const [ml, mt] = margin();
-  const wx = (main.scrollLeft + ax - ml) / before;
-  const wy = (main.scrollTop + ay - mt) / before;
-  state.fit = value === "fit";
-  state.zoom = state.fit ? fitZoom() : Number(value);
-  render();                                  // sizes and centres the extent for the new zoom
-  const [nl, nt] = margin();
-  main.scrollLeft = Math.max(0, wx * ts * state.zoom - ax + nl);
-  main.scrollTop = Math.max(0, wy * ts * state.zoom - ay + nt);
-  render();
-  $("zoom").value = state.fit ? "fit" : String(state.zoom);
-}
-
-/** One zoom step in or out from wherever zoom is now, fit included. */
-function stepZoom(dir, anchor) {
-  const z = state.zoom;
-  const next = dir > 0 ? ZOOMS.find((s) => s > z + 1e-9) : [...ZOOMS].reverse().find((s) => s < z - 1e-9);
-  if (next !== undefined) setZoom(String(next), anchor);
-}
-
-// Each terrain's colour is the average of its own drawing, so the overview
-// shows the ground as it is painted, not a key somebody picked to stand for it.
-const terrainColours = new Map();
-let coloursFor = null;
-let atlasPixels = null;
-function terrainColour(tid) {
-  if (coloursFor !== state.M) {
-    terrainColours.clear();
-    atlasPixels = null;
-    coloursFor = state.M;
-  }
-  let c = terrainColours.get(tid);
-  if (c) return c;
-  const img = state.images.tiles;
-  if (!atlasPixels) {
-    const cv = document.createElement("canvas");
-    cv.width = img.width;
-    cv.height = img.height;
-    const x = cv.getContext("2d");
-    x.drawImage(img, 0, 0);
-    atlasPixels = x.getImageData(0, 0, cv.width, cv.height);
-  }
-  const meta = state.M.atlases.tiles;
-  const [fw, fh] = meta.frame;
-  const t = state.M.tiles[tid];
-  const i = t ? t.index : 0;
-  const sx = (i % meta.cols) * fw, sy = Math.floor(i / meta.cols) * fh;
-  let r = 0, g = 0, b = 0, n = 0;
-  const d = atlasPixels.data;
-  for (let y = sy; y < sy + fh; y++) {
-    for (let x = sx; x < sx + fw; x++) {
-      const o = (y * atlasPixels.width + x) * 4;
-      if (d[o + 3] < 128) continue;
-      r += d[o]; g += d[o + 1]; b += d[o + 2]; n++;
-    }
-  }
-  c = n ? [r / n, g / n, b / n] : [0, 0, 0];
-  terrainColours.set(tid, c);
-  return c;
-}
-
-/** The map as a picture of its ground: a pixel a tile, in the terrain's colour,
- *  with a grain so a field of one terrain still reads as ground, and anything
- *  solid standing on it darkened - which is what makes a wood show as a wood. */
-const overviewCanvas = document.createElement("canvas");
-function drawOverview(ctx, m, v, x0, y0, x1, y1) {
-  const w = x1 - x0, h = y1 - y0;
-  if (w <= 0 || h <= 0) return;
-  const W = m.size[0];
-  const solid = new Set();
-  for (const e of m.entities) {
-    if (!blocksOf(e.def)) continue;
-    for (const [dx, dy] of footprintOf(e.def)) solid.add((e.tile[1] + dy) * W + e.tile[0] + dx);
-  }
-  overviewCanvas.width = w;
-  overviewCanvas.height = h;
-  const o = overviewCanvas.getContext("2d");
-  const img = o.createImageData(w, h);
-  for (let y = y0; y < y1; y++) {
-    for (let x = x0; x < x1; x++) {
-      const tid = terrainAt(x, y);
-      const c = tid ? terrainColour(tid) : [0, 0, 0];
-      const grain = 1 + ((((x * 73856093) ^ (y * 19349663)) >>> 0) % 13 - 6) / 100;
-      const k = grain * (solid.has(y * W + x) ? 0.62 : 1);
-      const p = ((y - y0) * w + (x - x0)) * 4;
-      img.data[p] = c[0] * k;
-      img.data[p + 1] = c[1] * k;
-      img.data[p + 2] = c[2] * k;
-      img.data[p + 3] = 255;
-    }
-  }
-  o.putImageData(img, 0, 0);
-  ctx.imageSmoothingEnabled = false;
-  ctx.drawImage(overviewCanvas, x0 * v.span, y0 * v.span, w * v.span, h * v.span);
-}
-
-// Ground at zoom 1 and below, cached in chunks. At 1/2 a window holds some
-// fifteen thousand tiles, and drawing each of them on every scroll step cost
-// 125ms. A chunk remembers the exact rows it was drawn from, one either side
-// included because a tile's edge depends on its neighbours, and redraws itself
-// when any of them differ - every edit replaces a row string or the whole
-// ground, so there is nothing to remember to invalidate and nothing to go stale.
-const CHUNK = 32;
-const CHUNK_KEEP = 96;
-const groundChunks = new Map();
-let chunksKey = null;
-
-function drawGroundChunks(ctx, m, v, x0, y0, x1, y1) {
-  const key = [state.zoom, m.size.join("x")];
-  if (!chunksKey || chunksKey.map !== m || chunksKey.M !== state.M || chunksKey.k !== key.join("|")) {
-    groundChunks.clear();
-    chunksKey = { map: m, M: state.M, k: key.join("|") };
-  }
-  const [w, h] = m.size;
-  const s = v.span;
-  const px = (t) => Math.round(t * s);              // whole pixels, so chunks never seam
-  const tiles = state.M.atlases.tiles;
-  const [tw, th] = tiles.frame;
-  for (let cy = Math.floor(y0 / CHUNK); cy * CHUNK < y1; cy++) {
-    for (let cx = Math.floor(x0 / CHUNK); cx * CHUNK < x1; cx++) {
-      const id = `${cx},${cy}`;
-      const tx0 = cx * CHUNK, ty0 = cy * CHUNK;
-      const tx1 = Math.min(w, tx0 + CHUNK), ty1 = Math.min(h, ty0 + CHUNK);
-      const rows = [];
-      for (let y = Math.max(0, ty0 - 1); y < Math.min(h, ty1 + 1); y++) rows.push(m.ground[y]);
-      let c = groundChunks.get(id);
-      if (!c || c.rows.length !== rows.length || c.rows.some((r, i) => r !== rows[i])) {
-        const cv = (c && c.canvas) || document.createElement("canvas");
-        cv.width = px(tx1) - px(tx0);
-        cv.height = px(ty1) - px(ty0);
-        const g = cv.getContext("2d");
-        g.imageSmoothingEnabled = false;
-        for (let y = ty0; y < ty1; y++) {
-          for (let x = tx0; x < tx1; x++) {
-            const i = indexAt(x, y);
-            g.drawImage(state.images.tiles,
-                        (i % tiles.cols) * tw, Math.floor(i / tiles.cols) * th, tw, th,
-                        px(x) - px(tx0), px(y) - px(ty0), px(x + 1) - px(x), px(y + 1) - px(y));
-          }
-        }
-        c = { canvas: cv, rows };
-      }
-      groundChunks.delete(id);                     // most recently used goes last
-      groundChunks.set(id, c);
-      ctx.drawImage(c.canvas, px(tx0), px(ty0));
-    }
-  }
-  while (groundChunks.size > CHUNK_KEEP) groundChunks.delete(groundChunks.keys().next().value);
-}
-
-// The last full drawing, minus the hover box. Moving the mouse changes nothing
-// but the box, so it costs a blit of this instead of drawing the map again -
-// which on a big map at a small zoom is the difference between smooth and not.
-const hoverBase = document.createElement("canvas");
-let hoverKey = null;
-const viewKey = (v) => `${state.mapName}|${state.zoom}|${v.ox}|${v.oy}|${v.vw}|${v.vh}`;
-
-function drawHover(ctx, v) {
-  if (!state.hover) return;
-  const [hx, hy] = state.hover;
-  const n = state.tool === "paint" ? state.brush : 1;
-  const o = Math.floor((n - 1) / 2);
-  const s = v.span;
-  // never smaller than a few pixels, or at the overview the cursor vanishes
-  const size = Math.max(s * n - 1, 5);
-  const c = (s * n - size) / 2;
-  ctx.strokeStyle = "rgba(255,255,255,.75)";
-  ctx.lineWidth = 1;
-  ctx.strokeRect((hx - o) * s + c + .5, (hy - o) * s + c + .5, size, size);
-}
-
-function renderHover() {
-  if (!state.map) return;
-  const v = viewport();
-  if (viewKey(v) !== hoverKey) return render();
-  const cv = $("view");
-  const ctx = cv.getContext("2d");
-  ctx.setTransform(1, 0, 0, 1, 0, 0);
-  ctx.drawImage(hoverBase, 0, 0);
-  ctx.setTransform(1, 0, 0, 1, -v.ox, -v.oy);
-  drawHover(ctx, v);
-  updateStatus();
-}
-
 // The tallest thing that can stand on a tile is 128px - eight tiles at 16 -
 // and it is anchored near its feet, so a prop this far outside the window can
 // still reach into it.
@@ -578,16 +362,7 @@ function render() {
   const v = viewport();
   state.viewOrigin = [v.ox, v.oy];
   const ext = $("view-extent");
-  if (ext) {
-    ext.style.width = v.fw + "px";
-    ext.style.height = v.fh + "px";
-    // A map smaller than the window sits in its middle rather than its corner,
-    // so zooming about the middle of the window is zooming about the map.
-    const main = document.querySelector(".main");
-    const cw = (main && main.clientWidth) || v.fw, ch = (main && main.clientHeight) || v.fh;
-    ext.style.marginLeft = Math.max(0, Math.floor((cw - v.fw) / 2)) + "px";
-    ext.style.marginTop = Math.max(0, Math.floor((ch - v.fh) / 2)) + "px";
-  }
+  if (ext) { ext.style.width = v.fw + "px"; ext.style.height = v.fh + "px"; }
   cv.width = v.vw;
   cv.height = v.vh;
   cv.style.left = v.ox + "px";
@@ -605,38 +380,27 @@ function render() {
   const near = (e) => e.tile[0] >= x0 - DRAW_PAD && e.tile[0] < x1 + DRAW_PAD
                    && e.tile[1] >= y0 - DRAW_PAD && e.tile[1] < y1 + DRAW_PAD;
 
-  // Below eight pixels a tile a sprite is a smudge, and drawing every one is
-  // most of the cost; the overview draws what the ground is instead.
-  const overview = v.span < OVERVIEW_BELOW;
-  state.lastRender = { mode: overview ? "overview" : "detail", labels: [] };
-  if (overview) {
-    drawOverview(ctx, m, v, x0, y0, x1, y1);
-  } else {
-    if (v.span <= 16) {
-      drawGroundChunks(ctx, m, v, x0, y0, x1, y1);
-    } else {
-      const tiles = state.M.atlases.tiles;
-      const [tw, th] = tiles.frame;
-      for (let y = y0; y < y1; y++) {
-        for (let x = x0; x < x1; x++) {
-          const i = indexAt(x, y);
-          ctx.drawImage(state.images.tiles,
-                        (i % tiles.cols) * tw, Math.floor(i / tiles.cols) * th, tw, th,
-                        x * ts * z, y * ts * z, ts * z, ts * z);
-        }
-      }
-    }
-    // Entities in the order the game draws them: by the y their anchor sits on.
-    const ents = m.entities.filter(near).sort((a, b) => a.tile[1] - b.tile[1]);
-    const links = linkIndex(m);
-    for (const e of ents) {
-      const rec = spriteForEntity(e, links);
-      if (!rec) continue;
-      drawSprite(ctx, rec, e.tile[0] * ts + ts / 2, e.tile[1] * ts + ts / 2, z);
+  const tiles = state.M.atlases.tiles;
+  const [tw, th] = tiles.frame;
+  for (let y = y0; y < y1; y++) {
+    for (let x = x0; x < x1; x++) {
+      const i = indexAt(x, y);
+      ctx.drawImage(state.images.tiles,
+                    (i % tiles.cols) * tw, Math.floor(i / tiles.cols) * th, tw, th,
+                    x * ts * z, y * ts * z, ts * z, ts * z);
     }
   }
 
-  if (state.grid && !overview) {
+  // Entities in the order the game draws them: by the y their anchor sits on.
+  const ents = m.entities.filter(near).sort((a, b) => a.tile[1] - b.tile[1]);
+  const links = linkIndex(m);
+  for (const e of ents) {
+    const rec = spriteForEntity(e, links);
+    if (!rec) continue;
+    drawSprite(ctx, rec, e.tile[0] * ts + ts / 2, e.tile[1] * ts + ts / 2, z);
+  }
+
+  if (state.grid) {
     ctx.strokeStyle = "rgba(255,255,255,.07)";
     ctx.lineWidth = 1;
     ctx.beginPath();
@@ -646,9 +410,7 @@ function render() {
   }
 
   // Footprints of solid things, so blocked ground is visible while editing.
-  // The overview already darkens them, and a red tint on every tree would
-  // turn the woods red.
-  for (const e of overview ? [] : m.entities) {
+  for (const e of m.entities) {
     if (!near(e)) continue;
     if (!blocksOf(e.def)) continue;
     ctx.fillStyle = "rgba(224,106,90,.20)";
@@ -663,12 +425,6 @@ function render() {
   for (const e of m.entities) {
     if (!near(e)) continue;
     if (!gatherableOf(e.def)) continue;
-    if (overview) {
-      const s = Math.max(3, ts * z * .6);
-      ctx.fillStyle = "#e0c341";
-      ctx.fillRect((e.tile[0] + .5) * ts * z - s / 2, (e.tile[1] + .5) * ts * z - s / 2, s, s);
-      continue;
-    }
     ctx.strokeStyle = "#e0c341";
     ctx.lineWidth = 1.5;
     ctx.beginPath();
@@ -696,21 +452,18 @@ function render() {
     const gate = gateFor(m.id, i);
     const colour = gate ? gate.colour : "#6cc0e0";
     const cell = ts * z;
-    ctx.fillStyle = overview ? colour : colour + "4d";
-    const mark = Math.max(cell, 3);
-    for (const [tx, ty] of ex.tiles) {
-      ctx.fillRect(tx * cell + (cell - mark) / 2, ty * cell + (cell - mark) / 2, mark, mark);
-    }
+    ctx.fillStyle = colour + "4d";
+    for (const [tx, ty] of ex.tiles) ctx.fillRect(tx * cell, ty * cell, cell, cell);
     ctx.strokeStyle = colour;
     ctx.lineWidth = 1;
-    for (const [tx, ty] of overview ? [] : ex.tiles) {
+    for (const [tx, ty] of ex.tiles) {
       ctx.strokeRect(tx * cell + .5, ty * cell + .5, cell - 1, cell - 1);
     }
     // An arrow per tile, pointing the way you leave - which is the thing that
     // was wrong in the content and invisible until it was drawn.
     const edge = edgeOf(m, ex.tiles);
     const step = { west: [-1, 0], east: [1, 0], north: [0, -1], south: [0, 1] }[edge];
-    if (step && !overview) {
+    if (step) {
       ctx.fillStyle = colour;
       for (const [tx, ty] of ex.tiles) {
         const cx = tx * cell + cell / 2 + step[0] * cell * .22;
@@ -721,7 +474,6 @@ function render() {
     const [lx, ly] = ex.tiles[Math.floor(ex.tiles.length / 2)];
     const to = (state.M.maps[ex.to] && state.M.maps[ex.to].name) || ex.to;
     const label = gate ? `${gate.n}  ${to}` : to;
-    state.lastRender.labels.push(label);
     ctx.font = "600 11px ui-monospace, Consolas, monospace";
     const wid = ctx.measureText(label).width + 10;
     const lift = edge === "east" ? -wid - 3 : cell + 3;
@@ -740,11 +492,6 @@ function render() {
       const colour = gate ? gate.colour : "#6cc0e0";
       const cell = ts * z;
       for (const [ax, ay] of arrivalsOf(ex) || []) {
-        if (overview) {
-          ctx.fillStyle = colour + "aa";
-          ctx.fillRect(ax * cell, ay * cell, Math.max(cell, 2), Math.max(cell, 2));
-          continue;
-        }
         ctx.strokeStyle = colour;
         ctx.setLineDash([3, 2]);
         ctx.lineWidth = 1;
@@ -758,20 +505,17 @@ function render() {
   if (sp) {
     ctx.strokeStyle = "#74c46b";
     ctx.lineWidth = 2;
-    if (overview) {
-      ctx.beginPath();
-      ctx.arc((sp[0] + .5) * ts * z, (sp[1] + .5) * ts * z, 6, 0, Math.PI * 2);
-      ctx.stroke();
-    } else {
-      ctx.strokeRect(sp[0] * ts * z + 1, sp[1] * ts * z + 1, ts * z - 2, ts * z - 2);
-    }
+    ctx.strokeRect(sp[0] * ts * z + 1, sp[1] * ts * z + 1, ts * z - 2, ts * z - 2);
   }
 
-  hoverBase.width = cv.width;
-  hoverBase.height = cv.height;
-  hoverBase.getContext("2d").drawImage(cv, 0, 0);
-  hoverKey = viewKey(v);
-  drawHover(ctx, v);
+  if (state.hover) {
+    const [hx, hy] = state.hover;
+    const n = state.tool === "paint" ? state.brush : 1;
+    const o = Math.floor((n - 1) / 2);
+    ctx.strokeStyle = "rgba(255,255,255,.55)";
+    ctx.lineWidth = 1;
+    ctx.strokeRect((hx - o) * ts * z + .5, (hy - o) * ts * z + .5, ts * z * n - 1, ts * z * n - 1);
+  }
   updateStatus();
 }
 
@@ -959,14 +703,12 @@ function snapshot() {
                                    legend: m.legend, spawn: m.spawn }));
   if (state.undo.length > 60) state.undo.shift();
   state.dirty = true;
-  hoverKey = null;
 }
 
 function undo() {
   const prev = state.undo.pop();
   if (!prev) return message("nothing to undo");
   Object.assign(state.map, JSON.parse(prev));
-  hoverKey = null;
   render();
   message("undone");
 }
@@ -2729,41 +2471,17 @@ function wire() {
     if (down && changed && (state.tool === "paint" || e.buttons === 2)) {
       applyAt(x, y, e.buttons === 2 ? 2 : 0);
     } else if (changed) {
-      renderHover();
+      render();
     }
   });
   cv.addEventListener("pointerup", () => { down = false; });
-  cv.addEventListener("pointerleave", () => { state.hover = null; down = false; renderHover(); });
-  // Ctrl+wheel zooms about the cursor, anywhere over the map area - a fitted
-  // map leaves margins, and the browser zooms the whole page if the wheel lands
-  // in one unclaimed. It steps by distance rather than per event: a mouse notch
-  // is about 100, but a trackpad pinch sends dozens of tiny deltas, and one
-  // step each took a pinch from 1/8 to 3x in a single gesture.
-  let wheelAcc = 0, wheelAt = 0;
-  document.querySelector(".main").addEventListener("wheel", (e) => {
-    if (!(e.ctrlKey || e.metaKey) || !state.map || state.view !== "map") return;
-    e.preventDefault();
-    const now = performance.now();
-    const d = e.deltaY * (e.deltaMode === 1 ? 33 : e.deltaMode === 2 ? 400 : 1);
-    if (now - wheelAt > 400 || Math.sign(d) !== Math.sign(wheelAcc)) wheelAcc = 0;
-    wheelAt = now;
-    wheelAcc += d;
-    if (Math.abs(wheelAcc) < 50) return;
-    const dir = wheelAcc < 0 ? 1 : -1;
-    wheelAcc = 0;
-    const r = e.currentTarget.getBoundingClientRect();
-    stepZoom(dir, [e.clientX - r.left, e.clientY - r.top]);
-  }, { passive: false });
+  cv.addEventListener("pointerleave", () => { state.hover = null; down = false; render(); });
 
   // Scrolling moves the window over the map, so it has to be redrawn - cheap
   // now that a redraw only costs what is on screen. Resizing changes how much
   // of the map the window covers, which is the same question.
   const scroller = document.querySelector(".main");
-  const redrawMap = () => {
-    if (state.view !== "map" || !state.map) return;
-    if (state.fit) state.zoom = fitZoom();     // fit means fit, whatever the window does
-    render();
-  };
+  const redrawMap = () => { if (state.view === "map" && state.map) render(); };
   if (scroller) scroller.addEventListener("scroll", redrawMap, { passive: true });
   addEventListener("resize", redrawMap);
 
@@ -2827,9 +2545,7 @@ function wire() {
 
   for (const t of ["paint", "place", "erase", "spawn"]) $(`t-${t}`).onclick = () => setTool(t);
   $("brush").onchange = (e) => { state.brush = Number(e.target.value); render(); };
-  $("zoom").onchange = (e) => setZoom(e.target.value);
-  $("zoom-out").onclick = () => stepZoom(-1);
-  $("zoom-in").onclick = () => stepZoom(1);
+  $("zoom").onchange = (e) => { state.zoom = Number(e.target.value); render(); };
   $("grid").onchange = (e) => { state.grid = e.target.checked; render(); };
   $("undo").onclick = undo;
   $("save").onclick = save;
@@ -2847,9 +2563,6 @@ function wire() {
                     i: "items", a: "actors" };
     const view = views[e.key.toLowerCase()];
     if (view) return setView(state.view === view ? "map" : view);
-    if (state.view === "map" && (e.key === "-" || e.key === "_")) return stepZoom(-1);
-    if (state.view === "map" && (e.key === "=" || e.key === "+")) return stepZoom(1);
-    if (state.view === "map" && e.key.toLowerCase() === "f") return setZoom("fit");
     if (e.key.toLowerCase() === "v") {
       // On the cell under the cursor rather than a selection, because that is
       // how every other edit in the map view works.
@@ -2878,7 +2591,6 @@ function showTab(terrain) {
 Object.assign(window, {
   editor: state, openMap, terrainAt, indexAt, paint, place, erase, applyAt,
   snapshot, undo, save, setTool, showTab, render, cycleVariant, variantsOf, viewport,
-  setZoom, stepZoom, fitZoom, renderHover, terrainColour,
   setView, renderDefs, saveDef, DEF_FIELDS, loadWorld, layoutWorld, renderWorld, worldNotes, edgeOf, arrivalsOf,
   componentsOf, mapAtWorld, worldPointOf, worldScale,
   gatesOf, gateFor, refreshWorld, gatherableOf, blocksOf, interiorsOf, framesOf,

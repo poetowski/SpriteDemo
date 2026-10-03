@@ -133,16 +133,9 @@ quietly disconnected the world - and no gate caught it, because a map without
 exits is perfectly legal. Anything added to the map format needs to survive
 that round trip.
 
-**Zoom** runs from 1/8 to 3×, plus **fit**, through the select, the small −/+
-buttons beside it, Ctrl+wheel about the cursor, and the `-` `=` `f` keys. The
-canvas is only ever the size of the window (`viewport()`): an extent div
+The canvas is only ever the size of the window (`viewport()`): an extent div
 carries the map's full size for the scrollbars, and `render()` draws in world
-pixels under a translate. Below 8px a tile (`OVERVIEW_BELOW`) the map is drawn
-as an overview instead of sprites. Each tile is filled with the average colour
-of its terrain's own drawing, solid things darken it so woods read as woods,
-loot shows as gold dots, and gates keep their numbered labels. Hovering blits
-the last full frame (`renderHover`) rather than redrawing, so the cost of
-moving the mouse does not grow with the map.
+pixels under a translate, so a big map costs what is on screen.
 
 Paint terrain, place and erase objects, move the spawn, undo, save, and
 **save + build** to run the gates without leaving the page. **W** is the world

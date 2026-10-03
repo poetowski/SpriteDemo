@@ -76,10 +76,7 @@ in its own right:
   spawn and the doorways between maps. Undo, save, and save + build to run the
   gates without leaving the page.
 - **Maps of any size.** The canvas is a window onto the map, so a 300×300 map
-  opens in a few tens of milliseconds. Zoom runs from 1/8 to 3× with **fit**,
-  Ctrl+wheel about the cursor, and **−** / **+** buttons. Below 1/2 the map is
-  drawn as an overview: each tile in its terrain's own colour, woods darker,
-  loot in gold, and every gate labelled with where it goes.
+  opens in a few tens of milliseconds.
 - **The world, not just a map.** The world atlas (**W**) lays every map out by
   its seams and portals and groups maps into zones. The quest board (**Q**)
   says whether the world can pay each errand, the conversation view (**D**)

@@ -123,7 +123,6 @@
   /* The canvas is the size of the window you look through; the extent behind
      it is the size of the map, so the scrollbars still describe the whole of
      it. See viewport() - a 300x300 map does not fit in a canvas. */
-  .bar button.mini { padding: 0 7px; min-width: 22px; line-height: 20px; font-size: 13px; }
   #view-extent { position: relative; }
   #view-extent[hidden] { display: none; }
   #view { image-rendering: pixelated; display: block; cursor: crosshair;
@@ -244,7 +243,7 @@
     <button id="t-spawn" title="S">spawn</button>
   </div>
   <label>brush <select id="brush"><option>1</option><option>2</option><option>3</option></select></label>
-  <label>zoom <button id="zoom-out" class="mini" title="Zoom out (-)" aria-label="Zoom out">&minus;</button><select id="zoom" title="Ctrl+wheel, - and =, F to fit"><option value="0.125">1/8</option><option value="0.25">1/4</option><option value="0.5">1/2</option><option value="1">1</option><option value="2" selected>2</option><option value="3">3</option><option value="fit">fit</option></select><button id="zoom-in" class="mini" title="Zoom in (=)" aria-label="Zoom in">+</button></label>
+  <label>zoom <select id="zoom"><option>1</option><option selected>2</option><option>3</option></select></label>
   <label><input id="grid" type="checkbox" checked> grid</label>
   <button id="undo" class="danger" title="Ctrl+Z">undo</button>
   <button id="save" class="primary" title="Ctrl+S">save</button>
@@ -296,9 +295,6 @@
     <b>alt-click</b> picks up the terrain or object under the cursor<br>
     <b>v</b> re-draws the object under the cursor - the next of its
     drawings, shift-v the one before; the status bar says which<br>
-    <b>ctrl+wheel</b>, <b>-</b> and <b>=</b> zoom about the cursor; <b>f</b> fits the
-    whole map. Below 1/2 the map is an overview: each tile in its terrain's
-    colour, woods darker, loot in gold, every gate named<br>
     <span style="color:var(--bad)">&#9632;</span> solid &nbsp;
     <span style="color:var(--accent)">&#9679;</span> walkable scenery<br>
     <span style="color:#e0c341">&#9670;</span> gatherable - goes in the bag; ringed on the map<br>
