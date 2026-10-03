@@ -89,7 +89,7 @@ in its own right:
   it blocks all come from the content. That separation is what lets it serve
   a different game whose content follows the same format.
 - **Tested like the game.** `node tools/editor_test.cjs` drives the real editor
-  in headless Chromium, 139 checks, and every editor feature is added with its
+  in headless Chromium, 130 checks, and every editor feature is added with its
   checks.
 
 ## Layout
