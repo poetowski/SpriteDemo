@@ -267,6 +267,78 @@ function dropScratch() {
   check('the palette says how many drawings there are',
         rolled.badge === "×" + rolled.n, `badge ${rolled.badge}`);
 
+  // Rolling at placement is only half of it: an author who wants a particular
+  // oak has to be able to say so. Cycling is driven through the page's own
+  // keydown handler rather than cycleVariant(), so a binding that stopped
+  // reaching the handler would fail here.
+  const cycled = await page.evaluate(() => {
+    const id = Object.keys(state.M.props).find((k) => (state.M.props[k].variants || 1) > 1);
+    const n = state.M.props[id].variants;
+    const keep = state.map;
+    state.map = structuredClone(keep);
+    state.object = id;
+    const spot = [1, 1];
+    while (state.map.entities.length) state.map.entities.pop();
+    place(spot[0], spot[1]);
+    const e = () => state.map.entities[state.map.entities.length - 1];
+    e().variant = 0;
+    state.hover = spot;
+    render();
+    const key = (shift) => dispatchEvent(new KeyboardEvent('keydown',
+      { key: shift ? 'V' : 'v', shiftKey: !!shift, bubbles: true }));
+    const walk = [];
+    for (let i = 0; i < n; i++) { key(false); walk.push(e().variant || 0); }
+    const wrapped = e().variant || 0;
+    key(true);
+    const back = e().variant || 0;
+    // what the status bar says about the one on the map
+    state.hover = spot;
+    render();
+    const said = document.getElementById('st-objects').textContent;
+    const undoable = (() => { undo(); return e() ? (e().variant || 0) : null; })();
+    const one = Object.keys(state.M.props).find((k) => (state.M.props[k].variants || 1) === 1);
+    state.object = one;
+    // Hunt for a square that will take it: most of this map is furniture or
+    // wall, and a place() that quietly failed would have the check below
+    // reading the oak again and passing for the wrong reason.
+    let lone = null;
+    for (let y = 1; y < 19 && !lone; y++) {
+      for (let x = 1; x < 19 && !lone; x++) {
+        if (x === spot[0] && y === spot[1]) continue;
+        const before = state.map.entities.length;
+        place(x, y);
+        if (state.map.entities.length === before) continue;
+        const ent = state.map.entities[state.map.entities.length - 1];
+        state.hover = [x, y];
+        key(false);
+        lone = { msg: document.getElementById('msg').textContent,
+                 variant: ent.variant, at: [x, y] };
+      }
+    }
+    state.map = keep;
+    state.hover = null;
+    render();
+    return { id, n, walk, wrapped, back, said, undoable, lone, one };
+  });
+  check('v re-draws the object under the cursor',
+        cycled.walk.length > 1 && cycled.walk[0] === 1,
+        `${cycled.id}: ${JSON.stringify(cycled.walk)}`);
+  check('and steps through every drawing it has',
+        new Set(cycled.walk).size === cycled.n, `${new Set(cycled.walk).size} of ${cycled.n}`);
+  check('and comes back round rather than running off the end',
+        cycled.wrapped === 0, `wrapped to ${cycled.wrapped}`);
+  check('shift-v steps back',
+        cycled.back === cycled.n - 1, `${cycled.wrapped} -> ${cycled.back}`);
+  check('the status bar says which drawing is on the square',
+        new RegExp(`\[${cycled.n}/${cycled.n}\]`).test(cycled.said), cycled.said);
+  check('re-drawing is undoable', cycled.undoable === 0,
+        `back to ${cycled.undoable}`);
+  check('a prop with one drawing is left alone',
+        cycled.lone && cycled.lone.variant === undefined,
+        `${cycled.one} at ${cycled.lone && cycled.lone.at} -> ${cycled.lone && cycled.lone.variant}`);
+  check('and says why rather than doing nothing',
+        cycled.lone && /only the one drawing/.test(cycled.lone.msg), cycled.lone && cycled.lone.msg);
+
   // Flooding ground that something stands on has to take the object with it,
   // or the build would refuse the map.
   const flood = await page.evaluate(() => {

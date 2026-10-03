@@ -479,6 +479,11 @@ function updateStatus() {
   $("st-objects").textContent = here.length
     ? here.map((e) => e.def + (gatherableOf(e.def) ? " (gatherable)"
         : blocksOf(e.def) ? " (solid)" : "")
+        // Which drawing this one is, for a prop that has more than one. The
+        // palette can only say how many there are; this is the only place that
+        // says which went down here, and it is the thing V changes.
+        + (variantsOf(e.def) > 1
+            ? ` [${(e.variant || 0) + 1}/${variantsOf(e.def)}]` : "")
         + (named.has(e.def) ? ` ✦ ${named.get(e.def).join("; ")}` : "")).join(", ")
     : "-";
   let said = "";
@@ -593,7 +598,7 @@ function buildPalettes() {
         const vtag = document.createElement("i");
         vtag.className = "vars";
         vtag.textContent = "×" + nvar;
-        vtag.title = `${nvar} drawings - one is picked at random when you place it`;
+        vtag.title = `${nvar} drawings - one is rolled when you place it, and v re-draws it`;
         el.append(vtag);
       }
       const label = document.createElement("span");
@@ -731,6 +736,26 @@ function erase(x, y) {
   const last = hit[hit.length - 1];          // the most recently placed
   m.entities.splice(m.entities.indexOf(last), 1);
   return m.entities.length !== before;
+}
+
+/** Step the topmost varianted prop under a cell on to its next drawing.
+ *
+ *  Placing rolls a drawing, which is right for scattering a wood but no use
+ *  when you want *that* oak - and the only way to re-roll used to be to erase
+ *  and place again until the dice agreed, which also moved the prop to the top
+ *  of the entity list. Cycling is the same choice made deliberately. */
+function cycleVariant(x, y, step = 1) {
+  const here = state.map.entities.filter((e) => footprintOf(e.def)
+    .some(([dx, dy]) => e.tile[0] + dx === x && e.tile[1] + dy === y));
+  if (!here.length) return message("nothing there to re-draw", true), false;
+  const hit = here[here.length - 1];              // the one erase would take
+  const n = variantsOf(hit.def);
+  if (n < 2) return message(`${hit.def} has only the one drawing`, true), false;
+  snapshot();
+  hit.variant = (((hit.variant || 0) + step) % n + n) % n;
+  render();
+  message(`${hit.def} is drawing ${hit.variant + 1} of ${n}`);
+  return true;
 }
 
 function setSpawn(x, y) {
@@ -2467,6 +2492,12 @@ function wire() {
                     i: "items", a: "actors" };
     const view = views[e.key.toLowerCase()];
     if (view) return setView(state.view === view ? "map" : view);
+    if (e.key.toLowerCase() === "v") {
+      // On the cell under the cursor rather than a selection, because that is
+      // how every other edit in the map view works.
+      if (!state.hover) return message("point at something to re-draw it", true);
+      return cycleVariant(state.hover[0], state.hover[1], e.shiftKey ? -1 : 1);
+    }
     const keys = { p: "paint", o: "place", x: "erase", s: "spawn" };
     if (keys[e.key.toLowerCase()]) setTool(keys[e.key.toLowerCase()]);
   });
@@ -2488,7 +2519,7 @@ function showTab(terrain) {
 // window property, hence the explicit handle.)
 Object.assign(window, {
   editor: state, openMap, terrainAt, indexAt, paint, place, erase, applyAt,
-  snapshot, undo, save, setTool, showTab, render,
+  snapshot, undo, save, setTool, showTab, render, cycleVariant, variantsOf,
   setView, renderDefs, saveDef, DEF_FIELDS, loadWorld, layoutWorld, renderWorld, worldNotes, edgeOf, arrivalsOf,
   componentsOf, mapAtWorld, worldPointOf, worldScale,
   gatesOf, gateFor, refreshWorld, gatherableOf, blocksOf, interiorsOf, framesOf,
