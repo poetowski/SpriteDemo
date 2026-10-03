@@ -119,6 +119,11 @@ async function openMap(name) {
   state.undo = [];
   state.dirty = false;
   variantCache.clear();
+  // A new map opens at its top-left rather than wherever the last one was
+  // scrolled to, which on a large map is otherwise the middle of nowhere.
+  const scroller = document.querySelector(".main");
+  if (scroller) { scroller.scrollLeft = 0; scroller.scrollTop = 0; }
+  state.viewOrigin = [0, 0];
   render();
   message(`opened ${name}`);
 }
@@ -317,6 +322,36 @@ function drawSprite(ctx, rec, cx, cy, z) {
                 fw * z, fh * z);
 }
 
+/** The slice of the map the canvas holds, in world pixels.
+ *
+ *  A map is drawn into a canvas the size of the window you look through, not
+ *  the size of the map. Drawing the whole of it was fine while every map was
+ *  twenty tiles square and is not survivable at three hundred: that is a
+ *  14400px square at zoom 3 - most of a gigabyte of canvas, and over two
+ *  seconds to fill, once per mouse move, because hovering a new cell redraws.
+ *  The extent behind the canvas carries the full size so the scrollbars still
+ *  describe the map, and everything in render() goes on drawing in world
+ *  pixels - the translate below is what turns those into canvas ones. */
+function viewport() {
+  const m = state.map;
+  const [w, h] = m.size;
+  const span = m.tile_size * state.zoom;
+  const fw = w * span, fh = h * span;
+  const main = document.querySelector(".main");
+  // Before the first layout there is no window to measure, and a zero-sized
+  // canvas would draw nothing at all - fall back to the whole map.
+  const vw = Math.min(fw, (main && main.clientWidth) || fw);
+  const vh = Math.min(fh, (main && main.clientHeight) || fh);
+  const ox = Math.max(0, Math.min(Math.round((main && main.scrollLeft) || 0), fw - vw));
+  const oy = Math.max(0, Math.min(Math.round((main && main.scrollTop) || 0), fh - vh));
+  return { fw, fh, vw, vh, ox, oy, span };
+}
+
+// The tallest thing that can stand on a tile is 128px - eight tiles at 16 -
+// and it is anchored near its feet, so a prop this far outside the window can
+// still reach into it.
+const DRAW_PAD = 8;
+
 function render() {
   const m = state.map;
   if (!m) return;
@@ -324,16 +359,31 @@ function render() {
   const ts = m.tile_size;
   const z = state.zoom;
   const cv = $("view");
-  cv.width = w * ts * z;
-  cv.height = h * ts * z;
+  const v = viewport();
+  state.viewOrigin = [v.ox, v.oy];
+  const ext = $("view-extent");
+  if (ext) { ext.style.width = v.fw + "px"; ext.style.height = v.fh + "px"; }
+  cv.width = v.vw;
+  cv.height = v.vh;
+  cv.style.left = v.ox + "px";
+  cv.style.top = v.oy + "px";
   const ctx = cv.getContext("2d");
   ctx.imageSmoothingEnabled = false;
-  ctx.clearRect(0, 0, cv.width, cv.height);
+  ctx.setTransform(1, 0, 0, 1, -v.ox, -v.oy);
+  ctx.clearRect(v.ox, v.oy, v.vw, v.vh);
+
+  // The cells the window actually covers. Everything below is clipped to this.
+  const x0 = Math.max(0, Math.floor(v.ox / v.span));
+  const y0 = Math.max(0, Math.floor(v.oy / v.span));
+  const x1 = Math.min(w, Math.ceil((v.ox + v.vw) / v.span));
+  const y1 = Math.min(h, Math.ceil((v.oy + v.vh) / v.span));
+  const near = (e) => e.tile[0] >= x0 - DRAW_PAD && e.tile[0] < x1 + DRAW_PAD
+                   && e.tile[1] >= y0 - DRAW_PAD && e.tile[1] < y1 + DRAW_PAD;
 
   const tiles = state.M.atlases.tiles;
   const [tw, th] = tiles.frame;
-  for (let y = 0; y < h; y++) {
-    for (let x = 0; x < w; x++) {
+  for (let y = y0; y < y1; y++) {
+    for (let x = x0; x < x1; x++) {
       const i = indexAt(x, y);
       ctx.drawImage(state.images.tiles,
                     (i % tiles.cols) * tw, Math.floor(i / tiles.cols) * th, tw, th,
@@ -342,7 +392,7 @@ function render() {
   }
 
   // Entities in the order the game draws them: by the y their anchor sits on.
-  const ents = [...m.entities].sort((a, b) => a.tile[1] - b.tile[1]);
+  const ents = m.entities.filter(near).sort((a, b) => a.tile[1] - b.tile[1]);
   const links = linkIndex(m);
   for (const e of ents) {
     const rec = spriteForEntity(e, links);
@@ -354,13 +404,14 @@ function render() {
     ctx.strokeStyle = "rgba(255,255,255,.07)";
     ctx.lineWidth = 1;
     ctx.beginPath();
-    for (let x = 0; x <= w; x++) { ctx.moveTo(x * ts * z + .5, 0); ctx.lineTo(x * ts * z + .5, cv.height); }
-    for (let y = 0; y <= h; y++) { ctx.moveTo(0, y * ts * z + .5); ctx.lineTo(cv.width, y * ts * z + .5); }
+    for (let x = x0; x <= x1; x++) { ctx.moveTo(x * ts * z + .5, v.oy); ctx.lineTo(x * ts * z + .5, v.oy + v.vh); }
+    for (let y = y0; y <= y1; y++) { ctx.moveTo(v.ox, y * ts * z + .5); ctx.lineTo(v.ox + v.vw, y * ts * z + .5); }
     ctx.stroke();
   }
 
   // Footprints of solid things, so blocked ground is visible while editing.
   for (const e of m.entities) {
+    if (!near(e)) continue;
     if (!blocksOf(e.def)) continue;
     ctx.fillStyle = "rgba(224,106,90,.20)";
     for (const [dx, dy] of footprintOf(e.def)) {
@@ -372,6 +423,7 @@ function render() {
   // painted flower pot are both just sprites on the ground otherwise, and
   // only one of them ends up in the bag.
   for (const e of m.entities) {
+    if (!near(e)) continue;
     if (!gatherableOf(e.def)) continue;
     ctx.strokeStyle = "#e0c341";
     ctx.lineWidth = 1.5;
@@ -387,6 +439,7 @@ function render() {
   const named = questTargets();
   ctx.font = "600 10px ui-monospace, Consolas, monospace";
   for (const e of m.entities) {
+    if (!near(e)) continue;
     if (!named.has(e.def)) continue;
     ctx.fillStyle = "#e0c341";
     ctx.fillText("✦", e.tile[0] * ts * z + ts * z - 9, e.tile[1] * ts * z + 10);
@@ -1831,6 +1884,11 @@ async function setView(name) {
   for (const [view, id] of Object.entries(SIDES)) $(id).hidden = view !== name;
   for (const [view, id] of Object.entries(LEGENDS)) $(id).hidden = view !== name;
   const map = name === "map";
+  // The canvas keeps its own hidden flag - things read it - and the extent
+  // behind it has to follow, or it holds the scrollbars open over every
+  // other view.
+  const ext = $("view-extent");
+  if (ext) ext.hidden = $("view").hidden;
   $("pal-terrain").hidden = !map || state.tool === "place";
   $("pal-objects").hidden = !map || state.tool !== "place";
   if (name === "world" || name === "quests") {
@@ -2391,7 +2449,12 @@ function wire() {
   const cellAt = (ev) => {
     const r = cv.getBoundingClientRect();
     const ts = state.map.tile_size * state.zoom;
-    return [Math.floor((ev.clientX - r.left) / ts), Math.floor((ev.clientY - r.top) / ts)];
+    // The canvas holds a window onto the map, so where it sits on screen is
+    // the top-left of that window, not of the map - the origin puts the cell
+    // back. At scroll 0 the two are the same, which is every small map.
+    const [ox, oy] = state.viewOrigin || [0, 0];
+    return [Math.floor((ev.clientX - r.left + ox) / ts),
+            Math.floor((ev.clientY - r.top + oy) / ts)];
   };
   cv.addEventListener("contextmenu", (e) => e.preventDefault());
   cv.addEventListener("pointerdown", (e) => {
@@ -2413,6 +2476,14 @@ function wire() {
   });
   cv.addEventListener("pointerup", () => { down = false; });
   cv.addEventListener("pointerleave", () => { state.hover = null; down = false; render(); });
+
+  // Scrolling moves the window over the map, so it has to be redrawn - cheap
+  // now that a redraw only costs what is on screen. Resizing changes how much
+  // of the map the window covers, which is the same question.
+  const scroller = document.querySelector(".main");
+  const redrawMap = () => { if (state.view === "map" && state.map) render(); };
+  if (scroller) scroller.addEventListener("scroll", redrawMap, { passive: true });
+  addEventListener("resize", redrawMap);
 
   const wv = $("world");
   wv.addEventListener("click", async (e) => {
@@ -2519,7 +2590,7 @@ function showTab(terrain) {
 // window property, hence the explicit handle.)
 Object.assign(window, {
   editor: state, openMap, terrainAt, indexAt, paint, place, erase, applyAt,
-  snapshot, undo, save, setTool, showTab, render, cycleVariant, variantsOf,
+  snapshot, undo, save, setTool, showTab, render, cycleVariant, variantsOf, viewport,
   setView, renderDefs, saveDef, DEF_FIELDS, loadWorld, layoutWorld, renderWorld, worldNotes, edgeOf, arrivalsOf,
   componentsOf, mapAtWorld, worldPointOf, worldScale,
   gatesOf, gateFor, refreshWorld, gatherableOf, blocksOf, interiorsOf, framesOf,

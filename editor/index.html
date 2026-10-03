@@ -120,7 +120,13 @@
   .legend b { color: var(--ink); font-weight: 500; }
 
   .main { grid-area: main; overflow: auto; background: #0e1015; position: relative; }
-  #view { image-rendering: pixelated; display: block; cursor: crosshair; }
+  /* The canvas is the size of the window you look through; the extent behind
+     it is the size of the map, so the scrollbars still describe the whole of
+     it. See viewport() - a 300x300 map does not fit in a canvas. */
+  #view-extent { position: relative; }
+  #view-extent[hidden] { display: none; }
+  #view { image-rendering: pixelated; display: block; cursor: crosshair;
+          position: absolute; top: 0; left: 0; }
   #world { image-rendering: pixelated; display: block; cursor: pointer; }
   #dlg { display: block; cursor: pointer; }
   #view[hidden], #world[hidden], #dlg[hidden] { display: none; }
@@ -228,7 +234,7 @@
   <label>name <input id="mapName" type="text" size="14" title="What this place is called in game"></label>
   <label>tags <input id="mapTags" type="text" size="10" placeholder="desert"
     title="Which zone this map belongs to - lowercase words, comma separated"></label>
-  <label>size <input id="mapW" type="number" min="8" max="200"> &times; <input id="mapH" type="number" min="8" max="200">
+  <label>size <input id="mapW" type="number" min="8" max="512"> &times; <input id="mapH" type="number" min="8" max="512">
     <button id="resize" title="Resize (pads with grass, crops from the bottom-right)">apply</button></label>
   <div class="tools">
     <button id="t-paint" class="on" title="P">paint</button>
@@ -365,7 +371,7 @@
   </div>
 </div>
 
-<div class="main"><canvas id="view"></canvas><canvas id="world" hidden></canvas><div
+<div class="main"><div id="view-extent"><canvas id="view"></canvas></div><canvas id="world" hidden></canvas><div
   id="quests" hidden></div><canvas id="dlg" hidden></canvas><div
   id="defs-items" hidden></div><div id="defs-actors" hidden></div></div>
 

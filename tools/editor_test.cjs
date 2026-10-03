@@ -169,8 +169,12 @@ function dropScratch() {
     const cv = document.getElementById('view');
     const r = cv.getBoundingClientRect();
     const ts = state.map.tile_size * state.zoom;
+    // The canvas shows a window onto the map, so a cell's place on screen is
+    // its world pixel less where the window starts. On a map that fits, the
+    // origin is 0 and this is what it always was.
+    const [ox, oy] = state.viewOrigin || [0, 0];
     const at = (type, buttons) => cv.dispatchEvent(new PointerEvent(type, {
-      clientX: r.left + (c[0] + 0.5) * ts, clientY: r.top + (c[1] + 0.5) * ts,
+      clientX: r.left + (c[0] + 0.5) * ts - ox, clientY: r.top + (c[1] + 0.5) * ts - oy,
       button: b, buttons, bubbles: true, pointerId: 1,
     }));
     at('pointerdown', b === 2 ? 2 : 1);
@@ -338,6 +342,92 @@ function dropScratch() {
         `${cycled.one} at ${cycled.lone && cycled.lone.at} -> ${cycled.lone && cycled.lone.variant}`);
   check('and says why rather than doing nothing',
         cycled.lone && /only the one drawing/.test(cycled.lone.msg), cycled.lone && cycled.lone.msg);
+
+  // --- a map bigger than the window ----------------------------------------
+  // Every map used to be drawn in full into a canvas its own size, which at
+  // 300x300 is a 14400px square and two seconds a redraw - once per mouse
+  // move. The canvas is a window now. These checks are about the two things
+  // that can go wrong with a window: it draws the wrong part, or the cursor
+  // and the drawing disagree about where the map is.
+  const big = await page.evaluate(() => {
+    const keep = state.map, keepUndo = state.undo, keepDirty = state.dirty;
+    state.map = structuredClone(keep);
+    document.getElementById('mapW').value = 120;
+    document.getElementById('mapH').value = 120;
+    document.getElementById('resize').click();          // the real control
+
+    const scroller = document.querySelector('.main');
+    const cv = document.getElementById('view');
+    const ext = document.getElementById('view-extent');
+    const span = state.map.tile_size * state.zoom;
+    const full = 120 * span;
+
+    const unscrolled = { canvas: [cv.width, cv.height],
+                         extent: [ext.offsetWidth, ext.offsetHeight],
+                         origin: [...state.viewOrigin] };
+
+    // Scroll well into the map and redraw through the page's own listener.
+    scroller.scrollLeft = 40 * span;
+    scroller.scrollTop = 30 * span;
+    render();
+    const scrolled = { origin: [...state.viewOrigin],
+                       left: cv.style.left, top: cv.style.top,
+                       canvas: [cv.width, cv.height] };
+
+    // A click, while scrolled, must land on the cell under the cursor. This
+    // is the check that fails if the window and the cursor disagree.
+    state.terrain = 'tile.water';
+    state.brush = 1;
+    setTool('paint');
+    const [ox, oy] = state.viewOrigin;
+    const want = [Math.floor(ox / span) + 3, Math.floor(oy / span) + 2];
+    const r = cv.getBoundingClientRect();
+    const px = r.left + (want[0] * span - ox) + span / 2;
+    const py = r.top + (want[1] * span - oy) + span / 2;
+    for (const [type, buttons] of [['pointerdown', 1], ['pointerup', 0]]) {
+      cv.dispatchEvent(new PointerEvent(type, {
+        clientX: px, clientY: py, button: 0, buttons, bubbles: true, pointerId: 1 }));
+    }
+    const landed = { want, got: terrainAt(want[0], want[1]),
+                     elsewhere: terrainAt(0, 0) };
+
+    // What a redraw costs now, with the window a long way from the origin.
+    const t = performance.now();
+    render();
+    const drawMs = Math.round(performance.now() - t);
+
+    state.map = keep; state.undo = keepUndo; state.dirty = keepDirty;
+    scroller.scrollLeft = 0; scroller.scrollTop = 0;
+    state.viewOrigin = [0, 0];
+    render();
+    const back = { canvas: [cv.width, cv.height], origin: [...state.viewOrigin],
+                   size: [...state.map.size] };
+    return { full, span, unscrolled, scrolled, landed, drawMs, back };
+  });
+  check('a map larger than the window is not drawn in full',
+        big.unscrolled.canvas[0] < big.full && big.unscrolled.canvas[1] < big.full,
+        `canvas ${big.unscrolled.canvas} for a ${big.full}px map`);
+  check('but the scrollbars still describe the whole map',
+        big.unscrolled.extent[0] === big.full && big.unscrolled.extent[1] === big.full,
+        `extent ${big.unscrolled.extent} of ${big.full}`);
+  check('scrolling moves the window over the map',
+        big.scrolled.origin[0] === 40 * big.span && big.scrolled.origin[1] === 30 * big.span,
+        `origin ${big.scrolled.origin}`);
+  check('and the canvas follows the scroll so it stays on screen',
+        big.scrolled.left === big.scrolled.origin[0] + 'px'
+        && big.scrolled.top === big.scrolled.origin[1] + 'px',
+        `${big.scrolled.left},${big.scrolled.top}`);
+  check('a click while scrolled lands on the cell under the cursor',
+        big.landed.got === 'tile.water',
+        `${big.landed.want} -> ${big.landed.got}`);
+  check('and not on the cell that would be there unscrolled',
+        big.landed.elsewhere !== 'tile.water', `0,0 is ${big.landed.elsewhere}`);
+  check('a redraw costs the window, not the map',
+        big.drawMs < 250, `${big.drawMs}ms`);
+  check('and a map that fits is still drawn whole',
+        big.back.canvas[0] === big.back.size[0] * big.span
+        && big.back.origin[0] === 0,
+        `canvas ${big.back.canvas} for ${big.back.size} at span ${big.span}`);
 
   // Flooding ground that something stands on has to take the object with it,
   // or the build would refuse the map.
