@@ -557,6 +557,90 @@ function dropScratch() {
   check('and back at zoom 2 the map is drawn in detail',
         zoomed.back.zoom === 2 && zoomed.back.mode === 'detail', JSON.stringify(zoomed.back));
 
+  // The ways zooming went wrong in use rather than in a one-event test: a
+  // trackpad pinch is dozens of tiny wheel events, a fitted map leaves margins
+  // the wheel can land in, and the ground cache must never show an old map.
+  const zoom2 = await page.evaluate(() => {
+    const keep = state.map, keepUndo = state.undo, keepDirty = state.dirty;
+    state.map = structuredClone(keep);
+    document.getElementById('mapW').value = 120;
+    document.getElementById('mapH').value = 120;
+    document.getElementById('resize').click();
+    const out = {};
+    const main = document.querySelector('.main');
+    const cv = document.getElementById('view');
+    const ext = document.getElementById('view-extent');
+    const sel = document.getElementById('zoom');
+    const pick = (v) => { sel.value = v; sel.dispatchEvent(new Event('change')); };
+    const wheel = (target, dy, x, y) => target.dispatchEvent(new WheelEvent('wheel', {
+      deltaY: dy, ctrlKey: true, clientX: x, clientY: y, bubbles: true, cancelable: true }));
+
+    // a pinch: fifteen tiny deltas are one step, not six
+    pick('0.125');
+    const r0 = cv.getBoundingClientRect();
+    for (let k = 0; k < 15; k++) wheel(cv, -4, r0.left + 100, r0.top + 100);
+    out.pinch = state.zoom;
+
+    // a map smaller than the window sits in its middle
+    pick('fit');
+    const v = viewport();
+    out.centred = { ml: parseFloat(ext.style.marginLeft) || 0, mt: parseFloat(ext.style.marginTop) || 0,
+                    wantL: Math.floor((main.clientWidth - v.fw) / 2), wantT: Math.floor((main.clientHeight - v.fh) / 2) };
+
+    // the wheel in the margin beside it still zooms
+    const mr = main.getBoundingClientRect();
+    const before = state.zoom;
+    wheel(main, -100, mr.right - 10, mr.top + 10);
+    out.margin = { before, after: state.zoom };
+
+    // at 1/2 a redraw is the cache, not fifteen thousand tiles
+    pick('0.5');
+    render();
+    let t = performance.now();
+    render();
+    out.halfMs = performance.now() - t;
+
+    // and the cache is never stale: an edit shows at once, and so does its undo
+    const px = (x, y) => {
+      const [ox, oy] = state.viewOrigin;
+      const s = state.map.tile_size * state.zoom;
+      return [...cv.getContext('2d').getImageData(Math.floor(x * s - ox + s / 2),
+                                                  Math.floor(y * s - oy + s / 2), 1, 1).data];
+    };
+    const spot = [12, 12];
+    const was = px(...spot);
+    state.terrain = 'tile.water';
+    state.brush = 3;
+    snapshot();
+    paint(...spot);
+    render();
+    out.painted = px(...spot);
+    undo();
+    out.undone = px(...spot);
+    out.was = was;
+
+    state.map = keep; state.undo = keepUndo; state.dirty = keepDirty;
+    pick('2');
+    main.scrollLeft = 0; main.scrollTop = 0;
+    render();
+    // the map swapped back in has to be drawn as itself, not as the copy
+    out.backTerrain = terrainAt(12, 12);
+    return out;
+  });
+  check('a trackpad pinch steps one zoom, not to the end of the scale',
+        zoom2.pinch === 0.25, `1/8 + 15 small deltas -> ${zoom2.pinch}`);
+  check('a map smaller than the window is centred in it',
+        Math.abs(zoom2.centred.ml - zoom2.centred.wantL) <= 1
+        && Math.abs(zoom2.centred.mt - zoom2.centred.wantT) <= 1, JSON.stringify(zoom2.centred));
+  check('ctrl+wheel in the margin beside a fitted map zooms',
+        zoom2.margin.after > zoom2.margin.before, JSON.stringify(zoom2.margin));
+  check('a redraw at 1/2 is cheap', zoom2.halfMs < 40, `${zoom2.halfMs.toFixed(1)}ms`);
+  check('a painted tile shows at once through the ground cache',
+        zoom2.painted[2] > zoom2.painted[1] && zoom2.painted.join() !== zoom2.was.join(),
+        `${zoom2.was.slice(0, 3)} -> ${zoom2.painted.slice(0, 3)}`);
+  check('and undoing it puts the old ground back on screen',
+        zoom2.undone.join() === zoom2.was.join(), `${zoom2.undone.slice(0, 3)} vs ${zoom2.was.slice(0, 3)}`);
+
   // Flooding ground that something stands on has to take the object with it,
   // or the build would refuse the map.
   const flood = await page.evaluate(() => {

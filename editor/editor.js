@@ -375,13 +375,19 @@ function setZoom(value, anchor) {
   const before = ts * state.zoom;
   const ax = anchor ? anchor[0] : main.clientWidth / 2;
   const ay = anchor ? anchor[1] : main.clientHeight / 2;
-  const wx = (main.scrollLeft + ax) / before;
-  const wy = (main.scrollTop + ay) / before;
+  // A map smaller than the window sits centred in it, so the window point is
+  // offset by that margin before it means a place on the map.
+  const ext = $("view-extent");
+  const margin = () => [parseFloat(ext.style.marginLeft) || 0, parseFloat(ext.style.marginTop) || 0];
+  const [ml, mt] = margin();
+  const wx = (main.scrollLeft + ax - ml) / before;
+  const wy = (main.scrollTop + ay - mt) / before;
   state.fit = value === "fit";
   state.zoom = state.fit ? fitZoom() : Number(value);
-  render();                                  // sizes the extent for the new zoom
-  main.scrollLeft = Math.max(0, wx * ts * state.zoom - ax);
-  main.scrollTop = Math.max(0, wy * ts * state.zoom - ay);
+  render();                                  // sizes and centres the extent for the new zoom
+  const [nl, nt] = margin();
+  main.scrollLeft = Math.max(0, wx * ts * state.zoom - ax + nl);
+  main.scrollTop = Math.max(0, wy * ts * state.zoom - ay + nt);
   render();
   $("zoom").value = state.fit ? "fit" : String(state.zoom);
 }
@@ -469,6 +475,60 @@ function drawOverview(ctx, m, v, x0, y0, x1, y1) {
   ctx.drawImage(overviewCanvas, x0 * v.span, y0 * v.span, w * v.span, h * v.span);
 }
 
+// Ground at zoom 1 and below, cached in chunks. At 1/2 a window holds some
+// fifteen thousand tiles, and drawing each of them on every scroll step cost
+// 125ms. A chunk remembers the exact rows it was drawn from, one either side
+// included because a tile's edge depends on its neighbours, and redraws itself
+// when any of them differ - every edit replaces a row string or the whole
+// ground, so there is nothing to remember to invalidate and nothing to go stale.
+const CHUNK = 32;
+const CHUNK_KEEP = 96;
+const groundChunks = new Map();
+let chunksKey = null;
+
+function drawGroundChunks(ctx, m, v, x0, y0, x1, y1) {
+  const key = [state.zoom, m.size.join("x")];
+  if (!chunksKey || chunksKey.map !== m || chunksKey.M !== state.M || chunksKey.k !== key.join("|")) {
+    groundChunks.clear();
+    chunksKey = { map: m, M: state.M, k: key.join("|") };
+  }
+  const [w, h] = m.size;
+  const s = v.span;
+  const px = (t) => Math.round(t * s);              // whole pixels, so chunks never seam
+  const tiles = state.M.atlases.tiles;
+  const [tw, th] = tiles.frame;
+  for (let cy = Math.floor(y0 / CHUNK); cy * CHUNK < y1; cy++) {
+    for (let cx = Math.floor(x0 / CHUNK); cx * CHUNK < x1; cx++) {
+      const id = `${cx},${cy}`;
+      const tx0 = cx * CHUNK, ty0 = cy * CHUNK;
+      const tx1 = Math.min(w, tx0 + CHUNK), ty1 = Math.min(h, ty0 + CHUNK);
+      const rows = [];
+      for (let y = Math.max(0, ty0 - 1); y < Math.min(h, ty1 + 1); y++) rows.push(m.ground[y]);
+      let c = groundChunks.get(id);
+      if (!c || c.rows.length !== rows.length || c.rows.some((r, i) => r !== rows[i])) {
+        const cv = (c && c.canvas) || document.createElement("canvas");
+        cv.width = px(tx1) - px(tx0);
+        cv.height = px(ty1) - px(ty0);
+        const g = cv.getContext("2d");
+        g.imageSmoothingEnabled = false;
+        for (let y = ty0; y < ty1; y++) {
+          for (let x = tx0; x < tx1; x++) {
+            const i = indexAt(x, y);
+            g.drawImage(state.images.tiles,
+                        (i % tiles.cols) * tw, Math.floor(i / tiles.cols) * th, tw, th,
+                        px(x) - px(tx0), px(y) - px(ty0), px(x + 1) - px(x), px(y + 1) - px(y));
+          }
+        }
+        c = { canvas: cv, rows };
+      }
+      groundChunks.delete(id);                     // most recently used goes last
+      groundChunks.set(id, c);
+      ctx.drawImage(c.canvas, px(tx0), px(ty0));
+    }
+  }
+  while (groundChunks.size > CHUNK_KEEP) groundChunks.delete(groundChunks.keys().next().value);
+}
+
 // The last full drawing, minus the hover box. Moving the mouse changes nothing
 // but the box, so it costs a blit of this instead of drawing the map again -
 // which on a big map at a small zoom is the difference between smooth and not.
@@ -518,7 +578,16 @@ function render() {
   const v = viewport();
   state.viewOrigin = [v.ox, v.oy];
   const ext = $("view-extent");
-  if (ext) { ext.style.width = v.fw + "px"; ext.style.height = v.fh + "px"; }
+  if (ext) {
+    ext.style.width = v.fw + "px";
+    ext.style.height = v.fh + "px";
+    // A map smaller than the window sits in its middle rather than its corner,
+    // so zooming about the middle of the window is zooming about the map.
+    const main = document.querySelector(".main");
+    const cw = (main && main.clientWidth) || v.fw, ch = (main && main.clientHeight) || v.fh;
+    ext.style.marginLeft = Math.max(0, Math.floor((cw - v.fw) / 2)) + "px";
+    ext.style.marginTop = Math.max(0, Math.floor((ch - v.fh) / 2)) + "px";
+  }
   cv.width = v.vw;
   cv.height = v.vh;
   cv.style.left = v.ox + "px";
@@ -543,14 +612,18 @@ function render() {
   if (overview) {
     drawOverview(ctx, m, v, x0, y0, x1, y1);
   } else {
-    const tiles = state.M.atlases.tiles;
-    const [tw, th] = tiles.frame;
-    for (let y = y0; y < y1; y++) {
-      for (let x = x0; x < x1; x++) {
-        const i = indexAt(x, y);
-        ctx.drawImage(state.images.tiles,
-                      (i % tiles.cols) * tw, Math.floor(i / tiles.cols) * th, tw, th,
-                      x * ts * z, y * ts * z, ts * z, ts * z);
+    if (v.span <= 16) {
+      drawGroundChunks(ctx, m, v, x0, y0, x1, y1);
+    } else {
+      const tiles = state.M.atlases.tiles;
+      const [tw, th] = tiles.frame;
+      for (let y = y0; y < y1; y++) {
+        for (let x = x0; x < x1; x++) {
+          const i = indexAt(x, y);
+          ctx.drawImage(state.images.tiles,
+                        (i % tiles.cols) * tw, Math.floor(i / tiles.cols) * th, tw, th,
+                        x * ts * z, y * ts * z, ts * z, ts * z);
+        }
       }
     }
     // Entities in the order the game draws them: by the y their anchor sits on.
@@ -2661,13 +2734,25 @@ function wire() {
   });
   cv.addEventListener("pointerup", () => { down = false; });
   cv.addEventListener("pointerleave", () => { state.hover = null; down = false; renderHover(); });
-  // Ctrl+wheel zooms about the cursor. The page's own zoom is the browser's
-  // default for that gesture, so it has to be told no.
-  cv.addEventListener("wheel", (e) => {
-    if (!(e.ctrlKey || e.metaKey) || !state.map) return;
+  // Ctrl+wheel zooms about the cursor, anywhere over the map area - a fitted
+  // map leaves margins, and the browser zooms the whole page if the wheel lands
+  // in one unclaimed. It steps by distance rather than per event: a mouse notch
+  // is about 100, but a trackpad pinch sends dozens of tiny deltas, and one
+  // step each took a pinch from 1/8 to 3x in a single gesture.
+  let wheelAcc = 0, wheelAt = 0;
+  document.querySelector(".main").addEventListener("wheel", (e) => {
+    if (!(e.ctrlKey || e.metaKey) || !state.map || state.view !== "map") return;
     e.preventDefault();
-    const r = document.querySelector(".main").getBoundingClientRect();
-    stepZoom(e.deltaY < 0 ? 1 : -1, [e.clientX - r.left, e.clientY - r.top]);
+    const now = performance.now();
+    const d = e.deltaY * (e.deltaMode === 1 ? 33 : e.deltaMode === 2 ? 400 : 1);
+    if (now - wheelAt > 400 || Math.sign(d) !== Math.sign(wheelAcc)) wheelAcc = 0;
+    wheelAt = now;
+    wheelAcc += d;
+    if (Math.abs(wheelAcc) < 50) return;
+    const dir = wheelAcc < 0 ? 1 : -1;
+    wheelAcc = 0;
+    const r = e.currentTarget.getBoundingClientRect();
+    stepZoom(dir, [e.clientX - r.left, e.clientY - r.top]);
   }, { passive: false });
 
   // Scrolling moves the window over the map, so it has to be redrawn - cheap
