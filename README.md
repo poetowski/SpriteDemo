@@ -1,5 +1,24 @@
 # demo_sprites_4move
 
+A small game engine, in three parts that are each meant to stand on their own:
+
+- **An art and content pipeline.** Parametric Python rigs draw the characters,
+  creatures, tiles and props, pack them into sheets with layered `.aseprite`
+  sources, and describe everything in engine-neutral JSON. Thirty-eight gates
+  refuse a build whose content contradicts itself.
+- **A map editor**, which works as the level editor and asset manager. It is a
+  first-class deliverable of this project, not a debugging aid for one game.
+  It knows a game only through the manifest and the content files, the same
+  contract the runtime reads, so the aim is for it to run standalone as the
+  level editor and asset manager for different games built on that format.
+  See [The map editor](#the-map-editor).
+- **A runtime.** It is Phaser 3 today, and it is the one part that is
+  engine-specific (see [Engine note](#engine-note)).
+
+The RPG described below is the game the engine is being proved on.
+
+## The demo game
+
 A top-down RPG sandbox with code-generated pixel art. Characters, livestock,
 tiles and props are drawn by parametric Python rigs, exported to spritesheets
 plus `.aseprite` sources, and played in Phaser 3 — with the map, the props, the
@@ -32,7 +51,9 @@ somewhere and nothing about where it is.
 ## Quick start
 
 ```sh
-python tools/build.py          # regenerate all art + data  (needs Pillow)
+python tools/art.py            # redraw the art library - only when a generator changed
+python tools/build.py          # content + maps -> manifest + game, through the gates
+python tools/editor.py         # the map editor, at http://127.0.0.1:8765/
 node tools/shot.cjs            # boot the game headless, check it, photograph it
 ```
 
@@ -44,16 +65,51 @@ a d-pad.
 `game/page.html` is the same game as a single self-contained file, which is what
 gets published when a link is wanted.
 
+## The map editor
+
+`python tools/editor.py` serves the editor at <http://127.0.0.1:8765/>. It is
+the part of this project that authors content, and it is treated as a product
+in its own right:
+
+- **Level editing.** Paint terrain with edges resolved live by the build's own
+  mask table. Place, erase and re-draw props, creatures and items, and set the
+  spawn and the doorways between maps. Undo, save, and save + build to run the
+  gates without leaving the page.
+- **Maps of any size.** The canvas is a window onto the map, so a 300×300 map
+  opens in a few tens of milliseconds. Zoom runs from 1/8 to 3× with **fit**,
+  Ctrl+wheel about the cursor, and **−** / **+** buttons. Below 1/2 the map is
+  drawn as an overview: each tile in its terrain's own colour, woods darker,
+  loot in gold, and every gate labelled with where it goes.
+- **The world, not just a map.** The world atlas (**W**) lays every map out by
+  its seams and portals and groups maps into zones. The quest board (**Q**)
+  says whether the world can pay each errand, the conversation view (**D**)
+  draws dialogue as a graph, and the item and actor sheets (**I**, **A**) edit
+  their numbers.
+- **Standalone by design.** The editor reads `build/manifest.json` and
+  `content/`, and writes `content/maps/*.json` in the same plain format a person
+  would type. It carries every key it does not understand through a save, and
+  it holds no game logic of its own: what a thing is, how big it is and whether
+  it blocks all come from the content. That separation is what lets it serve
+  a different game whose content follows the same format.
+- **Tested like the game.** `node tools/editor_test.cjs` drives the real editor
+  in headless Chromium, 139 checks, and every editor feature is added with its
+  checks.
+
 ## Layout
 
 ```
 tools/gen/        the generators: palette, character rig, tiles, props
 tools/pipeline/   aseprite I/O, atlas packing, manifest, validation gates
-tools/build.py    entry point
+tools/art.py      the art pipeline: draws, packs and checks the art library
+tools/build.py    the content pipeline: maps and content -> manifest -> game
+tools/editor.py   serves the map editor
 tools/shot.cjs    headless-Chromium smoke test that leaves a screenshot behind
+tools/editor_test.cjs  the same, for the editor
 content/          AUTHORED data - engine-neutral JSON, human-diffable
+assets/           the art library - committed, the reviewable record of the art
 build/            GENERATED - safe to delete at any time, never hand-edit
-game/             the Phaser 3 game
+editor/           the map editor: level editor and asset manager
+game/             the Phaser 3 runtime
 CLAUDE.md         the change loop: build, screenshot, publish
 ```
 
@@ -66,7 +122,7 @@ The rule: `tools/` and `content/` are truth. Everything in `build/` and
 content/*.json  +  tools/gen/*.py
         │  generate
 build/atlas/*.png  ·  build/manifest.json  ·  build/aseprite/*.aseprite
-        │  validate   ← 34 gates, all must pass
+        │  validate   ← 38 gates, all must pass
 game/art-embed.js  →  game/index.html + main.js  →  game/page.html
 ```
 
@@ -368,10 +424,12 @@ writes rather than something the content has to spell out.
 
 ## Engine note
 
-The Godot-or-Phaser decision is deliberately still open. `content/` and
-`build/manifest.json` are engine-neutral; only `game/` is Phaser-specific. Moving
-to Godot means writing an importer for the same manifest, not redoing the art or
-the content.
+This is a game engine, and its contract is `content/` plus
+`build/manifest.json`. Both are engine-neutral, and the editor and the runtime
+are two clients of that contract. Only `game/` is Phaser-specific, and the
+Godot-or-Phaser decision is deliberately still open: moving to Godot means
+writing an importer for the same manifest, not redoing the art, the content
+or the editor.
 
 Requires Python 3.9+ with Pillow (`pip install pillow`). Phaser is vendored in
 `game/vendor/`, so the game works offline; it falls back to the CDN if absent.

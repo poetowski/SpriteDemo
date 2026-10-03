@@ -1,8 +1,24 @@
 # Working on this repo
 
-A top-down RPG sandbox whose art and content are generated from Python rigs and
-engine-neutral JSON. `tools/` and `content/` are truth; `build/` and
-`game/art-embed.js` are derived and must never be hand-edited.
+A small game engine: an art and content pipeline, a **map editor** that is the
+level editor and asset manager, and a Phaser runtime, all working off
+engine-neutral JSON. The top-down RPG in `content/` is the game the engine is
+proved on. `tools/` and `content/` are truth; `build/` and `game/art-embed.js`
+are derived and must never be hand-edited.
+
+**The map editor is a primary deliverable, not a tool for this one game.** The
+aim is for it to run standalone as the level editor and asset manager for
+different games built on this content format. That sets three rules for any
+change near it:
+
+- **No game logic in `editor/`.** What a thing is, its footprint, whether it
+  blocks, whether it can be picked up: all of it comes from the manifest and
+  `content/`. A feature that needs to know something about one game puts that
+  knowledge in content and reads it from there.
+- **Every editor feature lands with checks** in `tools/editor_test.cjs`, which
+  drives the real page through its own controls.
+- **It has to scale.** Maps up to 512×512 are in range. Draw only what is on
+  screen, and never do per-tile work on a mouse move.
 
 ## Two pipelines
 
@@ -116,6 +132,17 @@ every key it does not understand. `save()` names the fields it writes, and
 quietly disconnected the world - and no gate caught it, because a map without
 exits is perfectly legal. Anything added to the map format needs to survive
 that round trip.
+
+**Zoom** runs from 1/8 to 3×, plus **fit**, through the select, the small −/+
+buttons beside it, Ctrl+wheel about the cursor, and the `-` `=` `f` keys. The
+canvas is only ever the size of the window (`viewport()`): an extent div
+carries the map's full size for the scrollbars, and `render()` draws in world
+pixels under a translate. Below 8px a tile (`OVERVIEW_BELOW`) the map is drawn
+as an overview instead of sprites. Each tile is filled with the average colour
+of its terrain's own drawing, solid things darken it so woods read as woods,
+loot shows as gold dots, and gates keep their numbered labels. Hovering blits
+the last full frame (`renderHover`) rather than redrawing, so the cost of
+moving the mouse does not grow with the map.
 
 Paint terrain, place and erase objects, move the spawn, undo, save, and
 **save + build** to run the gates without leaving the page. **W** is the world

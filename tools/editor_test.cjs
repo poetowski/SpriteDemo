@@ -429,6 +429,134 @@ function dropScratch() {
         && big.back.origin[0] === 0,
         `canvas ${big.back.canvas} for ${big.back.size} at span ${big.span}`);
 
+  // --- zooming out --------------------------------------------------------
+  // A big map has to be seeable whole. Below eight pixels a tile it is drawn
+  // as an overview: terrain in its own colour, and the gates named. Every step
+  // here goes through the page's own controls - the buttons, the wheel, the
+  // select - so a control that stopped reaching setZoom fails.
+  const zoomed = await page.evaluate(() => {
+    const keep = state.map, keepUndo = state.undo, keepDirty = state.dirty;
+    state.map = structuredClone(keep);
+    document.getElementById('mapW').value = 120;
+    document.getElementById('mapH').value = 120;
+    document.getElementById('resize').click();
+    state.terrain = 'tile.water';
+    state.brush = 5;
+    paint(20, 20);
+    state.map.exits = [{ tiles: [[119, 60], [119, 61]], to: 'map.wilderness1',
+                         spawns: [[1, 5], [1, 6]], facing: 'right' }];
+    const out = {};
+    const cv = document.getElementById('view');
+    const main = document.querySelector('.main');
+    const sel = document.getElementById('zoom');
+
+    // the select, at the smallest step
+    sel.value = '0.125';
+    sel.dispatchEvent(new Event('change'));
+    out.mode = state.lastRender.mode;
+    out.labels = [...state.lastRender.labels];
+    out.span = state.map.tile_size * state.zoom;
+    // what the overview actually painted: the water cell bluer than the grass
+    const px = (x, y) => {
+      const [ox, oy] = state.viewOrigin;
+      const s = state.map.tile_size * state.zoom;
+      return [...cv.getContext('2d').getImageData(Math.floor(x * s - ox + s / 2),
+                                                  Math.floor(y * s - oy + s / 2), 1, 1).data];
+    };
+    out.water = px(20, 20);
+    out.ground = px(60, 100);
+    out.groundIs = terrainAt(60, 100);
+
+    // the buttons step one zoom at a time
+    document.getElementById('zoom-in').click();
+    out.afterIn = state.zoom;
+    document.getElementById('zoom-out').click();
+    out.afterOut = state.zoom;
+
+    // a click at the overview lands on the cell under it
+    state.terrain = 'tile.water';
+    state.brush = 1;
+    setTool('paint');
+    {
+      const r = cv.getBoundingClientRect();
+      const s = state.map.tile_size * state.zoom;
+      const [ox, oy] = state.viewOrigin;
+      for (const [type, buttons] of [['pointerdown', 1], ['pointerup', 0]]) {
+        cv.dispatchEvent(new PointerEvent(type, {
+          clientX: r.left + 90 * s - ox + s / 2, clientY: r.top + 40 * s - oy + s / 2,
+          button: 0, buttons, bubbles: true, pointerId: 1 }));
+      }
+    }
+    out.clicked = terrainAt(90, 40);
+
+    // fit: the whole map in the window, and filling it one way
+    sel.value = 'fit';
+    sel.dispatchEvent(new Event('change'));
+    const v = viewport();
+    out.fit = { fw: v.fw, fh: v.fh, cw: main.clientWidth, ch: main.clientHeight, sel: sel.value };
+
+    // ctrl+wheel zooms about the cursor: the cell under it stays under it
+    sel.value = '0.5';
+    sel.dispatchEvent(new Event('change'));
+    const mr = main.getBoundingClientRect();
+    const at = [mr.left + 300, mr.top + 200];
+    const cellUnder = () => {
+      const r = cv.getBoundingClientRect();
+      const s = state.map.tile_size * state.zoom;
+      const [ox, oy] = state.viewOrigin;
+      return [Math.floor((at[0] - r.left + ox) / s), Math.floor((at[1] - r.top + oy) / s)];
+    };
+    const before = cellUnder();
+    cv.dispatchEvent(new WheelEvent('wheel', { deltaY: -100, ctrlKey: true, clientX: at[0],
+                                              clientY: at[1], bubbles: true, cancelable: true }));
+    out.wheel = { zoom: state.zoom, before, after: cellUnder() };
+
+    // hovering is a blit of the last frame, not a fresh drawing
+    sel.value = '0.5';
+    sel.dispatchEvent(new Event('change'));
+    let t = performance.now();
+    render();
+    out.fullMs = performance.now() - t;
+    state.hover = [30, 30];
+    t = performance.now();
+    renderHover();
+    out.hoverMs = performance.now() - t;
+
+    state.map = keep; state.undo = keepUndo; state.dirty = keepDirty;
+    sel.value = '2';
+    sel.dispatchEvent(new Event('change'));
+    main.scrollLeft = 0; main.scrollTop = 0;
+    state.hover = null;
+    render();
+    out.back = { zoom: state.zoom, mode: state.lastRender.mode };
+    return out;
+  });
+  check('zooming out far enough draws the overview', zoomed.mode === 'overview',
+        `${zoomed.mode} at ${zoomed.span}px a tile`);
+  check('and the overview names every gate and where it goes',
+        zoomed.labels.some((l) => /Northmeadow/.test(l)), JSON.stringify(zoomed.labels));
+  check('the overview paints terrain in its own colour',
+        zoomed.water[2] > zoomed.water[1] && zoomed.ground[1] > zoomed.ground[2],
+        `water ${zoomed.water.slice(0, 3)}, ${zoomed.groundIs} ${zoomed.ground.slice(0, 3)}`);
+  check('the + and - buttons step the zoom',
+        zoomed.afterIn === 0.25 && zoomed.afterOut === 0.125,
+        `${zoomed.afterIn}, ${zoomed.afterOut}`);
+  check('a click at the overview lands on the cell under it',
+        zoomed.clicked === 'tile.water', `90,40 is ${zoomed.clicked}`);
+  check('fit puts the whole map in the window',
+        zoomed.fit.fw <= zoomed.fit.cw && zoomed.fit.fh <= zoomed.fit.ch
+        && Math.max(zoomed.fit.fw / zoomed.fit.cw, zoomed.fit.fh / zoomed.fit.ch) > 0.97
+        && zoomed.fit.sel === 'fit', JSON.stringify(zoomed.fit));
+  check('ctrl+wheel zooms in about the cursor',
+        zoomed.wheel.zoom === 1 && Math.abs(zoomed.wheel.after[0] - zoomed.wheel.before[0]) <= 1
+        && Math.abs(zoomed.wheel.after[1] - zoomed.wheel.before[1]) <= 1,
+        JSON.stringify(zoomed.wheel));
+  check('moving the mouse costs a blit, not a redraw',
+        zoomed.hoverMs < Math.max(5, zoomed.fullMs / 3),
+        `hover ${zoomed.hoverMs.toFixed(1)}ms, full ${zoomed.fullMs.toFixed(1)}ms`);
+  check('and back at zoom 2 the map is drawn in detail',
+        zoomed.back.zoom === 2 && zoomed.back.mode === 'detail', JSON.stringify(zoomed.back));
+
   // Flooding ground that something stands on has to take the object with it,
   // or the build would refuse the map.
   const flood = await page.evaluate(() => {
